@@ -1,7 +1,7 @@
 
 
 
-""+""	//concatenate strings
+
 
 
 
@@ -118,7 +118,7 @@ string $list[]  = { "a", "b", "c", "d", "e", "f", "g" };
 
 
 
-	vector $vector; //defines $vector <<0.0, 0.0, 0.0>>
+vector $vector; //defines $vector <<0.0, 0.0, 0.0>>
 
 
 	
@@ -133,34 +133,11 @@ string $list[]  = { "a", "b", "c", "d", "e", "f", "g" };
 
 
 
-pm.rename(obj, 'newName') //#optional arg: ignoreShape=Indicates that renaming of shape nodes below transform nodes should be prevented.
 
 
 
 
 
-
-
-		-add
-		-addFirst // the specified items should be added to the front of the active list
-		-replace
-		-toggle // active list should be removed,those not on the active list should be added
-		-clear
-		-symmetry
-		-symmetrySide
-		-hierarchy // children, grandchildren, should also be selected
-		-allDagObjects
-		-allDependencyNodes
-
-
-
-
-
-// query object mode.
-
-//list current selection
-//list current selection and filter by name
-pm.ls('*endsWith', selection=1)
 
 
 
@@ -189,8 +166,11 @@ numFaces = pm.polyEvaluate (obj, face=1)
 
 
 
-// component selection mode/type:
-//get: 
+
+//get:
+//query object mode.
+$mode = `selectMode -query -object`;
+//query component selection mode/type:
 pm.selectMode(query=1, object=1)
 pm.selectMode(query=1, component=1)
 pm.selectType(query=1, allObjects=1)
@@ -552,8 +532,10 @@ eg.						//using a line continuation character '\' or concatenate '+'
 string $str = "first part of this line \ 
 second part on this line"
 
-eg.
-""+""	//concatenate strings
+
+//concatenate strings
+eg. ""+""
+
 
 \		//line continuation (multi-line strings in mel without having to use concatenation)
 
@@ -1315,91 +1297,26 @@ eg.
 "OBJECTS & ATTRIBUTES: //--------------------------------------------------------------------------------------------------------------------------------"
 
 
-// Naming: -------------------------------------------------
-rename;
-
-
 
 // Selection: ---------------------------------------------
 
 //object selection: // eg. select -replace polySurface1.map;
 select -all;
-			 -add
-			 -addFirst // the specified items should be added to the front of the active list
-			 -replace
-			 -toggle // active list should be removed,those not on the active list should be added
-			 -clear
-			 -symmetry
-			 -symmetrySide
-			 -hierarchy // children, grandchildren, should also be selected
-			 -allDagObjects
-			 -allDependencyNodes
+		-add
+		-addFirst // the specified items should be added to the front of the active list
+		-replace
+		-toggle // active list should be removed,those not on the active list should be added
+		-clear
+		-symmetry
+		-symmetrySide
+		-hierarchy // children, grandchildren, should also be selected
+		-allDagObjects
+		-allDependencyNodes
 
 ex. selection = pm.ls(selection=1, flatten=1)
 	pm.select(deselect=1)
 	pm.select(selection) //#select all from list
 
-
-
-//object type can be found by tooltip description in outliner
-//name
-ex. node.name()
-//history and transform nodes
-ex. pm.ls(sl=1, objectsOnly=1) //#returns list ie. [nt.PolyCone(u'polyCone1'), nt.Transform(u'pCone1')]
-// transform
-//ie.	pPlane1
-//using string formatting	ie.pPlane1 from pPlaneShape1
-ex. transforms = [node.replace('Shape','') for node in nodes]
-//transform from shape:
-ex. transforms = pm.listRelatives(shapes, parent=1, fullPath=1) //#returns list ie. [nt.Transform(u'pCone1')]
-//transform from selection
-ex. transforms = pm.listRelatives(pm.ls(type='mesh'),type='transform',p=True)
-
-//shape
-//ie.	pPlaneShape1
-//Shape nodes are child nodes of transform nodes
-//in mel
-ex string $shapes[] = `listRelatives -shapes $node`;
-//shape from transform:
-shapes = pm.listRelatives(transforms, children=1, shapes=1) //#returns list ie. [nt.Mesh(u'pConeShape1')]
-
-
-ex. shapes = pm.ls(selection=1, objectsOnly=1)
-
-//history node 	ie.polyPlane1
-historyNode = pm.listConnections(shapes, source=1, destination=0)
-//from selected objects
-ex. historyNodes = [n[1] for n in pm.ls(sl=1, objectsOnly=1)]
-
-
-
-//connections
-//incoming connections:
-ex. nodes = pm.listConnections(shapes, source=1, destination=0) //#returns list ie. [nt.PolyCone(u'polyCone1')]
-//outgoing connections:
-ex. nodes = pm.listConnections(shapes, source=0, destination=1)#returns list ie. [nt.ShadingEngine(u'initialShadingGroup')]
-
-
-
-//node attributes
-//list
-ex. pm.listAttr(node)
-//get
-ex. pm.getAttr()
-//get attributes:values as dictionary
-//MEL (using ie. nt.PolyCone(u'polyCone1') as node)
-ex. {attr:pm.getAttr(node+'.'+attr) for attr in pm.listAttr(node)}
-//pure python
-ex. {n:getattr(node, n) for n in dir(node)} //returns: {'upper': <built-in method upper of unicode object at 0x000001C7873982A0>, 'isnumeric': <built-in method isnumeric of unicode object at 0x000001C7873982A0>, ect..
-//set
-ex. pm.setAttr()
-//using a dictionary. attributes={'attribute':value}
-ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
-
-
-
-//query object mode.
-$mode = `selectMode -query -object`;
 
 //get current selection
 ls -selection;
@@ -1434,6 +1351,74 @@ $lastSelected = ls -selection -tail 1;
 //get all nodes below the selected node
 ls -dag -ap -sl;
 
+
+
+
+// Naming: -------------------------------------------------
+pm.rename(obj, 'newName') //#optional arg: ignoreShape=Indicates that renaming of shape nodes below transform nodes should be prevented.
+
+
+
+//get node by name
+//list current selection and filter by name
+pm.ls('*endsWith', selection=1)
+
+//To list all instances of sphere1, use the -ap/allPaths flag.
+pm.ls('sphere1', allPaths=True)
+
+
+//object type can be found by tooltip description in outliner
+//name
+ex. node.name()
+//history and transform nodes
+ex. pm.ls(sl=1, objectsOnly=1) //#returns list ie. [nt.PolyCone(u'polyCone1'), nt.Transform(u'pCone1')]
+// transform
+//ie.	pPlane1
+//using string formatting	ie.pPlane1 from pPlaneShape1
+ex. transforms = [node.replace('Shape','') for node in nodes]
+//transform from shape:
+ex. transforms = pm.listRelatives(shapes, parent=1, fullPath=1) //#returns list ie. [nt.Transform(u'pCone1')]
+//transform from selection
+ex. transforms = pm.listRelatives(pm.ls(type='mesh'),type='transform',p=True)
+
+//shape
+//ie.	pPlaneShape1
+//Shape nodes are child nodes of transform nodes
+//in mel
+ex string $shapes[] = `listRelatives -shapes $node`;
+//shape from transform:
+shapes = pm.listRelatives(transforms, children=1, shapes=1) //#returns list ie. [nt.Mesh(u'pConeShape1')]
+
+
+ex. shapes = pm.ls(selection=1, objectsOnly=1)
+
+//history node 	ie.polyPlane1
+historyNode = pm.listConnections(shapes, source=1, destination=0)
+//from selected objects
+ex. historyNodes = [n[1] for n in pm.ls(sl=1, objectsOnly=1)]
+
+
+
+//relatives
+//get direct parent nodes
+parents = pm.listRelatives(obj, parent=1) //Returns list containing the objects direct parent
+//get all parent nodes
+parents = pm.listRelatives(obj, allParents=1)
+//get direct child nodes
+childNodes = pm.listRelatives(obj, children=1)
+//get all child nodes
+childNodes = pm.listRelatives(obj, allDescendents=1)
+
+
+//connections
+//incoming connections:
+ex. nodes = pm.listConnections(shapes, source=1, destination=0) //#returns list ie. [nt.PolyCone(u'polyCone1')]
+//outgoing connections:
+ex. nodes = pm.listConnections(shapes, source=0, destination=1) //#returns list ie. [nt.ShadingEngine(u'initialShadingGroup')]
+
+
+
+
 //get the shape node name from component
 pm.ls("pCube1.vtx[0]", objectsOnly=1)
 //returns pCubeShape1
@@ -1461,7 +1446,28 @@ lsUI				//list ui objects
 					eg.
 					lsUI -windows;	
 
-// MEL FOR SETTING OBJECTS
+
+
+
+
+//node attributes
+//list
+ex. pm.listAttr(node)
+//get
+ex. pm.getAttr()
+//get attributes:values as dictionary
+//MEL (using ie. nt.PolyCone(u'polyCone1') as node)
+ex. {attr:pm.getAttr(node+'.'+attr) for attr in pm.listAttr(node)}
+//pure python
+ex. {n:getattr(node, n) for n in dir(node)} //returns: {'upper': <built-in method upper of unicode object at 0x000001C7873982A0>, 'isnumeric': <built-in method isnumeric of unicode object at 0x000001C7873982A0>, ect..
+//set
+ex. pm.setAttr()
+//using a dictionary. attributes={'attribute':value}
+ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
+
+
+
+
 listAttr	eg. listAttr $objectName;  eg. $bBox = `listAttr ($objectName + ".boundingBox")`; print $bBox; 
 					//return all possible attributes associated with an object.
 
@@ -1932,6 +1938,16 @@ pm.hyperShade(resetGraph=True, dependGraphArea=True)
 
 
 
+"LIGHTING: //--------------------------------------------------------------------------------------------------------------------------------------------"
+
+//get all scene lights
+lights = pm.ls(lights=1) //#List all lights in the DAG.
+
+
+
+
+
+
 
 
 
@@ -1940,9 +1956,9 @@ pm.hyperShade(resetGraph=True, dependGraphArea=True)
 
 //get scene cameras and their transforms:
 //# Get all cameras first
-cameras = pm.ls(type=('camera'), l=True)
+cameras = pm.ls(type=('camera'), l=True) //#List all cameras in the DAG.
 //# Let's filter all startup / default cameras
-startup_cameras = [camera for camera in cameras if pm.camera(camera.parent(0), startupCamera=True, q=True)]
+startup_cameras = [c for c in cameras if pm.camera(c.parent(0), q=1, startupCamera=1)]
 //# non-default cameras are easy to find now. Please note that these are all PyNodes
 non_startup_cameras_pynodes = list(set(cameras) - set(startup_cameras))
 //# Let's get their respective transform names, just in-case
