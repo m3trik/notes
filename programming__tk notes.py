@@ -168,10 +168,20 @@ time: 0.0816165578988
 # THINGS TO DO NOW:
 # -----------------------------------------------
 
+#AddAttribute;
+dynAddAttrWin( {} );
 
+#RenameAttribute;
+dynRenameAttrWin( {} );
 
+#SetDrivenKeyOptions;
+setDrivenKeyWindow "" {};
 
+#ConnectionEditor;
+optionVar -iv "connectWindowActive" 1
 
+#orient joint to world
+pm.joint(edit=1, orientJoint='none', zso=1, ch=0)
 
 
 

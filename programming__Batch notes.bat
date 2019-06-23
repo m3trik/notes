@@ -6,51 +6,33 @@ EXIT
 
 
 
-::	command reference A-Z: https://technet.microsoft.com/en-us/library/bb490890.aspx
+:: command reference A-Z: https://technet.microsoft.com/en-us/library/bb490890.aspx
 :: get help on a command: ex. command /?
 
 
 :: general syntax ---------------------------
 :: print statement
-REM	command reference A-Z: https://technet.microsoft.com/en-us/library/bb490890.aspx
-rem get help on a command: ex. command /?
-
-
-rem general syntax ---------------------------
-rem print statement
 ECHO/	preferred print blank line methed
 ECHO.	alt print blank line
 ECHO	print
 
 
 :: commenting
-REM comment
-:: comment
-
-
-:: escape characters
-
-:: ignoring whitespace
-:: use quotes around entire command,
-::  or quotes around areas with whitespace
-:: alternatively, use command:
-:: to print a list of alternative dir names.  eg:
-rem commenting
 rem comment
 
 
-rem escape characters
+:: escape characters
 %%
 ^
 
-rem ignoring whitespace
-rem use quotes around entire command,
+:: ignoring whitespace
+:: use quotes around entire command,
 "C:\Program Files (x86)\WinRar\Rar.exe"
-rem  or quotes around areas with whitespace
+::  or quotes around areas with whitespace
 C:\"Program Files (x86)"\WinRar\Rar.exe
-rem alternatively, use command:
+:: alternatively, use command:
 dir /X ~1 c:\
-rem to print a list of alternative dir names.  eg:
+:: to print a list of alternative dir names.  eg:
 DEFAUL~1.XML Default Desktop Policy.xml
 PROGRA~1     Program Files 
 PROGRA~2     Program Files (x86)
@@ -70,37 +52,25 @@ GOTO
 go to :exit
 
 
-
-
-BREAK=ON	:: stop if the user presses < Ctrl >-< Break >
-BREAK=OFF	:: continue until done
-
-
-
-
-GOTO	rem go to :exit (spaces allowed but not other separators (semicolons,equal signs). Uses only the first eight characters)
-
 :exit
-CLS	#clears the screen
+CLS	 		rem clears the screen
 
 BREAK=ON	rem stop if the user presses < Ctrl >-< Break >
 BREAK=OFF	rem continue until done
 
 
-rem time -------------------------------------
 
-PAUSE				rem stop execution of the batch file until someone presses a key, then continue.
+PAUSE			rem stop execution of the batch file until someone presses a key, then continue.
 
-SLEEP				rem ex. SLEEP 10 (In seconds)
+SLEEP			rem ex. SLEEP 10 (In seconds)
 
 TIMEOUT			rem ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does press a key at any point, execution will resume immediately.
 
 
 
 
-rem operands ---------------------------------
 
-*multiply		rem ex. set /a sum1="num1 * num2"
+
 
 
 
@@ -108,18 +78,20 @@ rem operands ---------------------------------
 
 :: operands ---------------------------------
 
-*multiply		:: ex. set /a sum1="num1 * num2"
-rem strings ----------------------------------
-
-rem concatenate:
+*multiply		rem ex. set /a sum1="num1 * num2"
 
 
 
 
 
-rem strip chars (in this case '!')
 
-rem strip multiple chars (from 1.2.3.4 to 1,2,3,4) 
+
+
+
+
+
+
+
 
 
 
@@ -131,38 +103,24 @@ rem strip multiple chars (from 1.2.3.4 to 1,2,3,4)
 :: variable=value   not varible = value unless a whitespace before the value is intended
 
 :: assign variable:
-
-:: assign empty variable:
-
-:: prompt user assigned
-
-:: expression result as variable
-
-:: call variable:
-rem variables --------------------------------
-
-rem **the space before and after = is interpreted as part of the value.
-rem variable=value   not varible = value unless a whitespace before the value is intended
-
-rem assign variable:
 set "variable=.proj"
 
-rem assign empty variable:
+:: assign empty variable:
 set variable=
 
-rem prompt user assigned
+:: prompt user assigned
 set /p variable= Printed text prompt string
 
-rem expression result as variable
+:: expression result as variable
 set /a variable=expression 
 
-rem call variable:
+:: call variable:
 %variable%
 
 
 
 :: Windows environment variables:
-rem Windows environment variables:
+:: Windows environment variables:
 
 %userprofile%	=C:\Users\<username>
 %systemroot%	=C:WINDOWS
@@ -220,12 +178,10 @@ set string=%string:.=,%
 
 
 
+
 :: conditionals -----------------------------
 
 :: if statement:
-rem conditionals -----------------------------
-
-rem if statement:
 if %choice%==[%1]==[] goto start
 if /i %choice%==one goto one
 if /i %choice%==two goto two
@@ -245,7 +201,7 @@ if not exist %object% (
 
 
 
-directory navigation -------------------------
+:: directory navigation -------------------------
 
 :: change directory
 CD %dir%
@@ -270,16 +226,12 @@ echo %PATH_TWO_LEVELS_UP%
 
 
 
-:: external files ---------------------------
-
-:: check if file exists
 
 
-:: create and write single line to file:
+
 echo some text > file.txt
 
 
-:: write multiple lines to a file:
 echo line of text
 echo/
 echo another line
@@ -288,7 +240,6 @@ echo escape char(^)
 
 
 
-:: rename a file
 
 
 
@@ -300,35 +251,23 @@ mklink "%SYM%" "%DIR%\file.ini"
 
 
 
-:: zip a file
-
-:: using java:
-:: c = Creates a new archive file.
-:: M = Specifies that a manifest file should not be added to the archive.
-:: f = Indicates target file name.
-
-:: using powershell:
-:: compress
-:: expand
-:: from batch file
-
-:: convert to cab:
-:: to decompress
-:: example: Create a self extracting archive containing movie.mov:
 
 
 
-rem external files ---------------------------
 
-rem check if file exists
+
+
+:: external files ---------------------------
+
+:: check if file exists
 if exist file.txt
 
 
-rem create and write single line to file:
+:: create and write single line to file:
 echo import maya.standalone > file.txt
 
 
-rem write multiple lines to a file:
+:: write multiple lines to a file:
 set "tmp=file.txt"
 
 (
@@ -341,7 +280,7 @@ echo maya.standalone.uninitialize(^)
 
 
 
-rem rename a file
+:: rename a file
 
 
 
@@ -362,34 +301,37 @@ dir /al /s | findstr "<SYMLINKD>"
 
 
 
-rem zip a file
+:: zip a file
 compact /c /s:C:\Templates
 
-rem using java:
-rem c = Creates a new archive file.
-rem M = Specifies that a manifest file should not be added to the archive.
-rem f = Indicates target file name.
+:: using java:
+:: c = Creates a new archive file.
+:: M = Specifies that a manifest file should not be added to the archive.
+:: f = Indicates target file name.
 jar -cMf targetArchive.zip sourceDirectory
 
-rem using powershell:
-rem compress
+:: using powershell:
+:: compress
 Compress-Archive -Path C:\Test -DestinationPath C:\result
-rem expand
+:: expand
 Expand-Archive -Path result.zip -DestinationPath C:\Test
-rem from batch file
+:: from batch file
 powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('foo.zip', 'bar'); }"
 
-rem convert to cab:
+:: convert to cab:
 makecab <source> <dest>.cab
-rem to decompress
+:: to decompress
 expand <source>.cab <dest>
-rem example: Create a self extracting archive containing movie.mov:
+:: example: Create a self extracting archive containing movie.mov:
 C:\> makecab movie.mov "temp.cab"
 C:\> copy /b "%windir%\system32\extrac32.exe"+"temp.cab" "movie.exe"
 C:\> del /q /f "temp.cab"
 
+
 :: using 7zip:
+"C:\Program Files\7-Zip\7z.exe" a  -r myzip.zip -w foo -mem=AES256
 :: unzip to current directory ./
+"C:\Program Files\7-Zip\7z.exe" x  myzip.zip  -o./ -y -r
 
 :: using WinRar:
 :: 'a' command. Adds to the archive
@@ -401,34 +343,15 @@ C:\> del /q /f "temp.cab"
 :: '-idq' enable quiet mode to display only error messages
 :: '-ep1' exclude base directory from specified file/folder names
 :: '-y' assume Yes on all queries
+"%ProgramFiles%\WinRAR\Rar.exe" a -r -y -df "%dir%\%file%.rar" "%dir%\%file%"
 :: extract to current dir
 :: 'x' command. Extracts with full paths
 :: 'e' command. Extracts and ignores paths
+if exist "%dir%\%file%.rar" "%ProgramFiles%\WinRAR\Rar.exe" x -y "%dir%\%file%.rar"
 :: or to perform an operation on only certain files: 
 :: extracts *.gif files from yourfile.rar to c:\extractfolder\ -trailing backslash required:
-rem using 7zip:
-"C:\Program Files\7-Zip\7z.exe" a  -r myzip.zip -w foo -mem=AES256
-rem unzip to current directory ./
-"C:\Program Files\7-Zip\7z.exe" x  myzip.zip  -o./ -y -r
-
-rem using WinRar:
-rem 'a' command. Adds to the archive
-rem '-r'  switch. recursively archive/compress all files and subdirectories
-rem '-ep' switch. Adds files to the archive without including the path information. Multiple can exist in the archive with the same name.
-rem '-u' switch. Equivalent to the “u” command when combined with the “a” command. Adds new files and updates older versions of the files already in the archive'
-rem '-df' switch. Deletes files after they are moved to the archive
-rem '-x' switch. Excludes the specified files from the operation
-rem '-idq' enable quiet mode to display only error messages
-rem '-ep1' exclude base directory from specified file/folder names
-rem '-y' assume Yes on all queries
-"%ProgramFiles%\WinRAR\Rar.exe" a -r -y -df "%dir%\%file%.rar" "%dir%\%file%"
-rem extract to current dir
-rem 'x' command. Extracts with full paths
-rem 'e' command. Extracts and ignores paths
-if exist "%dir%\%file%.rar" "%ProgramFiles%\WinRAR\Rar.exe" x -y "%dir%\%file%.rar"
-rem or to perform an operation on only certain files: 
-rem extracts *.gif files from yourfile.rar to c:\extractfolder\ -trailing backslash required:
 "%ProgramFiles%\WinRAR\Rar.exe" x c:\yourfile.rar *.gif c:\extractfolder\
+
 
 
 
@@ -437,15 +360,10 @@ rem extracts *.gif files from yourfile.rar to c:\extractfolder\ -trailing backsl
 :: reg keys ---------------------------------
 
 :: delete key
-:: alt:
-:: to remove an entry, place a minus "-" after the = char
-rem reg keys ---------------------------------
-
-rem delete key
 reg delete "HKCU\Some\Registry\Path" /f
-rem alt:
+:: alt:
 [-HKEY_LOCAL_MACHINE\SOFTWARE\YourSoft\MyKey]
-rem to remove an entry, place a minus "-" after the = char
+:: to remove an entry, place a minus "-" after the = char
 [HKEY_LOCAL_MACHINE\SOFTWARE\YourSoft\MyKey]
 "MyEntry"=-
 

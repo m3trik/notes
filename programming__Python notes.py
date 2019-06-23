@@ -829,12 +829,16 @@ eg. string.capitalize() #'1Str ing' from '1str ing'
 eg. string.title() #'1Str Ing' from '1str ing'
 #all UPPER
 eg. "This is a string".upper() #"THIS IS A STRING"
+eg. 'string'.isupper() #
 #all lower
 eg. "THIS IS A STRING".lower() #"this is a string"
+eg. 'string'.islower()
 #swap case
 eg. string.swapcase()
 #specific chars
 eg. string[:4].upper()+string[2:] #effect only certain letters
+
+
 
 
 #convert string to type integer
@@ -2507,9 +2511,14 @@ eg. os.path.isfile() #returns a boolean value
 #import os.environ
 eg. home = os.environ['HOME']
 # using get will return `None` if a key is not present rather than raise a `KeyError`
-print(os.environ.get('KEY_THAT_MIGHT_EXIST'))
+
+os.putenv #changes the actual OS-level environment variables, but in a way that doesn't show up through os.getenv, os.environ, or any other stdlib way of inspecting environment variables
+#instead use:
+os.environ['KEY'] = 'NEW_KEY'
+os.environ['KEY'] #Returns: 'NEW_KEY'
+os.environ.get('KEY')
 # os.getenv is equivalent, and can also give a default value instead of `None`
-print(os.getenv('KEY_THAT_MIGHT_EXIST', default_value))
+os.getenv('KEY_THAT_MIGHT_EXIST', default_value)
 
 # get all environment variables:
 eg. allVar = os.environ

@@ -2,7 +2,7 @@
 -------------------------------------
 
 
---"GENERAL_SYNTAX:________________________________________________________________________"
+--"GENERAL_SYNTAX: //------------------------------------------------------"
 
 
 
@@ -10,7 +10,7 @@
 
 
 
-"COMMENTING:______________________________________________________________________________" 
+"COMMENTING: //------------------------------------------------------------" 
 
 -- single line 
 
@@ -20,7 +20,7 @@ lines
 */
 
 
-"VARIABLES:_______________________________________________________________________________"
+"VARIABLES: //-------------------------------------------------------------"
 
 mystring = "This is my string."
 
@@ -61,7 +61,7 @@ vector 					length of 		length of 		3 floats    perfect						perfect for
 								vector 				vector 				separated											[1][3] matrix,
 								without											by a space 										else none
 								fraction
-________________________________________________________________________________________
+------------------------------------------------------------------
 
 matrix					for [1][3] 		for [1][3]		none 				for [1][3] 				perfect
 								matrix or 		matrix or 								matrix or 
@@ -85,7 +85,7 @@ matrix					for [1][3] 		for [1][3]		none 				for [1][3] 				perfect
 
 
 
-"STRINGS:_________________________________________________________________________________"
+"STRINGS: //---------------------------------------------------------------"
 
 
 \"	--	double quote
@@ -279,7 +279,7 @@ free <string>	--Frees the memory used by the string value without waiting for ga
 
 
 
-"OPERATORS:_______________________________________________________________________________"
+"OPERATORS: //-------------------------------------------------------------"
 
 +
 -
@@ -300,13 +300,13 @@ random		ex. random 1.0 100 -- return value type (Float or Integer) is the same a
 
 
 
-"ITERATORS:_______________________________________________________________________________"
+"ITERATORS: //-------------------------------------------------------------"
 
 
 
 
 
-"COMPARATORS______________________________________________________________________________"
+"COMPARATORS //------------------------------------------------------------"
 
 == -- equal
 != -- not equal 
@@ -328,7 +328,7 @@ or
 
 
 
-"CONDITIONALS_&_LOOPS:____________________________________________________________________"
+"CONDITIONALS_&_LOOPS: //--------------------------------------------------"
 
 
 --	CONDITIONALS
@@ -412,7 +412,7 @@ case (superClass) of --in case of variable superClass == shape, light, or camera
 
 
 
-"PROCEDURES:______________________________________________________________________________"
+"PROCEDURES: //------------------------------------------------------------"
 -- functions
 
 -- syntax:
@@ -436,7 +436,7 @@ functionToCall keyword:arg1  keyword:arg2
 
 
 
-"ARRAYS/LISTS_&_DICTIONARYS____________________________________________________________________"
+"ARRAYS/LISTS_&_DICTIONARYS //---------------------------------------------"
 
 -- maxscript collection types
 -- https://help.autodesk.com/view/3DSMAX/2018/ENU/?guid=__files_GUID_DAABD302_FB6A_40BB_882A_888631488FB7_htm
@@ -698,7 +698,7 @@ ex. MaxPlus.Core.EvalMAXScript("fn bitArrayToArray b = (return b as Array)")
 
 
 
-"VECTORS:_________________________________________________________________________________"
+"VECTORS: //---------------------------------------------------------------"
 
 
 
@@ -706,7 +706,7 @@ ex. MaxPlus.Core.EvalMAXScript("fn bitArrayToArray b = (return b as Array)")
 
 
 
-"MATRICES:________________________________________________________________________________"
+"MATRICES: //--------------------------------------------------------------"
 
 
 
@@ -716,7 +716,7 @@ ex. MaxPlus.Core.EvalMAXScript("fn bitArrayToArray b = (return b as Array)")
 
 
 
-"TRANSFORM:_______________________________________________________________________________"
+"TRANSFORM: //-------------------------------------------------------------"
 
 
 
@@ -892,7 +892,7 @@ for obj in selection do instance $Downlight001 pos:obj.pos
 
 
 
-"CREATE:__________________________________________________________________________________"
+"CREATE: //----------------------------------------------------------------"
 
 
 
@@ -1078,7 +1078,7 @@ showEndResult
 
 
 
-"SELECTION:_______________________________________________________________________________"
+"SELECTION: //-------------------------------------------------------------"
 
 
 --select All
@@ -1250,7 +1250,7 @@ deselect $Dummy??
 
 
 
-"OBJECTS_&_ATTRIBUTES:____________________________________________________________________"
+"OBJECTS_&_ATTRIBUTES: //--------------------------------------------------"
 
 
 
@@ -1689,7 +1689,7 @@ delete $'car.wheel.*'
 
 
 
-"COMPONENTS:______________________________________________________________________________"
+"COMPONENTS: //------------------------------------------------------------"
 
 
 
@@ -1891,12 +1891,54 @@ ex. rt.polyop.deleteEdges(obj, faces, delIsoVerts=1) --Deletes the specified fac
 
 
 
+"TRANSFORM: //-------------------------------------------------------------"
 
 
 
 
 
-"NORMALS:_________________________________________________________________________________"
+"SYMMETRY: //--------------------------------------------------------------"
+
+
+
+--get symmetry state on object
+symmetry = obj.modifiers[rt.Symmetry] --returns None if no symmetry modifier present
+
+--get/set axis
+symmetry.axis --int. 0=X Axis, 1=Y Axis, 2=Z Axis
+
+symmetry.flip --bool. When set to true, uses the other half of the object as the source for symmetry.
+
+symmetry.slice --int. When set to 1, slices the source geometry along the mirror plane and deletes the one half.
+
+--weld seam
+symmetry.weld -- int. When set to 1, welds the vertices of the source and mirrored halves together.
+
+--welding threshold (animatable)
+symmetry.threshold Float default: 0.1 --float vertices closer than the threshold value will be welded.
+
+symmetry.mirror SubAnim=Mirror --transform; SubAnim. Controls the transformation of the Mirror gizmo
+
+--Mirror gizmo transforms (animatable)
+<symmetry.mirror>.position Point3 default: [0,0,0] --The position of the Mirror gizmo.
+<symmetry.mirror>.rotation Quat default: (quat 0 0 0 1) --The rotation of the Mirror gizmo.
+<symmetry.mirror>.scale Point3 default: [1,1,1] --The scale of the Mirror gizmo.
+<symmetry.mirror>.value Matrix3 default: (matrix3 [1,0,0] [0,1,0] [0,0,1] [0,0,0]) --The complete matrix3 transformation value of the Mirror gizmo.
+
+
+
+
+
+
+
+"RIGGING: //---------------------------------------------------------------"
+
+
+
+
+
+
+"NORMALS: //---------------------------------------------------------------"
 
 
 --get vertex normals
@@ -1940,7 +1982,7 @@ ex. rt.polyop.flipNormals(obj, <facelist>) --Flips the normal of the specified f
 
 
 
-"Materials:_______________________________________________________________________________"
+"Materials: //-------------------------------------------------------------"
 
 
 
@@ -2114,7 +2156,7 @@ ex. rt.rootScene[rt.name('SME')][rt.name('View1')][rt.name('door_handle____VRayM
 
 
 
-"Lighting:________________________________________________________________________________"
+"Lighting: //--------------------------------------------------------------"
 
 
 
@@ -2136,7 +2178,7 @@ for eachLight in lights where isProperty eachLight #intensity do eachLight.inten
 
 
 
-"SUBDIVISION:_____________________________________________________________________________"
+"SUBDIVISION: //-----------------------------------------------------------"
 
 
 --smooth by face
@@ -2158,7 +2200,7 @@ ex. rt.polyop.meshSmoothByVert(obj, <vertlist>) --Smooths the faces associated w
 
 
 
-"CLASSES:_________________________________________________________________________________"
+"CLASSES: //---------------------------------------------------------------"
 
 --determine class
 ex. rt.classOf(obj) 
@@ -2231,7 +2273,7 @@ Struct.functionTwo()
 
 
 
-"HIERARCHIES:______________________________________________________________________________"
+"HIERARCHIES: //-----------------------------------------------------------"
 
 
 
@@ -2254,7 +2296,7 @@ for obj in selection where isKindOf obj Helper AND obj.parent == undefined do pr
 
 
 
-"ANIMATION:________________________________________________________________________________"
+"ANIMATION: //-------------------------------------------------------------"
 
 
 animate on (at time 50f (move$ [0,0,5]))	--with AutoKey on, move object at frame 50
@@ -2299,7 +2341,7 @@ enableORTs <controller> <boolean>
 
 
 
-"Render:__________________________________________________________________________________"
+"Render: //----------------------------------------------------------------"
 
 max quick render 	--equivalent to pushing the 'render' button
 
@@ -2345,7 +2387,7 @@ renderers.current.gi_on = true
 
 
 
-"ENVIRONMENT:_____________________________________________________________________________"
+"ENVIRONMENT: //-----------------------------------------------------------"
 
 backgroundColor = color 0 0 0	--set environment background color
 
@@ -2462,7 +2504,7 @@ ex. rt.enableShowEndRes(True)
 
 
 
-"TIME_____________________________________________________________________________________"
+"TIME: //------------------------------------------------------------------"
 
 -- sleep
 --interrupt sleep with ESC key; halts execution. SPACE bar to halt sleep & continue executing
@@ -2508,7 +2550,7 @@ theTimer.start() --start the Timer
 
 
 
-"RANDOMIZE:_______________________________________________________________________________"
+"RANDOMIZE: //-------------------------------------------------------------"
 
 random
 
@@ -2531,7 +2573,7 @@ while selection.count > 50 do deselect selection[random 1 selection.count]
 
 
 
-"PYTHON:(in maxscript)____________________________________________________________________"
+"PYTHON(in maxscript): //--------------------------------------------------"
 
 
 --print list of available python methods to output window
@@ -2871,7 +2913,7 @@ pymxs.print_()
 
 
 
-"EXTERNAL_FILES:__________________________________________________________________________"
+"EXTERNAL_FILES: //--------------------------------------------------------"
 
 -- Returns the filename path of the source file the function has been called from.
 <filename>getSourceFileName() 
@@ -2881,7 +2923,7 @@ pymxs.print_()
 --fileIn will do the same as "run script" or evaluate all in the editor. 
 --It can make a function available if it's globally declared
 FileIn
-fullPath = "O:\\Cloud\\____Graphics\\3ds Max\\Scripts\\macros\\tk_macroScript.ms"
+fullPath = "O:\\Cloud\\__Graphics\\3ds Max\\Scripts\\macros\\tk_macroScript.ms"
 FileIn fullPath
 
 
@@ -2899,7 +2941,7 @@ Include
 
 
 -- full path. (may be neccesarry to initialize python python.Init() )
-fullPath = "%CLOUD%/____Graphics/3ds Max/Scripts/___Python_path/tk_setup.py"
+fullPath = "%CLOUD%/__Graphics/3ds Max/Scripts/___Python_path/tk_setup.py"
 python.ExecuteFile @fullPath
 
 
@@ -2968,7 +3010,7 @@ SetDir <filetype_name> <string> --Returns true if successful, false if not.
 
 
 
-"USER_INPUT:______________________________________________________________________________"
+"USER_INPUT: //------------------------------------------------------------"
 
 -- [hotkeys]
 
@@ -3096,7 +3138,7 @@ hApp.run hForm
 
 
 
-"SCRIPT_EDITOR:___________________________________________________________________________"
+"SCRIPT_EDITOR: //---------------------------------------------------------"
 
 --MAXScript Editor Properties File - Quick Navigation:
 --https://help.autodesk.com/view/3DSMAX/2018/ENU/?guid=__files_GUID_8588CAB1_7F4E_4A5E_9CD8_7F11F4DF9755_htm
@@ -3234,7 +3276,7 @@ nodeTransformMonitor=nodeTransformMonitor node:| forwardTransformChangeMsgs:fals
 
 
 
-"COMMAND LINE/BATCH_______________________________________________________________________"
+"COMMAND LINE/BATCH: //----------------------------------------------------"
 
 
 -- run python file FROM WINDOWS COMMAND LINE or batch file
@@ -3538,7 +3580,7 @@ nodeTransformMonitor=nodeTransformMonitor node:| forwardTransformChangeMsgs:fals
 
 
 
-"DOCUMENTATION:____________________________________________________________________________"
+"DOCUMENTATION: //---------------------------------------------------------"
 
 --finding the macro for a command:
 'customize user interface'> keyboard> Main UI/'All Commands'
@@ -3549,21 +3591,9 @@ nodeTransformMonitor=nodeTransformMonitor node:| forwardTransformChangeMsgs:fals
 
 
 
-"ERRORS:__________________________________________________________________________________"
+"ERRORS: //----------------------------------------------------------------"
 
 --[Error Handling]
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

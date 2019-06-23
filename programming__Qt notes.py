@@ -6,49 +6,6 @@ set#				|||||||||||||||||||||||||||||||||||||||||||
 
 
 
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #QPoint
 point.isNull() #Returns true if both the x and y coordinates are set to 0
 point.manhattanLength() #Returns the sum of the absolute values of QPoint.x() & QPoint.y()
@@ -852,7 +809,7 @@ button.setStyleSheet('''QPushButton {
 	QTreeWidget {border:none;} 
 	QTreeWidget::item {height: 20px;}
 	QTreeView {
-  }'''
+  }
 
 STYLESHEET = '''
 	    background-color: #ABABAB; /* sets background of the menu */
@@ -1425,6 +1382,53 @@ QLineEdit.setValidator(QtGui.QIntValidator(0, 100))
 ex.
 QLineEdit.setValidator(QtGui.QDoubleValidator(0, 100, 2))
 
+
+
+
+
+# QTextEdit
+
+
+
+#add text
+text = QString('string')
+#
+t.append('string') #append text as new line
+#
+t.insertHtml(text)
+#
+t.insertPlainText(text) #add text
+
+#clear text
+t.clear()
+
+t.copy()
+t.cut()
+t.paste()
+
+#get text color
+t.textColor()
+t.textBackgroundColor()
+
+#set text color
+t.setTextColor(color)
+t.setTextBackgroundColor(color)
+
+#change text color
+highlight = QtGui.QColor(128, 128, 0) #QtGui.QColor.yellow()
+baseColor = t.textColor()
+
+t.setTextColor(baseColor)
+t.append(key) #t.append(key+str(value))
+t.setTextColor(highlight)
+t.insertPlainText(str(value))
+
+
+#set font style
+t.fontItalic()
+t.fontPointSize()
+t.fontUnderline()
+t.fontWeight()
 
 
 

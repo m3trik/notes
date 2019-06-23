@@ -295,7 +295,7 @@ pm.xform (vertices, query=1, t=1, ws=1)
 
 
 
-undoInfo -openChunk;
+
 
 
 
@@ -1777,6 +1777,16 @@ pm.makeIdentity (obj, apply=1, t=1, r=1, s=1, n=0, pn=1)
 
 
 
+"SYMMETRY: //--------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//get symmetry state
+symmetry = pm.symmetricModelling(query=1, symmetry=1)
+
+//get current axis
+axis = pm.symmetricModelling(query=1, axis=1)
+
+
 
 
 
@@ -1788,6 +1798,9 @@ pm.makeIdentity (obj, apply=1, t=1, r=1, s=1, n=0, pn=1)
 //get all
 joints = pm.ls(type="joint")
 
+//check type
+pm.objectType(obj, isType='joint') //#Returns: bool
+
 //display size
 pm.jointDisplayScale(1.5) //#set global joint display size
 
@@ -1796,6 +1809,26 @@ pm.reroot() //#re-root joints
 
 //set orientation
 pm.joint(edit=1, orientJoint='xyz', zeroScaleOrient=1, ch=1) //#orient joints
+
+//connect
+pm.connectJoint(cm=1) //#connect joint
+
+//remove
+pm.removeJoint(obj) //#remove joints
+
+
+
+
+
+
+
+"NORMALS:_________________________________________________________________________________"
+
+
+
+
+
+
 
 
 
@@ -1806,7 +1839,6 @@ pm.joint(edit=1, orientJoint='xyz', zeroScaleOrient=1, ch=1) //#orient joints
 
 
 "MATERIALS: //-------------------------------------------------------------------------------------------------------------------------------------------"
-
 
 
 
@@ -2075,13 +2107,18 @@ MayaObjectError		//both exceptions can be caught using 'MayaObjectError'
 "UNDO: //------------------------------------------------------------------------------------------------------------------------------------------------"
 
 
+
+
 //
 undoInfo -openChunk;
-// pm.undoInfo (openChunk=1)
+pm.undoInfo (openChunk=1)
 
 // operation
 undoInfo -closeChunk;
-// pm.undoInfo (closeChunk=1)
+pm.undoInfo (closeChunk=1)
+
+
+
 
 
 
@@ -2094,8 +2131,16 @@ undoInfo -closeChunk;
 
 
 
-getenv	//get windows environment variable
+
+
+//set environment variable
+eg. putenv "MYHOME"  `getenv "HOME"`; // Result: 0 //
+//get environment variable
+eg. $s=`getenv "MYHOME"`; // Result: /u/userName //
+eg. getenv	//get windows environment variable
 				eg. $s=`getenv "PATH"`;
+
+
 
 
 //get maya environment variable values:
