@@ -1,6 +1,4 @@
-﻿<<<<<<< HEAD
 ﻿@ECHO OFF
-@ECHO OFF
 EXIT
 
 
@@ -263,6 +261,20 @@ mklink "%SYM%" "%DIR%\file.ini"
 if exist file.txt
 
 
+:: create a file
+::0 byte file. very clear, backward-compatible.
+type nul >EmptyFile.txt
+::0 byte file. backward-compatible-looking
+REM. >EmptyFile.txt
+::0 byte file. backward-compatible-looking
+echo. 2>EmptyFile.txt
+::0 byte file the systematic way. probably available since Windows 2000.
+fsutil file createnew EmptyFile.txt
+::0 bytes file. overwriting readonly files
+ATTRIB -R filename.ext>NUL
+(CD.>filename.ext)2>NUL
+
+
 :: create and write single line to file:
 echo import maya.standalone > file.txt
 
@@ -283,6 +295,9 @@ echo maya.standalone.uninitialize(^)
 :: rename a file
 
 
+
+:: create a directory 
+mkdir %fullPath%
 
 
 :: directory junctions and symbolic links
@@ -375,11 +390,11 @@ reg delete "HKCU\Some\Registry\Path" /f
 
 :: time -------------------------------------
 
-PAUSE				:: stop execution of the batch file until someone presses a key, then continue.
+PAUSE		rem stop execution of the batch file until someone presses a key, then continue.
 
-SLEEP				:: ex. SLEEP 10 (In seconds)
+SLEEP		rem ex. SLEEP 10 (In seconds)
 
-TIMEOUT			:: ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does press a key at any point, execution will resume immediately.
+TIMEOUT		rem ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does press a key at any point, execution will resume immediately.
 
 
 

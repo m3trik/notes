@@ -1907,8 +1907,10 @@ symmetry = obj.modifiers[rt.Symmetry] --returns None if no symmetry modifier pre
 --get/set axis
 symmetry.axis --int. 0=X Axis, 1=Y Axis, 2=Z Axis
 
+--flip source axis
 symmetry.flip --bool. When set to true, uses the other half of the object as the source for symmetry.
 
+--delete/slice opposing axis
 symmetry.slice --int. When set to 1, slices the source geometry along the mirror plane and deletes the one half.
 
 --weld seam
@@ -1917,13 +1919,12 @@ symmetry.weld -- int. When set to 1, welds the vertices of the source and mirror
 --welding threshold (animatable)
 symmetry.threshold Float default: 0.1 --float vertices closer than the threshold value will be welded.
 
-symmetry.mirror SubAnim=Mirror --transform; SubAnim. Controls the transformation of the Mirror gizmo
-
 --Mirror gizmo transforms (animatable)
-<symmetry.mirror>.position Point3 default: [0,0,0] --The position of the Mirror gizmo.
-<symmetry.mirror>.rotation Quat default: (quat 0 0 0 1) --The rotation of the Mirror gizmo.
-<symmetry.mirror>.scale Point3 default: [1,1,1] --The scale of the Mirror gizmo.
-<symmetry.mirror>.value Matrix3 default: (matrix3 [1,0,0] [0,1,0] [0,0,1] [0,0,0]) --The complete matrix3 transformation value of the Mirror gizmo.
+m = symmetry.mirror(SubAnim=Mirror) --transform; SubAnim. Controls the transformation of the Mirror gizmo
+m.position(rt.Point3([0,0,0])) --Point3. The position of the Mirror gizmo.
+m.rotation(rt.Quat([0,0,0,1])) --Quat. The rotation of the Mirror gizmo.
+m.scale(rt.Point3([1,1,1])) --Point3. The scale of the Mirror gizmo.
+m.value(rt.Matrix3([1,0,0] [0,1,0] [0,0,1] [0,0,0])) --Matrix3. The complete matrix3 transformation value of the Mirror gizmo.
 
 
 
