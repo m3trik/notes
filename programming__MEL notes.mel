@@ -1322,25 +1322,15 @@ ex. selection = pm.ls(selection=1, flatten=1)
 ls -selection;
 $currentSelection = `ls -selection -showType`; //showType flag is optional
 
+//select all geometry
+cmds.SelectAllGeometry()
+[pm.select (geometry, add=1) for geometry in scene]
+
 //with listRelatives -p you can find the object *precisely*
 ls -selection -objectsOnly;
 //pymel
 shapeName = pm.ls(selection=1, objectsOnly=1)
 
-//get only visible dag nodes. -dagObjects for all in scene.
-ls -visible;
-
-//get all objects of the specified type.
-$objectType = `ls -type "";
-
-//get all geometry
-geometry = pm.ls(geometry=True)
-transforms = pm.listRelatives(geometry, p=True, path=True)
-//select all geometry
-cmds.SelectAllGeometry()
-[pm.select (geometry, add=1) for geometry in scene]
-// geometry shapes and their types
-ls -type geometryShape -showType;
 
 //track selection order of components
 selectPref -trackSelectionOrder true;
@@ -1350,6 +1340,33 @@ $lastSelected = ls -selection -tail 1;
 
 //get all nodes below the selected node
 ls -dag -ap -sl;
+
+
+
+
+//object types
+pm.ls(nodeTypes=1) //#list all node types
+
+//query object type
+pm.objectType('sphere1Shape')
+//
+pm.objectType('sphere1Shape', isType='nurbsSurface') //# Result: 1
+//get all objects of the specified type.
+$objectType = `ls -type "";
+
+
+//get all geometry
+geometry = pm.ls(geometry=1)
+geometry = pm.ls(type='mesh')
+transforms = pm.listRelatives(geometry, p=1, path=1)
+
+// geometry shapes and their types
+ls -type geometryShape -showType;
+
+
+//get only visible dag nodes. -dagObjects for all in scene.
+ls -visible;
+
 
 
 
@@ -1531,14 +1548,36 @@ obj.getParent()
 
 "Components: //------------------------------------------------------------------------------------------------------------------------------------------"
 
-polyEvaluate -vertex $obj;
-						 -vertexComponent //selected vertices as int
-						 -edge
-						 -edgeComponent //selected edges as int
-						 -face
-						 -faceComponent //selected faces as int
-						 -area //returns surface area of of selected object as float
-						 -uvComponent //selected UV faces as int
+
+
+// select all vertices of given object
+ex. pm.select('pCube1.f[*]')
+//select inverse
+ex. pm.select("myobject.f[*]", tgl=True)
+
+
+//Use polyEvaluate -v to get the number of vertices. Then use the select command to select them
+ex. $currentSelection = `ls -selection -showType`;
+
+if (size($currentSelection) < 1) 
+{
+	print "// Warning: No object selected. Must select an object or component";
+}
+
+if (size($currentSelection) >= 1)
+{
+	for ($object in $currentSelection)
+	{
+		int $count[] = `polyEvaluate -vertex $object`;
+		$vertices = $object + ".vtx [0:" + ($count[0] - 1) + "]";
+		select -replace $vertices;
+	}
+}
+
+//alternative method
+select -r ($myObj + ".vtx ");
+
+
 
 
 //component selection mode/type:
@@ -1563,49 +1602,47 @@ polySphereShape.f[*]
 
 
 // get component
-//get all faces (or anything polyevaluate querys)
-faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] #create a list of all faces per shell
+//get all faces from object
+faces = pm.filterExpand(obj+'.f[*]', sm=34)
+//verts
+verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
+//alt:
+int $vertcount = polyEvaluate -vertex $object; 
+string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]" );
+//edges
+edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
+
+//alt (get anything polyevaluate querys)
+faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
+
+
+//get vertices of an object within given range
+ex. obj.vtx[0:1135];
+
 
 //get number of faces
 numFaces = pm.polyEvaluate(duplicatedObject, face=1)
 
+polyEvaluate -vertex $obj;
+			 -vertexComponent //selected vertices as int
+			 -edge
+			 -edgeComponent //selected edges as int
+			 -face
+			 -faceComponent //selected faces as int
+			 -area //returns surface area of of selected object as float
+			 -uvComponent //selected UV faces as int
+
+
+
+
+
+
 //get adjacent faces
-selFaces = pm.filterExpand (sm=34)
+selFaces = pm.filterExpand(sm=34)
 adjEdges = pm.polyListComponentConversion (selFaces, ff=1, te=1) #face to edge
 adjFaces = pm.polyListComponentConversion (adjFaces, fe=1, tf=1) #edges to faces
 //remove orig selected face:
 adjFaces.remove(face)
-
-//get all vertices
-int $vertcount = polyEvaluate -vertex $object; 
-string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]" );
-
-// select vertices of an object within given range
-ex.
-select -r geometry.vtx[0:1135];
-
-// select all vertices of currently selected object
-//Use polyEvaluate -v to get the number of vertices. Then use the select command to select them
-ex.
-$currentSelection = `ls -selection -showType`;
-
-if (size($currentSelection) < 1) 
-{
-	print "// Warning: No object selected. Must select an object or component";
-}
-
-if (size($currentSelection) >= 1)
-{
-	for ($object in $currentSelection)
-	{
-		int $count[] = `polyEvaluate -vertex $object`;
-		$vertices = $object + ".vtx [0:" + ($count[0] - 1) + "]";
-		select -replace $vertices;
-	}
-}
-
-//alternative method
-select -r ($myObj + ".vtx ");
 
 
 
@@ -1619,7 +1656,7 @@ ConvertSelectionToVertices;
 PolySelectConvert 3; //3=verts, 2=edges, 1=faces
 
 // get vertices without changing selection in the viewport:
-vertices = pm.ls (pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
+vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
 points = []
 for vertex in vertices:
 	point = pm.pointPosition (vertex)
@@ -1641,7 +1678,7 @@ for vertex in vertices.split():
 //pymel
 import math
 
-selection = pm.ls (selection=True, flatten=True)
+selection = pm.ls(selection=1, flatten=1)
 edgeLengths = []
 for edge in selection:
 	p = pm.xform (edge, query=True, t=True, worldSpace=True)
