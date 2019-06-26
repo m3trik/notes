@@ -155,10 +155,9 @@ self.ui.button.clicked.connect(self.methodToConnectTo)
 
 .released #bool #QPushButton.released()
 
-.toggled #bool #QPushButton.toggled()
+w.toggled() #bool. query pushbutton toggle state.
 
-
-	
+w.toggle() #Toggles the state of a checkable button.
 
 
 
@@ -371,8 +370,8 @@ w.mapToParent(point)
 #check if cursor is inside widget
 w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos()))
 
-
-
+#
+w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
 
 
 
@@ -641,12 +640,6 @@ timer.start()
 
 
 
-
-widgets = (layout.itemAt(i).widget() for i in range(layout.count())) 
-
-	    print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
-
-self.ui.findChildren(QtWidgets.QPushButton) #pass a type (or tuple of types) as the first argument, and an optional string as the second argument (for matching the objectName).
 
 
 
@@ -1002,9 +995,10 @@ self.ui.lower()
 #	Focus
 QWidget.setFocusPolicy() Keyboard Focus #self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
-self.clearFocus()
-self.setFocus()
-
+w.clearFocus()
+w.hasFocus()
+w.setFocus()
+w.clearFocus()
 
 
 #shedule refresh 
@@ -2259,31 +2253,33 @@ tb.show()
 
 # sorting through the ui
 #put the widgets into a generator. identify widget types so they can be handled accordingly
-ex.
-QObject.findChildren()
+ex. QObject.findChildren()
 
-ex.
-widgets = (layout.itemAt(i).widget() for i in range(layout.count())) 
-for w in widgets:
-	if isinstance(widget, QLineEdit):
-	    print "linedit: %s  - %s" %(widget.objectName(),widget.text())
-	    print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
+ex. widgets = (layout.itemAt(i).widget() for i in range(layout.count()))
+	for w in widgets:
+		if isinstance(widget, QLineEdit):
+			print "linedit: %s  - %s" %(widget.objectName(),widget.text())
+			print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
 #alt
-ex.
-for widget in centralwidget.children():
-	if isinstance(widget, QLineEdit):
-	    print "linedit: %s  - %s" %(widget.objectName(),widget.text())
+ex.	for widget in centralwidget.children():
+		if isinstance(widget, QLineEdit):
+			print "linedit: %s  - %s" %(widget.objectName(),widget.text())
 
-	if isinstance(widget, QCheckBox):
-	    print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
+		if isinstance(widget, QCheckBox):
+			print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
 
-ex.
-self.ui.findChildren(QtWidgets.QPushButton) #pass a type (or tuple of types) as the first argument, and an optional string as the second argument (for matching the objectName).
+ex. self.ui.findChildren(QtWidgets.QPushButton) #pass a type (or tuple of types) as the first argument, and an optional string as the second argument (for matching the objectName).
 
 
 layout.count()
 layout.rowCount()
 layout.columnCount()
+
+
+
+
+	    
+
 
 
 

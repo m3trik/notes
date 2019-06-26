@@ -168,25 +168,46 @@ time: 0.0816165578988
 # THINGS TO DO NOW:
 # -----------------------------------------------
 
-#AddAttribute;
-dynAddAttrWin( {} );
 
-#RenameAttribute;
-dynRenameAttrWin( {} );
+# measure geometry tool
 
-#SetDrivenKeyOptions;
-setDrivenKeyWindow "" {};
+# scale selected tool (using null object and checking heirarchy)
 
-#ConnectionEditor;
-optionVar -iv "connectWindowActive" 1
 
-#orient joint to world
-pm.joint(edit=1, orientJoint='none', zso=1, ch=0)
+units = ['millimeter','centimeter','meter','kilometer','inch','foot','yard','mile']
+pm.currentUnit(linear='m') #millimeter | centimeter | meter | kilometer | inch | foot | yard | mile
+time = ['game: 15 fps','film: 24 fps','pal: 25 fps','ntsc: 30 fps','show: 48 fps','palf: 50 fps','ntscf: 60 fps']
+pm.currentUnit(time='film') #game | film | pal | ntsc | show | palf | ntscf
+# layout not recentering after layout change
+
+# init heads up display contents not current. require refresh
+# explore use of orderedDict module for init contents
+
+# treeview> construct folder heirarchy and parent objects
+null = pm.group(empty=1, name='')
+pm.group(empty=1, parent=null, name='')
+pm.parent('joint_root_0', 'Joints')
+
+
+
+#freeze joint transforms
+pm.makeIdentity('joint11', apply=1, translate=1, rotate=1, scale=1, jointOrient=1)
+
+
+mel.eval('AddAttribute;')
+#dynAddAttrWin( {} );
+
+mel.eval('RenameAttribute;')
+#dynRenameAttrWin( {} );
+
+
+
+
+#fix create> circle>  attributes
 
 
 
 #scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
-
 
 
 

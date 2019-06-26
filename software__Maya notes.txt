@@ -1,86 +1,7 @@
+- Maya notes --------------------------------------------
 
 
 
-
-              				
-
-	 
-     
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-
-	 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.......:notes:::.:.:............................................................................
-____________________MAYA________________________________________________________________________
 
 
 
@@ -185,8 +106,13 @@ in outliner.  create empty group.   4.ctrl select the new group & the curves fro
 
 
 
-___brush tool
-holding b and left-click dragging changes brush size
+__cameras
+
+adjust viewport clipping planes
+cameraShape> properties>
+	near clipping plane
+	far clipping plane
+	object display> loctor scale (scale camera locator icon in viewport)
 
 
 
@@ -223,6 +149,35 @@ show selected object in outliner-	right click in outliner window> reveal selecte
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+___tools
+
+
+brush tool
+holding b and left-click dragging changes brush size
+
+
+
+
+
+
+___plug-ins
 mental ray 
 plug-in   mayatomr.mll
 

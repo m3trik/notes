@@ -3,6 +3,8 @@
 
 
 
+
+
 #escape sequences
 #\        ignore or continuation
 #\n       new line
@@ -10,39 +12,6 @@
 
 #multiple commands on a single line:
 eg. expression;expression;expression; #does not work with anything requiring an indented block
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#global to current module
 
 
 
@@ -628,8 +597,15 @@ eg. del x
 ""        #single line.
 """ """   #multi-line.
 
-r"string" #raw string. raw strings don't escape anything.
-u"string" #unicode string.
+
+#raw string. raw strings don't escape anything.
+r"string"
+#unicode
+u"string"
+#convert unicode:
+u'string'.encode('utf-8')
+
+
 
 #get length of a string.           
 eg. len("string") #'6'
@@ -1385,9 +1361,16 @@ dict_ = dict(zip(list_, range(x, len(list_)+x)))
 eg. dict_ = {key: value for key in range(5)}
 
 
-# Assign Key/Value pair
+
+
+#set Key:Value pair
 #d['key'] = 'value'
 eg.	myDict['key'] = 'value' #dict_name[new_key] = new_value
+
+#using setdefault
+dict_.setdefault('key', 'value') #returns 'value' and modifies dict_ with new key value pair.
+#create key:list value and append
+dict_.setdefault('key', []).append('value')
 
 
 
@@ -1431,6 +1414,8 @@ if key not in dict_:
 # has_key (returns: bool)  removed in python 3 and half as fast as using 'if in' statement 
 dict_ = {"1":"one","2":"two"}
 dict_.has_key("1")
+
+
 
 
 
