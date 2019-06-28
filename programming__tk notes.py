@@ -174,10 +174,7 @@ time: 0.0816165578988
 # scale selected tool (using null object and checking heirarchy)
 
 
-units = ['millimeter','centimeter','meter','kilometer','inch','foot','yard','mile']
-pm.currentUnit(linear='m') #millimeter | centimeter | meter | kilometer | inch | foot | yard | mile
-time = ['game: 15 fps','film: 24 fps','pal: 25 fps','ntsc: 30 fps','show: 48 fps','palf: 50 fps','ntscf: 60 fps']
-pm.currentUnit(time='film') #game | film | pal | ntsc | show | palf | ntscf
+
 # layout not recentering after layout change
 
 # init heads up display contents not current. require refresh

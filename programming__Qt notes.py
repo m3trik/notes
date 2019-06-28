@@ -135,48 +135,6 @@ act = QtGui.QAction("Action", self)
 
 
 
-
-
-
-
-
-
-
-
-
-.pressed #bool #QPushButton.pressed()
-
-
-btn.click() #emits clicked signal
-
-.clicked #bool #QPushButton.clicked()
-self.ui.button.clicked.connect(self.methodToConnectTo)
-
-
-.released #bool #QPushButton.released()
-
-w.toggled() #bool. query pushbutton toggle state.
-
-w.toggle() #Toggles the state of a checkable button.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Retrieves buttons’ caption or textfield value
 
 
@@ -188,44 +146,6 @@ w.toggle() #Toggles the state of a checkable button.
 
 
 
-#get list contents:
-#set contents
-cmb.addItem(string, userData=None) #string/data
-cmb.addItems(list_) #string/data
-cmb.insertItem(index, string, userData=None) #at index
-cmb.insertItems(index, list_)
-cmb.setItemData(index, value) #data
-#get contents
-cmb.findText(text) #using string
-#get index
-cmb.currentText() #current text
-#set index
-cmb.setCurrentIndex(0)
-cmb.itemText(index) #text using index
-cmb.itemData(index) #data
-cmb.findData(data) #data
-# remove
-cmb.removeItem (index)
-
-#edit line
-cmb.lineEdit(): #Returns the line edit used to edit items in the combobox, or 0 if there is no line edit.
-cmb.setLineEdit(edit) #Sets the line edit to use instead of the current line edit widget.
-
-#block signals
-
-#separator
-cmb.insertSeparator(index)
-
-#expand/collapse
-cmb.hidePopup()
-cmb.showPopup()
-
-#remove contents
-cmb.clear()
-
-
-
-QComboBox.itemText(index) #Returns the text for the given index in the combobox.
 
 
 
@@ -245,7 +165,8 @@ QComboBox.itemText(index) #Returns the text for the given index in the combobox.
 
 
 
-box = QtGui.QMessageBox()
+
+
 
 
 
@@ -1133,7 +1054,24 @@ b4.clicked.connect(lambda:self.whichbtn(self.b4))
 .toggle #QPushButton.toggle()
 # Toggles between checkable states
 self.b1.toggle()
-	
+
+
+.pressed #bool #QPushButton.pressed()
+
+
+btn.click() #emits clicked signal
+
+.clicked #bool #QPushButton.clicked()
+self.ui.button.clicked.connect(self.methodToConnectTo)
+
+
+.released #bool #QPushButton.released()
+
+w.toggled() #bool. query pushbutton toggle state.
+
+w.toggle() #Toggles the state of a checkable button.
+
+
 
 
 # QCheckBox
@@ -1196,23 +1134,63 @@ cmb.setItemIcon(index, QtGui.QIcon(pixmap))
 
 
 #QSpinBox. for a double value use QDoubleSpinBox
-.setMinimum(-5) #Sets the lower bound of counter
-.setMaximum(5) #Sets the upper bound of counter
-.setRange(0,10) #Sets the minimum, maximum and step value
-.setWrapping(s) #Set whether spin box is circular. Both bounds must be set for this to have an effect.
-.singleStep() #gets the step value of counter
-.setSingleStep(1) #Sets the step value.
-.setValue(2) #set value
-.value() #Get the current value
-.cleanText() #get the current value excluding any prefix or suffix
-.setPrefix("") #Set a string prefix.
-.setSuffix("") #Set the string suffix appended to the spinbox text.
-.text() #gets prefix/suffix string value
+s.setMinimum(-5) #Sets the lower bound of counter
+s.setMaximum(5) #Sets the upper bound of counter
+s.setRange(0,10) #Sets the minimum, maximum and step value
+s.setWrapping(s) #Set whether spin box is circular. Both bounds must be set for this to have an effect.
+s.singleStep() #gets the step value of counter
+s.setSingleStep(1) #Sets the step value.
+s.setValue(2) #set value
+s.value() #Get the current value
+s.cleanText() #get the current value excluding any prefix or suffix
+s.setPrefix("") #Set a string prefix.
+s.setSuffix("") #Set the string suffix appended to the spinbox text.
+s.text() #gets prefix/suffix string value
 
 self.ui.spinbox.valueChanged.connect(self.b000)
 
 
+
+
 #QComboBox
+#get list contents:
+#set contents
+cmb.addItem(string, userData=None) #string/data
+cmb.addItems(list_) #string/data
+cmb.insertItem(index, string, userData=None) #at index
+cmb.insertItems(index, list_)
+cmb.setItemData(index, value) #data
+#get contents
+cmb.findText(text) #get index using string
+cmb.itemText(index) #get string using index
+cmb.itemData(index) #data
+cmb.findData(data) #data
+#set index
+cmb.setCurrentIndex(0)
+#get index
+cmb.currentText() #get current text
+
+
+# remove
+cmb.removeItem (index)
+
+#edit line
+cmb.lineEdit(): #Returns the line edit used to edit items in the combobox, or 0 if there is no line edit.
+cmb.setLineEdit(edit) #Sets the line edit to use instead of the current line edit widget.
+
+#block signals
+
+#separator
+cmb.insertSeparator(index)
+
+#expand/collapse
+cmb.hidePopup()
+cmb.showPopup()
+
+#remove contents
+cmb.clear()
+
+
 # get list contents:
 list_ = [cmb.itemText(i) for i in range(cmb.count())]
 components = pm.ls (selection=1, flatten=1)
@@ -1242,6 +1220,51 @@ def eventFilter(self,target,event):
 	if target == self.combo and event.type() == QtCore.QEvent.MouseButtonPress:
 		print "Button press"
 		self.b034()
+
+
+#get/set data
+combo_box = QtGui.QComboBox()
+combo_box.addItem( 'description', my_data ) # set description, set data
+print combo_box.currentText() # get description
+print combo_box.itemData( combo_box.currentIndex() ) # get data
+
+
+
+
+
+
+# QTableWidget
+#get/set data
+table_widget = QTableWidget()
+table_widget.setRowCount(1) # add one row
+item = QtGui.QTableWidgetItem()
+item.setText( 'description') # set description
+item.setData( QtCore.Qt.UserRole, my_data ) # set data
+table_widget.setItem( 0, 0, item ) # add item to table on row 0, colum 0
+current_row = table_widget.currentRow() # selected row
+item = table_widget.item( 0, 0 )
+print item.text() # get description
+print item.data( QtCore.Qt.UserRole ) # get data
+
+
+
+
+
+
+# QTreeWidget
+#get/set data
+tree_widget = QtGui.QTreeWidget()
+item = QtGui.QTreeWidgetItem( tree_widget, ['description'] ) # set description
+item.setData(1, QtCore.Qt.EditRole, my_data) # set data
+item.setData(2, QtCore.Qt.EditRole, my_data) # set data
+item.setData(3, QtCore.Qt.EditRole, my_data) # set data
+print item.text(0) # get description
+print item.text(1) # get data
+print item.text(2) # get data
+print item.text(3) # get data
+
+
+
 
 
 # QListWidget
@@ -1275,6 +1298,7 @@ for f in files:
 
 
 # QMessageBox
+box = QtGui.QMessageBox()
 ex.
 msgBox = QtWidgets.QMessageBox()
         msgBox.setText('message')
