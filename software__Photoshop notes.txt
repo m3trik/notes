@@ -38,12 +38,27 @@ ability to save selections:
 Select >Save Selection
 
 
+
+
+
+
+
+
+
+
 ___MASKING
 
 quick mask:
 You need to click on the icon at the bottom of the toolbar to enter Quick Mask mode or press Q
 
- 
+
+
+
+
+
+
+
+
 
 ___DUPLICATING
 Duplicate via Step & Repeat:     process of duplicating an object and spacing
@@ -59,6 +74,27 @@ shft + up/down arrow    rotate by 1 degree segments
 healing brush tool uses same reference source as clone stamp. 
 
 
+
+
+
+
+
+
+
+___DEFINE CUSTOM SHAPE
+use the pen tool to create a path. then click on the path layer.
+edit> define custom shape (or right click inside work path> define custom shape)
+(if define custom shape is greyed out. click the work path (in paths tab by layers))
+
+
+
+
+
+
+
+
+
+
 ___ADJUSTMENT LAYERS
 
 clip adjustment layer to an existing layer (effects only that layer)
@@ -67,6 +103,11 @@ clip adjustment layer to an existing layer (effects only that layer)
 presets can be a good starting point
 double click name to reset adjustment ex.hue,saturation
 you can select color and mouse drag to change values on the fly 
+
+
+
+
+
 
 
 
@@ -81,8 +122,19 @@ resample up then sharpen
 
 
 
+
+
+
+
+
+
 ___STROKE
 fx icon at bottom of layers panel> stroke
+
+
+
+
+
 
 
 
@@ -103,6 +155,10 @@ perspective adjustment options:       (keywords: adjust perspective, correct per
 
 
 
+								   
+								   
+								   
+								   
 
 ___IMPORT/EXPORT
 
@@ -110,290 +166,5 @@ as vector:
 	single element:
 	right click on selection> Export as> svg
 	
-
-
-
-								   
-								   
-
-
-
-
-								   
-								   
-HOTKEYS: _________________________________________________
-
-tab               show/hide both tools pallet and panels (mouse over reveal)
-shft + tab        hide only panels (tool pallet remains visible)
-minimize panel    double click panel title bar (single click reveal)
-temp tool         holding tool shortcut allows use without permanent switching
-assign hotkey     Edit > Keyboard Shortcuts
-
-context menus_
-rt mouse click    right click anywhere on background to change background color
-
-edit shortcuts    edit>keyboard shortcuts
-
-background eraser tool
-selection + alt              duplicate the selected area inside of the same layer
-
-content aware transform
-edit>content-aware scale     adjust aspect ratio with less image distortion
-
-most commonly used shortcuts:
-
-ctrl + T     free transform
-ctrl + L     levels adjustment
-ctrl + D     de-select
-ctrl +/-     zoom in/out
-hold space   area selection     
-hold alt     to duplicate object/layer
-ctrl+shft u  greyscale layer
-enter        close selection
-q            quickmask
-
-z + marquee  zoom selected area
-ctrl + 0     fit to screen
-f            minimal mode
-tab          toggle menus in minimal mode
-tools:
-v            move tool
-h            hand
-r            rotate canvas
-b            brush
-
-
-___save
-shft+ctrl+s = 'save as'
-								   
-								   
-
-
-all shortcuts:
-
-
-Mac: Command = Windows: Ctrl
-Mac: Option = Windows: Alt
-Mac: Delete = Windows: Backspace
-Mac: Control = Windows: Right-Click
-
-Must-Know Keyboard Shortcuts!
-
-The following are 22 of my most commonly used Photoshop Keyboard shortcuts. These are simple commands that are pretty easy to pull off, and they will certainly speed up your productivity and workflow.
-
-Save As:      ctrl Shift S
-Save for Web: ctrl Shift Option S
-Undo:         ctrl Z
-Step Back:    ctrl Option Z
-Duplicate:    ctrl J
-Duplicate all visible Layers: ctrl Shift Option E
-Hide Extras:  ctrl H
-Full-screen:  F
-Default Colors: D (black and white)
-Flip Foreground & Background colors: X
-Hand tool while in another tool: Hold Spacebar
-Fill with Background color: Command Delete
-Fill with Foreground color: Option Delete
-Open Fill dialog box: Shift Delete
-Restore Last Selection: Shift ctrl D
-Move tool while in painting tool: hold ctrl
-Cross-Hair Cursor on any painting tool: Caps Lock
-Lock transparent pixels: / (back slash)
-Commit edits when typing: ctrl Return
-Number Pad Keyboard Shortcuts!
-
-Although the number pad pictured to the right is from a Mac Keyboard, all of the Photoshop keyboard shortcuts will work for Windows as well.
-Layer Opacity & Tool Opacity:
-10% : 1 20% : 2 30% : 3
-40% : 4 50% : 5 60% : 6
-70% : 7 80% : 8 90% : 9
-100% : 0
-Do a combination of keys for a specific percentage. (i.e. 1 and 2 for 12% opacity)
-Flow: Shift (and same as above)
-Fit To Screen: ctrl 0
-Actual Pixels (100%): ctrl 1Load Channel as a selection: Option ctrl 3 (red), 4 (green), 5 (blue)
-Keyboard Number Pad
-Arrow & “Other Keys” Keyboard Shortcuts!
-
-The Arrow & the “other” keys are found in between the “typewriter” keys and the numeric keypad. These Photoshop keyboard shortcuts are used mostly for moving objects, or moving the screen to a different point.
-
-When the Move tool is active press any of the arrow keys to move 1 pixel in that direction. Hold Shift to move 10 pixels at a time.
-
-If the Move tool is not active hold ctrl and then tap on the arrow keys,and hold shift to move 10 pixels at a time.
-
-Move duplicate of selection 1 px:  ctrl Option (any of the 4 arrow keys)
-Move duplicate of selection 10 px: ctrl Option Shift (any of the 4 arrow keys)
-
-Arrow and "Other Keys" Shortcut“Other” Keys:
-
-Move view to upper-left corner: Home
-Move view to lower-right corner: End
-Scroll up 1 Screen: Page Up
-Scroll down 1 screen: Page Down
-Scroll left 1 screen: ctrl Page Up
-Scroll right 1 screen: ctrl Page Down
-(Hold Shift in any of the four above to move by 10 units)
-
-Painting Keyboard Shortcuts!
-
-The Painting Photoshop keyboard shortcuts work with any painting or brush tools.
-
-Fill with background color: ctrl Delete
-(Shift ctrl Delete to fill only opaque pixels)
-Fill with foreground color: Option Backspace
-(Shift Option Delete to fill only opaque pixels)
-Fill dialog box: Shift Backspace
-Sample as background color: Option (w/ Eyedropper)
-Move tool while in any painting tool: hold ctrl
-Eyedropper while in any paint tool: hold Option
-Cross-Hair cursor: Caps Lock
-Decrease/Increase Brush Size: [ or ]
-Decrease/Increase Hardness of Brush: Shift [ or Shift ]
-Switch between preset Brushes: < or >
-Erase to History source state: Option Eraser Tool
-Cycle through blend modes: Shift + or Shift –
-Selection Keyboard Shortcuts!
-
-Select All: ctrl A
-Select all Opaque Pixels: ctrl click on Layer Thumbnail
-Inverse: Shift ctrl I
-Deselect: ctrl D
-Restore Last Selection:ctrl Shift D
-Feather Selection: Shift F6Draw Marquee from Center: Hold Option
-Add to a Selection: Shift
-Subtract from a Selection: Option
-Intersect with a Selection: Shift-Option
-Move Selection (in 1-pixel Increments): Arrow Keys
-Move Selection (in 10-pixel Increments): Shift Arrow Keys
-Move Marquee while drawing selection: Hold Space
-Select layer luminosity: ctrl Option Shift ~ (2 on Windows)
-Type Tool Keyboard Shortcuts!
-
-Align Center: ctrl Shift C
-Align Left:   ctrl Shift L
-Align Right: Command Shift R
-Justify par., left aligns last line: ctrl Shift J
-Justify par., force the last line:   ctrl Shift F
-Justify paragraph: ctrl Shift F
-Bold / Faux Bold:  ctrl Shift B
-Italic / Faux Italic: ctrl Shift I
-Underline:  ctrl Shift U
-Small Caps: ctrl Shift H
-Show Hide Selection: ctrl H
-Auto leading: ctrl Shift Option A
-0 for tracking: ctrl Control Shift Q
-All Caps (on/off): ctrl Shift K
-Hyphenation (on/off): ctrl Option Shift H
-Blend Mode Keyboard Shortcuts!
-
-Cycle through blending modes: Shift + or Shift –
-Normal: Shift Option N
-Dissolve: Shift Option I
-Behind (Brush tool only): Shift Option Q
-Clear (Brush tool only): Shift Option R
-Darken: Shift Option K
-Multiply: Shift Option M
-Color Burn: Shift Option B
-Linear Burn: Shift Option A
-Lighten: Shift Option G
-Screen: Shift Option S
-Color Dodge: Shift Option D
-Linear Dodge: Shift Option W
-Overlay: Shift Option O
-Soft Light: Shift Option F
-Hard Light: Shift Option H
-Vivid Light: Shift Option V
-Linear Light: Shift Option J
-Pin Light: Shift Option Z
-Hard Mix: Shift Option L
-Difference: Shift Option E
-Exclusion: Shift Option X
-Hue: Shift Option U
-Saturation: Shift Option T
-Color: Shift Option C
-Luminosity: Shift Option Y
-Desaturate Sponge tool: Shift Option D
-Saturate Sponge tool: Shift Option S
-Threshold for bitmap images: Shift Option N
-Other Useful Keyboard Shortcuts!
-
-Switch between open documents: ctrl Tab
-Redo Last Filter: ctrl F
-Opens Last Filter Dialog Box: ctrl Option F
-Reset Dialog Box: Hold Option, Cancel turns into Reset
-Repeat last Transformation: ctrl-Shift-T
-Highlight Fields in Options bar: (n/a for all tools) Enter
-Canvas Size Dialog Box: ctrl Option C
-Image Size Dialog Box:  ctrl Option I
-Show/hide panels and Tool bar: Tab
-Show/hide panels: Shift Tab
-Don’t Snap object edge while moving: Hold ctrl
-Hide all other layers: Option click on the visibility icon
-Change the Range of the Dodge or Burn Tools:
-(Dodge or Burn Tool must be active)
-Shadows: Shift Option S
-Midtones: Shift Option M
-Highlights: Shift Option H
-Keyboard Shortcuts panel: ctrl Option Shift K
-To check or set your own custom shortcuts
-New To Photoshop CS6 Keyboard Shortcuts!
-
-Blur gallery (Field, Iris, Tilt-Shift)
-
-Temporarily hide on-canvas UI: H
-Temporarily show blur mask: M
-
-Liquify
-
-Load Last Mesh: M
-Mirror Tool: X
-
-Crop Tool
-
-Commit crop: Return
-Cancel crop: Esc
-Switch crop box orientation (portrait or landscape): X
-Reset crop box: Backspace or Delete
-Hide and show cropped area: /
-Create new crop box: Shift Drag
-Constrain proportions: Shift drag corner handle
-Invoke Straighten tool: ctrl
-Prevent crop box from shrinking:  ctrl rotate
-Temporarily disable snap to edge: ctrl drag
-Cycle overlay options: O
-Cycle overlay orientation:Shift O
-Front Image (Crop tool & Perspective Crop tool): I (Creative Cloud only)
-
-Print
-
-Clear print settings: hold spacebar while selecting
-File > Print.
-
-Adaptive Wide AngleTool Shortcuts
-
-Constraint tool: C:
-Polygon Constraint tool: Y
-Move tool: M
-Hand tool: H
-Zoom tool: Z
-
-Control shortcuts
-
-Preview: P
-Show Constraint: W
-Show Mesh: E
-Correction: T
-Scale: S
-Focal Length: F
-Crop Factor: R
-As Shot: A
-
-Hidden shortcuts not visible in interface
-
-Toggle transparent matte: L
-Temporary zoom: X
-Revert the last-added polygon corner: E
-
-
 
 

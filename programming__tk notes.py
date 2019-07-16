@@ -2,155 +2,25 @@
 ###### *PySide marking menu style layered ui and toolkit for maya and max.
 
 
-*work in progress..*
-
-## Design:
-*To build an app agnostic modular ui to house tools where each piece is constructed dynamically to allow 
-for as little overhead as possible in construction and maintainence. Literally all you have to do to have 
-a new ui up and running, is to drop a qt ui file into the ui folder, and create a module and class of the 
-same name. Naming convention allows for a stacked ui to be built, signals added/removed, and a master dictionary 
-(stored in the switchboard module) to be created, that handles the getting/setting of all data from one 
-simple location, in one simple way.*
-
- Structure:
-
-## tk_main: 
-*handles main gui construction.*
-
-* get dynamic ui files relative to folder location.
-
-* handle coordinates to populate ui at cursor position.
-
-* add each ui to a layout stack.
-
-* set window flags and attributes.
-
-* set event filters and overrides.
-
-* construct paint event overlay.
-
-
-## tk_signals: 
-*constructs signal connections.*
-
-* build connection dict in switchboard for each class with corresponding signals and slots.
-
-* add/remove signals using the switchboard dict each time the stacked layout index is changed.
-
-
-
-## tk_slots: 
-*master class holding methods that are inherited across all app specific slot class modules.*
-
-
-
-## tk_switchboard: 
-*holds the following information for each tool class instance. From this information, you can call switchboard methods to 
-get most relevent information easily wherever you need it.*
-
-* class name as string
-
-* class object
-
-* widget size
-
-* widget name/method name as string
-
-* widget Object
-
-* widget Object with Signal
-
-* method Object
-
-* method docString
-
-* uiList : *string list of all ui filenames in the ui folder*
-
-* prevName : *list of last called relevant ui*
-
-* prevCommand : *history of commands. uses the method docstring to generate a user friendly name from the dynamic element and stores it along side the command method.*
-
-
-
- Naming convention:
-
-* ui files:     <name>.ui
- 
-* tools module: tk_slots_<app>_<name>.py
- 
-* class name:   <Name>
-
-*widget/corresponding class methods share the same naming convention across all modules: ie. widget b021 connects to method b021.
-the docstring of each method houses a user friendly name that is stored with all other widget info in the switchboard dict when an
-instance is populated. Any of the buttons will also connect to a corresponding class method should it exist.*
-
-* QPushButton   b000    (b000-b999) can contain 1000 buttons of one type max per class using this convention.
-
-* QPushButton   v000    these buttons are attached an event filter to change the ui index.
-
-* QPushButton   i000    buttons that are initially invisible.
-
-* QComboBox     cmb000  ""
-
-* QCheckBox     chk000  ""
-
-* QSpinBox      s000    ""
-
-* QtextField    t000    ""
-
-
-
-##
------------------------------------------------
- Basic use:
------------------------------------------------
-
-######
-* pressed hotkey shows instance. release hides;
-
-* mouse not pressed: heads up info
-
-* right mouse down: shows main navigation window.
-
-* left mouse down: shows viewport navigation.
-
-* middle mouse down: shows mesh display options.
-
-* releasing the mouse over any of the buttons in those windows takes you to the corresponding submenu.
-
-* double left mouseclick: produces last used window.
-
-* double right mouseclick: repeats last command.
-
-* dragging on an empty are of the widget moves the window and pins it open in a separate instance.
-
-* holding ctrl while using Spinboxes increments/decrements by an extra decimal place.
-
-* mouse over buttons while window pinned to get an explanation of its function.
 
 
 #times
+'''
 tk_signals
 time: 0.11471084274
 tk_slots_max_viewport
 time: 0.0632666986347
 tk_slots_max_polygons
 time: 0.0816165578988
+'''
+
 
 # to install:
-
 #set path to the directory containing the ui files.
 # ie. path = os.path.expandvars(r'%CLOUD%/____Graphics/Maya/Scripts/_Python/_path/tk_maya_ui')
 #have tk_maya(or max)_functions and tk_maya(or max)_buttons in your python path
 
 
-
-
-
-# Notes
-
-#comment ascii font=Nancyj
-#shelf item scripts can be found: C:\Users\m3\Documents\maya\2016\prefs\shelves
 
 
 # Re-load Ui:
@@ -165,20 +35,210 @@ time: 0.0816165578988
 
 
 
+
+
+
+
+
+
+# BUGS:
+# -----------------------------------------------
+'''
+
+
+fix polygons> extrude keep faces together flag
+setAttr "polyExtrudeEdge1.keepFacesTogether" 1
+
+
+fix maya's delete shortcut.  reg delete button works.
+
+
+layout not recentering after layout change
+
+
+init heads up display contents not current. require refresh
+
+
+fix create> circle>  attributes
+
+
+scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
+
+
+set normal by angle not working with no error.
+
+
+assign scene material cmb does nothing. ui list doesnt expand to fit contents.
+
+
+fix repeat last command
+
+
+bug: transform negative '-' sets spinbox value to 0.  
+
+line 1640, in b010
+    parent = pm.listRelatives(instances[0], parent=True)[0]
+UnboundLocalError: local variable 'instances' referenced before assignment
+
+
+
+
+
+
+'''
+
+
+
+
+
 # THINGS TO DO NOW:
 # -----------------------------------------------
+'''
+
+
+
+
+#use the maxplus method to parent the widget to the app. remove disable keyboard from show/hide events, and import maxplus when creating instance.
+
+
+
+#texturing> materials combobox> id map checkbox not toggling back to regular materials list from id map.
+
+
+
+#normals> by angle> add progress bar.  fix progress bar not hiding/resetting on completion.
+
+
+
+#file> save> separate save and save & close. add wifeframe flag to close only.
+
+
+
+
+component path tool
+	supporting
+	nth component
+	loop
+	ring
+	contigious
+	shortest path
+	
+#nth edge
+-------------
+polySelect(*args, **kwargs)
+    This command makes different types of poly component selections.  The return value is an integer array containing the
+    id's of the components in the selection in order. If a given type of selection loops back on itself then this is
+    indicated by the start id appearing twice, once at the start and once at the end.
+    
+    Flags:
+      - add : add                      (bool)          [create,query]
+          Indicates that the specified items should be added to the active list without removing existing items from the active
+          list.
+    
+      - addFirst : af                  (bool)          [create,query]
+          Indicates that the specified items should be added to the front of the active list without removing existing items from
+          the active list.
+    
+      - asSelectString : ass           (bool)          [create,query]
+          Changes the return type from an integer array to a string array which can be used as a selection string.
+    
+      - deselect : d                   (bool)          [create,query]
+          Indicates that the specified items should be removed from the active list if they are on the active list.
+    
+      - edgeBorder : eb                (int)           [create,query]
+          Select all conected border edges starting at the given edge.
+    
+      - edgeBorderPath : ebp           (int, int)      [create,query]
+          Given two edges on the same border, this will select the edges on the border in the path between them.
+    
+      - edgeBorderPattern : bpt        (int, int)      [create,query]
+          Given two edges on the same border, this will check how many edges there are between the given edges and then continue
+          that pattern of selection around the border.
+    
+      - edgeLoop : el                  (int)           [create,query]
+          Select an edge loop starting at the given edge.
+    
+      - edgeLoopOrBorder : elb         (int)           [create,query]
+          Select an edge loop or all conected border edges, depending on whether the edge is on a border or not, starting at the
+          given edge.
+    
+      - edgeLoopOrBorderPattern : lbp  (int, int)      [create,query]
+          Given two edges either on the same edge loop or on the same edge border, this will check how many edges there are
+          between the given edges and then continue that pattern of selection around the edge loop or edge border.
+    
+      - edgeLoopPath : elp             (int, int)      [create,query]
+          Given two edges that are on the same edge loop, this will select the shortest path between them on the loop.
+    
+      - edgeLoopPattern : lpt          (int, int)      [create,query]
+          Given two edges on the same edge loop, this will check how many edges there are between the given edges and then
+          continue that pattern of selection around the edge loop.
+    
+      - edgeRing : er                  (int)           [create,query]
+          Select an edge ring starting at the given edge.
+    
+      - edgeRingPath : erp             (int, int)      [create,query]
+          Given two edges that are on the same edge ring, this will select the shortest path between them on the ring.
+    
+      - edgeRingPattern : rpt          (int, int)      [create,query]
+          Given two edges on the same edge ring, this will check how many edges there are between the given edges and then
+          continue that pattern of selection around the edge ring.
+    
+      - edgeUVLoopOrBorder : euv       (int)           [create,query]
+          Select an edge loop or border, terminating at UV borders.
+    
+      - everyN : en                    (int)           [create]
+          Number of elements to stride over. If less than 1 then use 1, meaning every element. 2 means every second one, etc.
+    
+      - extendToShell : ets            (int)           [create,query]
+          Select the poly shell given a face id.
+    
+      - noSelection : ns               (bool)          [create,query]
+          If this flag is used then the selection is not changed at all.
+    
+      - replace : r                    (bool)          [create,query]
+          Indicates that the specified items should replace the existing items on the active list.
+    
+      - shortestEdgePath : sep         (int, int)      [create,query]
+          Given two vertices, this will select the shortest path between them in the 3d object space.
+    
+      - shortestEdgePathUV : spu       (int, int)      [create,query]
+          Given two UVs, this will select the shortest path between them in the 2d texture space.
+    
+      - shortestFacePath : sfp         (int, int)      [create,query]
+          Given two faces, this will select the shortest path between them in the 3d object space.
+--------------
+
+
+
+
+#center pivot shortcut
+
+
+#transfer module.  possibly keep this in 'edit' module
+
+
+#scene> save> autosave + intervals & amount.  undo amount & slider
+
+
+#attach/detach/combine/separate/detach curve/etc
+
+
+#mirror tool> options:
+	# copy / instance / flip
+	# mirror axis position (world, object, bounding box)
+	# add combine with original chk box
 
 
 # measure geometry tool
+
 
 # scale selected tool (using null object and checking heirarchy)
 
 
 
-# layout not recentering after layout change
-
-# init heads up display contents not current. require refresh
 # explore use of orderedDict module for init contents
+
+
 
 # treeview> construct folder heirarchy and parent objects
 null = pm.group(empty=1, name='')
@@ -200,11 +260,7 @@ mel.eval('RenameAttribute;')
 
 
 
-#fix create> circle>  attributes
 
-
-
-#scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
 
 
 
@@ -213,16 +269,11 @@ mel.eval('RenameAttribute;')
 
 
 
+
 select by edge angle function
 
 
-component path tool
-	supporting
-	nth component
-	loop
-	ring
-	contigious
-	shortest path
+
 
 
 mesh clean-up
@@ -238,13 +289,14 @@ for edge in rt.selection:
 	edge.EditablePoly.Remove()
 
 
-set normal by angle not working with no error.
+
 
 
 set crease amount 	obj.EditablePoly.setEdgeData(1, 0.5)
 
 
-assign scene material cmb does nothing. ui list doesnt expand to fit contents.
+
+
 
 
 display> toggle material override
@@ -281,7 +333,8 @@ set pivot;  move -r -0.829437 0 0 pCylinder27.scalePivot pCylinder27.rotatePivot
 create> cmb001> keep window open on indexChanged.  closing and re-opening hides spinboxes.
 
 
-fix repeat last command
+
+
 
 
 move polygon collapse to merge area
@@ -298,13 +351,7 @@ wrap setattributes call in an undoinfo chunk
 duplicate w/transform spinboxes; convert to being interactive.
 add center pivot option
 
-bug: transform negative '-' sets spinbox value to 0.  
 
-line 1640, in b010
-    parent = pm.listRelatives(instances[0], parent=True)[0]
-UnboundLocalError: local variable 'instances' referenced before assignment
-
-build convert menu with a pair of comboboxes to select to/from
 
 create; angled pipe.  creates a basic pipe section and allows to interactively add angles/fittings/ etc.
 create; stairs.  step, rise, amount

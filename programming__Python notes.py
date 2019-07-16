@@ -15,8 +15,8 @@ eg. expression;expression;expression; #does not work with anything requiring an 
 
 
 
-
-
+#print to console
+sys.stdout.write('\n')
 
 
 
@@ -245,7 +245,7 @@ for code in (
     except Exception as ev: continue
     break
 else:
-    print("it failed: %s" % ev)
+    print('it failed: %s' % ev)
 
 #using and/or
 	mod = obj.modifiers['TurboSmooth'] or obj.modifiers['TurboSmooth_Pro'] or obj.modifiers['OpenSubDiv']
@@ -255,7 +255,7 @@ except: pass
 
 
 #conditional statement 
-eg. x = "a < b" if (a < b) else "a >= b"
+eg. x = 'a < b' if (a < b) else 'a >= b'
 
 
 eg. force=True; force if sceneName else not force
@@ -307,7 +307,7 @@ for case in switch(v):
 		if case('eleven'):
 				print 11
 		if case(): # default, could also just omit condition or 'if True'
-				print "something else!"
+				print 'something else!'
 				# No need to break here, it'll stop anyway
 
 # break is used here to look as much like the real thing as possible, but
@@ -332,15 +332,15 @@ import string
 c = 'A'
 for case in switch(c):
 		if case(*string.lowercase): # note the * for unpacking as arguments
-				print "c is lowercase!"
+				print 'c is lowercase!'
 		if case(*string.uppercase):
-				print "c is uppercase!"
+				print 'c is uppercase!'
 				break
 		if case('!', '?', '.'): # normal argument passing style also applies
-				print "c is a sentence terminator!"
+				print 'c is a sentence terminator!'
 				break
 		if case(): # default
-				print "I dunno what c was!"
+				print 'I dunno what c was!'
 
 
 
@@ -356,11 +356,11 @@ for case in switch(c):
 return    #returns the result
 
 return elem1, elem2, elem3 #return a tuple of given elements
-					#returns ex. [3.0, "string", [list]]
+					#returns ex. [3.0, 'string', [list]]
 
 return notimplemented #used with if statement to return without an error.
 
-continue  #continue the loop #returns to "for'
+continue  #continue the loop #returns to 'for'
 yield     #creates a generator
 break     #used to break out of a loop statement even if the condition has not been met
 pass      #does nothing but can be used if required syntactically.
@@ -524,7 +524,7 @@ eg. callable(object_)
 
 # convert to another data type using the convert function:
 #str() int() float() tuple() set()
-eg. float("6.66")
+eg. float('6.66')
 
 
 
@@ -537,20 +537,20 @@ eg. str.isdigit('23.4') #Returns: False
 
 
 #prompt user to input a value.
-eg. variable = input("enter a filename")
+eg. variable = input('enter a filename')
 
 
 
 
 #get object with a string
-eg. button = getattr(self.ui, "self.ui.object_")
+eg. button = getattr(self.ui, 'self.ui.object_')
 
 
 #execute a string statement.
 eg. exec ('print "x"')
 
 #evaluate an expression. 
-eg. eval ("2+2") #returns 4
+eg. eval ('2+2') #returns 4
 
 
 
@@ -599,25 +599,25 @@ eg. del x
 
 
 #raw string. raw strings don't escape anything.
-r"string"
+r'string'
 #unicode
-u"string"
+u'string'
 #convert unicode:
 u'string'.encode('utf-8')
 
 
 
 #get length of a string.           
-eg. len("string") #'6'
+eg. len('string') #'6'
 
 #repeat string       
-eg. "."*10
+eg. '.'*10
 
 
 # String formatting:
 #using format()
 #'{1} {0}' would reverse the order.
-eg. '{0} {1}\n{2}'.format(hello, world, "new string") #\n char allows sets a new line for 'new string' after printing 'hello world'
+eg. '{0} {1}\n{2}'.format(hello, world, 'new string') #\n char allows sets a new line for 'new string' after printing 'hello world'
 eg. 'You can insert {} into a string'.format(variable)
 eg. 'Result: {}'.format(str(var))
 eg. '{x}, {y}'.format(x=5, y=12) #results in: 5, 12
@@ -628,34 +628,34 @@ eg. '%s %s' % (hello, world)
 eg. '%i%f%s' %(x,y,z) #adding .x between % & f (ex %.xf) will give you x dec places (%f=%d)
 
 #using +
-eg."str"+"ing"
+eg.'str'+'ing'
 
 #using join()
 eg. '_'.join([hello, world]) #join inserting an underscore
-eg. ''.join(string1, string2)   eg. print ":".join("string") #s:t:r:i:n:g
-eg. ",".join(["string1", "string2", "string3"]) #"string1,string2,string3"
+eg. ''.join(string1, string2)   eg. print ':'.join('string') #s:t:r:i:n:g
+eg. ','.join(['string1', 'string2', 'string3']) #'string1,string2,string3'
 
 #convert from mulit-line to single line. (in this case separated by tab space)
 eg. singleLine = '\t'.join([line.strip() for line in my_string])
 #alt method
-eg. my_string.replace("\r", "\t")
-eg. "".join(my_string.splitlines())
+eg. my_string.replace('\r', '\t')
+eg. ''.join(my_string.splitlines())
 
 
 
 
 #access characters in a string. 
-eg.	"string"[0] #'s'
-eg."string"[0] #'s'
+eg.	'string'[0] #'s'
+eg.'string'[0] #'s'
 
 #slicing. take a subsection.
-eg. "string"[1:-1] #'trin'
+eg. 'string'[1:-1] #'trin'
 
 
 #check for character:
 eg. if '$' in string:
 eg. if '$' not in string:
-eg. if ".vtx" or ".f" in str(vertex):
+eg. if '.vtx' or '.f' in str(vertex):
 chars = set('0123456789$,')
 if any((c in chars) for c in s):
 #using re
@@ -663,30 +663,30 @@ pattern = re.compile(r'\d\$,')
 if pattern.findall(string):
 
 #check for a group of characters in a string or find the index 
-eg. string.index("ing") #'3'
+eg. string.index('ing') #'3'
 
 
 #find match anywhere in a string.
-re.search(r"")
+re.search(r'')
 #find all instances.
-re.findall(r"")
+re.findall(r'')
 
 
 #find first instance
-eg. string.find("g") #returns index ie. '5'
+eg. string.find('g') #returns index ie. '5'
 #find first instance of char(s) from right
-eg. string.rfind(".mb") #returns '.' index of first instance of '.mb' from right
+eg. string.rfind('.mb') #returns '.' index of first instance of '.mb' from right
 
 #matches beginning of a string.
-re.match(r"")
+re.match(r'')
 
 
 #startswith/ endswith (boolean)
 #can also supply a tuple of strings to test for or convert list to tuple
-eg. string.startswith("s") #'True'
-eg. "This is a string".startswith("This") #'True'
-eg  string.endswith("g") #'True'
-eg. "This is a string".endswith("string") #'True'
+eg. string.startswith('s') #'True'
+eg. 'This is a string'.startswith('This') #'True'
+eg  string.endswith('g') #'True'
+eg. 'This is a string'.endswith('string') #'True'
 
 
 #check for numeric characters:
@@ -700,32 +700,33 @@ if m is not None:
 
 
 #number of occurrences. 
-eg. print string.count(" ")#count the #of whitespace '0' 
+eg. print string.count(' ')#count the #of whitespace '0' 
 
 
 
 #tokenize string to elements of a list
-eg. list("foobar")        #returns: ['f', 'o', 'o', 'b', 'a', 'r']
+eg. list('foobar')        #returns: ['f', 'o', 'o', 'b', 'a', 'r']
 #without using a list:
-eg. [c for c in "foobar"] #returns: ['f', 'o', 'o', 'b', 'a', 'r']
+eg. [c for c in 'foobar'] #returns: ['f', 'o', 'o', 'b', 'a', 'r']
 
 #split string.
 eg. string.split()#splits on whitespace by default
-eg. "This, is, a, string".split(",") #"['This','is','a','string']"
+eg. 'This, is, a, string'.split(',') #"['This','is','a','string']"
 
 
 
 
 #strip from left or right (removes whitespace if no argument is given)
 #strip leading characters
-eg. "string".lstrip("str") #'ing'
+eg. 'string'.lstrip('str') #returns 'ing'
 #strip trailing characters
-eg. "string".rstrip("ing") #'str'
+eg. 'string'.rstrip('ing') #returns 'str'
+
 
 #removes from both ends. passing no argument results in removing whitespaces
-eg. "ABBA".strip("AB") #returns ''
-eg. "ABCABBA".strip("AB") #returns 'C'
-eg. "xABBAx".strip("x") #returns 'ABBA' #.strip('A') will not work as you must list ALL chars from left as they appear in the string.
+eg. 'ABBA'.strip('AB') #returns ''
+eg. 'ABCABBA'.strip('AB') #returns 'C'
+eg. 'xABBAx'.strip('x') #returns 'ABBA' #.strip('A') will not work as you must list ALL chars from left as they appear in the string.
 
 #strip from entire sequence
 eg. 'ABBA'.replace('B', '') #returns: 'AA'
@@ -733,9 +734,13 @@ eg. 'ABBA'.translate({ord('B'): None}) #returns: 'AA'
 #mutiple chars:
 eg. 'ABBA'.translate({ord(i): None for i in 'AB'}) #returns: ''
 #substring:
-eg. 'ABBA'.replace('AB', '') #returns: 'BA'
+eg. 'ABBA'.replace('AB', '') #returns 'BA'
+#first occurance from beginning
+eg. 'string'.replace('in', '', 0) #returns 'strg'
+#first occurance from end
+eg. 'string'.replace('in', '', -1) #returns 'strg'
 #first x occurances of substring:
-eg. 'ABBA'.replace('B', '', 2) #returns: 'AA'
+eg. 'ABBA'.replace('B', '', 2) #returns 'AA'
 
 #strip numberic characters.  also lstrip/ rstrip.
 eg. 'b000'.strip('0123456789') #returns 'b' from 'b000'
@@ -745,17 +750,21 @@ eg. 'b000'.strip('abcdefghijklmnopqrstuvwxyz') #returns '000' from 'b000'
 
 #strip all chars from both ends of first instance of specific chars.
 #can use different find and index slice options to tweak results.
-eg. string = string[string.lfind("[")+1:string.rfind("]")] #"body_mainShape.vtx[176]" becomes 176
+eg. string = string[string.lfind('[')+1:string.rfind(']')] #'body_mainShape.vtx[176]' becomes 176
+#inverse:
+eg. string[:string.rfind('Shape')] + string[string.rfind('Shape')+5:] #'tire_treadShape.e[1410]' becomes 'tire_tread.e[1410]' (also: string.replace('Shape.', '.', -1))
 #using index:
-eg. string = string[string.index("["):string.index("]")] #"body_mainShape.vtx[176]" becomes 176
+eg. string = string[string.index('['):string.index(']')] #'body_mainShape.vtx[176]' becomes 176
+
+
 
 #strip using .join
 #indexs can be changed to take a subsection. ie. [2:4] would return '176'
-eg. string = ''.join(string.partition('[')[1:]) #"body_mainShape.vtx[176]" becomes [176]
+eg. string = ''.join(string.partition('[')[1:]) #'body_mainShape.vtx[176]' becomes [176]
 
 
 #using re to remove specific chars
-eg. re.sub("^-", "", '-23') # "^" indicates to remove the first "-" only
+eg. re.sub('^-', '', '-23') # '^' indicates to remove the first '-' only
 # strip all characters using re
 # many more complex options in the re docs: https://docs.python.org/2/library/re.html
 # \W    non-alphanumeric characters
@@ -778,7 +787,7 @@ pattern.sub('', string)
 
 #replace elements of a string.  may work with a tuple of multiple strings or list converted to tuple
 # replace (this, withThis, howMany) 
-eg. "string".replace("this", "with this") 
+eg. 'string'.replace('this', 'with this') 
 
 #replace all instances.
 eg. re.sub(pattern,replace,string,max=0)
@@ -804,10 +813,10 @@ eg. string.capitalize() #'1Str ing' from '1str ing'
 #capitalize first alphanumberic char after white space. sets other characters in string as lower
 eg. string.title() #'1Str Ing' from '1str ing'
 #all UPPER
-eg. "This is a string".upper() #"THIS IS A STRING"
+eg. 'This is a string'.upper() #'THIS IS A STRING'
 eg. 'string'.isupper() #
 #all lower
-eg. "THIS IS A STRING".lower() #"this is a string"
+eg. 'THIS IS A STRING'.lower() #'this is a string'
 eg. 'string'.islower()
 #swap case
 eg. string.swapcase()
@@ -847,7 +856,7 @@ list_ = ['red', 'blue', 'green', 3.5, 3]
 
 
 
-# populate a list automatically:
+# populate a list within a given range:
 eg. list(range(9)) #returns [0, 1, 2, 3, 4, 5, 6, 7, 8]
 #create a list within a set range: range(start, stop, step) 
 eg. list_ = list(range(3,8,2)) #creates list with a 2 unit interval. in this case [3, 5, 7]
@@ -861,7 +870,6 @@ eg. random.randomrange(0, 100)
 #initialize with multiples of the same element.
 eg. ['init'] * 4 #results in ['init', 'init', 'init', 'init']
 
-# create a list based on an if statement 
 list_ = [i*2 for i in range(10)]  #generates a list of even numbers 0 through 18
 
 
@@ -888,6 +896,14 @@ eg. len([0,1,-1])
 
 #check Membership:
 eg. 3 in [1, 2, 3] #results in True
+
+#check if index exists:
+eg. if index < len(List_)
+#using try/except
+eg. try:
+    	list_[1]
+	except IndexError:
+    	print "Index doesn't exist!"
 
 
 
@@ -952,7 +968,7 @@ eg. a_iter = iter(a)
 
 
 #get index:
-eg. ["foo", "bar", "baz"].index("bar") #returns 1. 
+eg. ['foo', 'bar', 'baz'].index('bar') #returns 1. 
 #results in a ValueError if the item not present.
 #check with 'if item in list_' or try/except block that catches valueError. 
 
@@ -1005,12 +1021,12 @@ list_ = list(list(int(a) for a in b) for b in list_ if a.isdigit())
 
 #Remove capitalization #dot notation only works with strings
 eg. list_.lower()          
-map(str.lower,["A","B","C"])
+map(str.lower,['A','B','C'])
 ['a', 'b', 'c']
 
 # Convert to ALL caps
 eg. list_.upper()
-map(str.upper,["a","b","c"])
+map(str.upper,['a','b','c'])
 ['A', 'B', 'C']
 
 
@@ -1100,9 +1116,9 @@ if any(x in d for x in [a, b, c]):
 #elements in one list not in another (inverse)
 #using numpy (import numpy as np)
 #for only unique elements:
-ex. inverse = np.setdiff1d(list2, list1) #returns ie. ["1", "2"]
+ex. inverse = np.setdiff1d(list2, list1) #returns ie. ['1', '2']
 #otherwise:
-ex. inverse = np.setdiff1d(list2, list1, assume_unique=True) #returns ie. ["1", "2", "2"]
+ex. inverse = np.setdiff1d(list2, list1, assume_unique=True) #returns ie. ['1', '2', '2']
 #uing itertools (from itertools import filterfalse)
 main_list = list(filterfalse(set(list_1).__contains__, list_2))
 #list comprehension
@@ -1129,11 +1145,11 @@ eg. '\n'.join(['spam', 'ham', 'eggs']) #to print each element on a new line
 eg. str(list_of_ints).strip('[]') #returns 80,443,8080,8081 from [80,443,8080,8081]
 eg. str(list_of_ints)[1:-1]
 #using generator expression  conserves memory by not building the list at all (vs list comprehension). Instead of creating the entire list in memory at once, they generate each element as required.
-ex. ",".join(str(x) for x in list_)
+ex. ','.join(str(x) for x in list_)
 #using list comprehension
 eg. ','.join([str(x) for x in list_])
 #using lambda
-eg. ",".join(map( lambda x: str(x), list_))
+eg. ','.join(map( lambda x: str(x), list_))
 
 #convert non string elements to strings and then combine
 eg. ', '.join(map(str, list_of_ints)) #returns 80, 443, 8080, 8081
@@ -1209,11 +1225,11 @@ eg. from collections import OrderedDict
 
 
 #remove elements containg specific characters:
-eg. [ x for x in list_ if "2" not in x ] #returns ['1', '336'] from ['1', '32', '523', '336']
+eg. [ x for x in list_ if '2' not in x ] #returns ['1', '336'] from ['1', '32', '523', '336']
 
 
 #remove all elements of one list from another:
-eg. [x for x in l1 if x not in l2] #new list will contain [1, 6], can be reversed to return those not in l2.
+eg. [x for x in list1 if x not in list2] #new list will contain [1, 6], can be reversed to return those not in l2.
 #or using sets: (element ordering is lost)
 eg. set_ = set(list1) -set(list2) 
 
@@ -1253,7 +1269,7 @@ eg. list_=[]
 
 # creating a set:
 eg. numSet = set() #Creates an empty set
-eg. numSet = set([1,2,3,4,"5"]) #creates a set 1,2,3,4,"5"
+eg. numSet = set([1,2,3,4,'5']) #creates a set 1,2,3,4,'5'
 
 
 x in s                            #test x for membership in s
@@ -1316,7 +1332,7 @@ tuple()
 List  = [123, 'xyz', 'zara', 'abc'];
 Tuple = tuple(aList)
 
-print "Tuple elements : ", aTuple
+print 'Tuple elements : ', aTuple
 #prints:  Tuple elements :  (123, 'xyz', 'zara', 'abc')
 
 
@@ -1385,15 +1401,13 @@ dictionary['key']
 dictionary.get('key')
 #specify default value for key. If none is specified the value returns None.
 dictionary.get('key', default_value)
-# 
-dictionary.get(key,"if_Not_Found_Return_This")
 
 
 # Get Key using value
-#returns the first key assigned to value "something"
-eg. var = next(key for key, value in dict_.items() if value=="something")
+#returns the first key assigned to value 'something'
+eg. var = next(key for key, value in dict_.items() if value=='something')
 #return firt key with value something and key not somethingElse
-eg. var = next(key for key, value in dict_.items() if value=="something" and key not 'somethingElse')
+eg. var = next(key for key, value in dict_.items() if value=='something' and key not 'somethingElse')
 
 
 
@@ -1412,8 +1426,8 @@ eg. max(dict_, value=dict_.get)
 if key in dict_:
 if key not in dict_:
 # has_key (returns: bool)  removed in python 3 and half as fast as using 'if in' statement 
-dict_ = {"1":"one","2":"two"}
-dict_.has_key("1")
+dict_ = {'1':'one','2':'two'}
+dict_.has_key('1')
 
 
 
@@ -1510,31 +1524,31 @@ eg. sorted = sorted(dict_.items(), key=operator.itemgetter(1))
 #If a match is found, the associated value is returned, else a default string (‘Invalid Month’) is printed.
 def switch_demo(argument):
 		switcher = {
-				1: "January",
-				2: "February",
-				3: "March",
-				4: "April"
-		return switcher.get(argument, "Invalid month")
+				1: 'January',
+				2: 'February',
+				3: 'March',
+				4: 'April'
+		return switcher.get(argument, 'Invalid month')
 
 superClassDict = {
-			GeometryClass: "GeometryClass",
-			shape: "shape",
-			light: "light",
-			camera: "camera",
-			SpacewarpObject: "SpacewarpObject",
-			helper: "helper",
-			system: "system",
-			default: "default" #aka unknown type
+			GeometryClass: 'GeometryClass',
+			shape: 'shape',
+			light: 'light',
+			camera: 'camera',
+			SpacewarpObject: 'SpacewarpObject',
+			helper: 'helper',
+			system: 'system',
+			default: 'default' #aka unknown type
 		}
-		superClass = superClassDict.get(superClass,"superClass: Unknown")
+		superClass = superClassDict.get(superClass,'superClass: Unknown')
 
 
 
 
 #building a simple hash table in python
-hash_string = "1;2;3" #can be built dynamically
+hash_string = '1;2;3' #can be built dynamically
 hash_ = {}
-(hash_['key1'],hash_['key2'],hash_['key3'])=hash_string.split(";")
+(hash_['key1'],hash_['key2'],hash_['key3'])=hash_string.split(';')
 print (hash_['key2'])
 
 
@@ -1556,7 +1570,7 @@ class PointHash(object):
 				return hash(self) == hash(other)
 
 		def __repr__(self):
-				return "PointHash %i" % self.__hash__()
+				return 'PointHash %i' % self.__hash__()
 
 #sample data
 a = MVector(1.1, 2.2, 3.3)
@@ -1567,7 +1581,7 @@ c = MVector(21.0, 22.0, 23.0)
 set_one = set((PointHash(a, b, 1.0), PointHash(b, a, 1.0), PointHash(a, b, 2.0), PointHash(b, c, 1.0)))
 set_two = set((PointHash(a, b, 1.0), PointHash(b, a, 1.1), PointHash(a, b, -1.0), PointHash(b, c, 1.0)))
 
-print "common:"
+print 'common:'
 for item in set_one.intersection(set_two):
 		print item.p1, item.p2, item.value
 
@@ -1633,13 +1647,13 @@ eg.       def foo(bar):
 nested functions define functions inside other functions.
 #Inner functions can access variables from the enclosing scope.
 eg.       def parent():
-						print("Printing from the parent() function.")
+						print('Printing from the parent() function.')
 
 						def first_child():
-							return "Printing from the first_child() function."
+							return 'Printing from the first_child() function.'
 
 						def second_child():
-							return "Printing from the second_child() function."
+							return 'Printing from the second_child() function.'
 
 					print(first_child())
 					print(second_child())
@@ -1831,7 +1845,7 @@ def identity(ob):
 
 @identity
 def myfunc():
-	print "my function"
+	print 'my function'
 
 myfunc()
 
@@ -1843,15 +1857,15 @@ from functools import wraps
 def mydecorator(f):
 	@wraps(f)
 		def wrapped(*args, **kwargs):
-			print "Before decorated function"
+			print 'Before decorated function'
 			r = f(*args, **kwargs)
-			print "After decorated function"
+			print 'After decorated function'
 			return r
 
 @mydecorator
 def myfunc(myarg):
-		print "my function", myarg
-		return "return value"
+		print 'my function', myarg
+		return 'return value'
 
 r = myfunc('asdf')
 
@@ -1860,31 +1874,31 @@ r = myfunc('asdf')
 #http://stackoverflow.com/a/1594484/464744
 def decorator(function): # implicitly takes some_function as an argument.
 	def wrapper(): #essentially becomes the new some_function. called when some_function is called
-		print("action before some_function() is called.")
+		print('action before some_function() is called.')
 		function() # original some_function executes
-		print("action after some_function() is called.")
+		print('action after some_function() is called.')
 
 def some_function(): #original function
-	print("some_function")
+	print('some_function')
 
 decorator(some_function) #call original function w/decorator
 
 
 eg. #decorator chain
 def makebold(fn):
-				return "<b>" + fn() + "</b>"
+				return '<b>' + fn() + '</b>'
 
 def makeitalic(fn):
 		def wrapped():
-				return "<i>" + fn() + "</i>"
+				return '<i>' + fn() + '</i>'
 		return wrapped
 
 @makebold
 @makeitalic
 def hello():
-		return "hello world"
+		return 'hello world'
 
-print hello() ## returns "<b><i>hello world</i></b>"
+print hello() ## returns '<b><i>hello world</i></b>'
 
 
 eg. #another example
@@ -2104,7 +2118,7 @@ class Derived(Base):
 		print a, b, c
 
 
-Derived (a="aaa",b="bbb") ##calls baseClass first, then subClass
+Derived (a='aaa',b='bbb') ##calls baseClass first, then subClass
 # returns:
 # aaa
 # aaa bbb
@@ -2424,17 +2438,17 @@ from ctypes import windll
 def getKeyState(key):
 	#args: [string]
 	#returns: [bool]
-	if (key == "shift"): #VK_LSHIFT #left
+	if (key == 'shift'): #VK_LSHIFT #left
 		key = 0xA0
-	if (key == "ctrl"): #VK_CONTR
+	if (key == 'ctrl'): #VK_CONTR
 		key = 0x11
-	if (key == "alt"): #VK_MENU
+	if (key == 'alt'): #VK_MENU
 		key = 0x12
-	if (key == "del"): #VK_DELETE
+	if (key == 'del'): #VK_DELETE
 		key = 0x2E
-	if (key == "esc"): #VK_ESCAPE
+	if (key == 'esc'): #VK_ESCAPE
 		key = 0x1B
-	if (key == "enter"): #VK_RETURN
+	if (key == 'enter'): #VK_RETURN
 		key = 0x0D
 	value = windll.user32.GetKeyState(key)
 	# if value > 1:
@@ -2509,7 +2523,7 @@ os.getenv('KEY_THAT_MIGHT_EXIST', default_value)
 eg. allVar = os.environ
 
 # check if environment variable exists:
-eg. "HOME" in os.environ
+eg. 'HOME' in os.environ
 
 
 
@@ -2529,7 +2543,7 @@ eg. os.getcwd()
 eg. os.listdir(os.curdir)
 
 # create a filepath safely using os.join
-eg. os.path.join("c:\\", "temp", "new folder")
+eg. os.path.join('c:\\', 'temp', 'new folder')
 
 
 
@@ -2538,7 +2552,7 @@ eg. script_dir = os.path.dirname(__file__)
 #alt
 eg. script_path = os.path.abspath(__file__) # i.e. /path/to/dir/foobar.py
 		script_dir = os.path.split(script_path)[0] #i.e. /path/to/dir/
-		rel_path = "subfolder/file.txt"
+		rel_path = 'subfolder/file.txt'
 		abs_file_path = os.path.join(script_dir, rel_path)
 #combine both approaches
 eg. os.path.dirname(os.path.abspath(__file__))
@@ -2546,11 +2560,11 @@ eg. os.path.dirname(os.path.abspath(__file__))
 
 
 # dir navigation
-".."      #up one directory
+'..'      #up one directory
 
-"../.."   #up two directory levels etc
+'../..'   #up two directory levels etc
 #import sys, os.path as path
-eg. two_up =  path.abspath(path.join(__file__ ,"../..")) #__file__=current file. can substitute this for another dir
+eg. two_up =  path.abspath(path.join(__file__ ,'../..')) #__file__=current file. can substitute this for another dir
 
 
 
@@ -2578,7 +2592,7 @@ sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'bar'))
 
 
 # search directory
-eg. for (dir,_,files) in os.walk("."): #("./") 
+eg. for (dir,_,files) in os.walk('.'): #('./') 
 			for f in files: #indent twice
 				path = os.path.join(dir, f) 
 				if os.path.exists(path)#: 
@@ -2658,12 +2672,12 @@ eg.	with open(file_) as f: #reassign opened file with a simplified variable
 
 #open last modified file of a given extension.
 #import glob, os
-eg. path = "C:\Users\m3\AppData\Roaming\Autodesk\MAYA\Autosave"
-		extentions = "*.[mb][ma]*" #* for all, *.mb for single
+eg. path = 'C:\Users\m3\AppData\Roaming\Autodesk\MAYA\Autosave'
+		extentions = '*.[mb][ma]*' #* for all, *.mb for single
 
 		list_of_files = glob.glob(path+'/'+extentions)
 		latest_file = max(list_of_files, key=os.path.getctime)
-		print "// Result: "+latest_file
+		print '// Result: '+latest_file
 
 		pm.openFile (latest_file, open=True, force=True) #pymel syntax for opening a file in maya.
 
@@ -2705,7 +2719,7 @@ eg. contents = file_.read(optionalArgNumberOfBytesToBeRead ie.16)
 #read single (or multiple) character(s) at a time
 eg. f = open(file) 
 		next = f.read(1)
-		while next != "":
+		while next != '':
 			print(next)
 			next = f.read(1)
 
@@ -2764,21 +2778,21 @@ eg. f.close() #the file is automatically closed at the end of 'with' statements.
 
 # DELETING FILES AND/OR DIRECTORIES
 #delete a file.
-eg. file_ = "/tmp/<file_name>.txt"
+eg. file_ = '/tmp/<file_name>.txt'
 		if os.path.exists(file_): #check if file exists:
 #alt check 'isFile'
-eg.	file_="/tmp/foo.txt"
+eg.	file_='/tmp/foo.txt'
 		# If file exists, delete it
 		if os.path.isfile(file_):
 		else: # Show an error
-			print ("Error: %s file not found" % file_)
+			print ('Error: %s file not found' % file_)
 
 #alt delete syntax
-eg. os.unlink("/tmp/<file_name>.txt")
+eg. os.unlink('/tmp/<file_name>.txt')
 
 #using Exception Handling:
 #import os
-eg.	file_= raw_input("Enter file name to delete: ") #Get input
+eg.	file_= raw_input('Enter file name to delete: ') #Get input
 		try: #Try to delete the file
 			os.remove(file_)
 		except OSError, e:  # if failed, report it back to the user
@@ -2793,7 +2807,7 @@ eg. os.rmdir()
 eg. try: #Try to remove tree; if failed show an error using try...except on screen
 			shutil.rmtree(dir_)
 		except OSError, e:
-			print ("Error: %s - %s." % (e.filename, e.strerror))
+			print ('Error: %s - %s.' % (e.filename, e.strerror))
 
 
 
@@ -2817,9 +2831,9 @@ eg. from datetime import datetime
 # implicitly import a module 
 #using imp
 #import imp
-eg. moduleVar = imp.load_source("file", "fullpath/file.ext")
+eg. moduleVar = imp.load_source('file', 'fullpath/file.ext')
 #
-eg. max_customTools_main = imp.load_source("max_customTools_main", os.path.expandvars("%CLOUD%/____Graphics/3ds Max/Scripts/_Python/___Python_path/max_customTools_main.py"))
+eg. max_customTools_main = imp.load_source('max_customTools_main', os.path.expandvars('%CLOUD%/____Graphics/3ds Max/Scripts/_Python/___Python_path/max_customTools_main.py'))
 
 
 # importing a module. kw: import module
@@ -2846,12 +2860,12 @@ module    #imported code containing functions.
 #using importlib:
 # import importlib
 eg. module = importlib.import_module(str(module), package=None)
-eg. importlib.import_module(module, module[module.rfind("_")+1:])
+eg. importlib.import_module(module, module[module.rfind('_')+1:])
 
 
 #using __import__:
 eg. module = __import__(module)
-eg. __import__(module, globals(), locals(), [module[module.rfind("_")+1:]]) #ie. import tk_buttons_maya_init as init. use module[strip at char] to get module variable from module name
+eg. __import__(module, globals(), locals(), [module[module.rfind('_')+1:]]) #ie. import tk_buttons_maya_init as init. use module[strip at char] to get module variable from module name
 #if module name is not a string
 eg. module = __import__(str(module))
 #import all
@@ -2944,7 +2958,7 @@ t1=time.time()
 t1=timeit.default_timer()
 print t1-t0
 #alt:
-% python -mtimeit  "function"
+% python -mtimeit  'function'
 
 
 
@@ -2977,9 +2991,9 @@ for num in range(3)
 			attempts += 1
 
 # hacky examples of a one liner try statement:
-exec "try: some_problematic_thing()\nexcept: problem=sys.exc_info()"
+exec 'try: some_problematic_thing()\nexcept: problem=sys.exc_info()'
 #or:
-parse_float = lambda x, y=exec("def f(s):\n try:\n  return float(s)\n except:  return None"): f(x)
+parse_float = lambda x, y=exec('def f(s):\n try:\n  return float(s)\n except:  return None'): f(x)
 
 
 # print error on exception:
@@ -3025,7 +3039,7 @@ finally:  #In addition to using an except block after the try block, you can als
 					#finally block. code in the finally block will be executed regardless of whether an 
 					#exception occurs.
 
-raise()          eg. raise NameError("Unkown Variable")  #allows you to output an exception 
+raise()          eg. raise NameError('Unkown Variable')  #allows you to output an exception 
 								 # error with an argument.
 								 #in except blocks, the raise statement can be used without arguments to 
 								 # re-raise whatever exception occured. eg. except: code block raise
@@ -3033,7 +3047,7 @@ raise()          eg. raise NameError("Unkown Variable")  #allows you to output a
 assert()         #assert statement as true or false.  If true run code otherwise raise an 
 								 # exception AssertionError.
 								 #arguement is passed to the AssertionError output. 
-								 eg. assert(1 > 2), "Statement is False"
+								 eg. assert(1 > 2), 'Statement is False'
 
 
 
@@ -3069,7 +3083,7 @@ python -tt script.py
 
 # called-with-the-wrong-argument-type (string variable instead of object)
 # Change:
-button = "self.ui."+prefix+numString
+button = 'self.ui.'+prefix+numString
 # to
 button = getattr(self.ui, prefix+numString)
 
@@ -3108,9 +3122,9 @@ ToolBar().hbShow()
 #missing self from argument list if the method is part of a class. 
 def classMethod(self, arg1, arg2):
 #or (calling the class instance more than once):
-self.ui.button.buttonId(self.ui,"m",10)
+self.ui.button.buttonId(self.ui,'m',10)
 # should be:
-self.ui.button.buttonId("m",10)
+self.ui.button.buttonId('m',10)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

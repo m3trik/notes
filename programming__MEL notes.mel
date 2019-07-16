@@ -194,11 +194,11 @@ pm.selectType(facet=1)
 // optional components arg (else use selection).
 // optionional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
 //vertex
-verts = pm.filterExpand (vertices, expand=1, selectionMask=31)
+verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
 //edge
-edges = pm.filterExpand (edges, expand=1, selectionMask=32)
+edges = pm.filterExpand(edges, expand=1, selectionMask=32)
 //face
-faces = pm.filterExpand (faces, expand=1, selectionMask=34)
+faces = pm.filterExpand(faces, expand=1, selectionMask=34)
 
 
 
@@ -1639,8 +1639,8 @@ polyEvaluate -vertex $obj;
 
 //get adjacent faces
 selFaces = pm.filterExpand(sm=34)
-adjEdges = pm.polyListComponentConversion (selFaces, ff=1, te=1) #face to edge
-adjFaces = pm.polyListComponentConversion (adjFaces, fe=1, tf=1) #edges to faces
+adjEdges = pm.polyListComponentConversion(selFaces, ff=1, te=1) //#face to edge
+adjFaces = pm.polyListComponentConversion(adjFaces, fe=1, tf=1) //#edges to faces
 //remove orig selected face:
 adjFaces.remove(face)
 

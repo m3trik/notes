@@ -1,59 +1,3 @@
-set#				|||||||||||||||||||||||||||||||||||||||||||
-
-
-
-
-
-
-
-#QPoint
-point.isNull() #Returns true if both the x and y coordinates are set to 0
-point.manhattanLength() #Returns the sum of the absolute values of QPoint.x() & QPoint.y()
-point.setX(x)
-point.setY(y)
-point.toTuple()
-point.x() #Returns the x coordinate of this point.
-point.y() #Returns the y coordinate of this point.
-
-
-#QRect
-rect.x() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to left()
-rect.y() #Returns the y-coordinate of the rectangle’s top edge. Equivalent to top()
-rect.setX(x) #Sets the left edge of the rectangle to the given x coordinate. May change the width, but will never change the right edge of the rectangle.
-rect.setY(y) #Sets the top edge of the rectangle to the given y coordinate. May change the height, but will never change the bottom edge of the rectangle.
-rect.size() #Returns the size of the rectangle.
-rect.setSize(s) #Sets the size of the rectangle to the given size . The top-left corner is not moved.
-rect.width() #Returns the width of the rectangle.
-rect.setWidth(w) #Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
-rect.height() #Returns the height of the rectangle.
-rect.setHeight(h) #Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
-rect.top() #Returns the y-coordinate of the rectangle’s top edge.
-rect.topLeft() #Returns the position of the rectangle’s top-left corner.
-rect.topRight() #Returns the position of the rectangle’s top-right corner.
-rect.bottom() #Returns the y-coordinate of the rectangle’s bottom edge.
-rect.bottomLeft() #Returns the position of the rectangle’s bottom-left corner.
-rect.bottomRight() #Returns the position of the rectangle’s bottom-right corner.
-rect.left() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to x().
-rect.right() #Returns the x-coordinate of the rectangle’s right edge.
-rect.center() #Returns the center point of the rectangle.
-rect.getRect() #Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
-rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to (x , y ), and its size to the given width and height .
-rect.getCoords() #Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
-rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to (x1 , y1 ), and the coordinates of its bottom-right corner to (x2 , y2 ).
-rect.contains(x, y) #or QPoint. Returns true if the point (x , y ) is inside or on the edge of the rectangle
-rect.intersects() #Returns true if this rectangle intersects with the given rectangle.
-rect.intersect() #Use intersected(rectangle ) instead.
-rect.intersected() #Returns the intersection of this rectangle and the given rectangle . Note that r.intersected(s) is equivalent to r & s .
-rect.adjust(x1, y1, x2, y2) #Adds dx1 , dy1 , dx2 and dy2 respectively to the existing coordinates of the rectangle.
-rect.translate(dx, dy) #Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
-rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position (x , y ). The rectangle’s size is unchanged.
-rect.isEmpty() #Returns true if the rectangle is empty.
-
-
-
-
-
-
 
 
 'Widgets: general'#------------------------------------------------------------------
@@ -208,8 +152,9 @@ act = QtGui.QAction("Action", self)
 
 
 
-minimumSizeHint ()
-sizeHint ()
+
+
+
 
 
 self.setAttribute(QtCore.Qt.WA_NoChildEventsForParent)
@@ -774,8 +719,8 @@ QtCore.QSize.setHeight()
 
 
 # get size
-self.width = self.ui.frameGeometry().width()
-self.height = self.ui.frameGeometry().height()
+widget.width = self.ui.frameGeometry().width()
+widget.height = self.ui.frameGeometry().height()
 
 #for widget:
 mainWindow = QtGui.QWidget()
@@ -788,20 +733,23 @@ screenShape = QtGui.QDesktopWidget().screenGeometry()
 
 
 #shrink the window to minimum size.
-self.resize(minimumSizeHint())
+widget.resize(minimumSizeHint())
+
+widget.setFixedSize(widget.sizeHint())
+
 
 # If you want to only shrink in height, then you can do something like:
-self.resize(width(), minimumSizeHint().height())
+widget.resize(widget.width(), widget.minimumSizeHint().height())
 
 #automaticly resize to fit content
-self.adjustSize()
+widget.adjustSize()
 
 #resize to fit screen
-mainWindow.resize(self.screenShape.width(), self.screenShape.height())
+mainWindow.resize(widget.screenShape.width(), widget.screenShape.height())
 
 # get recommended widget size
 QWidget.sizeHint
-self.setMinimumSize(self.layout.sizeHint())
+widget.setMinimumSize(widget.layout.sizeHint())
 
 
 #resize a specific amount
@@ -809,7 +757,7 @@ self.setMinimumSize(self.layout.sizeHint())
 button.resize(100,30)
 button.resize(w*2,h*2)
 button.resize(w//2,h//2)
-self.resize(self.width, self.height) #window size
+widget.resize(width, height) #window size
 
 
 # overload sizeHint:
@@ -832,12 +780,77 @@ QWidget.normalGeometry().
 # Position
 
 .offsetPos
-self.offsetPos(offset)
+widget.offsetPos(offset)
+
+
+#center of widget
+widget.rect().center()
+#relative to its parent
+widget.mapToParent(c)
+#relative to the screen
+widget.mapToGlobal(c)
+
+
+#x coord of parents center
+ex. widget.parentWidget().rect().center().x()
+
+#QPoint
+point.isNull() #Returns true if both the x and y coordinates are set to 0
+point.manhattanLength() #Returns the sum of the absolute values of QPoint.x() & QPoint.y()
+point.setX(x)
+point.setY(y)
+point.toTuple()
+point.x() #Returns the x coordinate of this point.
+point.y() #Returns the y coordinate of this point.
+
+
+#QRect
+rect.x() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to left()
+rect.y() #Returns the y-coordinate of the rectangle’s top edge. Equivalent to top()
+rect.setX(x) #Sets the left edge of the rectangle to the given x coordinate. May change the width, but will never change the right edge of the rectangle.
+rect.setY(y) #Sets the top edge of the rectangle to the given y coordinate. May change the height, but will never change the bottom edge of the rectangle.
+rect.size() #Returns the size of the rectangle.
+rect.setSize(s) #Sets the size of the rectangle to the given size . The top-left corner is not moved.
+rect.width() #Returns the width of the rectangle.
+rect.setWidth(w) #Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
+rect.height() #Returns the height of the rectangle.
+rect.setHeight(h) #Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
+rect.top() #Returns the y-coordinate of the rectangle’s top edge.
+rect.topLeft() #Returns the position of the rectangle’s top-left corner.
+rect.topRight() #Returns the position of the rectangle’s top-right corner.
+rect.bottom() #Returns the y-coordinate of the rectangle’s bottom edge.
+rect.bottomLeft() #Returns the position of the rectangle’s bottom-left corner.
+rect.bottomRight() #Returns the position of the rectangle’s bottom-right corner.
+rect.left() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to x().
+rect.right() #Returns the x-coordinate of the rectangle’s right edge.
+rect.center() #Returns the center point of the rectangle.
+rect.getRect() #Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
+rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to (x , y ), and its size to the given width and height .
+rect.getCoords() #Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
+rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to (x1 , y1 ), and the coordinates of its bottom-right corner to (x2 , y2 ).
+rect.contains(x, y) #or QPoint. Returns true if the point (x , y ) is inside or on the edge of the rectangle
+rect.intersects() #Returns true if this rectangle intersects with the given rectangle.
+rect.intersect() #Use intersected(rectangle ) instead.
+rect.intersected() #Returns the intersection of this rectangle and the given rectangle . Note that r.intersected(s) is equivalent to r & s .
+rect.adjust(x1, y1, x2, y2) #Adds dx1 , dy1 , dx2 and dy2 respectively to the existing coordinates of the rectangle.
+rect.translate(dx, dy) #Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
+rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position (x , y ). The rectangle’s size is unchanged.
+rect.isEmpty() #Returns true if the rectangle is empty.
+
+
+
+
+
 
 
 # bring front - send back
 self.ui.raise_
 self.ui.lower()
+
+
+
+
+
 
 
 
@@ -1024,107 +1037,64 @@ map(self.dial.valueChanged.connect, [self.spinbox.setValue, self.getValue_dial])
 
 
 #enable/ disable button objects
-ex. button.setEnabled(False) #either method serves both functions. must be used with an argument
-ex. button.setDisabled(True)
+ex. btn.setEnabled(False) #either method serves both functions. must be used with an argument
+ex. btn.setDisabled(True)
+
+btn.setDefault #QPushButton.setDefault() #Sets the button as default
 
 #hide/ unhide objects
-ex. button.setVisible(False)
+ex. btn.setVisible(False)
 #query visible state
-ex. button.isHidden()
-
-
-.pressed #QPushButton.pressed()
+ex. btn.isHidden()
 
 
 btn.click() #emits clicked signal
 
-.clicked #bool checked=False #QPushButton.clicked()
-self.ui.button.clicked.connect(self.methodToConnectTo)
+btn.clicked() #bool checked=False #QPushButton.clicked()
+btn.clicked.connect(method)
 #or with arguments
-self.ui.button.clicked.connect(lambda ans=passedArg: self.methodToConnectTo(passedArg))
-#
-b4.clicked.connect(lambda:self.whichbtn(self.b4))
+btn.clicked.connect(lambda ang=arg: self.methodToConnectTo(arg))
+btn.clicked.connect(lambda: method(f))
 
+btn.pressed() #bool #QPushButton.pressed()
+btn.released() #bool #QPushButton.released()
 
-.released #QPushButton.released()
-
-.toggled #bool checked
-
-
-.toggle #QPushButton.toggle()
-# Toggles between checkable states
-self.b1.toggle()
-
-
-.pressed #bool #QPushButton.pressed()
-
-
-btn.click() #emits clicked signal
-
-.clicked #bool #QPushButton.clicked()
-self.ui.button.clicked.connect(self.methodToConnectTo)
-
-
-.released #bool #QPushButton.released()
-
-w.toggled() #bool. query pushbutton toggle state.
-
-w.toggle() #Toggles the state of a checkable button.
+btn.toggled() #bool. query pushbutton toggle state.
+btn.toggle() #Toggles the state of a checkable button.
 
 
 
 
-# QCheckBox
-
+#check state
 #		QtUi checkable button signal input
 #		self.ui.connect(HandleSelection, SIGNAL(toggled(bool)),MEL_HandleSelection,SLOT(setVisible(bool)));
 #		QObject::connect(moreButton, SIGNAL(toggled(bool)), tertiarypb7Box, SLOT(setVisible(bool)));
 
-.stateChanged #QCheckBox.stateChanged()
-self.ui.c000.stateChanged.connect(self.max_c000)
+btn.stateChanged() #QCheckBox.stateChanged()
+btn.stateChanged.connect(self.max_c000)
 
 
-.setCheckable #QPushButton.setCheckable()
-# Recognizes pressed and released states of button if set to true
-self.b1.setCheckable(True)
 
+btn.setCheckable(True) #Recognizes pressed and released states of button if set to true
 
-.isChecked #QPushButton.isChecked()
+btn.isChecked() #QPushButton.isChecked()
 # Returns Boolean state of button
-self.b1.isChecked()
+btn.isChecked()
 #setChecked
-self.ui.chkpin.setChecked(True)
+btn.setChecked(True)
 
 
-
-.setEnabled(False) #QPushButton.setEnabled()
-# When set to false, the button becomes disabled, hence clicking it doesn’t emit a signal
-b3.setEnabled(False)
-
-
-
-
-.setDefault #QPushButton.setDefault()
-# Sets the button as default
-
-
-
-
-.text #QPushButton.text()
-# Retrieves buttons’ caption or textfields value
-
-
-# modify button text
-.setText #QPushButton.setText()
-# Programmatically sets buttons’ caption or textfields value
+#button text
+btn.text #QPushButton.text() #Retrieves buttons’ caption or textfields value
+btn.setText #QPushButton.setText() #Programmatically sets buttons’ caption or textfields value
+btn.setText(0, 'text '+str(num)) #append integer
+btn.setText(0, "Parent {}".format(num)) #alt
 
 
 # icon
-.setIcon #QPushButton.setIcon()
+btn.setIcon #QPushButton.setIcon()
 # Shows an icon formed out of pixmap of an image file
-ex.
-b2.setIcon(QIcon(QPixmap("python.gif")))
-
+ex. btn.setIcon(QIcon(QPixmap("python.gif")))
 
 #set icon to rgb value:
 pixmap = QtGui.QPixmap(100,100)
@@ -1133,7 +1103,10 @@ cmb.setItemIcon(index, QtGui.QIcon(pixmap))
 
 
 
-#QSpinBox. for a double value use QDoubleSpinBox
+
+
+
+#QSpinBox. (for a double value use QDoubleSpinBox)
 s.setMinimum(-5) #Sets the lower bound of counter
 s.setMaximum(5) #Sets the upper bound of counter
 s.setRange(0,10) #Sets the minimum, maximum and step value
@@ -1479,6 +1452,17 @@ ex. def groupButtons(objectName, ui, prefix, range_):
 
 #call
 self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

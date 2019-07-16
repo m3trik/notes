@@ -10,20 +10,26 @@ x*-1
 
 
 
-#ie. what is 5% of 20:
+#5% of 20:
 (value/totalValue)*100
 
-#ie. what percentage is 5 of 20:
+#what percentage is 5 of 20:
 100*value/totalValue
 
 
 
+#DIFFERENCE BETWEEN TWO NUMBERS
+abs(x-y)
 
 
 
 
 
+#MEDIAN -------------
 
+#from two or more numbers:
+#get sum of all numbers. then divide by total numbers.
+num1+num2/2
 
 
 
@@ -39,6 +45,11 @@ x*-1
 #PERCENTAGE ---------
 
 percent=(value/totalValue) *100
+
+
+
+#PERCENTAGE CHANGE --
+First: work out the difference (increase) between the two numbers you are comparing. Then: divide the increase by the original number and multiply the answer by 100. If your answer is a negative number then this is a percentage decrease.
 
 
 

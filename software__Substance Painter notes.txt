@@ -1,92 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		   
-
-
-
-
-
-
-
-	   
-
-
-	 
-
-
-
-
-
-
-		 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ____Substance_Painter_notes___________________________________________________________________________________
 
 
@@ -189,16 +100,27 @@ translate projection/ alpha		S + LM, RM, MM (scale,rotate,pan)
 
 
 
-TECHNIQUES________ _ _ _
+PROCEDURES________ _ _ _
 
 
-non-destructive workflow:  This approach allows you to modify the properties of the Fill layer, such as base colour, roughness, metallic, height and so on any time, without having to repeat your drawings, since all the painted data is stored in the mask.
+non-destructive workflow:
+This approach allows you to modify the properties of the Fill layer, such as base colour, roughness, metallic, height and so on any time, without having to repeat your drawings, since all the painted data is stored in the mask.
 >	create a Fill layer. 
 >	then add a black mask on it.
 >	append a Paint layer under the mask to manually paint on.
 
 
- 
+
+
+
+Create smart material from layer group:
+>	Create a single top-level group and move all the existing layers into this group (or select all layers and press Ctrl-G).
+>	Right-click that group> select Create Smart Material.
+>	Find the .spsm file in your Default shelf (see your settings). You can then archive/share this as required.
+
+
+
+
 
 
 oil leaks\stains:

@@ -2,49 +2,28 @@
 
 
 
+Procedures:
+curve warp a mesh
+>	select the mesh and then the input curve.
+>	go to Deform > (Create) Curve Warp. (Maya creates a curveWarp node and automatically assigns the selected curve as its input curve.)
 
 
 
-___interface
-scale interface    preferences>interface>use custom scaling
-custom shelf       ctrl + shift select items from drop down menus or middle mouse drag items from shelves
 
-keys 1-10    default:                               custom:
-              				
-     1 -     Low Quality Display setting			backface culling
-     2 -     Medium Quality Display setting			smooth lvl-3 (smooth preview)
-     3 -     High Quality Display setting			wireframe on mesh   
-     4 -     Shading > Wireframe					object/component mode
-	 5 -	 Shading > Shaded Display				toggle display mode (wireframe/shaded) //add functionality to cycle through all modes or possibly just leave default hotkeys 6 & 7 active
+shrink wrap one object to another
+>	create a poly plane with enough subdivisions to deform correctly
+>	parent the wrapped object to the plane as a rig by using deform> wrap
+>	select the plane and the surface object and deform> shrink wrap
 
-	 f1-	 										toggle grid
-	 f2-	 										isolate selected
-	 f3-	 										x-ray (mesh transparency)
-	 f4-											x-ray (ghost all other)
-	 
-     6 -     Shading > Shaded & Textured display
-	 7 -	 Shading > Lighting
-	 8 -     Open Paint Effects panel
-     
-	 9 -     										toggle status line
-     0 -     										toggle grid
-	 
-	 
-	 
-	 
-notable hotkeys:	 
-	 t -	Hold to rotate an object in 15 degrees increments.
-	 d -	toggle pivot translate mode
-	 g -	repeat last (alt-g: repeat last at mouse pos)
-	 y -	nonSacredTool (finish current action but keep tool active)
-	 h -	recent commands window
-	 
-	 ctrl+alt+LMB	drag -zoom in drag right,  -out drag left
-	 
-notable marking menus:	 
-	 w + LMB					transform marking menu
-	 pivot edit mode + RMB		pivot edit menu
-	 
+
+
+
+Break node connection in attribute editor
+>	right click on an attribute name with an incoming or outgoing connection.
+>	select break connections
+
+
+
 
 	 
 
@@ -216,3 +195,53 @@ GoZ button script:
 print("GoZ to Maya");
 source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZBrushFromMaya.mel" ;
 source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZScript.mel" ;
+
+
+
+
+
+
+
+
+
+
+
+___hotkeys
+scale interface    preferences>interface>use custom scaling
+custom shelf       ctrl + shift select items from drop down menus or middle mouse drag items from shelves
+
+keys 1-10    default:                               custom:
+              				
+     1 -     Low Quality Display setting			backface culling
+     2 -     Medium Quality Display setting			smooth lvl-3 (smooth preview)
+     3 -     High Quality Display setting			wireframe on mesh   
+     4 -     Shading > Wireframe					object/component mode
+	 5 -	 Shading > Shaded Display				toggle display mode (wireframe/shaded) //add functionality to cycle through all modes or possibly just leave default hotkeys 6 & 7 active
+
+	 f1-	 										toggle grid
+	 f2-	 										isolate selected
+	 f3-	 										x-ray (mesh transparency)
+	 f4-											x-ray (ghost all other)
+	 
+     6 -     Shading > Shaded & Textured display
+	 7 -	 Shading > Lighting
+	 8 -     Open Paint Effects panel
+     
+	 9 -     										toggle status line
+     0 -     										toggle grid
+	 
+	 
+	 
+	 
+notable hotkeys:	 
+	 t -	Hold to rotate an object in 15 degrees increments.
+	 d -	toggle pivot translate mode
+	 g -	repeat last (alt-g: repeat last at mouse pos)
+	 y -	nonSacredTool (finish current action but keep tool active)
+	 h -	recent commands window
+	 
+	 ctrl+alt+LMB	drag -zoom in drag right,  -out drag left
+	 
+notable marking menus:	 
+	 w + LMB					transform marking menu
+	 pivot edit mode + RMB		pivot edit menu
