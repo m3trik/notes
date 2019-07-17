@@ -2435,6 +2435,11 @@ _GCProtector.widgets.append(window)
 
 
 
+-- attach the QWidget to the 3dsmax mainwindow. (Attach a given parentless QWidget by its Qt winId to the win32 3ds max main window)
+MaxPlus.AttachQWidgetToMax(w)
+
+
+
 
 -- basic rollout floater framework
 	global rofTool	--start a new local variable scope here and declare a global variable for 

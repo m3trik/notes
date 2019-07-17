@@ -1,155 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-string $attrName = `match "\\..*" $nodeAttr`;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-for ($i = 0; $i < size($array); $i++)
-	$item = $array[$i];
-
-continue 				//continue outside of the current function
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if ($x > 10) 
-	print("It's greater than 10!\n");
-
-if ($x > 10)
-	print("It's greater than 10!\n");
-
-if (`window -query -exists myWindow`)
-	deleteUI myWindow;
-
-string $myCommand="cone";
-
-
-
-
-
-
-
-
-
-
-
-
-global proc string performSmoothProxy (int $option)
-	string $cmd="";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-proc procedure (int $var1, string $var2) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-string $list[]  = { "a", "b", "c", "d", "e", "f", "g" };
-
-
-
-
-
-
-
-
-
-
-vector $vector; //defines $vector <<0.0, 0.0, 0.0>>
-
-
-	
-
-	
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // component name extensions:
 ""				.e 	edge
 ""				.f 	face
@@ -167,27 +16,7 @@ numFaces = pm.polyEvaluate (obj, face=1)
 
 
 
-//get:
-//query object mode.
-$mode = `selectMode -query -object`;
-//query component selection mode/type:
-pm.selectMode(query=1, object=1)
-pm.selectMode(query=1, component=1)
-pm.selectType(query=1, allObjects=1)
-pm.selectType(query=1, vertex=1)
-pm.selectType(query=1, edge=1)
-pm.selectType(query=1, facet=1)
 
-//set:
-//object mode
-pm.selectMode(object=1)
-//component mode
-pm.selectMode(component=1)
-//objects
-pm.selectType(allObjects=1)
-pm.selectType(vertex=1)
-pm.selectType(edge=1)
-pm.selectType(facet=1)
 
 
 
@@ -225,17 +54,6 @@ polyEvaluate -faceComponent $obj //
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //'.vtx','.e','.f'
 
 
@@ -243,46 +61,7 @@ vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 pm.xform (vertices, query=1, t=1, ws=1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -836,7 +615,6 @@ for ($i=1; $i<19; ++$i) duplicate -rr -st;
 
 for ($i = 0; $i < size($array); $i++)
 	$item = $array[$i];
-}
 
 continue 				//continue outside of the current function
 
@@ -855,6 +633,12 @@ continue 				//continue outside of the current function
 eg. 
 if ($a > $b) {print("hello");};
 
+
+
+if (`window -query -exists myWindow`)
+	deleteUI myWindow;
+
+string $myCommand="cone";
 
 
 if ($x > 10) 
@@ -943,26 +727,26 @@ switch ($a)								switch ($a)
 		break;								}
 }								
 
-eg.
-global proc string performSmoothProxy (int $option)
-{
-	string $cmd="";
 
-	switch ($option) {
-	case 0:
-		eval( assembleCmd() ); //assembleCmd is a separate procedure that queries any additional settings/flags
-		break;
+eg.	global proc string performSmoothProxy (int $option)
+	{
+		string $cmd="";
 
-	case 1:
-		smoothProxyOptions;
-		break;
+		switch ($option) {
+		case 0:
+			eval( assembleCmd() ); //assembleCmd is a separate procedure that queries any additional settings/flags
+			break;
 
-	default:
-		$cmd = assembleCmd();
+		case 1:
+			smoothProxyOptions;
+			break;
+
+		default:
+			$cmd = assembleCmd();
+		}
+
+		return $cmd;
 	}
-
-	return $cmd;
-}
 
 
 
@@ -1002,12 +786,11 @@ print($long + " is the first long word.\n");
 "PROCEDURES: //(Functions)-------------------------------------------------------------------------------------------------------------------------------"
 
 
-eg.
-proc procedure (int $var1, string $var2) 
-{ //start and end blocks define scope
-	int $var3 = $var1 + $var2; //statements
-	return $var3; //return result
-}
+eg. proc procedure (int $var1, string $var2)
+	{ //start and end blocks define scope
+		int $var3 = $var1 + $var2; //statements
+		return $var3; //return result
+	}
 
 
 //check if global procedure exists
@@ -1479,8 +1262,13 @@ ex. {attr:pm.getAttr(node+'.'+attr) for attr in pm.listAttr(node)}
 ex. {n:getattr(node, n) for n in dir(node)} //returns: {'upper': <built-in method upper of unicode object at 0x000001C7873982A0>, 'isnumeric': <built-in method isnumeric of unicode object at 0x000001C7873982A0>, ect..
 //set
 ex. pm.setAttr()
+ex. pm.setAttr(obj+'.keepFacesTogether'=1)
 //using a dictionary. attributes={'attribute':value}
 ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
+
+
+
+
 
 
 
@@ -1588,6 +1376,31 @@ $maskFacet = `selectType -query -facet`;
 
 // component selection mask
 faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1)
+
+
+//get:
+//query object mode.
+$mode = `selectMode -query -object`;
+//query component selection mode/type:
+pm.selectMode(query=1, object=1)
+pm.selectMode(query=1, component=1)
+pm.selectType(query=1, allObjects=1)
+pm.selectType(query=1, vertex=1)
+pm.selectType(query=1, edge=1)
+pm.selectType(query=1, facet=1)
+
+//set:
+//object mode
+pm.selectMode(object=1)
+//component mode
+pm.selectMode(component=1)
+//objects
+pm.selectType(allObjects=1)
+pm.selectType(vertex=1)
+pm.selectType(edge=1)
+pm.selectType(facet=1)
+
+
 
 
 
