@@ -1,618 +1,9 @@
-
-
-'Widgets: general'#------------------------------------------------------------------
-
-
-
-QtGui.QApplication.allWidgets()
-
-QtGui.QApplication..topLevelWidgets()
-ex. widgets = dict((w.objectName(), w) for w in QtGui.QApplication.topLevelWidgets())
-	window = widgets['MayaWindow']
-
-
-
-
-
-
-
-
-
-
-act = QtGui.QAction("Action", self, triggered=self.on_triggered)
-
-act = QtGui.QAction("Action", self)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Retrieves buttons’ caption or textfield value
-
-
-# Programmatically sets buttons’ caption or textfield value
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-self.setAttribute(QtCore.Qt.WA_NoChildEventsForParent)
-
-
-
-
-
-
-
-self.ui.b010.focusInEvent = self.max_b010()
-
-
-
-
-
-
-
-if event.type() == QtCore.QEvent.HoverEnter:
-if event.type() == QtCore.QEvent.Type.Enter:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#mouse move
-event.type() == QtCore.QEvent.MouseMove
-
-
-
-
-
-
-
-.setMouseTracking(True) #triggers the mouseMove event for all mouse movements rather then only when button is pressed.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Cursor position
-self.mousePosition = event.pos() #relative position to mouseEvent
-self.mousePosition = QtGui.QCursor.pos() #global position
-
-w.pos() #widget positon
-w.mapFromGlobal(point)
-w.mapFrom(widget, point)
-w.mapTo(widget, point)
-w.mapFromParent(point)
-w.mapToParent(point)
-
-#check if cursor is inside widget
-w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos()))
-
-#
-w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-self.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
-self.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
-self.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
-self.setAttribute(QtCore.Qt.WA_MouseTracking) #Indicates that the widget has mouse tracking enabled.
-self.setAttribute(QtCore.Qt.WA_NoMousePropagation)
-self.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
-
-
-#mask mouse events
-def settingMask(self):
-    region = qg.QRegion(self._mainWidget.frameGeometry())
-    region -= qg.QRegion(self._mainWidget.geometry())
-    region += self._mainWidget.childrenRegion()
-    self._mainWidget.setMask(region)
-# Also, on my system (Linux), I found I had to call this after the window is shown:
-    ...
-    myWinPos.show()
-    myWinPos.settingMask()
-    sys.exit(qtApp.exec_())
-
-
-
-#QtTest simulated keyboard/mouse events
-from PySide2.QtTest import QTest
-QTest.mouseRelease(self, QtCore.Qt.RightButton)
-self.blockSignals(True)
-QTest.mousePress(self, QtCore.Qt.RightButton)
-self.blockSignals(False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-self.setAttribute(QtCore.Qt.WA_InputMethodTransparent)
-self.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# install event filter ----------------------------------------------
-
-
-
-
-
-
-
-	if e.type() == QEvent.DragEnter: #remember to accept the enter event
-self.ui.tree_widget_of_items.installEventFilter(self)
-
-
-
-	    self.textEdit = QTextEdit()
-
-	    if obj == textEdit:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Remove event filter ------------------------------------------------------
-
-self.ui.cmb002.removeEventFilter() #Removes an event filter object obj from this object. 
-#The request is ignored if such an event filter has not been installed.
-#All event filters for this object are automatically removed when this object is destroyed.
-#It is always safe to remove an event filter.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	self.enterEvent.emit(True)
-
-	self.enterEvent.emit(False)
-
-
-
-
-
-
- 
-        # Initialize the PunchingBag as a QObject
- 
-
-
-
-    
-
-    
-        super(Example, self).__init__()
-        
-        
-
-        
-        
-        
-        
-    
-
-
-    main()
-
-
-
-
-
-
-
-
-
-class FileEdit(QLineEdit):
-
-
-
-
-
-
-
-
-
-
-
-
-
-        self._rcwin.show()
-
-class MainWindow(QMainWindow):
-
-        if self._rcwin is None:
-
-
-
-
-
-
-
-
-
-
-parent = QtCore.QObject()
-
-
-
-
-
-button = QtGui.QPushButton("ButtonName", parent=widget)
-
-
-
-
-
-
-
-
-
-
-
-
-#set interval
-timer = QtCore.QTimer()
-timer.setInterval(1000.0 / 25)  #25 times per second
-timer.timeout.connect(<function>)
-timer.start()
-# timer.stop()  # Call this to stop printing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def getQtui(name):
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-maya qt menus
-
-
-
-
-
-menu3
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-menuItem228
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #				|||||||||||||||||||||||||||||||||||||||||||
 #				||||||||||		Qt UI Notes		|||||||||||
 #				!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
 
 
 
@@ -656,208 +47,27 @@ setAutoFillBackground(False)
 
 
 
-buttonObject.setStyleSheet("") ##set style sheet to default. also (styleSheet())
 
 
-button.setStyleSheet('''QPushButton {
-}''')
 
 
-.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
 
-	QTreeWidget {border:none;} 
-	QTreeWidget::item {height: 20px;}
-	QTreeView {
-  }
 
-STYLESHEET = '''
-	    background-color: #ABABAB; /* sets background of the menu */
-	    border: 1px solid black;
 
-	    /* sets background of menu item. set this to something non-transparent
-	        if you want menu color and menu item color to be different */
-	    background-color: transparent;
 
-	QMenu::item:selected { /* when user selects item using mouse or keyboard */
-	    background-color: #654321;
-	For a more advanced customization, use a style sheet as follows:
 
-	QMenu {
-	    background-color: white;
-	    margin: 2px; /* some spacing around the menu */
 
-	QMenu::item {
-	    padding: 2px 25px 2px 20px;
-	    border: 1px solid transparent; /* reserve space for selection border */
 
-	QMenu::item:selected {
-	    border-color: darkblue;
-	    background: rgba(100, 100, 100, 150);
-	}
 
-	QMenu::icon:checked { /* appearance of a 'checked' icon */
-	    background: gray;
-	    border: 1px inset gray;
-	    position: absolute;
-	    top: 1px;
-	    right: 1px;
-	    bottom: 1px;
-	    left: 1px;
-	}'''
+'Widgets: '#------------------------------------------------------------------
 
 
 
-'Size'#---------------------------------------------------------------------
+QtGui.QApplication.allWidgets()
 
-# Size
-
-QWidget.adjustSize()
-
-QtCore.QSize.setWidth() 
-QtCore.QSize.setHeight()
-
-
-
-# get size
-widget.width = self.ui.frameGeometry().width()
-widget.height = self.ui.frameGeometry().height()
-
-#for widget:
-mainWindow = QtGui.QWidget()
-width = mainWindow.frameGeometry().width()
-height = mainWindow.frameGeometry().height()
-#for screen:
-mainWindow = QtGui.QWidget()
-screenShape = QtGui.QDesktopWidget().screenGeometry()
-
-
-
-#shrink the window to minimum size.
-widget.resize(minimumSizeHint())
-
-widget.setFixedSize(widget.sizeHint())
-
-
-# If you want to only shrink in height, then you can do something like:
-widget.resize(widget.width(), widget.minimumSizeHint().height())
-
-#automaticly resize to fit content
-widget.adjustSize()
-
-#resize to fit screen
-mainWindow.resize(widget.screenShape.width(), widget.screenShape.height())
-
-# get recommended widget size
-QWidget.sizeHint
-widget.setMinimumSize(widget.layout.sizeHint())
-
-
-#resize a specific amount
-.resize
-button.resize(100,30)
-button.resize(w*2,h*2)
-button.resize(w//2,h//2)
-widget.resize(width, height) #window size
-
-
-# overload sizeHint:
-def sizeHint(self):
-	return QtCore.QSize(15, 15)
-
-
-
-.geometry
-
-#holds the geometry of the widget as it will appear when shown as a normal (not maximized or full screen) top-level widget.
-#Note, the widget must be first shown for this to return something other than (0,0)
-QWidget.normalGeometry(). 
-
-
-
-
-'Position'#-----------------------------------------------------------------
-
-# Position
-
-.offsetPos
-widget.offsetPos(offset)
-
-
-#center of widget
-widget.rect().center()
-#relative to its parent
-widget.mapToParent(c)
-#relative to the screen
-widget.mapToGlobal(c)
-
-
-#x coord of parents center
-ex. widget.parentWidget().rect().center().x()
-
-#QPoint
-point.isNull() #Returns true if both the x and y coordinates are set to 0
-point.manhattanLength() #Returns the sum of the absolute values of QPoint.x() & QPoint.y()
-point.setX(x)
-point.setY(y)
-point.toTuple()
-point.x() #Returns the x coordinate of this point.
-point.y() #Returns the y coordinate of this point.
-
-
-#QRect
-rect.x() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to left()
-rect.y() #Returns the y-coordinate of the rectangle’s top edge. Equivalent to top()
-rect.setX(x) #Sets the left edge of the rectangle to the given x coordinate. May change the width, but will never change the right edge of the rectangle.
-rect.setY(y) #Sets the top edge of the rectangle to the given y coordinate. May change the height, but will never change the bottom edge of the rectangle.
-rect.size() #Returns the size of the rectangle.
-rect.setSize(s) #Sets the size of the rectangle to the given size . The top-left corner is not moved.
-rect.width() #Returns the width of the rectangle.
-rect.setWidth(w) #Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
-rect.height() #Returns the height of the rectangle.
-rect.setHeight(h) #Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
-rect.top() #Returns the y-coordinate of the rectangle’s top edge.
-rect.topLeft() #Returns the position of the rectangle’s top-left corner.
-rect.topRight() #Returns the position of the rectangle’s top-right corner.
-rect.bottom() #Returns the y-coordinate of the rectangle’s bottom edge.
-rect.bottomLeft() #Returns the position of the rectangle’s bottom-left corner.
-rect.bottomRight() #Returns the position of the rectangle’s bottom-right corner.
-rect.left() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to x().
-rect.right() #Returns the x-coordinate of the rectangle’s right edge.
-rect.center() #Returns the center point of the rectangle.
-rect.getRect() #Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
-rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to (x , y ), and its size to the given width and height .
-rect.getCoords() #Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
-rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to (x1 , y1 ), and the coordinates of its bottom-right corner to (x2 , y2 ).
-rect.contains(x, y) #or QPoint. Returns true if the point (x , y ) is inside or on the edge of the rectangle
-rect.intersects() #Returns true if this rectangle intersects with the given rectangle.
-rect.intersect() #Use intersected(rectangle ) instead.
-rect.intersected() #Returns the intersection of this rectangle and the given rectangle . Note that r.intersected(s) is equivalent to r & s .
-rect.adjust(x1, y1, x2, y2) #Adds dx1 , dy1 , dx2 and dy2 respectively to the existing coordinates of the rectangle.
-rect.translate(dx, dy) #Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
-rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position (x , y ). The rectangle’s size is unchanged.
-rect.isEmpty() #Returns true if the rectangle is empty.
-
-
-
-
-
-
-
-# bring front - send back
-self.ui.raise_
-self.ui.lower()
-
-
-
-
-
-
-
-
-
-'Widget general'#------------------------------------------------------------------
-
-
+QtGui.QApplication..topLevelWidgets()
+ex. widgets = dict((w.objectName(), w) for w in QtGui.QApplication.topLevelWidgets())
+	window = widgets['MayaWindow']
 
 # get object name
 ex. name = button.objectName()
@@ -878,15 +88,17 @@ widget.setVisible(not widget.isVisible())
 
 
 
-
+#QAction
 #the following three fragments are equivalent:
 act = QtGui.QAction("Action", self)
 act.triggered.connect(self.on_triggered)
-
+#
 act = QtGui.QAction("Action", self, triggered=self.on_triggered)
-
+#
 act = QtGui.QAction("Action", self)
 act.pyqtConfigure(triggered=self.on_triggered)
+
+
 
 
 
@@ -896,6 +108,12 @@ act.pyqtConfigure(triggered=self.on_triggered)
 GetQmaxMainWindow()
 
 #mayaDockableMixin
+
+
+#get all widgets from parent
+widgets = {w.objectName():w for w in QtWidgets.QApplication.allWidgets()}
+windows = {w.objectName():w for w in QtWidgets.QApplication.allWindows()}
+widget = widgets['MainAttributeEditorLayout']
 
 
 
@@ -926,7 +144,7 @@ self.ui.lower()
 
 
 
-#	Focus
+# Focus
 QWidget.setFocusPolicy() Keyboard Focus #self.setFocusPolicy(QtCore.Qt.StrongFocus)
 
 w.clearFocus()
@@ -941,6 +159,11 @@ self.update()
 
 
 
+
+
+
+
+
 # Remove widget
 for i in reversed(range(self.layout.count())): 
 	widgetToRemove = self.layout.itemAt(i).widget()
@@ -948,6 +171,7 @@ for i in reversed(range(self.layout.count())):
 	self.layout.removeWidget(widgetToRemove)
 	# remove it from the gui
 	widgetToRemove.setParent(None)
+
 
 
 
@@ -1011,14 +235,32 @@ WA_NoChildEventsForParent #Indicates that the widget does not want ChildAdded or
 WA_NoChildEventsFromChildren #Indicates that the widget does not want to receive ChildAdded or ChildRemoved events sent from its children.
 
 
+# Remove layout
+#recursively remove and delete all the objects from a layout.
+def clearLayout(self, layout):
+	if layout is not None:
+		while layout.count():
+		item = layout.takeAt(0)
+		widget = item.widget()
+		if widget is not None:
+			widget.deleteLater()
+		else:
+			self.clearLayout(item.layout())
 
 
 
 
 
 
+# Widget types:
 
-'Widget types'#------------------------------------------------------------------
+#Stacked Widget
+stackedWidget = QtWidgets.QStackedWidget()
+for w in widgetList:
+	stackedWidget.addWidget(w)
+window.setCentralWidget(stackedWidget)
+
+
 
 
 # Visual style
@@ -1379,8 +621,6 @@ QLineEdit.setValidator(QtGui.QDoubleValidator(0, 100, 2))
 
 # QTextEdit
 
-
-
 #add text
 text = QString('string')
 #
@@ -1452,6 +692,221 @@ ex. def groupButtons(objectName, ui, prefix, range_):
 
 #call
 self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
+
+
+
+
+
+
+
+
+# Find item in QApplication by only the objectname
+
+#get a list of all QObject instances either by class-name or object-name:
+#This is only really a debugging tool, as for a large application, there could easily be several hundred thousand objects to check.
+def getObjects(name, cls=True):
+    objects = []
+    for obj in gc.get_objects():
+        if (isinstance(obj, QtCore.QObject) and
+            ((cls and obj.inherits(name)) or
+             (not cls and obj.objectName() == name))):
+            objects.append(obj)
+    return objects
+
+#If you only need objects which are subclasses of QWidget, use this function:
+def getWidgets(name, cls=True):
+    widgets = []
+    for widget in QtGui.QApplication.allWidgets():
+        if ((cls and widget.inherits(name)) or
+            (not cls and widget.objectName() == name)):
+            widgets.append(widget)
+    return widgets
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'Size'#---------------------------------------------------------------------
+
+
+# get size:
+widget.width = self.ui.frameGeometry().width()
+widget.height = self.ui.frameGeometry().height()
+
+#for widget:
+mainWindow = QtGui.QWidget()
+width = mainWindow.frameGeometry().width()
+height = mainWindow.frameGeometry().height()
+#for screen:
+mainWindow = QtGui.QWidget()
+screenShape = QtGui.QDesktopWidget().screenGeometry()
+
+
+# set size:
+QtCore.QSize.setWidth() 
+QtCore.QSize.setHeight()
+
+#resize
+button.resize(100,30)
+button.resize(w*2,h*2)
+button.resize(w//2,h//2)
+widget.resize(width, height) #window size
+
+#shrink the window to minimum size.
+widget.resize(minimumSizeHint())
+widget.setFixedSize(widget.sizeHint())
+
+# If you want to only shrink in height, then you can do something like:
+widget.resize(widget.width(), widget.minimumSizeHint().height())
+
+#automaticly resize to fit content
+widget.adjustSize()
+
+#resize to fit screen
+mainWindow.resize(widget.screenShape.width(), widget.screenShape.height())
+
+# get recommended widget size
+widget.sizeHint
+widget.setMinimumSize(widget.layout.sizeHint())
+
+
+ui.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)		
+
+
+# overload sizeHint:
+def sizeHint(self):
+	return QtCore.QSize(15, 15)
+
+
+
+widget.geometry()
+
+#holds the geometry of the widget as it will appear when shown as a normal (not maximized or full screen) top-level widget.
+#Note, the widget must be first shown for this to return something other than (0,0)
+widget.normalGeometry(). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'Position'#-----------------------------------------------------------------
+
+# Position
+.offsetPos
+widget.offsetPos(offset)
+
+
+#move
+widget.move(<QPoint>)
+widget.move(15,15)
+widget.move.y(15)
+
+
+#center of widget
+widget.rect().center()
+#relative to its parent
+widget.mapToParent(c)
+#relative to the screen
+widget.mapToGlobal(c)
+
+
+#x coord of parents center
+ex. widget.parentWidget().rect().center().x()
+
+#QPoint
+point.isNull() #Returns true if both the x and y coordinates are set to 0
+point.manhattanLength() #Returns the sum of the absolute values of QPoint.x() & QPoint.y()
+point.setX(x)
+point.setY(y)
+point.toTuple()
+point.x() #Returns the x coordinate of this point.
+point.y() #Returns the y coordinate of this point.
+
+
+#QRect
+rect.x() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to left()
+rect.y() #Returns the y-coordinate of the rectangle’s top edge. Equivalent to top()
+rect.setX(x) #Sets the left edge of the rectangle to the given x coordinate. May change the width, but will never change the right edge of the rectangle.
+rect.setY(y) #Sets the top edge of the rectangle to the given y coordinate. May change the height, but will never change the bottom edge of the rectangle.
+rect.size() #Returns the size of the rectangle.
+rect.setSize(s) #Sets the size of the rectangle to the given size . The top-left corner is not moved.
+rect.width() #Returns the width of the rectangle.
+rect.setWidth(w) #Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
+rect.height() #Returns the height of the rectangle.
+rect.setHeight(h) #Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
+rect.top() #Returns the y-coordinate of the rectangle’s top edge.
+rect.topLeft() #Returns the position of the rectangle’s top-left corner.
+rect.topRight() #Returns the position of the rectangle’s top-right corner.
+rect.bottom() #Returns the y-coordinate of the rectangle’s bottom edge.
+rect.bottomLeft() #Returns the position of the rectangle’s bottom-left corner.
+rect.bottomRight() #Returns the position of the rectangle’s bottom-right corner.
+rect.left() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to x().
+rect.right() #Returns the x-coordinate of the rectangle’s right edge.
+rect.center() #Returns the center point of the rectangle.
+rect.getRect() #Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
+rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to (x , y ), and its size to the given width and height .
+rect.getCoords() #Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
+rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to (x1 , y1 ), and the coordinates of its bottom-right corner to (x2 , y2 ).
+rect.contains(x, y) #or QPoint. Returns true if the point (x , y ) is inside or on the edge of the rectangle
+rect.intersects() #Returns true if this rectangle intersects with the given rectangle.
+rect.intersect() #Use intersected(rectangle ) instead.
+rect.intersected() #Returns the intersection of this rectangle and the given rectangle . Note that r.intersected(s) is equivalent to r & s .
+rect.adjust(x1, y1, x2, y2) #Adds dx1 , dy1 , dx2 and dy2 respectively to the existing coordinates of the rectangle.
+rect.translate(dx, dy) #Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
+rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position (x , y ). The rectangle’s size is unchanged.
+rect.isEmpty() #Returns true if the rectangle is empty.
+
+
+
+
+# Cursor position
+self.mousePosition = event.pos() #relative position to mouseEvent
+self.mousePosition = QtGui.QCursor.pos() #global position
+
+w.pos() #widget positon
+w.mapFromGlobal(point)
+w.mapFrom(widget, point)
+w.mapTo(widget, point)
+w.mapFromParent(point)
+w.mapToParent(point)
+
+#check if cursor is inside widget
+w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos()))
+
+#
+w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
+
+
+
+
+# bring front - send back
+self.ui.raise_
+self.ui.lower()
 
 
 
@@ -1575,9 +1030,45 @@ ex. return super(HotBox, self).eventFilter(self, event) #returns the event that 
 
 
 
+# Remove event filter ------------------------------------------------------
+
+self.ui.cmb002.removeEventFilter() #Removes an event filter object obj from this object. 
+#The request is ignored if such an event filter has not been installed.
+#All event filters for this object are automatically removed when this object is destroyed.
+#It is always safe to remove an event filter.
+
+
+
+
+
+
+#QtTest simulated keyboard/mouse events
+from PySide2.QtTest import QTest
+QTest.mouseRelease(self, QtCore.Qt.RightButton)
+self.blockSignals(True)
+QTest.mousePress(self, QtCore.Qt.RightButton)
+self.blockSignals(False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 'Mouse Event'#--------------------------------------------------------------
+
+#mouse move
+event.type() == QtCore.QEvent.MouseMove
 
 
 # Mouse button
@@ -1607,7 +1098,10 @@ if event.buttons() & QtCore.Qt.LeftButton and event.modifiers() & QtCore.Qt.Cont
 mouseTracking::#bool, default: distabled,
 # Access functions:
 .hasMouseTracking
-.setMouseTracking(True)
+.setMouseTracking(True) #triggers the mouseMove event for all mouse movements rather then only when button is pressed.
+
+
+
 
 
 QWidget.underMouse() #Returns true if the widget is under the mouse cursor; otherwise returns false.
@@ -1638,12 +1132,12 @@ QEvent::MouseButtonRelease 	#Mouse release (QMouseEvent).
 .mouseReleaseEvent
 ex.
 mouseReleaseEvent = QtGui.QMouseEvent(
-											QtCore.QEvent.MouseButtonRelease,
-											self.cursor().pos(),
-											QtCore.Qt.LeftButton,
-											QtCore.Qt.LeftButton,
-											QtCore.Qt.NoModifier,
-										)
+								QtCore.QEvent.MouseButtonRelease,
+								self.cursor().pos(),
+								QtCore.Qt.LeftButton,
+								QtCore.Qt.LeftButton,
+								QtCore.Qt.NoModifier,
+								)
 #QtCore.QEvent.Type
 if event.type() == QtCore.QEvent.Type.MouseButtonRelease:
 
@@ -1653,6 +1147,7 @@ QtCore.QEvent.Type.UngrabMouse
 
 
 QEvent::wheel 	#Mouse wheel rolled (QWheelEvent).
+
 
 
 
@@ -1691,14 +1186,14 @@ QtTest.QTest.mouseRelease(widget, button[, stateKey=0[, pos=QPoint()[, delay=-1]
 #mouse/keyboard
 ex. widget.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
 
-WA_Hover #Forces Qt to generate paint events when the mouse enters or leaves the widget.
+self.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
+self.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
+self.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
+self.setAttribute(QtCore.Qt.WA_MouseTracking) #Indicates that the widget has mouse tracking enabled.
+self.setAttribute(QtCore.Qt.WA_NoMousePropagation)
+self.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
 
-WA_UnderMouse #Indicates that the widget is under the mouse cursor.
 
-WA_NoMouseReplay #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
-
-WA_MouseTracking #Indicates that the widget has mouse tracking enabled.
-WA_TransparentForMouseEvents #disables the delivery of mouse events to the widget and its children
 
 
 PySide.QtGui.QWidget.grabMouse()
@@ -1707,13 +1202,45 @@ PySide.QtGui.QWidget.releaseMouse()
 
 
 
+#mask mouse events
+def settingMask(self):
+    region = qg.QRegion(self._mainWidget.frameGeometry())
+    region -= qg.QRegion(self._mainWidget.geometry())
+    region += self._mainWidget.childrenRegion()
+    self._mainWidget.setMask(region)
+# Also, on my system (Linux), I found I had to call this after the window is shown:
+    ...
+    myWinPos.show()
+    myWinPos.settingMask()
+    sys.exit(qtApp.exec_())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 'Keyboard Event'#-----------------------------------------------------------
 
 
-WindowTransparentForInput
-WA_InputMethodTransparent
-WA_KeyboardFocusChange #Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
+self.setAttribute(QtCore.Qt.WA_InputMethodTransparent)
+self.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
+
+
 
 
 setFocusPolicy( Qt::NoFocus );
@@ -1968,6 +1495,15 @@ cb.view().installEventFilter(eventFilter)
 
 
 
+
+
+
+
+
+
+
+
+
 'Paint Event'#--------------------------------------------------------------
 
 	def paintEvent(self, event):
@@ -1996,6 +1532,25 @@ cb.view().installEventFilter(eventFilter)
 
 painter = QtGui.QPainter(self)
 painter.fillRect(self.rect(), QtGui.QColor(80, 80, 255, 128))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 'Signals'#------------------------------------------------------------------
@@ -2092,6 +1647,18 @@ cmb.blockSignals(False)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 'Drag and Drop'#------------------------------------------------------------
 
 ex.
@@ -2120,6 +1687,15 @@ def dropEvent( self, event ):
         # for some reason, this doubles up the intro slash
         filepath = str(urls[0].path())[1:]
         self.setText(filepath)
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2176,24 +1752,39 @@ if __name__ == '__main__':
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 'Heirarchy'#-----------------------------------------------------------------
 
-ex.
-parent = QtCore.QObject()
-parent.setObjectName("parent")
 
-child = QtCore.QObject()
-child.setObjectName("child")
-
+#set parent:
 child.setParent(parent)
-
-#calling:
-parent.children()
-#returns [QtCore.Qbject at 0x10xxxxxx]
+#
+button = QtWidgets.QPushButton('ButtonName', parent=widget)
 
 
-ex.
-button = QtGui.QPushButton("ButtonName", parent=widget)
+#get child objects:
+parent.children() #returns [QtCore.Qbject at 0x10xxxxxx]
+#
+centralwidget.children()
+#get specific
+checkbox = parent.findChild(QtWidgets.QCheckBox, 'checkBoxEnabled')
+
+
+
+
+
+
+
 
 
 # Parenting to maya main window:
@@ -2217,9 +1808,35 @@ _GCProtector.widgets.append(applicationWindow) #append to garbage collector
 
 
 
+
+
+
+
+
+
+
+
+
 'Time'#----------------------------------------------------------------------
 
-_timer = QtCore.QTimer(
+_timer = QtCore.QTimer()
+
+
+
+#set interval
+timer = QtCore.QTimer()
+timer.setInterval(1000.0 / 25)  #25 times per second
+timer.timeout.connect(<function>)
+timer.start()
+# timer.stop()  # Call this to stop printing
+
+
+
+
+
+
+
+
 
 
 
@@ -2256,27 +1873,17 @@ tb.show()
 
 
 
+
+
+
+
+
+
+
+
+
+
 'Dynamic Ui'#----------------------------------------------------------------
-
-
-# sorting through the ui
-#put the widgets into a generator. identify widget types so they can be handled accordingly
-ex. QObject.findChildren()
-
-ex. widgets = (layout.itemAt(i).widget() for i in range(layout.count()))
-	for w in widgets:
-		if isinstance(widget, QLineEdit):
-			print "linedit: %s  - %s" %(widget.objectName(),widget.text())
-			print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
-#alt
-ex.	for widget in centralwidget.children():
-		if isinstance(widget, QLineEdit):
-			print "linedit: %s  - %s" %(widget.objectName(),widget.text())
-
-		if isinstance(widget, QCheckBox):
-			print "checkBox: %s  - %s" %(widget.objectName(),widget.checkState())
-
-ex. self.ui.findChildren(QtWidgets.QPushButton) #pass a type (or tuple of types) as the first argument, and an optional string as the second argument (for matching the objectName).
 
 
 layout.count()
@@ -2286,8 +1893,14 @@ layout.columnCount()
 
 
 
-	    
+#get widgets from layout:
+widgets = (layout.itemAt(i).widget() for i in range(layout.count()))
+items = (layout.itemAt(i) for i in range(layout.count()))
 
+#get widgets from dynamic ui:
+for buttonName, buttonObject in ui.__dict__.iteritems(): #for each object in the ui:
+	for buttonType, signal in signalType.iteritems():
+		if buttonObject.__class__.__name__==buttonType: #if it is a type listed in the signalType dict, construct with the associated signal.
 
 
 
@@ -2343,6 +1956,22 @@ directory = fileDialog.getExistingDirectory()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 'External Applications'#-----------------------------------------------------
 
 #maya
@@ -2350,6 +1979,20 @@ pm.lsUI (
 numWidgets(nw)	#[boolean,create]  Reports the number of QT widgets used by Maya.
 dumpWidgets(dw)	#[boolean,create]  Dump all QT widgets used by Maya.
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2423,6 +2066,18 @@ class Button(QtCore.QObject):
 
 #python wheels: (download and install locally to make sure the correct wheel gets installed)
 http://download.qt.io/snapshots/ci/pyside/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2587,6 +2242,59 @@ QMenu::icon:checked { /* appearance of a 'checked' icon */
 	left: 1px;
 }
 ''')
+
+
+
+buttonObject.setStyleSheet("") ##set style sheet to default. also (styleSheet())
+
+
+button.setStyleSheet('''QPushButton {
+}''')
+
+
+.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
+
+	QTreeWidget {border:none;} 
+	QTreeWidget::item {height: 20px;}
+	QTreeView {
+  }
+
+STYLESHEET = '''
+	    background-color: #ABABAB; /* sets background of the menu */
+	    border: 1px solid black;
+
+	    /* sets background of menu item. set this to something non-transparent
+	        if you want menu color and menu item color to be different */
+	    background-color: transparent;
+
+	QMenu::item:selected { /* when user selects item using mouse or keyboard */
+	    background-color: #654321;
+	For a more advanced customization, use a style sheet as follows:
+
+	QMenu {
+	    background-color: white;
+	    margin: 2px; /* some spacing around the menu */
+
+	QMenu::item {
+	    padding: 2px 25px 2px 20px;
+	    border: 1px solid transparent; /* reserve space for selection border */
+
+	QMenu::item:selected {
+	    border-color: darkblue;
+	    background: rgba(100, 100, 100, 150);
+	}
+
+	QMenu::icon:checked { /* appearance of a 'checked' icon */
+	    background: gray;
+	    border: 1px inset gray;
+	    position: absolute;
+	    top: 1px;
+	    right: 1px;
+	    bottom: 1px;
+	    left: 1px;
+	}'''
+
+
 
 
 

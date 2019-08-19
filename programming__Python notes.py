@@ -453,6 +453,20 @@ while i < len(xyz):
 
 'Variables__________________________________________________________________________________'
 
+# Naming Convention
+#class (capitalized)
+ClassVariable
+
+#name mangling:
+#protected variable. by convention do not modify outside of subclass
+_variable
+#private variable. prefixed with at least 2 underscores & at most 1 suffix
+__variable
+#call a private variable from outside its class.
+._Test__variable
+
+
+
 
 # Assignment
 #assign multiple variables the same value
@@ -477,47 +491,40 @@ eg. for key,value in kwargs.iteritems(): #create variables for any kwargs passed
 
 
 
-# Convention
-#class.
-ClassVariable
-
-#name mangling:
-#protected variable. by convention do not modify outside of subclass
-_variable
-#private variable. prefixed with at least 2 underscores & at most 1 suffix
-__variable
-#call a private variable from outside its class.
-._Test__variable
 
 
-
-# Query
 #check if variable exists. an alternative would be to use try: except:
 eg. 'a' in vars() or 'a' in globals()
 
 
+#get object from string
+eg. button = getattr(self.ui, 'self.ui.obj')
+#assign default value if no object found:
+getattr(class_, 'method', None)
 
+
+
+
+#check object type
 #type:
 str, unicode, int, float, complex
 list, dict, tuple, set, frozenset
 bytes, bytearray
 object
 bool
-
-#check object type
-eg. type(object_) #Returns: <type 'str'>
+eg. type(obj) #Returns: <type 'str'>
 #
-eg. isinstance(object_, (str,unicode)) #Returns: bool
+eg. isinstance(obj, (str,unicode)) #Returns: bool
 #using types (import types)
 # types.LambdaType
 # types.MethodType
 # types.GeneratorType
-type(object_) == types.FunctionType
+type(obj) == types.FunctionType
 #using numbers (import numbers)
 isinstance(10, numbers.Integral) #Returns: True
 isinstance(10.5, numbers.Integral) #Returns: False
 #if type==callable
-eg. callable(object_)
+eg. callable(obj)
 
 
 
@@ -542,8 +549,7 @@ eg. variable = input('enter a filename')
 
 
 
-#get object with a string
-eg. button = getattr(self.ui, 'self.ui.object_')
+
 
 
 #execute a string statement.
@@ -884,7 +890,7 @@ list_[:] = list_ #or ex. [-2:] for last two elements
 
 
 #check if object is a list:
-if isinstance(object_, list):
+if isinstance(obj, list):
 
 
 #length of list (or dictionary)
@@ -910,8 +916,14 @@ eg. try:
 #check if list contains type of element:
 #contains list:
 eg. any(isinstance(i, list) for i in list_)
-#is list of lists:
-eg. if list_[0]:
+
+
+
+#remove None values from list:
+#using list comprehension:
+[i for i in list_ if i]
+#using filter:
+list(filter(None, list_))
 
 
 
@@ -1728,21 +1740,9 @@ eg. func(**dict_)
 
 'Lambda_Expressions_(anonymous_function)____________________________________________________'
 
+eg. lambda x,y: x+y #can be assigned a variable although it is usually better to just define a function with def
+ 
 
-lambda
-print((lambda x: x*x)(4))
-#where x is defined as 4 and plugged into a simple function x*x. lambdas can 
-# take multiple arguments eg. lambda x,y,z:
-
-eg. variable = lambda x: x*2                        
-#can be assigned a variable although it is usually better to just define a function with def
-
-print(variable(4))
-
-eg. def function(x, y):                      
-#defines a lambda function where the x argument == -4 and y is == 5
-		return x*y
-	 print(function(-4),5) 
 
 eg. def function(arg1, arg2):             
 #lambda function plugged into another function as an argument where 
@@ -2026,9 +2026,8 @@ tk_hotBox_init.hbShow()
 object.method()
 
 
-#instance using getattr
-class_ = getattr(module, 'ClassName')
-instance = class_()
+
+
 
 
 #Get python class object from name string.
@@ -2050,7 +2049,16 @@ buttonObject = getattr(obj, attribute)(arg1, arg2, arg3)
 #with args/kwargs:
 args = ['flip', 'do']
 kwargs = {'foo':'bar'}
-buttonObject = getattr(object_, attribute)(*args, **kwargs)
+buttonObject = getattr(obj, attribute)(*args, **kwargs)
+
+
+#get object attributes:
+#using dict:
+obj.__dict__
+#using dir:
+dir(obj)
+#using vars:
+vars(obj)
 
 
 
@@ -2075,9 +2083,10 @@ setattr(x, 'y', v) #is equivalent to x.y = v
 # calling an instance of a class (instantiating the class:)
 instance = Class()
 instance.classMethod()
-#same as
+#same as (for single use case)
 Class().classMethod()
-
+#instance from string using getattr
+instance = getattr(module, 'ClassName')()
 
 
 

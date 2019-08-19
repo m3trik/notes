@@ -211,11 +211,10 @@ time: 0.0816165578988
 
 
 
-
 fix maya's delete shortcut.  reg delete button works.
 
 
-layout not recentering after layout change
+
 
 
 init heads up display contents not current. require refresh
@@ -238,9 +237,6 @@ fix repeat last command
 
 bug: transform negative '-' sets spinbox value to 0.  
 
-line 1640, in b010
-    parent = pm.listRelatives(instances[0], parent=True)[0]
-UnboundLocalError: local variable 'instances' referenced before assignment
 
 
 
@@ -257,7 +253,7 @@ UnboundLocalError: local variable 'instances' referenced before assignment
 # -----------------------------------------------
 '''
 
-#combine fill hole and tri-fill buttons in polygons.  remove reverse normals and instead check for surrounding normal direction.
+#combine bridge and tri-fill buttons in polygons.  remove reverse normals and instead check for surrounding normal direction.
 
 
 #use the maxplus method to parent the widget to the app. remove disable keyboard from show/hide events, and import maxplus when creating instance.
@@ -686,6 +682,13 @@ spinboxes increment an extra decimal place while holding shift key (pyside key m
 
 MORE INVOLVED:
 
+
+framework for interactive tool settings, using polygons> bevel as model.
+
+create optionBox method. create new button beside given button, resizing to compensate.    
+
+keyword app/local command search (using namespace)
+
 add framework for interactive tools (use radial array as a model)
 
 build layer editor.
@@ -704,7 +707,7 @@ build a selection function that returns different the current selection
 
 radial symmetry
 
-straighten circle tool.
+straighten circle tool. (third party script in maya projects folder)
 average curve tool.
 
 

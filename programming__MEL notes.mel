@@ -1,67 +1,5 @@
 
-// component name extensions:
-""				.e 	edge
-""				.f 	face
-""				.v  vert
 
-
-
-//surface info
-//edge, face, area (returns surface area of of selected object as float), uvComponent (selected UV faces as int)
-numVerts = pm.polyEvaluate (obj, vertex=1)
-numEdges = pm.polyEvaluate (obj, edge=1)
-numFaces = pm.polyEvaluate (obj, face=1)
-
-
-
-
-
-
-
-
-
-// optional components arg (else use selection).
-// optionional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
-//vertex
-verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
-//edge
-edges = pm.filterExpand(edges, expand=1, selectionMask=32)
-//face
-faces = pm.filterExpand(faces, expand=1, selectionMask=34)
-
-
-
-// get components
-//get all [.vtx, .f, .e]
-//alt using ls
-obj = 'pSphere1'
-vtx = pm.ls(obj+'.vtx[*]', flatten=True)
-//alt using polyevaluate
-faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
-
-//get currently selected components
-components = cmds.ls(selection=True, flatten=True)
-//selected vertices as int
-selectedVerts = [v.split('[')[-1].rstrip(']') for v in pm.filterExpand(sm=31)]
-polyEvaluate -vertexComponent $obj //selected vertices as int
-selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(sm=32)]
-polyEvaluate -edgeComponent $obj //
-selectedFaces = [f.split('[')[-1].rstrip(']') for f in pm.filterExpand(sm=34)]
-polyEvaluate -faceComponent $obj //
-
-
-
-
-
-
-vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //'.vtx','.e','.f'
-
-
-
-
-
-
-pm.xform (vertices, query=1, t=1, ws=1)
 
 
 
@@ -1096,7 +1034,7 @@ select -all;
 		-allDagObjects
 		-allDependencyNodes
 
-ex. selection = pm.ls(selection=1, flatten=1)
+eg. selection = pm.ls(selection=1, flatten=1)
 	pm.select(deselect=1)
 	pm.select(selection) //#select all from list
 
@@ -1154,8 +1092,17 @@ ls -visible;
 
 
 
+
+
 // Naming: -------------------------------------------------
+
+
+
+
+//rename object
 pm.rename(obj, 'newName') //#optional arg: ignoreShape=Indicates that renaming of shape nodes below transform nodes should be prevented.
+//create with a unique name using '#' suffix
+pm.modelPanel('name#', cam='persp')
 
 
 
@@ -1241,10 +1188,6 @@ string $meshes[] = `ls -typ mesh`;
 
 
 
-
-lsUI				//list ui objects
-					eg.
-					lsUI -windows;	
 
 
 
@@ -1368,26 +1311,32 @@ select -r ($myObj + ".vtx ");
 
 
 
-//component selection mode/type:
-$mode = `selectMode -query -component`;
-$maskVertex = `selectType -query -vertex`;
-$maskEdge = `selectType -query -edge`;
-$maskFacet = `selectType -query -facet`;
+
+
 
 // component selection mask
 faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1)
+edges = pm.filterExpand(selection, selectionMask=32, expand=1)
 
 
 //get:
 //query object mode.
 $mode = `selectMode -query -object`;
-//query component selection mode/type:
 pm.selectMode(query=1, object=1)
-pm.selectMode(query=1, component=1)
 pm.selectType(query=1, allObjects=1)
+//query component selection mode/type:
+$mode = `selectMode -query -component`;
+pm.selectMode(query=1, component=1)
+//vertex
+$maskVertex = `selectType -query -vertex`;
 pm.selectType(query=1, vertex=1)
+//edge
+$maskEdge = `selectType -query -edge`;
 pm.selectType(query=1, edge=1)
+//face
+$maskFacet = `selectType -query -facet`;
 pm.selectType(query=1, facet=1)
+
 
 //set:
 //object mode
@@ -1404,6 +1353,18 @@ pm.selectType(facet=1)
 
 
 
+
+//surface info
+//edge, face, area (returns surface area of of selected object as float), uvComponent (selected UV faces as int)
+numVerts = pm.polyEvaluate (obj, vertex=1)
+numEdges = pm.polyEvaluate (obj, edge=1)
+numFaces = pm.polyEvaluate (obj, face=1)
+
+
+
+pm.xform (vertices, query=1, t=1, ws=1)
+
+
 // object name extensions:
 objectName.map 	UV
 ""				.e 		edge
@@ -1414,7 +1375,25 @@ polySphereShape.f[*]
 
 
 
-// get component
+
+// get components
+//get all [.vtx, .f, .e]
+//alt using ls
+obj = 'pSphere1'
+vtx = pm.ls(obj+'.vtx[*]', flatten=True)
+//alt using polyevaluate
+faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
+
+//get currently selected components
+components = cmds.ls(selection=True, flatten=True)
+//selected vertices as int
+selectedVerts = [v.split('[')[-1].rstrip(']') for v in pm.filterExpand(sm=31)]
+polyEvaluate -vertexComponent $obj //selected vertices as int
+selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(sm=32)]
+polyEvaluate -edgeComponent $obj //
+selectedFaces = [f.split('[')[-1].rstrip(']') for f in pm.filterExpand(sm=34)]
+polyEvaluate -faceComponent $obj //
+
 //get all faces from object
 faces = pm.filterExpand(obj+'.f[*]', sm=34)
 //verts
@@ -1445,6 +1424,17 @@ polyEvaluate -vertex $obj;
 			 -area //returns surface area of of selected object as float
 			 -uvComponent //selected UV faces as int
 
+
+
+
+// optional components arg (else use selection).
+// optional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
+//vertex
+verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
+//edge
+edges = pm.filterExpand(edges, expand=1, selectionMask=32)
+//face
+faces = pm.filterExpand(faces, expand=1, selectionMask=34)
 
 
 
@@ -1483,6 +1473,11 @@ vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices
 vertexList = []
 for vertex in vertices.split():
 	vertexList.append(componentName+".vtx["+vertex+"]")
+
+
+
+
+vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //'.vtx','.e','.f'
 
 
 
@@ -1855,18 +1850,59 @@ normal = [round(i-min(xyz)/(max(xyz)-min(xyz)),6) for i in xyz] #normalize and r
 
 
 
+
+
+"DEPENDENCY GRAPH: //------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+
+
+
+
+
+
+
+
+
+"UI: //--------------------------------------------------------------------------------------------------------------------------------------------------" 
+
+//list ui objects
+//#List all windows.
+eg. lsUI -windows;
+eg. pm.lsUI(windows=1)
+
+//#List all panels and editors.
+eg. pm.lsUI(panels=1, editors=1)
+
+//#Use the -typ/type flag to list all controls and control layouts.
+//#Alternatively, you could use the -ctl/controls and -cl/controlLayouts flags.
+eg. pm.lsUI(type=['control','controlLayout'])
+//#alt: ("window", "menu", "menuItems", "panels", "editors", "control", "controlLayout", "collection", "radioMenuItemCollections")
+eg. pm.lsUI(controls=True, controlLayouts=True)
+
+
+
+//search
+//qtWidgets with the string 'layer' and 'Layout'
+keyword1 = 'layer' //case insensitive.
+keyword2 = 'Layout' //case sensitive. Can be left as empty string.
+widgets = {w.objectName():w for w in QtWidgets.QApplication.allWidgets() if keyword1 in w.objectName() and keyword2 in w.objectName() or keyword1.title() in w.objectName() and keyword2 in w.objectName()}
+//using lsUi to find editors,panels,windows,menus,controls,controlLayouts with the string 'channel'
+keyword1 = 'channel' //case insensitive.
+print [str(i.keyword1()) for i in pm.lsUI(editors=1,panels=1,windows=1,menus=0,controls=0, controlLayouts=1) if keyword1 in i or keyword1.title() in i]
+
+
+
+
+
+
 "LAYER EDITOR: //----------------------------------------------------------------------------------------------------------------------------------------"
 
 // # Create a layer.
 layer = pm.createDisplayLayer()
 // # Change layer visibility to reference. '2'
 pm.setAttr("{}.displayType".format(layer), 2)
-
-
-
-
-
-"DEPENDENCY GRAPH: //------------------------------------------------------------------------------------------------------------------------------------"
 
 
 

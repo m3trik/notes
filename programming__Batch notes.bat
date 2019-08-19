@@ -17,6 +17,7 @@ ECHO	print
 
 :: commenting
 rem comment
+:: comment
 
 
 :: escape characters

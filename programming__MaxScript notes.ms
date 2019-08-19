@@ -1165,32 +1165,8 @@ format "% objects selected." selection.count
 
 
 
--- component selection
 
 
-ex. rt.select(vertices)
-ex. rt.polyop.setVertSelection(obj, verts) --select the vertices
-ex. obj.EditablePoly.SetSelection('Vertex', rt.BitArray(10)) --bitarray value 9
-ex. rt.select(edges)
-ex. rt.polyop.setEdgeSelection(obj, edges) --select the edges
-ex. obj.EditablePoly.SetSelection('Edge', rt.BitArray(*range(10))) --bitarray range 0-9
-ex. rt.select(faces)
-ex. rt.polyop.setFaceSelection(obj, faces)  --select the faces
-ex. obj.EditablePoly.SetSelection('Face', rt.BitArray(*range(10, 20))) --bitarray range 10-19
-
-
-vertices = rt.getVertSelection(obj) --get selected Vertices
-edges = rt.getEdgeSelection(obj) --get selected edges
---using vertices
-edges = rt.polyop.getEdgesUsingVert(obj, vertices)
-faces = rt.getFaceSelection(obj) --get selected faces
-
-
-
---multi-component selection
-obj.selectMode = 0 --off
-obj.selectMode = 1 --sub-object selection preview
-obj.selectMode = 2 --multi-component selection preview
 
 
 
@@ -1211,6 +1187,16 @@ numSubObjectLevels
 IsSubSelEnabled()
 
 
+--multi-component selection
+obj.selectMode = 0 --off
+obj.selectMode = 1 --sub-object selection preview
+obj.selectMode = 2 --multi-component selection preview
+
+
+
+
+
+
 
 -- convert component selection type
 --'Object', 'Vertex', 'Edge', 'Border', 'Face', 'Element', 'CurrentLevel'
@@ -1218,9 +1204,26 @@ rt.selection[0].ConvertSelection('CurrentLevel', 'Face')
 
 
 
---selection sets
---make a selection set from objects starting with 'Box'
-selectionSets["Boxes"] = $Box*
+-- component selection
+-- vertices
+ex. rt.select(vertices)
+ex. rt.polyop.setVertSelection(obj, verts) --select the vertices
+ex. obj.EditablePoly.SetSelection('Vertex', rt.BitArray(10)) --bitarray value 9
+-- edges
+ex. rt.select(edges)
+ex. rt.polyop.setEdgeSelection(obj, edges) --select the edges
+ex. obj.EditablePoly.SetSelection('Edge', rt.BitArray(*range(10))) --bitarray range 0-9
+-- faces
+ex. rt.select(faces)
+ex. rt.polyop.setFaceSelection(obj, faces)  --select the faces
+ex. obj.EditablePoly.SetSelection('Face', rt.BitArray(*range(10, 20))) --bitarray range 10-19
+
+
+vertices = rt.getVertSelection(obj) --get selected Vertices
+edges = rt.getEdgeSelection(obj) --get selected edges
+--using vertices
+edges = rt.polyop.getEdgesUsingVert(obj, vertices)
+faces = rt.getFaceSelection(obj) --get selected faces
 
 
 
@@ -1241,7 +1244,9 @@ ex. rt.deselectNode(node)
 deselect $Dummy??
 
 
-
+--selection sets
+--make a selection set from objects starting with 'Box'
+selectionSets["Boxes"] = $Box*
 
 
 
