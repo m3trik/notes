@@ -2019,6 +2019,31 @@ if 'tk_hotBox_init' not in locals() or 'tk_hotBox_init' not in globals():
 tk_hotBox_init.hbShow()
 
 
+#count the number of instances:
+class Obj:
+    _counter = 0
+    def __init__(self):
+        Obj._counter += 1
+        self.id = Obj._counter
+#using itertools:
+from itertools import count
+
+class Obj(object):
+  _ids = count(0)
+
+  def __init__(self):
+    self.id = next(self._ids)
+#using a generator:
+def get_next_id():
+    curr_id = 1
+    while True:
+        yield curr_id
+        curr_id += 1
+
+
+
+
+
 # methods and attributes ---------------------------------
 #a method is a function that is a member of a class
 #object = what you want to do     
@@ -2422,17 +2447,17 @@ eg. var = choice(['A', 'B', 'C'])
 'Keyboard/Mouse_____________________________________________________________________________'
 
 
-#using ctypes
-SetCursorPos = ctypes.windll.user32.SetCursorPos
-mouse_event = ctypes.windll.user32.mouse_event
 
-def left_click(x, y, clicks=1):
-  SetCursorPos(x, y)
-  for i in xrange(clicks):
-   mouse_event(2, 0, 0, 0, 0)
-   mouse_event(4, 0, 0, 0, 0)
+# mouse tracking:
+class Point(Structure):
+	_fields_ = [("x", c_long), ("y", c_long)]
 
-left_click(200, 200) #left clicks at 200, 200 on your screen. Was able to send 10k clicks instantly.
+
+def getMousePosition():
+	pt = Point()
+	windll.user32.GetCursorPos(byref(pt))
+	return {"x": pt.x, "y": pt.y}
+
 
 
 
@@ -2466,6 +2491,21 @@ def getKeyState(key):
 	#   return False #key up
 	#commented out as block was causing odd highlighting in lower notes
 
+
+
+
+# simulate a mouse click
+#using ctypes
+SetCursorPos = ctypes.windll.user32.SetCursorPos
+mouse_event = ctypes.windll.user32.mouse_event
+
+def left_click(x, y, clicks=1):
+  SetCursorPos(x, y)
+  for i in xrange(clicks):
+   mouse_event(2, 0, 0, 0, 0)
+   mouse_event(4, 0, 0, 0, 0)
+
+left_click(200, 200) #left clicks at 200, 200 on your screen. Was able to send 10k clicks instantly.
 
 
 

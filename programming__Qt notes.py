@@ -10,7 +10,7 @@
 QtCore		# core non-graphical classes used by other modules
 QtGui		# base classes for UI components
 QtWidgets	# classes to extend qt GUI with c++ widgets
-QObject		# basic non-visual building block. ex. signals, events,
+QObject		# basic non-visual building block. signals, events,
 #Additional: QtCharts, QtMultimedia, QtNetwork, QtQuick, QtTest,
 
 
@@ -31,26 +31,26 @@ QObject		# basic non-visual building block. ex. signals, events,
 
 QtGui.QApplication.allWidgets()
 
-QtGui.QApplication..topLevelWidgets()
-ex. widgets = dict((w.objectName(), w) for w in QtGui.QApplication.topLevelWidgets())
+#get top level widgets
+widgets = dict((w.objectName(), w) for w in QtGui.QApplication.topLevelWidgets())
 	window = widgets['MayaWindow']
 
-# get object name
-ex. name = QWidget.objectName()
+#get object name
+name = w.objectName()
 
 
 #get widget type:
-ex. QWidget.__class__.__name__ #returns class name as a string
+w.__class__.__name__ #returns class name as a string
 #alt using QMetaObject:
-ex. QWidget.metaObject().className()
+w.metaObject().className()
 #alt using type():
-ex. type(widget)
-ex. type(widget).__name__ #same as: QWidget.__class__
+type(widget)
+type(widget).__name__ #same as: w.__class__
 
 
 
-# Toggle
-QWidget.setVisible(not QWidget.isVisible()) 
+#Toggle
+w.setVisible(not w.isVisible()) 
 
 
 
@@ -85,42 +85,44 @@ widget = widgets['MainAttributeEditorLayout']
 
 
 
-# visibility
+#visibility
 
-# toggle visibility
-QWidget..setVisible(not QWidget..isVisible()) 
+#toggle visibility
+w.setVisible(not w.isVisible()) 
 
-.isEnabled	#bool
+w.isEnabled	#bool
 
-.isVisible	#bool
-.isHidden	#bool
-.setHidden(True)
+w.isVisible	#bool
+w.isHidden	#bool
+w.setHidden(True)
 
-self.show()
-self.hide()
-.close
+w.show()
+w.hide()
+w.close()
 
 
 
 
 #bring to front
-self.ui.raise_
+w.raise_()
 #send to back
-self.ui.lower()
+w.lower()
 
 
 
-# Focus
-QWidget.setFocusPolicy() Keyboard Focus #self.setFocusPolicy(QtCore.Qt.StrongFocus)
+#Focus
+w.setFocusPolicy() Keyboard Focus #w.setFocusPolicy(QtCore.Qt.StrongFocus)
 
-QWidget.clearFocus()
-QWidget.hasFocus()
-QWidget.setFocus()
-QWidget.clearFocus()
+w.clearFocus()
+w.hasFocus()
+w.setFocus()
+w.clearFocus()
+
+w.activateWindow() #Sets the top-level widget containing this widget to be a top-level window that has keyboard input focus.
 
 
 #shedule refresh 
-self.update()
+w.update()
 
 
 
@@ -130,7 +132,7 @@ self.update()
 
 
 
-# Remove widget
+#Remove widget
 for i in reversed(range(self.layout.count())): 
 	widgetToRemove = self.layout.itemAt(i).widget()
 	# remove it from the layout list
@@ -142,17 +144,17 @@ for i in reversed(range(self.layout.count())):
 
 
 
-# Layouts
+#Layouts
 
 QFormLayout
 QGridLayout
 QBoxLayout
 QVBoxLayout
 
-# stacking multiple widgets
+#stacking multiple widgets
 #setting up a stacked layout
 QStackedLayout
-eg.
+
 #build list of all widget names to be stacked
 uiList = ["init", "main", "viewport", "mainOptions", "viewportOptions", "normals", "create", "edit", "transform", "selection", "polygons", "nurbs", "texturing", "animation"]
 #use index to get ui name or set stack index
@@ -177,9 +179,9 @@ self.ui = self.stackedLayout.widget(index)
 
 
 
-# WA - Widget attribute
+#WA - Widget attribute
 #https://doc.qt.io/archives/qtjambi-4.5.2_01/com/trolltech/qt/core/Qt.WidgetAttribute.html
-QWidget..setAttribute(QtCore.Qt.WA_DeleteOnClose) #separated by |
+w..setAttribute(QtCore.Qt.WA_DeleteOnClose) #separated by |
 
 #state
 WA_WState_Created
@@ -209,7 +211,7 @@ def clearLayout(self, layout):
 		item = layout.takeAt(0)
 		widget = item.widget()
 		if widget is not None:
-			QWidget.deleteLater()
+			w.deleteLater()
 		else:
 			self.clearLayout(item.layout())
 
@@ -245,30 +247,30 @@ map(self.dial.valueChanged.connect, [self.spinbox.setValue, self.getValue_dial])
 
 
 #enable/ disable button objects
-ex. btn.setEnabled(False) #either method serves both functions. must be used with an argument
-ex. btn.setDisabled(True)
+b.setEnabled(False) #either method serves both functions. must be used with an argument
+b.setDisabled(True)
 
-btn.setDefault #QPushButton.setDefault() #Sets the button as default
+b.setDefault #QPushButton.setDefault() #Sets the button as default
 
 #hide/ unhide objects
-ex. btn.setVisible(False)
+b.setVisible(False)
 #query visible state
-ex. btn.isHidden()
+b.isHidden()
 
 
-btn.click() #emits clicked signal
+b.click() #emits clicked signal
 
-btn.clicked() #bool checked=False #QPushButton.clicked()
-btn.clicked.connect(method)
+b.clicked() #bool checked=False #QPushButton.clicked()
+b.clicked.connect(method)
 #or with arguments
-btn.clicked.connect(lambda ang=arg: self.methodToConnectTo(arg))
-btn.clicked.connect(lambda: method(f))
+b.clicked.connect(lambda x=arg: method(x))
+b.clicked.connect(lambda: method(x))
 
-btn.pressed() #bool #QPushButton.pressed()
-btn.released() #bool #QPushButton.released()
+b.pressed() #bool #QPushButton.pressed()
+b.released() #bool #QPushButton.released()
 
-btn.toggled() #bool. query pushbutton toggle state.
-btn.toggle() #Toggles the state of a checkable button.
+b.toggled() #bool. query pushbutton toggle state.
+b.toggle() #Toggles the state of a checkable button.
 
 
 
@@ -278,31 +280,31 @@ btn.toggle() #Toggles the state of a checkable button.
 #		self.ui.connect(HandleSelection, SIGNAL(toggled(bool)),MEL_HandleSelection,SLOT(setVisible(bool)));
 #		QObject::connect(moreButton, SIGNAL(toggled(bool)), tertiarypb7Box, SLOT(setVisible(bool)));
 
-btn.stateChanged() #QCheckBox.stateChanged()
-btn.stateChanged.connect(self.max_c000)
+b.stateChanged() #QCheckBox.stateChanged()
+b.stateChanged.connect(method)
 
 
 
-btn.setCheckable(True) #Recognizes pressed and released states of button if set to true
+b.setCheckable(True) #Recognizes pressed and released states of button if set to true
 
-btn.isChecked() #QPushButton.isChecked()
+b.isChecked() #QPushButton.isChecked()
 # Returns Boolean state of button
-btn.isChecked()
+b.isChecked()
 #setChecked
-btn.setChecked(True)
+b.setChecked(True)
 
 
 #button text
-btn.text #QPushButton.text() #Retrieves buttons’ caption or textfields value
-btn.setText #QPushButton.setText() #Programmatically sets buttons’ caption or textfields value
-btn.setText(0, 'text '+str(num)) #append integer
-btn.setText(0, "Parent {}".format(num)) #alt
+b.text #QPushButton.text() #Retrieves buttons’ caption or textfields value
+b.setText #QPushButton.setText() #Programmatically sets buttons’ caption or textfields value
+b.setText(0, 'text '+str(num)) #append integer
+b.setText(0, "Parent {}".format(num)) #alt
 
 
 # icon
-btn.setIcon #QPushButton.setIcon()
+b.setIcon #QPushButton.setIcon()
 # Shows an icon formed out of pixmap of an image file
-ex. btn.setIcon(QIcon(QPixmap("python.gif")))
+b.setIcon(QIcon(QPixmap("python.gif")))
 
 #set icon to rgb value:
 pixmap = QtGui.QPixmap(100,100)
@@ -328,7 +330,7 @@ s.setPrefix("") #Set a string prefix.
 s.setSuffix("") #Set the string suffix appended to the spinbox text.
 s.text() #gets prefix/suffix string value
 
-self.ui.spinbox.valueChanged.connect(self.b000)
+QSpinbox.valueChanged.connect(method)
 
 
 
@@ -371,43 +373,44 @@ cmb.showPopup()
 #remove contents
 cmb.clear()
 
-
 # get list contents:
 list_ = [cmb.itemText(i) for i in range(cmb.count())]
 components = pm.ls (selection=1, flatten=1)
 cmb.addItems(components)
+
 # add string
 cmb.addItem(component)
+
 # add signals:
-comboboxes = ["cmb000"]
-for combobox in comboboxes:
-	method = getattr (self, combobox)
-	ui = getattr (self.ui, combobox)
+comboboxes = ['cmb000']
+for cmb in comboboxes:
+	method = getattr(class_, cmb)
+	ui = getattr(ui, cmb)
 	ui.currentIndexChanged.connect(method)
 	ui.activated.connect(method)
 	method() #init comboboxes
+
 #additional signals:
-cmb.activated.connect(self.b034)
+cmb.activated.connect(method)
 QComboBox.activated(int).connect() #index of the selected item
 QComboBox.activated(unicode).connect() #[str] text of selected item
-highlighted () #index of the selected item
-highlighted (index) #[str] text of selected item
-currentIndexChanged ()
-currentIndexChanged (index)
-editTextChanged ()
-#eventFilter for button press #see also eventFilter for view event
-self.combo.installEventFilter(self)
-def eventFilter(self,target,event):
-	if target == self.combo and event.type() == QtCore.QEvent.MouseButtonPress:
-		print "Button press"
-		self.b034()
+highlighted() #index of the selected item
+highlighted(index) #[str] text of selected item
+currentIndexChanged()
+currentIndexChanged(index)
+editTextChanged()
 
+#eventFilter for button press #see also eventFilter for view event
+QComboBox.installEventFilter(self)
+def eventFilter(self,target,event):
+	if target==self.cmb and event.type()==QtCore.QEvent.MouseButtonPress:
+		print "Button press"
 
 #get/set data
-combo_box = QtGui.QComboBox()
-combo_box.addItem( 'description', my_data ) # set description, set data
-print combo_box.currentText() # get description
-print combo_box.itemData( combo_box.currentIndex() ) # get data
+cmb = QtGui.QComboBox()
+cmb.addItem( 'description', my_data ) # set description, set data
+print cmb.currentText() # get description
+print cmb.itemData( cmb.currentIndex() ) # get data
 
 
 
@@ -507,41 +510,35 @@ elif box.clickedButton() == buttonN:
 
 
 # QLineEdit
-ex.
-if lineEdit.text() == default_text:
-	lineEdit.setText("")
-	set_focus_in_color()
-	QtGui.QLineEdit.focusInEvent(lineEdit, QtGui.QFocusEvent(QtCore.QEvent.FocusIn))
-  
-lineEdit.focusInEvent = focus_in
+ex.	if lineEdit.text() == default_text:
+		lineEdit.setText("")
+		set_focus_in_color()
+		QtGui.QLineEdit.focusInEvent(lineEdit, QtGui.QFocusEvent(QtCore.QEvent.FocusIn))
+	  
+	lineEdit.focusInEvent = focus_in
 
 #		QLineEdit signal in
 #		Qt signals: editingFinished(), returnPressed(), selectionChanged(), textChanged(const QString &text), textEdited(const QString &text)
 #		Qt slots: clear(), copy() const, cut(), paste(), redo(), selectAll(), setText(const QString &), undo()  
-ex.
-self.ui.t001.returnPressed.connect(self.mel_b019) #qpushbutton b019
+ex.	QLineEdit.returnPressed.connect(self.mel_b019) #qpushbutton b019
 
 
 # .maxLength (int)  By default, this property contains a value of 32767
-ex.
-QLineEdit.maxLength()
-ex.
-QLineEdit.setMaxLength(8)
+ex.	QLineEdit.maxLength()
+ex.	QLineEdit.setMaxLength(8)
 
 
 #increment/ decrement a QLineEdit
-ex.
-def b001(self): #decrement t000
-	textfield = int(self.ui.t000.text()) #get current value
-	newText = str(textfield -1) #decrement amount
-	self.ui.t000.setText(newText) #set new value
+ex.	def b001(self): #decrement t000
+		textfield = int(self.ui.t000.text()) #get current value
+		newText = str(textfield -1) #decrement amount
+		self.ui.t000.setText(newText) #set new value
 
 
 # .setInputMask
 #allows the user to type only one digit ranging from 0 to 9. 
 #Use multiple 9's to allow the user to enter multiple numbers
-ex.
-QLineEdit.setInputMask("9")
+ex.	QLineEdit.setInputMask("9")
 
 #list of char arguments for setInputMask
 #Use \ to escape the special characters listed above to use them as separators.
@@ -576,10 +573,8 @@ QtGui.QDoubleValidator.setTop() #upper bound
 QtGui.QDoubleValidator.setDecimals() #limit on the number of digits after the decimal point
 
 #QDoubleValidator(bottom, top, decimals, parent)
-ex.
-QLineEdit.setValidator(QtGui.QIntValidator(0, 100))
-ex.
-QLineEdit.setValidator(QtGui.QDoubleValidator(0, 100, 2))
+ex.	QLineEdit.setValidator(QtGui.QIntValidator(0, 100))
+ex.	QLineEdit.setValidator(QtGui.QDoubleValidator(0, 100, 2))
 
 
 
@@ -632,7 +627,7 @@ t.fontWeight()
 
 # QButtonGroup
 # create buttonGroup
-ex. def groupButtons(self, groupName, group):
+def groupButtons(self, groupName, group):
 			#args: [string], [stringArray])
 			#returns: 
 			buttonGroup = QtWidgets.QButtonGroup(self.hb.ui)
@@ -642,7 +637,7 @@ ex. def groupButtons(self, groupName, group):
 				buttonGroup.addButton(button)
 			return buttonGroup
 
-ex. def groupButtons(objectName, ui, prefix, range_):
+def groupButtons(objectName, ui, prefix, range_):
 			#([string], [object], [string], [int])
 			buttonGroup = QtWidgets.QButtonGroup(ui)
 			buttonGroup.setObjectName(objectName)
@@ -683,8 +678,8 @@ def getObjects(name, cls=True):
 def getWidgets(name, cls=True):
     widgets = []
     for widget in QtGui.QApplication.allWidgets():
-        if ((cls and QWidget.inherits(name)) or
-            (not cls and QWidget.objectName() == name)):
+        if ((cls and w.inherits(name)) or
+            (not cls and w.objectName() == name)):
             widgets.append(widget)
     return widgets
 
@@ -707,13 +702,13 @@ def getWidgets(name, cls=True):
 
 
 # get size:
-QWidget..width = self.ui.frameGeometry().width()
-QWidget..height = self.ui.frameGeometry().height()
+w..width = self.ui.frameGeometry().width()
+w..height = self.ui.frameGeometry().height()
 
 #for widget:
 mainWindow = QtGui.QWidget()
-width = QWidget.frameGeometry().width()
-height = QWidget.frameGeometry().height()
+width = w.frameGeometry().width()
+height = w.frameGeometry().height()
 #for screen:
 mainWindow = QtGui.QWidget()
 screenShape = QtGui.QDesktopWidget().screenGeometry()
@@ -724,27 +719,27 @@ QtCore.QSize.setWidth()
 QtCore.QSize.setHeight()
 
 #resize
-QWidget.resize(100,30)
-QWidget.resize(w*2,h*2)
-QWidget.resize(w//2,h//2)
-QWidget.resize(width, height) #window size
+w.resize(100,30)
+w.resize(w*2,h*2)
+w.resize(w//2,h//2)
+w.resize(width, height) #window size
 
 #shrink the window to minimum size.
-QWidget.resize(minimumSizeHint())
-QWidget.setFixedSize(QWidget.sizeHint())
+w.resize(minimumSizeHint())
+w.setFixedSize(w.sizeHint())
 
 # If you want to only shrink in height, then you can do something like:
-QWidget.resize(QWidget.width(), QWidget.minimumSizeHint().height())
+w.resize(w.width(), w.minimumSizeHint().height())
 
 #automaticly resize to fit content
-QWidget.adjustSize()
+w.adjustSize()
 
 #resize to fit screen
-QWidget.resize(QWidget.screenShape.width(), QWidget.screenShape.height())
+w.resize(w.screenShape.width(), w.screenShape.height())
 
 # get recommended widget size
-QWidget.sizeHint
-QWidget.setMinimumSize(QWidget.layout.sizeHint())
+w.sizeHint
+w.setMinimumSize(w.layout.sizeHint())
 
 
 ui.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)		
@@ -756,11 +751,11 @@ def sizeHint(self):
 
 
 
-QWidget.geometry()
+w.geometry()
 
 #holds the geometry of the widget as it will appear when shown as a normal (not maximized or full screen) top-level widget.
 #Note, the widget must be first shown for this to return something other than (0,0)
-QWidget.normalGeometry(). 
+w.normalGeometry(). 
 
 
 
@@ -784,25 +779,25 @@ QWidget.normalGeometry().
 
 # Position
 .offsetPos
-QWidget.offsetPos(offset)
+w.offsetPos(offset)
 
 
 #move
-QWidget.move(<QPoint>)
-QWidget.move(15,15)
-QWidget.move.y(15)
+w.move(<QPoint>)
+w.move(15,15)
+w.move.y(15)
 
 
 #center of widget
-QWidget.rect().center()
+w.rect().center()
 #relative to its parent
-QWidget.mapToParent(c)
+w.mapToParent(c)
 #relative to the screen
-QWidget.mapToGlobal(c)
+w.mapToGlobal(c)
 
 
 #x coord of parents center
-ex. QWidget.parentWidget().rect().center().x()
+w.parentWidget().rect().center().x()
 
 #QPoint
 point.isNull() #Returns true if both the x and y coordinates are set to 0
@@ -854,25 +849,19 @@ rect.isEmpty() #Returns true if the rectangle is empty.
 self.mousePosition = event.pos() #relative position to mouseEvent
 self.mousePosition = QtGui.QCursor.pos() #global position
 
-QWidget.pos() #widget positon
-QWidget.mapFromGlobal(point)
-QWidget.mapFrom(widget, point)
-QWidget.mapTo(widget, point)
-QWidget.mapFromParent(point)
-QWidget.mapToParent(point)
+w.pos() #widget positon
+w.mapFromGlobal(point)
+w.mapFrom(widget, point)
+w.mapTo(widget, point)
+w.mapFromParent(point)
+w.mapToParent(point)
 
 #check if cursor is inside widget
-QWidget.rect().contains(QWidget.mapFromGlobal(QtGui.QCursor.pos()))
+w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos()))
 
 #
-QWidget.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
+w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
 
-
-
-
-# bring front - send back
-self.ui.raise_
-self.ui.lower()
 
 
 
@@ -936,14 +925,14 @@ wheelEvent (event)
 PySide.QtGui.QFocusEvent #PySide.QtGui.QFocusEvent.gotFocus() #Return type:	PySide.QtCore.bool
 
 
-.focusInEvent #QWidget.focusInEvent()
+.focusInEvent #w.focusInEvent()
 .focusInEvent #QPushButton.focusInEvent
 .focusOutEvent #QPushButton.focusOutEvent
 
 ex.
-QWidget.focusInEvent = self.max_b010()
+w.focusInEvent = self.max_b010()
 
-.focusOutEvent #QWidget.focusOutEvent()
+.focusOutEvent #w.focusOutEvent()
 ex.
 self.focusOutEvent(MaxPlus.CUI.EnableAccelerators())
 
@@ -986,19 +975,19 @@ QtGui.QDragEnterEvent(pos, actions, data, buttons, modifiers)
 #custom event filter:
 
 # install filter
-ex. QtGui.qApp.installEventFilter(self)
-ex. buttonObject.installEventFilter(self.hotBox) 
+QtGui.qApp.installEventFilter(self)
+buttonObject.installEventFilter(self.hotBox) 
 
 # return value
-ex. return QtWidgets.QWidget.eventFilter(self, button, event)
-ex. return super(HotBox, self).eventFilter(self, event) #returns the event that occurred
+return QtWidgets.w.eventFilter(self, button, event)
+return super(HotBox, self).eventFilter(self, event) #returns the event that occurred
 
 
 
 
 # Remove event filter ------------------------------------------------------
 
-self.ui.cmb002.removeEventFilter() #Removes an event filter object obj from this object. 
+w.removeEventFilter() #Removes an event filter object obj from this object. 
 #The request is ignored if such an event filter has not been installed.
 #All event filters for this object are automatically removed when this object is destroyed.
 #It is always safe to remove an event filter.
@@ -1061,10 +1050,10 @@ if event.buttons() & QtCore.Qt.LeftButton and event.modifiers() & QtCore.Qt.Cont
 
 
 
-QWidget.mouseTracking #bool, default: distabled,
+w.mouseTracking #bool, default: distabled,
 # Access functions:
-QWidget.hasMouseTracking
-QWidget.setMouseTracking(True) #triggers the mouseMove event for all mouse movements rather then only when button is pressed.
+w.hasMouseTracking
+w.setMouseTracking(True) #triggers the mouseMove event for all mouse movements rather then only when button is pressed.
 
 #set mouse tracking for child widgets:
 def setMouseTracking(self, flag):
@@ -1076,7 +1065,7 @@ def setMouseTracking(self, flag):
 				pass
 			recursive_set(child)
 
-	QtWidgets.QWidget.setMouseTracking(self, flag)
+	QtWidgets.w.setMouseTracking(self, flag)
 	recursive_set(self)
 
 			
@@ -1086,7 +1075,7 @@ def setMouseTracking(self, flag):
 
 
 
-QWidget.underMouse() #Returns true if the widget is under the mouse cursor; otherwise returns false.
+w.underMouse() #Returns true if the widget is under the mouse cursor; otherwise returns false.
 
 
 QEvent::HoverEnter	#The mouse cursor enters a hover widget (QHoverEvent).
@@ -1122,14 +1111,20 @@ mouseReleaseEvent = QtGui.QMouseEvent(
 								)
 #QtCore.QEvent.Type
 if event.type() == QtCore.QEvent.Type.MouseButtonRelease:
-
-
-QtCore.QEvent.Type.MouseButtonRelease
-QtCore.QEvent.Type.UngrabMouse
-
-
+QEvent.Type.MouseButtonRelease
+QEvent.Type.UngrabMouse
 QEvent::wheel 	#Mouse wheel rolled (QWheelEvent).
 
+
+
+
+# Call grabMouse on a widget and only that widget will receive mouse events (mouseMoves etc.), 
+# the same applies for grabKeyboard. This means that the other widgets from your application will 
+# not get any mouse/keyboard event until you call the corresponding release function.
+w.grabKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#grabKeyboard
+w.releaseKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#releaseKeyboard
+w.grabMouse() #http://qt-project.org/doc/qt-5/qwidget.html#grabMouse
+w.releaseMouse() #http://qt-project.org/doc/qt-5/qwidget.html#releaseMouse
 
 
 
@@ -1166,20 +1161,15 @@ QtTest.QTest.mouseRelease(widget, button[, stateKey=0[, pos=QPoint()[, delay=-1]
 
 
 #mouse/keyboard
-ex. QWidget.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
+w.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
 
-self.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
-self.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
-self.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
-self.setAttribute(QtCore.Qt.WA_MouseTracking) #Indicates that the widget has mouse tracking enabled.
-self.setAttribute(QtCore.Qt.WA_NoMousePropagation)
-self.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
+w.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
+w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
+w.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
+w.setAttribute(QtCore.Qt.WA_MouseTracking) #Indicates that the widget has mouse tracking enabled.
+w.setAttribute(QtCore.Qt.WA_NoMousePropagation)
+w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
 
-
-
-
-PySide.QtGui.QWidget.grabMouse()
-PySide.QtGui.QWidget.releaseMouse()
 
 
 
@@ -1219,8 +1209,8 @@ def settingMask(self):
 'Keyboard Event'#-----------------------------------------------------------
 
 
-self.setAttribute(QtCore.Qt.WA_InputMethodTransparent)
-self.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
+w.setAttribute(QtCore.Qt.WA_InputMethodTransparent)
+w.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
 
 
 
@@ -1295,7 +1285,7 @@ QtGui.QKeySequence()
 
 
 
-QWidget.keyPressEvent() #key press event under a window class
+w.keyPressEvent() #key press event under a window class
 ex.
 def keyPressEvent(self, event):
 	if event.key() == QtCore.Qt.Key_X:
@@ -1310,7 +1300,7 @@ self.keyPressEvent(self.X_dn, QtCore.Qt.Key_X) #(command/function, event)
 
 
 
-QWidget.keyReleaseEvent()
+w.keyReleaseEvent()
 ex.
 def keyReleaseEvent(self, event):
 	if event.key() == QtCore.Qt.Key_X:
@@ -1421,7 +1411,7 @@ listView.installEventFilter(keyPressEater)
 
 #working example
 ex.
-QWidget.installEventFilter(self)
+w.installEventFilter(self)
 
 #filter for mouse over event
 ex.
@@ -1435,7 +1425,7 @@ class HoverEnterFilter(QtWidgets.QWidget):
 		else:
 			return False
 
-QWidget.installEventFilter(HoverEnterFilter(self))
+w.installEventFilter(HoverEnterFilter(self))
 
 
 #subClass for method overriding
@@ -1536,13 +1526,13 @@ painter.fillRect(self.rect(), QtGui.QColor(80, 80, 255, 128))
 
 
 # assign signal a value. must be defined as class variable (before class init)
-ex. updated = Signal(int)
-ex. updated = Signal(str)
-ex. updated = Signal(object)
+updated = Signal(int)
+updated = Signal(str)
+updated = Signal(object)
 
 
 # create a signal
-ex. enterEvent = QtCore.Signal(bool)
+enterEvent = QtCore.Signal(bool)
 
 
 def enterEvent(self, event):
@@ -1554,17 +1544,17 @@ def leaveEvent(self, event):
 
 #call function with argument from signal
 #using lambda function
-ex. QWidget.clicked.connect (lambda: self.overlay.setVisible(False) if self.overlay.isVisible() else self.overlay.setVisible(True))
+w.clicked.connect (lambda: self.overlay.setVisible(False) if self.overlay.isVisible() else self.overlay.setVisible(True))
 #using functools.partial
 #from functools import partial
-ex. QWidget.clicked.connect (partial(function, arg))
+w.clicked.connect (partial(function, arg))
 #
-ex. QWidget.clicked.connect(partial(self.function, arg=arg['name']))
+w.clicked.connect(partial(self.function, arg=arg['name']))
 
 
 
 # emit a simple signal
-ex. #from PySide.QtCore import QObject, Signal, Slot
+#from PySide.QtCore import QObject, Signal, Slot
 
 class PunchingBag(QObject):
     ''' Represents a punching bag; when you punch it, it
@@ -1580,7 +1570,7 @@ class PunchingBag(QObject):
 
 
 #emit a signal
-ex. #from PySide import QtGui, QtCore
+#from PySide import QtGui, QtCore
 
 class Communicate(QtCore.QObject):
     
@@ -1832,7 +1822,7 @@ class ButtonBlock(QtGui.QWidget):
 						'Six', 'Seven', 'Eight', 'Nine', 'Ten')
 		for i, name in enumerate(names):
 			button = QtGui.QPushButton(name, self)
-			QWidget.clicked.connect(self.make_calluser(name))
+			w.clicked.connect(self.make_calluser(name))
 			row, col = divmod(i, 5)
 			grid.addWidget(button, row, col)
 		self.setLayout(grid)
@@ -2090,7 +2080,7 @@ QtGui.QColor.setAlpha(2)
 
 
 ex.
-QWidget.setForeground(0, QtGui.QBrush(QtGui.QColor("red")))
+w.setForeground(0, QtGui.QBrush(QtGui.QColor("red")))
 
 self.autoFillBackground()
 
@@ -2123,7 +2113,7 @@ setWindowOpacity(0.5)
 
 ex.
 setAutoFillBackground(False)
-QWidget.autoFillBackground(True)
+w.autoFillBackground(True)
 
 
 #erase area \fill with background
@@ -2137,7 +2127,7 @@ fillRect(rectangle, background())
 #print the stylesheet if there is one:
 print self.pushButton.styleSheet()
 
-#QWidget.styleSheet
+#w.styleSheet
 pushButton.styleSheet #query the widgets style sheet.
 
 #If you would prefer that the font and palette propagate to child widgets, you can set the Qt::AA_UseStyleSheetPropagationInWidgetStyles flag, like this:
@@ -2160,7 +2150,7 @@ ex.
 
 
 ex.
-QWidget.setStyleSheet('''
+w.setStyleSheet('''
 QPushButton {
 	background:rgba(127,127,127,2);
 	background-color: red;
@@ -2235,7 +2225,7 @@ QMenu::icon:checked { /* appearance of a 'checked' icon */
 buttonObject.setStyleSheet("") ##set style sheet to default. also (styleSheet())
 
 
-QWidget.setStyleSheet('''QPushButton {
+w.setStyleSheet('''QPushButton {
 }''')
 
 

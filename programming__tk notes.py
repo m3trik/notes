@@ -892,5 +892,543 @@ proc batchExport (string $fileType)
 
 
 
+# deprecated
 
+
+
+  # def initWidgets(self):
+  #   '''
+  #   Set initial states for dynamic ui widgets. 
+  #   '''
+  #   for widget in self.sb.getWidget(self.name): #constructs connections for, and returns, all widgets for the given ui name.
+  #     # widget.installEventFilter(self)
+  #     # widget.setMouseTracking(True)
+
+  #     widgetName = widget.objectName()
+  #     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
+
+  #     widget.setStyleSheet(StyleSheet.css) #add StyleSheet
+
+  #     if self.name=='init' and widgetName=='t000':
+  #       widget.viewport().setAutoFillBackground(False)
+  #       widget.setTextBackgroundColor(QtGui.QColor(50, 50, 50))
+
+  #     if self.name=='main' or self.name=='viewport':
+  #       if widgetName.startswith('r'):
+  #         widget.setVisible(False)
+
+  #     if self.name=='create':
+  #       if widgetName.startswith('s'):
+  #         widget.setVisible(False)
+
+
+
+  # def eventFilter(self, widget, event):
+  #   '''
+  #   Event filter for dynamic ui widgets.
+  #   args:
+  #     widget=<object> - the widget for which the event occurred.
+  #     event=<QEvent>
+  #   '''
+  #   for widget in self.sb.getWidget(self.name): #constructs connections for, and returns, all widgets for the given ui name.
+
+  #     widgetName = widget.objectName()
+  #     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
+
+
+  #     #___MouseButtonPress Event
+  #     if event.type()==QtCore.QEvent.MouseButtonPress:
+  #       self.__mousePressPos = event.globalPos()
+
+
+  #     #___MouseMove Event
+  #     if event.type()==QtCore.QEvent.MouseMove:
+  #       if widgetType=='QPushButton':
+  #         if widgetName.startswith('i') or widgetName.startswith('v'): #set down
+  #           widget.setDown(widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())))
+
+  #         elif widgetName=='pin': #move window on left mouse drag.
+  #           self.moveToMousePosition(self, -self.point.x(), -self.point.y()*.1)
+
+  #       elif widgetType=='QWidget':
+  #         if widgetName.startswith('r'): #set visibility
+  #           widget.setVisible(widget.geometry().contains(event.pos()))
+
+  #       elif widgetType=='QComboBox':
+  #         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+  #           #switch the index before opening to initialize the contents of the comboBox
+  #           widget.setStyleSheet(StyleSheet.comboBox_alt)
+  #           index = widget.currentIndex()
+  #           widget.blockSignals(True)
+  #           widget.setCurrentIndex(-1)
+  #           widget.blockSignals(False)
+  #           widget.setCurrentIndex(index) #change index back to refresh contents
+  #         else:
+  #           widget.setStyleSheet(StyleSheet.comboBox)
+
+
+  #     #___MouseButtonRelease Event
+  #     if event.type()==QtCore.QEvent.MouseButtonRelease:
+  #       print widgetName
+  #       if widgetType=='QPushButton':
+  #         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+  #           if widgetName.startswith('i'): #connect to layoutStack and pass in an index as int or string 'name'.
+  #             index = widget.whatsThis()
+  #             self.layoutStack(index) #switch the stacked layout to the given ui.
+
+  #           elif widgetName.startswith('v'): #ie. 'v012'
+  #             self.sb.previousView(as_list=1).append(self.sb.getMethod(self.name, widgetName)) #store the camera view
+  #             widget.click()
+
+  #           elif widgetName.startswith('b'): #ie. 'b012'
+  #             self.sb.prevCommand(as_list=1).append([self.sb.getMethod(self.name, widgetName), self.sb.getDocString(widgetName)]) #store the command method object and it's docString (ie. 'Multi-cut tool')
+
+  #           elif widgetName=='pin': #Override pushbutton to move the main window on left mouse drag event. When checked, prevents hide event on main window.
+  #             print 'pin_mouseReleaseEvent', widgetName
+  #             moveAmount = event.globalPos() - self.__mousePressPos
+  #             if moveAmount.manhattanLength() > 5: #if widget moved:
+  #               widget.setChecked(True) #setChecked to prevent window from closing.
+  #               event.ignore()
+  #             else:
+  #               widget.setChecked(not widget.isChecked()) #toggle check state
+  #               self.hide_()
+
+  #       elif widgetType=='QComboBox':
+  #         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+  #           widget.setStyleSheet(StyleSheet.comboBox_popup)
+  #           widget.showPopup()
+
+
+  #     #___Enter Event
+  #     if event.type()==QtCore.QEvent.Type.Enter:
+  #       self.__mouseHover.emit(True)
+
+
+  #     #___HoverLeave Event
+  #     if event.type()==QtCore.QEvent.Type.HoverLeave:
+  #       self.__mouseHover.emit(False)
+
+  #   # return super(HotBox, self).eventFilter(widget, event)
+  #   return QtWidgets.QWidget.eventFilter(self, widget, event)
+
+
+
+
+
+
+# def keyPressEvent(self, event):
+#     '''
+#     args:
+#       event=<QEvent>
+#     '''
+#     if event.key()==QtCore.Qt.Key_F12 and not event.isAutoRepeat(): #Key_Meta or Key_Menu =windows key
+#       pass
+
+
+  # def setWidget(self, w):
+  #   '''
+  #   args:
+  #     w=<QWidget>
+  #   '''
+  #   w.installEventFilter(self)
+  #   if self.overlay is None:
+  #     self.overlay = Overlay()
+  #   self.overlay.setParent(w)
+
+
+
+  # def mouseMoveEvent(self, event):
+  #   '''
+  #   args:
+  #     event=<QEvent>
+  #   '''
+
+
+
+
+  # def mouseReleaseEvent(self, event):
+  #   '''
+  #   args:
+  #     event=<QEvent>
+  #   '''
+
+
+
+
+
+# # ------------------------------------------------
+#   # Event overrides
+#   # ------------------------------------------------
+#   def eventFilter(self, widget, event):
+#     '''
+#     Event filter for dynamic ui objects.
+#     args:
+#       widget=<object> - the widget for which the event occurred.
+#       event=<QEvent>
+#     '''
+#     widgetName = widget.objectName()
+#     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
+
+#     #___MouseButtonPress Event_____________________
+#     if event.type()==QtCore.QEvent.MouseButtonPress:
+#       print 'MouseButtonPress',widgetName
+#       if widgetName=='pin':
+#         self.__mousePressPos = event.globalPos()
+
+#     #___MouseMove Event_____________________
+#     if event.type()==QtCore.QEvent.MouseMove:
+#       print 'MouseMove-', widgetName
+#       if widgetName=='pin':
+#         self.moveToMousePosition(self, -self.point.x(), -self.point.y()*.1) #move window on left mouse drag.
+
+#       if any([self.name=='main', self.name=='editors', self.name=='viewport']):
+#         print 'MouseMove:',self.name,widgetName
+#         if widgetName.startswith('r'):
+#           print '- - -'
+#           if widget.geometry().contains(event.pos()):
+#             print '- - - -'
+#             widget.setVisible(True)
+#           else:
+#             widget.setVisible(False)
+
+#         if widgetName.startswith('i') or widgetName.startswith('v'):
+#           if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+#             widget.setDown(True)
+#           else:
+#             widget.setDown(False)
+
+#         if widgetName.startswith('cmb'):
+#           if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+#             widget.setStyleSheet(StyleSheet.comboBox_alt)
+#           else:
+#             widget.setStyleSheet(StyleSheet.comboBox_popup)
+
+
+#     #___MouseButtonRelease Event_____________________
+#     if event.type()==QtCore.QEvent.MouseButtonRelease:
+#       print 'MouseButtonRelease:',self.name,widgetName
+#       if widgetName=='pin': #Override pushbutton to move the main window on left mouse drag event. When checked, prevents hide event on main window.
+#         moveAmount = event.globalPos() - self.__mousePressPos
+#         if moveAmount.manhattanLength() > 5: #if widget moved:
+#           widget.setChecked(True) #setChecked to prevent window from closing.
+#           event.ignore()
+#         else:
+#           widget.setChecked(not widget.isChecked()) #toggle check state
+#           self.hide_()
+
+#       if widgetName.startswith('i'): #connect to layoutStack and pass in an index as int or string 'name'.
+#         index = widget.whatsThis()
+#         self.layoutStack(index) #switch the stacked layout to the given ui.
+
+#       if widgetName.startswith('v'): #ie. 'v012'
+#         self.sb.previousView(as_list=1).append(self.sb.getMethod(widgetName)) #store the camera view
+
+#       if widgetName.startswith('b'): #ie. 'b012'
+#         self.sb.prevCommand(as_list=1).append([self.sb.getMethod(widgetName), self.sb.getDocString(widgetName)]) #store the command method object and it's docString (ie. 'Multi-cut tool')
+
+
+#     #___Enter Event__________________________
+#     if event.type()==QtCore.QEvent.Type.Enter:
+#       print 'Enter', widgetName
+#       self.mouseHover.emit(True)
+#       if widgetType=='QComboBox':
+#         #switch the index before opening to initialize the contents of the comboBox
+#         index = widget.currentIndex()
+#         widget.blockSignals(True); widget.setCurrentIndex(-1); widget.blockSignals(False)
+#         widget.setCurrentIndex(index) #change index back to refresh contents
+#         widget.setStyleSheet(StyleSheet.comboBox_popup)
+
+#       if any([self.name=='main', self.name=='editors', self.name=='viewport']): #layoutStack index and viewport signals
+#         if widgetType=='QComboBox':
+#           widget.showPopup()
+#         elif widgetType=='QPushButton':
+#           widget.click()
+
+#       if self.name=='init' and widgetType=='QTextEdit':
+#         # self.sb.getMethod('t000')()
+#         pass
+
+
+#     #___HoverLeave Event__________________________
+#     if event.type()==QtCore.QEvent.Type.HoverLeave:
+#       self.mouseHover.emit(False)
+#       if widgetType=='QComboBox':
+#         widget.setStyleSheet(StyleSheet.comboBox)
+  
+
+
+#     return QtWidgets.QWidget.eventFilter(self, widget, event)
+
+
+
+    # # if not self.name=='init': #remove old and add new signals for current ui from connectionDict
+    # if self.name!=self.sb.previousName(allowDuplicates=1):
+    #   if self.sb.previousName():
+    #     self.sb.removeSignal(self.sb.previousName())
+    #     self.sb.addSignal(self.name)
+    #   else: #if no previous ui exists
+    #     self.sb.addSignal(self.name)
+
+
+  # def mouseMoveEvent(self, event):
+  #   '''
+  #   args:
+  #     event=<QEvent>
+  #   '''
+  #   if self.name=='main':
+  #     self.setVisibilityOnHover(event.pos(), 'r000-9')
+  #     self.setDown_(event.pos(), 'i003-32, v000-37')
+  #     self.showPopup_(event.pos(), 'cmb000-2')
+
+  #   if self.name=='editors':
+  #     self.setVisibilityOnHover(event.pos(), 'r000-9')
+  #     self.setDown_(event.pos(), 'v000-4')
+  #     # self.showPopup_(event.pos(), 'cmb000-2')
+
+  #   elif self.name=='viewport':
+  #     self.setVisibilityOnHover(event.pos(), 'r000-8')
+  #     self.setDown_(event.pos(), 'v000-29')
+  #     self.showPopup_(event.pos(), 'cmb000-3')
+
+
+
+  # def unpackNames(self, nameString):
+  #   '''
+  #   Get a list of individual names from a single name string.
+  #   args:
+  #     nameString=string consisting of widget names separated by commas. ie. 'v000, b004-6'
+  #   returns:
+  #     unpacked names. ie. ['v000','b004','b005','b006']
+  #   '''
+  #   packed_names = [n.strip() for n in nameString.split(',') if '-' in n] #build list of all widgets passed in containing '-'
+
+  #   unpacked_names=[]
+  #   for name in packed_names:
+  #     name=name.split('-') #ex. split 'b000-8'
+  #     prefix = name[0].strip('0123456789') #ex. split 'b' from 'b000'
+  #     start = int(name[0].strip('abcdefghijklmnopqrstuvwxyz') or 0) #start range. #ex. '000' #converting int('000') returns None, if case; assign 0.
+  #     stop = int(name[1])+1 #end range. #ex. '9' from 'b000-8' for range up to 9 but not including 9.
+  #     unpacked_names.extend([str(prefix)+'000'[:-len(str(num))]+str(num) for num in range(start,stop)]) #build list of name strings within given range
+
+  #   names = [n.strip() for n in nameString.split(',') if '-' not in n] #all widgets passed in not containing '-'
+
+  #   return names+unpacked_names
+
+
+
+  # def getUiObject(self, widgets):
+  #   '''
+  #   Get ui objects from name strings.
+  #   args:
+  #     widgets='string' - ui object names
+  #   returns:
+  #     list of corresponding ui objects  
+  #   '''
+  #   objects=[]
+  #   for name in self.unpackNames(widgets):
+  #     try:
+  #       w = getattr(self.ui, name)
+  #       objects.append(w)
+  #     except: pass
+  #   return objects
+
+
+
+  # def setVisibilityOnHover(self, mousePosition, widgets):
+  #   '''
+  #   Show/hide widgets on mouseover event.
+  #   args:
+  #     mousePosition=QPoint
+  #     widgets=string consisting of widget names separated by commas. ie. 'r000, r001, v000-13, i020-23'
+  #   '''
+  #   for w in self.getUiObject(widgets):
+  #     if w.geometry().contains(mousePosition):
+  #       w.show()
+  #     else:
+  #       w.hide()
+
+
+
+  # def setDown_(self, mousePosition, widgets):
+  #   '''
+  #   Set pushbutton down state.
+  #   args:
+  #     mousePosition=QPoint
+  #     widgets=string consisting of widget names separated by commas. ie. 'r000, r001, v000-13, i020-23'
+  #   '''
+  #   for w in self.getUiObject(widgets):
+  #     if w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos())):
+  #       w.setDown(True)
+  #     else:
+  #       w.setDown(False)
+
+
+
+  # def showPopup_(self, mousePosition, widgets):
+  #   '''
+  #   Set comboBox popup state.
+  #   args:
+  #     mousePosition=QPoint
+  #     widgets=string 
+  #   '''
+  #   for w in self.getUiObject(widgets):
+  #     if w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos())):
+  #       # w.showPopup()
+  #       w.setStyleSheet('''
+  #         QComboBox {
+  #         background-color: rgba(82,133,166,200);
+  #         color: white;
+  #         }
+  #         ''')
+  #     else:
+  #       # w.hidePopup()
+  #       w.setStyleSheet('''
+  #         background-color: rgba(100,100,100,200);
+  #         color: white;
+  #         }
+  #         ''')
+
+
+
+# def hoverEvent(self, event):
+#     '''
+#     args:
+#       event=<QEvent>
+#     '''
+#     print "hover"
+
+
+# def onSignalEvent(self, widgetName):
+#   '''
+#   Called on any ui widget before it's signal is triggered.
+#   args:
+#     widgetName='string' - objectName of button
+#   '''
+#   widget = self.getWidget(widgetName)
+
+#   if widgetName.startswith('i'): #connect to layoutStack and pass in an index as int or string 'name'.
+#     index = widget.whatsThis() #widget.text()
+#     self.layoutStack(index) #switch the stacked layout to the given ui.
+
+#   if widgetName.startswith('b'): #ie. 'b012'
+#     self.sb.prevCommand(as_list=1).append([self.sb.getMethod(widgetName), self.sb.getDocString(widgetName)]) #store the command method object and it's docString (ie. 'Multi-cut tool')
+
+#   if widgetName.startswith('v'): #ie. 'v012'
+#     self.sb.previousView(as_list=1).append(self.sb.getMethod(widgetName)) #store the camera view
+
+
+
+# # ------------------------------------------------
+# # Popup Window
+# # ------------------------------------------------
+# class Popup(QtWidgets.QWidget):
+#   def __init__(self, ui, parent=None):
+#     QtWidgets.QWidget.__init__(self, parent)
+
+#     layout = QtWidgets.QGridLayout(self)
+#     layout.addWidget(ui)
+#     layout.setContentsMargins(0,0,0,0) #adjust the margins or you will get an invisible, unintended border
+
+#     self.setLayout(layout)
+#     self.adjustSize()
+
+#     self.setWindowFlags(QtCore.Qt.Popup | QtCore.Qt.Tool | QtCore.Qt.FramelessWindowHint) #tag this widget as a popup
+
+
+
+# # ------------------------------------------------
+# # Grid
+# # ------------------------------------------------
+# class Grid(QtWidgets.QWidget):
+#   def __init__(self, hotBox, parent=None):
+#     super(Grid, self).__init__(parent)
+
+
+#     # layout = QtWidgets.QHBoxLayout(self)
+#     # layout.setSpacing(0)
+#     # layout.setContentsMargins(0,0,0,0)
+
+#     # self.pin = Pin(hotBox)
+#     # layout.addWidget(self.pin)
+
+#     # self.cmb = QtWidgets.QComboBox()
+#     # self.cmb.setMaximumSize(18,18)
+#     # layout.addWidget(self.cmb)
+
+#     self.hotBox = hotBox
+
+#     self.hotBox.signal.buildConnectionDict('grid') #construct the signals and slots for the ui
+#     self.ui = self.hotBox.sb.getUi('grid')
+
+#     self.ui.pin.installEventFilter(self)
+
+
+
+#   def eventFilter(self, obj, event):
+#     # if event.buttons()==QtCore.Qt.LeftButton:
+#     if event.type()==QtCore.QEvent.MouseButtonPress:
+#       self.__mousePressPos = event.globalPos()
+#       return True
+
+#     if event.type()==QtCore.QEvent.MouseMove:
+#       self.hotBox.moveToMousePosition(self.hotBox, -self.hotBox.point.x(), -self.hotBox.point.y()*.1) #move window on left mouse drag.
+#       return True
+
+#     if event.type()==QtCore.QEvent.MouseButtonRelease:
+#       moveAmount = event.globalPos() - self.__mousePressPos
+#       if moveAmount.manhattanLength() > 5: #if button moved:
+#         self.setChecked(True) #setChecked to prevent window from closing.
+#         event.ignore()
+#       else:
+#         self.setChecked(not self.isChecked()) #toggle check state
+#         self.hotBox.hide_()
+#       return True
+#     return False #return False for other event types
+
+
+
+
+# class Pin(QtWidgets.QPushButton):
+#   '''
+#   Pushbutton overridden to move the main window on left mouse drag event.
+#   When checked, prevents hide event on main window.
+#   '''
+#   def __init__(self, hotBox, parent=None):
+#     super(Pin, self).__init__(parent)
+
+#     self.hotBox = hotBox
+#     self.setCheckable(True)
+
+
+#   def mousePressEvent(self, event):
+#     '''
+#     args:
+#       event=<QEvent>
+#     '''
+#     if event.button()==QtCore.Qt.LeftButton:
+#       self.__mousePressPos = event.globalPos()
+
+
+#   def mouseMoveEvent(self, event):
+#     '''
+#     args:
+#       event=<QEvent>
+#     '''
+#     if event.buttons()==QtCore.Qt.LeftButton:
+#       self.hotBox.moveToMousePosition(self.hotBox, -self.hotBox.point.x(), -self.hotBox.point.y()*.1) #move window on left mouse drag.
+
+
+#   def mouseReleaseEvent(self, event):
+#     '''
+#     args:
+#       event=<QEvent>
+#     '''
+#     if event.button()==QtCore.Qt.LeftButton:
+#       moveAmount = event.globalPos() - self.__mousePressPos
+#       if moveAmount.manhattanLength() > 5: #if button moved:
+#         self.setChecked(True) #setChecked to prevent window from closing.
+#         event.ignore()
+#       else:
+#         self.setChecked(not self.isChecked()) #toggle check state
+#         self.hotBox.hide_()
 
