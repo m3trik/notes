@@ -3045,10 +3045,17 @@ exec 'try: some_problematic_thing()\nexcept: problem=sys.exc_info()'
 parse_float = lambda x, y=exec('def f(s):\n try:\n  return float(s)\n except:  return None'): f(x)
 
 
+
+# print to console
+raise RuntimeError('')
+
+
+
 # print error on exception:
 eg.
 except Exception as error: 
 	print(error)
+
 
 #traceback module provides methods for formatting and printing exceptions and their tracebacks, 
 #this would print exception like the default handler does:

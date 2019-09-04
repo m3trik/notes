@@ -1,4 +1,4 @@
-
+# mathematical equation notes for programming .......
 
 
 
@@ -10,15 +10,9 @@ x*-1
 
 
 
-#5% of 20:
-(value/totalValue)*100
 
-#what percentage is 5 of 20:
-100*value/totalValue
-
-
-
-#DIFFERENCE BETWEEN TWO NUMBERS
+#DIFFERENCE ---------
+#between two numbers
 abs(x-y)
 
 
@@ -35,17 +29,15 @@ num1+num2/2
 
 
 
-
-
-
-#mathematical equation notes.
-
-
-
 #PERCENTAGE ---------
 
 percent=(value/totalValue) *100
 
+#5% of 20:
+(value/totalValue)*100
+
+#what percentage is 5 of 20:
+100*value/totalValue
 
 
 #PERCENTAGE CHANGE --
@@ -54,7 +46,25 @@ First: work out the difference (increase) between the two numbers you are compar
 
 
 
+
+
+#SQUARE ROOT --------
+
+sqrt = x**(1/2.0)
+
+
+
+
+
+
+
+
 #POINTS -------------
+
+
+
+
+
 
 
 #VECTORS ------------
