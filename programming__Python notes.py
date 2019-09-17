@@ -2638,6 +2638,7 @@ sys.path.append(os.path.join(sys.path[0],'bar','sub','dir')) #os.getcwd(), sys.a
 sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'bar'))
 
 
+sys.argv	#list of python command line arguments. ie. python myscript.py -a -b --input myfile --another_argument, would give ['myscript.py', '-a', '-b', '--input', 'myfile', '--another_argument']
 
 
 # search directory
@@ -3003,6 +3004,7 @@ time.sleep(.300) #wait for 300 milliseconds
 <code>
 t1=time.time()
 #using timeit (os agnostic)
+t0=timeit.default_timer()
 <code>
 t1=timeit.default_timer()
 print t1-t0

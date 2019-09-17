@@ -181,26 +181,25 @@ self.ui = self.stackedLayout.widget(index)
 
 #WA - Widget attribute
 #https://doc.qt.io/archives/qtjambi-4.5.2_01/com/trolltech/qt/core/Qt.WidgetAttribute.html
-w..setAttribute(QtCore.Qt.WA_DeleteOnClose) #separated by |
 
-#state
-WA_WState_Created
-WA_WState_Hidden
-WA_WState_Visible
-WA_WState_ExplicitShowHide
+#change of state events
+w.setAttribute(WA_WState_Created)
+w.setAttribute(WA_WState_Hidden)
+w.setAttribute(WA_WState_Visible)
+w.setAttribute(WA_WState_ExplicitShowHide)
 
-#close/disable
-WA_DeleteOnClose #Makes Qt delete this widget when the widget has accepted the close event
-WA_Disabled #Indicates that the widget is disabled
-WA_ForceDisabled #Indicates that the widget is explicitly disabled
-WA_QuitOnClose #Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
+#disable/close events
+w.setAttribute(WA_DeleteOnClose) #Makes Qt delete this widget when the widget has accepted the close event
+w.setAttribute(WA_Disabled) #Indicates that the widget is disabled
+w.setAttribute(WA_ForceDisabled) #Indicates that the widget is explicitly disabled
+w.setAttribute(WA_QuitOnClose) #Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
 #
-WA_DontShowOnScreen
-WA_ShowWithoutActivating #Show the widget without making it active.
+w.setAttribute(WA_DontShowOnScreen)
+w.setAttribute(WA_ShowWithoutActivating) #Show the widget without making it active.
 
-#parent/child
-WA_NoChildEventsForParent #Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent.
-WA_NoChildEventsFromChildren #Indicates that the widget does not want to receive ChildAdded or ChildRemoved events sent from its children.
+#add/remove events
+w.setAttribute(WA_NoChildEventsForParent) #Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent.
+w.setAttribute(WA_NoChildEventsFromChildren) #Indicates that the widget does not want to receive ChildAdded or ChildRemoved events sent from its children.
 
 
 # Remove layout
@@ -858,6 +857,10 @@ w.mapToParent(point)
 
 #check if cursor is inside widget
 w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos()))
+w.geometry().contains(event.pos())
+w.underMouse() #Returns True if the widget is under the mouse cursor; else False.
+
+
 
 #
 w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
@@ -879,65 +882,68 @@ w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable but
 
 'Events'#--------------------------------------------------------------------
 
+
+
+QtCore.QEvent.accept() #indicates whether the receiver wants the event.
+QtCore.QEvent.ignore() #event is propagated up the parent widget chain until a widget accepts it. (or an event filter consumes it)
+w.setAttribute(QtCore.Qt.WA_NoMousePropagation) #event will not be propagated further up the parent widget chain.
+
+
+
+
 actionEvent (event)
 changeEvent (event)
-closeEvent (event)
-contextMenuEvent (event)
-dragEnterEvent (event)
-dragLeaveEvent (event)
-dragMoveEvent (event)
-dropEvent (event)
-enterEvent (event)
-focusInEvent (event)
-focusNextPrevChild (next)
-focusOutEvent (event)
-heightForWidth (arg__1)
-hideEvent (event)
-inputMethodEvent (event)
-inputMethodQuery (arg__1)
-keyPressEvent (event)
-keyReleaseEvent (event)
-languageChange ()
-leaveEvent (event)
+
+
+#move
+moveEvent (event)
+.moveEvent
+
+
+#size
+sizeHint ()
+resizeEvent (event)
+.resizeEvent
 minimumSizeHint ()
+heightForWidth (arg__1)
+
+
+#mouse
 mouseDoubleClickEvent (event)
 mouseMoveEvent (event)
 mousePressEvent (event)
 mouseReleaseEvent (event)
-moveEvent (event)
-paintEvent (event)
-resizeEvent (event)
-setVisible (visible)
-showEvent (event)
-sizeHint ()
-tabletEvent (event)
 wheelEvent (event)
+dragEnterEvent (event)
+dragLeaveEvent (event)
+dragMoveEvent (event)
+dropEvent (event)
 
 
-
-
-
-.moveEvent
-.resizeEvent
+#keyboard
+inputMethodEvent (event)
+inputMethodQuery (arg__1)
+keyPressEvent (event)
+keyReleaseEvent (event)
 
 
 #Focus
-PySide.QtGui.QFocusEvent #PySide.QtGui.QFocusEvent.gotFocus() #Return type:	PySide.QtCore.bool
+focusInEvent (event)
+focusNextPrevChild (next)
+focusOutEvent (event)
 
+QtGui.QFocusEvent #PySide.QtGui.QFocusEvent.gotFocus() #Return type: PySide.QtCore.bool
 
 .focusInEvent #w.focusInEvent()
-.focusInEvent #QPushButton.focusInEvent
-.focusOutEvent #QPushButton.focusOutEvent
+.focusOutEvent #w.focusOutEvent
 
-ex.
 w.focusInEvent = self.max_b010()
-
-.focusOutEvent #w.focusOutEvent()
-ex.
-self.focusOutEvent(MaxPlus.CUI.EnableAccelerators())
+w.focusOutEvent(MaxPlus.CUI.EnableAccelerators())
 
 
+setVisible (visible)
 
+showEvent (event)
 self.showEvent(offsetPos(self, offset))
 
 
@@ -949,16 +955,16 @@ ex.
 if event.type() == QtCore.QEvent.Type.Enter:
 
 
+enterEvent (event)
 .enterEvent
-ex.
-	print "enterEvent"
-	self.show()
-	self.setFocus()
-
 .leaveEvent
-ex.
-	print "leaveEvent"
-	self.hide()
+
+
+hideEvent (event)
+
+leaveEvent (event)
+
+closeEvent (event)
 
 
 QtGui.QDragEnterEvent(pos, actions, data, buttons, modifiers)
@@ -968,6 +974,42 @@ QtGui.QDragEnterEvent(pos, actions, data, buttons, modifiers)
 # data – PySide.QtCore.QMimeData
 # buttons – PySide.QtCore.Qt.MouseButtons
 # modifiers – PySide.QtCore.Qt.KeyboardModifiers
+
+
+#setting MIME data:
+itemData = QtCore.QByteArray()
+dataStream = QtCore.QDataStream(itemData, QtCore.QIODevice.WriteOnly)
+dataStream << QtCore.QByteArray(str(self.labelText)) << QtCore.QPoint(event.pos() - self.rect().topLeft())
+mimeData = QtCore.QMimeData()
+mimeData.setData('application/x-fridgemagnet', itemData)
+mimeData.setText(self.labelText)
+drag = QtGui.QDrag(self)
+drag.setMimeData(mimeData)
+
+
+#QDrag (placed in the 'drag' widget's mouseMoveEvent)
+drag = QtGui.QDrag(self)
+drag.setMimeData(QtCore.QMimeData())
+drag.setHotSpot(event.pos()) # drag.setHotSpot(event.pos() - self.rect().topLeft())
+drag.setDragCursor(QtGui.QCursor(QtCore.Qt.CrossCursor).pixmap(), QtCore.Qt.MoveAction) #Sets the position of the hot spot relative to the top-left corner of the pixmap used to the point specified by hotspot.
+dropAction = drag.exec_(QtCore.Qt.MoveAction) #drag.start(QtCore.Qt.MoveAction)
+target = drag.target() #the widget where the drag object was dropped. (needs to be placed after drag.exec_/drag.start)
+
+
+QtCore.Qt.MoveAction
+QtCore.Qt.CopyAction
+QtCore.Qt.DropAction
+
+
+
+contextMenuEvent (event)
+
+
+paintEvent (event)
+
+
+tabletEvent (event)
+
 
 
 
@@ -1073,47 +1115,38 @@ def setMouseTracking(self, flag):
 
 
 
-
-
-w.underMouse() #Returns true if the widget is under the mouse cursor; otherwise returns false.
-
-
-QEvent::HoverEnter	#The mouse cursor enters a hover widget (QHoverEvent).
-QEvent::HoverLeave	#The mouse cursor leaves a hover widget (QHoverEvent).
+QtCore.QEvent.HoverEnter	#The mouse cursor enters a hover widget (QHoverEvent).
+QtCore.QEvent.HoverLeave	#The mouse cursor leaves a hover widget (QHoverEvent).
 #setMouseTracking(True) for mouse event
-.enterEvent #An event is sent to the widget when the mouse cursor enters the widget.
-.leaveEvent	#A leave event is sent to the widget when the mouse cursor leaves the widget.
-.onEnter
-.onLeave
+w.enterEvent #An event is sent to the widget when the mouse cursor enters the widget.
+w.leaveEvent	#A leave event is sent to the widget when the mouse cursor leaves the widget.
+w.onEnter
+w.onLeave
 
-QEvent::MouseButtonDblClick 	#Mouse press again (QMouseEvent).
+QtCore.QEvent.MouseButtonDblClick 	#Mouse press again (QMouseEvent).
 
 .mouseDoubleClickEvent
 ex.
 def mouseDoubleClickEvent(self, event):
 	print "mouseDoubleClickEvent"
 
-QEvent::MouseMove 	#Mouse move (QMouseEvent).
-.mouseMoveEvent
+QtCore.QEvent.MouseMove 	#Mouse move (QMouseEvent).
+w.mouseMoveEvent
 
-QEvent::MouseButtonPress 	#Mouse press (QMouseEvent).
-.mousePressEvent
+QtCore.QEvent.MouseButtonPress 	#Mouse press (QMouseEvent).
+w.mousePressEvent
 
-QEvent::MouseButtonRelease 	#Mouse release (QMouseEvent).
-.mouseReleaseEvent
-ex.
-mouseReleaseEvent = QtGui.QMouseEvent(
+QtCore.QEvent.MouseButtonRelease 	#Mouse release (QMouseEvent).
+w.mouseReleaseEvent = QtGui.QMouseEvent(
 								QtCore.QEvent.MouseButtonRelease,
 								self.cursor().pos(),
 								QtCore.Qt.LeftButton,
 								QtCore.Qt.LeftButton,
-								QtCore.Qt.NoModifier,
-								)
-#QtCore.QEvent.Type
-if event.type() == QtCore.QEvent.Type.MouseButtonRelease:
-QEvent.Type.MouseButtonRelease
-QEvent.Type.UngrabMouse
-QEvent::wheel 	#Mouse wheel rolled (QWheelEvent).
+								QtCore.Qt.NoModifier)
+
+QtCore.QEvent.Type.MouseButtonRelease
+QtCore.QEvent.Type.UngrabMouse
+QtCore.QEvent.wheel 	#Mouse wheel rolled (QWheelEvent).
 
 
 
@@ -1121,10 +1154,12 @@ QEvent::wheel 	#Mouse wheel rolled (QWheelEvent).
 # Call grabMouse on a widget and only that widget will receive mouse events (mouseMoves etc.), 
 # the same applies for grabKeyboard. This means that the other widgets from your application will 
 # not get any mouse/keyboard event until you call the corresponding release function.
-w.grabKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#grabKeyboard
-w.releaseKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#releaseKeyboard
-w.grabMouse() #http://qt-project.org/doc/qt-5/qwidget.html#grabMouse
-w.releaseMouse() #http://qt-project.org/doc/qt-5/qwidget.html#releaseMouse
+QWidget.grabKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#grabKeyboard
+QWidget.releaseKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#releaseKeyboard
+QWidget.mouseGrabber() #Returns the widget that is currently grabbing the mouse input. else: None 
+QWidget.releaseMouse() #Releases the mouse grab.
+
+
 
 
 
@@ -1166,11 +1201,10 @@ w.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
 w.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
 w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
 w.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
-w.setAttribute(QtCore.Qt.WA_MouseTracking) #Indicates that the widget has mouse tracking enabled.
-w.setAttribute(QtCore.Qt.WA_NoMousePropagation)
 w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
 
-
+#get state of attribute:
+w.testAttribute(QtCore.Qt.WA_MouseTracking) #returns bool #Indicates if the widget has mouse tracking enabled.
 
 
 
@@ -1911,10 +1945,21 @@ def getQtui(name):
 	print uiPath; return qtui
 
 
+ex.
+uiList=[]
+for file_ in os.listdir(path):
+	if file_.endswith('.ui'):
+		f = QtCore.QFile(path+'/'+file_)
+		f.open(QFile.ReadOnly)
+		uiList.append([file_.replace('.ui',''), QUiLoader().load(f)])
+		f.close()
 
-
-
-
+ex.
+#set path to the directory containing the ui files.
+path = os.path.join(os.path.dirname(__file__), 'ui') #get absolute path from dir of this module + relative path to directory
+#construct the uiList from directory contents. ie. [['polygons', <polygons dynamic ui object>]]
+qApp = QApplication(sys.argv)
+uiList = [QUiLoader().load(path+'/'+file_) for file_ in os.listdir(path) if file_.endswith('.ui')]
 
 
 
@@ -2274,6 +2319,49 @@ STYLESHEET = '''
 
 
 
+#Cursor Shape:
+QtCore.Qt.CursorShape(2)
+
+QtCore.Qt.ArrowCursor 			#The standard arrow cursor.
+QtCore.Qt.UpArrowCursor			#An arrow pointing upwards toward the top of the screen.
+QtCore.Qt.CrossCursor			#typically used to help the user accurately select a point on the screen.
+QtCore.Qt.WaitCursor			#usually shown during operations that prevent the user from interacting with the application.
+QtCore.Qt.IBeamCursor			#indicating that a widget can accept and display text input.
+QtCore.Qt.SizeVerCursor			#A cursor used for elements that are used to vertically resize top-level windows.
+QtCore.Qt.SizeHorCursor			#A cursor used for elements that are used to horizontally resize top-level windows.
+QtCore.Qt.SizeBDiagCursor		#A cursor used for elements that are used to diagonally resize top-level windows at their top-right and bottom-left corners.
+QtCore.Qt.SizeFDiagCursor		#A cursor used for elements that are used to diagonally resize top-level windows at their top-left and bottom-right corners.
+QtCore.Qt.SizeAllCursor			#A cursor used for elements that are used to resize top-level windows in any direction.
+QtCore.Qt.BlankCursor			#typically used when the cursor shape needs to be hidden.
+QtCore.Qt.SplitVCursor			#A cursor used for vertical splitters, indicating that a handle can be dragged horizontally to adjust the use of available space.
+QtCore.Qt.SplitHCursor			#A cursor used for horizontal splitters, indicating that a handle can be dragged vertically to adjust the use of available space.
+QtCore.Qt.PointingHandCursor	#A pointing hand cursor that is typically used for clickable elements such as hyperlinks.
+QtCore.Qt.ForbiddenCursor		#A slashed circle cursor, typicallyusedduringdraganddropoperationstoindicatethatdraggedcontentcannotbedroppedonparticularwidgetsorinsidecertainregions.
+QtCore.Qt.OpenHandCursor		#A cursor representing an openhand, typicallyusedtoindicatethattheareaunderthecursoristhevisiblepartofacanvasthattheusercanclickanddraginordertoscrollaround.
+QtCore.Qt.ClosedHandCursor		#A cursor representing a closed hand, typically used to indicate that a dragging operation is in progress that involves scrolling.
+QtCore.Qt.WhatsThisCursor		#An arrow with a question mark, typically used to indicate the presence of 'WhatsThis' help for a widget.
+QtCore.Qt.BusyCursor			#An hourglass or watch cursor, usually shown during operations that allow the user to interact with the application while they are performed in the background.
+QtCore.Qt.DragMoveCursor		#A cursor that is usually used when dragging an item.
+QtCore.Qt.DragCopyCursor		#A cursor that is usually used when dragging an item to copy it.
+QtCore.Qt.DragLinkCursor		#A cursor that is usually used when dragging an item to make a link to it.
+QtCore.Qt.BitmapCursor
+
+
+
+
+
+
+
+#QApplication:
+#The difference between QtWidgets.QApplication.instance() and QtWidgets.qApp is that the latter is a static module variable that must be created when the module is first imported. 
+#This results in the following initially baffling behaviour:
+inst = QtWidgets.QApplication.instance()
+qapp = QtWidgets.qApp #qApp is initially just an empty wrapper. #Once the QApplication is created, though, they will both point to the same thing:
+>>> (inst, qapp)
+(None, <PyQt5.QtWidgets.QApplication object at 0x7ff3c8bd3948>)
+#So even though no QApplication object has been created yet, the qApp variable still points to a QApplication instance. 
+#If modules were more like classes, so that they could have dynamic properties, it would be possible for qApp to work exactly like QApplication.instance() does and initially return None. 
+#But because it is static, it must always return an object of the correct type, so that it can later refer to the same underlying C++ object as QApplication.instance().
 
 
 

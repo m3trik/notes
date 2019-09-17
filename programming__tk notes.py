@@ -1,3 +1,5 @@
+'''
+
 ## tk_hotBox
 ###### *PySide marking menu style layered ui and toolkit for maya and max.
 
@@ -174,28 +176,25 @@ The default hotkey for launching the menu set is f12. This is because I usually 
 
 
 #times
-'''
 tk_signals
 time: 0.11471084274
 tk_slots_max_viewport
 time: 0.0632666986347
 tk_slots_max_polygons
 time: 0.0816165578988
-'''
 
 
 
 
 
-# Re-load Ui:
-# import sys
-# import os.path as os
+#Re-load Ui:
+import sys
+import os.path as os
 
-# path = os.expandvars("%CLOUD%/__portable/_scripts/")
-# sys.path.append(path)
+path = os.expandvars("%CLOUD%/__portable/_scripts/")
+sys.path.append(path)
 
-# reload(tk_main)
-
+reload(tk_main)
 
 
 
@@ -207,7 +206,7 @@ time: 0.0816165578988
 
 # BUGS:
 # -----------------------------------------------
-'''
+
 
 
 
@@ -243,7 +242,7 @@ bug: transform negative '-' sets spinbox value to 0.
 
 
 
-'''
+
 
 
 
@@ -251,24 +250,24 @@ bug: transform negative '-' sets spinbox value to 0.
 
 # THINGS TO DO NOW:
 # -----------------------------------------------
-'''
-
-#combine bridge and tri-fill buttons in polygons.  remove reverse normals and instead check for surrounding normal direction.
 
 
-#use the maxplus method to parent the widget to the app. remove disable keyboard from show/hide events, and import maxplus when creating instance.
+combine bridge and tri-fill buttons in polygons.  remove reverse normals and instead check for surrounding normal direction.
 
 
-
-#texturing> materials combobox> id map checkbox not toggling back to regular materials list from id map.
+use the maxplus method to parent the widget to the app. remove disable keyboard from show/hide events, and import maxplus when creating instance.
 
 
 
-#normals> by angle> add progress bar.  fix progress bar not hiding/resetting on completion.
+texturing> materials combobox> id map checkbox not toggling back to regular materials list from id map.
 
 
 
-#file> save> separate save and save & close. add wifeframe flag to close only.
+normals> by angle> add progress bar.  fix progress bar not hiding/resetting on completion.
+
+
+
+file> save> separate save and save & close. add wifeframe flag to close only.
 
 
 
@@ -284,86 +283,86 @@ component path tool
 #nth edge
 -------------
 polySelect(*args, **kwargs)
-    This command makes different types of poly component selections.  The return value is an integer array containing the
-    id's of the components in the selection in order. If a given type of selection loops back on itself then this is
-    indicated by the start id appearing twice, once at the start and once at the end.
-    
-    Flags:
-      - add : add                      (bool)          [create,query]
-          Indicates that the specified items should be added to the active list without removing existing items from the active
-          list.
-    
-      - addFirst : af                  (bool)          [create,query]
-          Indicates that the specified items should be added to the front of the active list without removing existing items from
-          the active list.
-    
-      - asSelectString : ass           (bool)          [create,query]
-          Changes the return type from an integer array to a string array which can be used as a selection string.
-    
-      - deselect : d                   (bool)          [create,query]
-          Indicates that the specified items should be removed from the active list if they are on the active list.
-    
-      - edgeBorder : eb                (int)           [create,query]
-          Select all conected border edges starting at the given edge.
-    
-      - edgeBorderPath : ebp           (int, int)      [create,query]
-          Given two edges on the same border, this will select the edges on the border in the path between them.
-    
-      - edgeBorderPattern : bpt        (int, int)      [create,query]
-          Given two edges on the same border, this will check how many edges there are between the given edges and then continue
-          that pattern of selection around the border.
-    
-      - edgeLoop : el                  (int)           [create,query]
-          Select an edge loop starting at the given edge.
-    
-      - edgeLoopOrBorder : elb         (int)           [create,query]
-          Select an edge loop or all conected border edges, depending on whether the edge is on a border or not, starting at the
-          given edge.
-    
-      - edgeLoopOrBorderPattern : lbp  (int, int)      [create,query]
-          Given two edges either on the same edge loop or on the same edge border, this will check how many edges there are
-          between the given edges and then continue that pattern of selection around the edge loop or edge border.
-    
-      - edgeLoopPath : elp             (int, int)      [create,query]
-          Given two edges that are on the same edge loop, this will select the shortest path between them on the loop.
-    
-      - edgeLoopPattern : lpt          (int, int)      [create,query]
-          Given two edges on the same edge loop, this will check how many edges there are between the given edges and then
-          continue that pattern of selection around the edge loop.
-    
-      - edgeRing : er                  (int)           [create,query]
-          Select an edge ring starting at the given edge.
-    
-      - edgeRingPath : erp             (int, int)      [create,query]
-          Given two edges that are on the same edge ring, this will select the shortest path between them on the ring.
-    
-      - edgeRingPattern : rpt          (int, int)      [create,query]
-          Given two edges on the same edge ring, this will check how many edges there are between the given edges and then
-          continue that pattern of selection around the edge ring.
-    
-      - edgeUVLoopOrBorder : euv       (int)           [create,query]
-          Select an edge loop or border, terminating at UV borders.
-    
-      - everyN : en                    (int)           [create]
-          Number of elements to stride over. If less than 1 then use 1, meaning every element. 2 means every second one, etc.
-    
-      - extendToShell : ets            (int)           [create,query]
-          Select the poly shell given a face id.
-    
-      - noSelection : ns               (bool)          [create,query]
-          If this flag is used then the selection is not changed at all.
-    
-      - replace : r                    (bool)          [create,query]
-          Indicates that the specified items should replace the existing items on the active list.
-    
-      - shortestEdgePath : sep         (int, int)      [create,query]
-          Given two vertices, this will select the shortest path between them in the 3d object space.
-    
-      - shortestEdgePathUV : spu       (int, int)      [create,query]
-          Given two UVs, this will select the shortest path between them in the 2d texture space.
-    
-      - shortestFacePath : sfp         (int, int)      [create,query]
-          Given two faces, this will select the shortest path between them in the 3d object space.
+		This command makes different types of poly component selections.  The return value is an integer array containing the
+		id's of the components in the selection in order. If a given type of selection loops back on itself then this is
+		indicated by the start id appearing twice, once at the start and once at the end.
+		
+		Flags:
+			- add : add                      (bool)          [create,query]
+					Indicates that the specified items should be added to the active list without removing existing items from the active
+					list.
+		
+			- addFirst : af                  (bool)          [create,query]
+					Indicates that the specified items should be added to the front of the active list without removing existing items from
+					the active list.
+		
+			- asSelectString : ass           (bool)          [create,query]
+					Changes the return type from an integer array to a string array which can be used as a selection string.
+		
+			- deselect : d                   (bool)          [create,query]
+					Indicates that the specified items should be removed from the active list if they are on the active list.
+		
+			- edgeBorder : eb                (int)           [create,query]
+					Select all conected border edges starting at the given edge.
+		
+			- edgeBorderPath : ebp           (int, int)      [create,query]
+					Given two edges on the same border, this will select the edges on the border in the path between them.
+		
+			- edgeBorderPattern : bpt        (int, int)      [create,query]
+					Given two edges on the same border, this will check how many edges there are between the given edges and then continue
+					that pattern of selection around the border.
+		
+			- edgeLoop : el                  (int)           [create,query]
+					Select an edge loop starting at the given edge.
+		
+			- edgeLoopOrBorder : elb         (int)           [create,query]
+					Select an edge loop or all conected border edges, depending on whether the edge is on a border or not, starting at the
+					given edge.
+		
+			- edgeLoopOrBorderPattern : lbp  (int, int)      [create,query]
+					Given two edges either on the same edge loop or on the same edge border, this will check how many edges there are
+					between the given edges and then continue that pattern of selection around the edge loop or edge border.
+		
+			- edgeLoopPath : elp             (int, int)      [create,query]
+					Given two edges that are on the same edge loop, this will select the shortest path between them on the loop.
+		
+			- edgeLoopPattern : lpt          (int, int)      [create,query]
+					Given two edges on the same edge loop, this will check how many edges there are between the given edges and then
+					continue that pattern of selection around the edge loop.
+		
+			- edgeRing : er                  (int)           [create,query]
+					Select an edge ring starting at the given edge.
+		
+			- edgeRingPath : erp             (int, int)      [create,query]
+					Given two edges that are on the same edge ring, this will select the shortest path between them on the ring.
+		
+			- edgeRingPattern : rpt          (int, int)      [create,query]
+					Given two edges on the same edge ring, this will check how many edges there are between the given edges and then
+					continue that pattern of selection around the edge ring.
+		
+			- edgeUVLoopOrBorder : euv       (int)           [create,query]
+					Select an edge loop or border, terminating at UV borders.
+		
+			- everyN : en                    (int)           [create]
+					Number of elements to stride over. If less than 1 then use 1, meaning every element. 2 means every second one, etc.
+		
+			- extendToShell : ets            (int)           [create,query]
+					Select the poly shell given a face id.
+		
+			- noSelection : ns               (bool)          [create,query]
+					If this flag is used then the selection is not changed at all.
+		
+			- replace : r                    (bool)          [create,query]
+					Indicates that the specified items should replace the existing items on the active list.
+		
+			- shortestEdgePath : sep         (int, int)      [create,query]
+					Given two vertices, this will select the shortest path between them in the 3d object space.
+		
+			- shortestEdgePathUV : spu       (int, int)      [create,query]
+					Given two UVs, this will select the shortest path between them in the 2d texture space.
+		
+			- shortestFacePath : sfp         (int, int)      [create,query]
+					Given two faces, this will select the shortest path between them in the 3d object space.
 --------------
 
 
@@ -538,11 +537,11 @@ prevent focus initially.  when focused chkpin down
 
 
 edit; delete (component) not working
-  File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_buttons.py", line 1420, in b032
-    faces = func.getAllFacesOnAxis (axis)
-  File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_functions.py", line 45, in getAllFacesOnAxis
-    if pm.exactWorldBoundingBox (attr)[index] < -0.00001:
-  File "C:\Program Files\Autodesk\Maya2018\Python\lib\site-packages\pymel\internal\pmcmds.py", line 140, in exactWorldBoundingBox_wrapped
+	File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_buttons.py", line 1420, in b032
+		faces = func.getAllFacesOnAxis (axis)
+	File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_functions.py", line 45, in getAllFacesOnAxis
+		if pm.exactWorldBoundingBox (attr)[index] < -0.00001:
+	File "C:\Program Files\Autodesk\Maya2018\Python\lib\site-packages\pymel\internal\pmcmds.py", line 140, in exactWorldBoundingBox_wrapped
 pymel.core.general.MayaAttributeError: Maya Attribute does not exist (or is not unique):: u'|brake_disc|brake_disc|brake_discShape.e[261:262].f[0]'
 
 
@@ -587,14 +586,14 @@ pinned windows re-open as separate instance
 radial array 
 ['VRayLightRect1', 'VRayLightRect1_ins1', 'VRayLightRect1_ins2', 'VRayLightRect1_ins3', 'VRayLightRect1_ins4', 'VRayLightRect1_ins5', 'VRayLightRect1_ins6', 'VRayLightRect1_ins7', 'VRayLightRect1_ins8', 'VRayLightRect1_ins9', 'VRayLightRect1_ins10', 'VRayLightRect1_ins11', 'VRayLightRect1_ins12', 'VRayLightRect1_ins13', 'VRayLightRect1_ins14', 'VRayLightRect1_ins15', 'VRayLightRect1_ins16', 'VRayLightRect1_ins17', 'VRayLightRect1_ins18', 'VRayLightRect1_ins19', 'VRayLightRect1_ins19', 'VRayLightRect1_ins19_ins1', 'VRayLightRect1_ins19_ins2', 'VRayLightRect1_ins19_ins3', 'VRayLightRect1_ins19_ins4', 'VRayLightRect1_ins19_ins5', 'VRayLightRect1_ins19_ins6', 'VRayLightRect1_ins19_ins7', 'VRayLightRect1_ins19_ins8', 'VRayLightRect1_ins19_ins9', 'VRayLightRect1_ins19_ins10', 'VRayLightRect1_ins19_ins11', 'VRayLightRect1_ins19_ins12', 'VRayLightRect1_ins19_ins13', 'VRayLightRect1_ins19_ins14', 'VRayLightRect1_ins19_ins15', 'VRayLightRect1_ins19_ins16', 'VRayLightRect1_ins19_ins17', 'VRayLightRect1_ins19_ins18', 'VRayLightRect1_ins19_ins19', 'VRayLightRect1', 'VRayLightRect1_dup1', 'VRayLightRect1_dup2', 'VRayLightRect1_dup3', 'VRayLightRect1_dup4', 'VRayLightRect1_dup5', 'VRayLightRect1_dup6', 'VRayLightRect1_dup7', 'VRayLightRect1_dup8', 'VRayLightRect1_dup9', 'VRayLightRect1_dup10', 'VRayLightRect1_dup11', 'VRayLightRect1_dup12', 'VRayLightRect1_dup13', 'VRayLightRect1_dup14', 'VRayLightRect1_dup15', 'VRayLightRect1_dup16', 'VRayLightRect1_dup17', 'VRayLightRect1_dup18', 'VRayLightRect1_dup19', 'VRayLightRect1_dup19', 'VRayLightRect1_dup19_dup1', 'VRayLightRect1_dup19_dup2', 'VRayLightRect1_dup19_dup3', 'VRayLightRect1_dup19_dup4', 'VRayLightRect1_dup19_dup5', 'VRayLightRect1_dup19_dup6', 'VRayLightRect1_dup19_dup7', 'VRayLightRect1_dup19_dup8', 'VRayLightRect1_dup19_dup9', 'VRayLightRect1_dup19_dup10', 'VRayLightRect1_dup19_dup11', 'VRayLightRect1_dup19_dup12', 'VRayLightRect1_dup19_dup13', 'VRayLightRect1_dup19_dup14', 'VRayLightRect1_dup19_dup15', 'VRayLightRect1_dup19_dup16', 'VRayLightRect1_dup19_dup17', 'VRayLightRect1_dup19_dup18', 'VRayLightRect1_dup19_dup19', 'VRayLightRect1', 'VRayLightRect1_ins1', 'VRayLightRect1_ins2', 'VRayLightRect1_ins3', 'VRayLightRect1_ins4', 'VRayLightRect1_ins5', 'VRayLightRect1_ins6', 'VRayLightRect1_ins7', 'VRayLightRect1_ins8', 'VRayLightRect1_ins9', 'VRayLightRect1_ins10', 'VRayLightRect1_ins11', 'VRayLightRect1_ins12', 'VRayLightRect1_ins13', 'VRayLightRect1_ins14', 'VRayLightRect1_ins15', 'VRayLightRect1_ins16', 'VRayLightRect1_ins17', 'VRayLightRect1_ins18', 'VRayLightRect1_ins19'] #
 Traceback (most recent call last):
-  File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_func.py", line 1836, in b038
-    self.b001(create=True)
-  File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_func.py", line 1554, in b001
-    pm.polyUnite (radialArrayObjList, name=objectName)
-  File "C:\Program Files\Autodesk\Maya2018\Python\lib\site-packages\pymel\internal\factories.py", line 957, in newFuncWithReturnFunc
-    res = beforeReturnFunc(*args, **kwargs)
-  File "C:\Program Files\Autodesk\Maya2018\Python\lib\site-packages\pymel\internal\pmcmds.py", line 140, in polyUnite_wrapped
-    raise pymel.core.general._objectError(obj)
+	File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_func.py", line 1836, in b038
+		self.b001(create=True)
+	File "O:\Cloud/____Graphics/Maya/scripts/_Python/_Python_startup\tk_maya_func.py", line 1554, in b001
+		pm.polyUnite (radialArrayObjList, name=objectName)
+	File "C:\Program Files\Autodesk\Maya2018\Python\lib\site-packages\pymel\internal\factories.py", line 957, in newFuncWithReturnFunc
+		res = beforeReturnFunc(*args, **kwargs)
+	File "C:\Program Files\Autodesk\Maya2018\Python\lib\site-packages\pymel\internal\pmcmds.py", line 140, in polyUnite_wrapped
+		raise pymel.core.general._objectError(obj)
 pymel.core.general.MayaNodeError: Maya Node does not exist (or is not unique):: u'VRayLightRect1_ins1'
 
 add all relevant options for smooth preview located in poly display properties.
@@ -892,7 +891,7 @@ proc batchExport (string $fileType)
 
 
 
-# deprecated
+# deprecated --------------------------------------------------------------------------------
 
 
 
@@ -900,7 +899,7 @@ proc batchExport (string $fileType)
 
 # class DynWidgetEvents(QtCore.QObject):
 #   '''
-  
+	
 #   '''
 #   __mouseHover = QtCore.Signal(bool)
 
@@ -1029,120 +1028,120 @@ proc batchExport (string $fileType)
 
 
 
-  # def initWidgets(self):
-  #   '''
-  #   Set initial states for dynamic ui widgets. 
-  #   '''
-  #   for widget in self.sb.getWidget(self.name): #constructs connections for, and returns, all widgets for the given ui name.
-  #     # widget.installEventFilter(self)
-  #     # widget.setMouseTracking(True)
+	# def initWidgets(self):
+	#   '''
+	#   Set initial states for dynamic ui widgets. 
+	#   '''
+	#   for widget in self.sb.getWidget(self.name): #constructs connections for, and returns, all widgets for the given ui name.
+	#     # widget.installEventFilter(self)
+	#     # widget.setMouseTracking(True)
 
-  #     widgetName = widget.objectName()
-  #     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
+	#     widgetName = widget.objectName()
+	#     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
 
-  #     widget.setStyleSheet(StyleSheet.css) #add StyleSheet
+	#     widget.setStyleSheet(StyleSheet.css) #add StyleSheet
 
-  #     if self.name=='init' and widgetName=='t000':
-  #       widget.viewport().setAutoFillBackground(False)
-  #       widget.setTextBackgroundColor(QtGui.QColor(50, 50, 50))
+	#     if self.name=='init' and widgetName=='t000':
+	#       widget.viewport().setAutoFillBackground(False)
+	#       widget.setTextBackgroundColor(QtGui.QColor(50, 50, 50))
 
-  #     if self.name=='main' or self.name=='viewport':
-  #       if widgetName.startswith('r'):
-  #         widget.setVisible(False)
+	#     if self.name=='main' or self.name=='viewport':
+	#       if widgetName.startswith('r'):
+	#         widget.setVisible(False)
 
-  #     if self.name=='create':
-  #       if widgetName.startswith('s'):
-  #         widget.setVisible(False)
-
-
-
-  # def eventFilter(self, widget, event):
-  #   '''
-  #   Event filter for dynamic ui widgets.
-  #   args:
-  #     widget=<object> - the widget for which the event occurred.
-  #     event=<QEvent>
-  #   '''
-  #   for widget in self.sb.getWidget(self.name): #constructs connections for, and returns, all widgets for the given ui name.
-
-  #     widgetName = widget.objectName()
-  #     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
+	#     if self.name=='create':
+	#       if widgetName.startswith('s'):
+	#         widget.setVisible(False)
 
 
-  #     #___MouseButtonPress Event
-  #     if event.type()==QtCore.QEvent.MouseButtonPress:
-  #       self.__mousePressPos = event.globalPos()
+
+	# def eventFilter(self, widget, event):
+	#   '''
+	#   Event filter for dynamic ui widgets.
+	#   args:
+	#     widget=<object> - the widget for which the event occurred.
+	#     event=<QEvent>
+	#   '''
+	#   for widget in self.sb.getWidget(self.name): #constructs connections for, and returns, all widgets for the given ui name.
+
+	#     widgetName = widget.objectName()
+	#     widgetType = widget.__class__.__name__ # self.sb.getWidgetType(widget)
 
 
-  #     #___MouseMove Event
-  #     if event.type()==QtCore.QEvent.MouseMove:
-  #       if widgetType=='QPushButton':
-  #         if widgetName.startswith('i') or widgetName.startswith('v'): #set down
-  #           widget.setDown(widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())))
-
-  #         elif widgetName=='pin': #move window on left mouse drag.
-  #           self.moveToMousePosition(self, -self.point.x(), -self.point.y()*.1)
-
-  #       elif widgetType=='QWidget':
-  #         if widgetName.startswith('r'): #set visibility
-  #           widget.setVisible(widget.geometry().contains(event.pos()))
-
-  #       elif widgetType=='QComboBox':
-  #         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
-  #           #switch the index before opening to initialize the contents of the comboBox
-  #           widget.setStyleSheet(StyleSheet.comboBox_alt)
-  #           index = widget.currentIndex()
-  #           widget.blockSignals(True)
-  #           widget.setCurrentIndex(-1)
-  #           widget.blockSignals(False)
-  #           widget.setCurrentIndex(index) #change index back to refresh contents
-  #         else:
-  #           widget.setStyleSheet(StyleSheet.comboBox)
+	#     #___MouseButtonPress Event
+	#     if event.type()==QtCore.QEvent.MouseButtonPress:
+	#       self.__mousePressPos = event.globalPos()
 
 
-  #     #___MouseButtonRelease Event
-  #     if event.type()==QtCore.QEvent.MouseButtonRelease:
-  #       print widgetName
-  #       if widgetType=='QPushButton':
-  #         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
-  #           if widgetName.startswith('i'): #connect to layoutStack and pass in an index as int or string 'name'.
-  #             index = widget.whatsThis()
-  #             self.layoutStack(index) #switch the stacked layout to the given ui.
+	#     #___MouseMove Event
+	#     if event.type()==QtCore.QEvent.MouseMove:
+	#       if widgetType=='QPushButton':
+	#         if widgetName.startswith('i') or widgetName.startswith('v'): #set down
+	#           widget.setDown(widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())))
 
-  #           elif widgetName.startswith('v'): #ie. 'v012'
-  #             self.sb.previousView(as_list=1).append(self.sb.getMethod(self.name, widgetName)) #store the camera view
-  #             widget.click()
+	#         elif widgetName=='pin': #move window on left mouse drag.
+	#           self.moveToMousePosition(self, -self.point.x(), -self.point.y()*.1)
 
-  #           elif widgetName.startswith('b'): #ie. 'b012'
-  #             self.sb.prevCommand(as_list=1).append([self.sb.getMethod(self.name, widgetName), self.sb.getDocString(widgetName)]) #store the command method object and it's docString (ie. 'Multi-cut tool')
+	#       elif widgetType=='QWidget':
+	#         if widgetName.startswith('r'): #set visibility
+	#           widget.setVisible(widget.geometry().contains(event.pos()))
 
-  #           elif widgetName=='pin': #Override pushbutton to move the main window on left mouse drag event. When checked, prevents hide event on main window.
-  #             print 'pin_mouseReleaseEvent', widgetName
-  #             moveAmount = event.globalPos() - self.__mousePressPos
-  #             if moveAmount.manhattanLength() > 5: #if widget moved:
-  #               widget.setChecked(True) #setChecked to prevent window from closing.
-  #               event.ignore()
-  #             else:
-  #               widget.setChecked(not widget.isChecked()) #toggle check state
-  #               self.hide_()
-
-  #       elif widgetType=='QComboBox':
-  #         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
-  #           widget.setStyleSheet(StyleSheet.comboBox_popup)
-  #           widget.showPopup()
+	#       elif widgetType=='QComboBox':
+	#         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+	#           #switch the index before opening to initialize the contents of the comboBox
+	#           widget.setStyleSheet(StyleSheet.comboBox_alt)
+	#           index = widget.currentIndex()
+	#           widget.blockSignals(True)
+	#           widget.setCurrentIndex(-1)
+	#           widget.blockSignals(False)
+	#           widget.setCurrentIndex(index) #change index back to refresh contents
+	#         else:
+	#           widget.setStyleSheet(StyleSheet.comboBox)
 
 
-  #     #___Enter Event
-  #     if event.type()==QtCore.QEvent.Type.Enter:
-  #       self.__mouseHover.emit(True)
+	#     #___MouseButtonRelease Event
+	#     if event.type()==QtCore.QEvent.MouseButtonRelease:
+	#       print widgetName
+	#       if widgetType=='QPushButton':
+	#         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+	#           if widgetName.startswith('i'): #connect to layoutStack and pass in an index as int or string 'name'.
+	#             index = widget.whatsThis()
+	#             self.layoutStack(index) #switch the stacked layout to the given ui.
+
+	#           elif widgetName.startswith('v'): #ie. 'v012'
+	#             self.sb.previousView(as_list=1).append(self.sb.getMethod(self.name, widgetName)) #store the camera view
+	#             widget.click()
+
+	#           elif widgetName.startswith('b'): #ie. 'b012'
+	#             self.sb.prevCommand(as_list=1).append([self.sb.getMethod(self.name, widgetName), self.sb.getDocString(widgetName)]) #store the command method object and it's docString (ie. 'Multi-cut tool')
+
+	#           elif widgetName=='pin': #Override pushbutton to move the main window on left mouse drag event. When checked, prevents hide event on main window.
+	#             print 'pin_mouseReleaseEvent', widgetName
+	#             moveAmount = event.globalPos() - self.__mousePressPos
+	#             if moveAmount.manhattanLength() > 5: #if widget moved:
+	#               widget.setChecked(True) #setChecked to prevent window from closing.
+	#               event.ignore()
+	#             else:
+	#               widget.setChecked(not widget.isChecked()) #toggle check state
+	#               self.hide_()
+
+	#       elif widgetType=='QComboBox':
+	#         if widget.rect().contains(widget.mapFromGlobal(QtGui.QCursor.pos())):
+	#           widget.setStyleSheet(StyleSheet.comboBox_popup)
+	#           widget.showPopup()
 
 
-  #     #___HoverLeave Event
-  #     if event.type()==QtCore.QEvent.Type.HoverLeave:
-  #       self.__mouseHover.emit(False)
+	#     #___Enter Event
+	#     if event.type()==QtCore.QEvent.Type.Enter:
+	#       self.__mouseHover.emit(True)
 
-  #   # return super(HotBox, self).eventFilter(widget, event)
-  #   return QtWidgets.QWidget.eventFilter(self, widget, event)
+
+	#     #___HoverLeave Event
+	#     if event.type()==QtCore.QEvent.Type.HoverLeave:
+	#       self.__mouseHover.emit(False)
+
+	#   # return super(HotBox, self).eventFilter(widget, event)
+	#   return QtWidgets.QWidget.eventFilter(self, widget, event)
 
 
 
@@ -1158,32 +1157,32 @@ proc batchExport (string $fileType)
 #       pass
 
 
-  # def setWidget(self, w):
-  #   '''
-  #   args:
-  #     w=<QWidget>
-  #   '''
-  #   w.installEventFilter(self)
-  #   if self.overlay is None:
-  #     self.overlay = Overlay()
-  #   self.overlay.setParent(w)
+	# def setWidget(self, w):
+	#   '''
+	#   args:
+	#     w=<QWidget>
+	#   '''
+	#   w.installEventFilter(self)
+	#   if self.overlay is None:
+	#     self.overlay = Overlay()
+	#   self.overlay.setParent(w)
 
 
 
-  # def mouseMoveEvent(self, event):
-  #   '''
-  #   args:
-  #     event=<QEvent>
-  #   '''
+	# def mouseMoveEvent(self, event):
+	#   '''
+	#   args:
+	#     event=<QEvent>
+	#   '''
 
 
 
 
-  # def mouseReleaseEvent(self, event):
-  #   '''
-  #   args:
-  #     event=<QEvent>
-  #   '''
+	# def mouseReleaseEvent(self, event):
+	#   '''
+	#   args:
+	#     event=<QEvent>
+	#   '''
 
 
 
@@ -1287,139 +1286,139 @@ proc batchExport (string $fileType)
 #       self.mouseHover.emit(False)
 #       if widgetType=='QComboBox':
 #         widget.setStyleSheet(StyleSheet.comboBox)
-  
+	
 
 
 #     return QtWidgets.QWidget.eventFilter(self, widget, event)
 
 
 
-    # # if not self.name=='init': #remove old and add new signals for current ui from connectionDict
-    # if self.name!=self.sb.previousName(allowDuplicates=1):
-    #   if self.sb.previousName():
-    #     self.sb.removeSignal(self.sb.previousName())
-    #     self.sb.addSignal(self.name)
-    #   else: #if no previous ui exists
-    #     self.sb.addSignal(self.name)
+		# # if not self.name=='init': #remove old and add new signals for current ui from connectionDict
+		# if self.name!=self.sb.previousName(allowDuplicates=1):
+		#   if self.sb.previousName():
+		#     self.sb.removeSignal(self.sb.previousName())
+		#     self.sb.addSignal(self.name)
+		#   else: #if no previous ui exists
+		#     self.sb.addSignal(self.name)
 
 
-  # def mouseMoveEvent(self, event):
-  #   '''
-  #   args:
-  #     event=<QEvent>
-  #   '''
-  #   if self.name=='main':
-  #     self.setVisibilityOnHover(event.pos(), 'r000-9')
-  #     self.setDown_(event.pos(), 'i003-32, v000-37')
-  #     self.showPopup_(event.pos(), 'cmb000-2')
+	# def mouseMoveEvent(self, event):
+	#   '''
+	#   args:
+	#     event=<QEvent>
+	#   '''
+	#   if self.name=='main':
+	#     self.setVisibilityOnHover(event.pos(), 'r000-9')
+	#     self.setDown_(event.pos(), 'i003-32, v000-37')
+	#     self.showPopup_(event.pos(), 'cmb000-2')
 
-  #   if self.name=='editors':
-  #     self.setVisibilityOnHover(event.pos(), 'r000-9')
-  #     self.setDown_(event.pos(), 'v000-4')
-  #     # self.showPopup_(event.pos(), 'cmb000-2')
+	#   if self.name=='editors':
+	#     self.setVisibilityOnHover(event.pos(), 'r000-9')
+	#     self.setDown_(event.pos(), 'v000-4')
+	#     # self.showPopup_(event.pos(), 'cmb000-2')
 
-  #   elif self.name=='viewport':
-  #     self.setVisibilityOnHover(event.pos(), 'r000-8')
-  #     self.setDown_(event.pos(), 'v000-29')
-  #     self.showPopup_(event.pos(), 'cmb000-3')
-
-
-
-  # def unpackNames(self, nameString):
-  #   '''
-  #   Get a list of individual names from a single name string.
-  #   args:
-  #     nameString=string consisting of widget names separated by commas. ie. 'v000, b004-6'
-  #   returns:
-  #     unpacked names. ie. ['v000','b004','b005','b006']
-  #   '''
-  #   packed_names = [n.strip() for n in nameString.split(',') if '-' in n] #build list of all widgets passed in containing '-'
-
-  #   unpacked_names=[]
-  #   for name in packed_names:
-  #     name=name.split('-') #ex. split 'b000-8'
-  #     prefix = name[0].strip('0123456789') #ex. split 'b' from 'b000'
-  #     start = int(name[0].strip('abcdefghijklmnopqrstuvwxyz') or 0) #start range. #ex. '000' #converting int('000') returns None, if case; assign 0.
-  #     stop = int(name[1])+1 #end range. #ex. '9' from 'b000-8' for range up to 9 but not including 9.
-  #     unpacked_names.extend([str(prefix)+'000'[:-len(str(num))]+str(num) for num in range(start,stop)]) #build list of name strings within given range
-
-  #   names = [n.strip() for n in nameString.split(',') if '-' not in n] #all widgets passed in not containing '-'
-
-  #   return names+unpacked_names
+	#   elif self.name=='viewport':
+	#     self.setVisibilityOnHover(event.pos(), 'r000-8')
+	#     self.setDown_(event.pos(), 'v000-29')
+	#     self.showPopup_(event.pos(), 'cmb000-3')
 
 
 
-  # def getUiObject(self, widgets):
-  #   '''
-  #   Get ui objects from name strings.
-  #   args:
-  #     widgets='string' - ui object names
-  #   returns:
-  #     list of corresponding ui objects  
-  #   '''
-  #   objects=[]
-  #   for name in self.unpackNames(widgets):
-  #     try:
-  #       w = getattr(self.ui, name)
-  #       objects.append(w)
-  #     except: pass
-  #   return objects
+	# def unpackNames(self, nameString):
+	#   '''
+	#   Get a list of individual names from a single name string.
+	#   args:
+	#     nameString=string consisting of widget names separated by commas. ie. 'v000, b004-6'
+	#   returns:
+	#     unpacked names. ie. ['v000','b004','b005','b006']
+	#   '''
+	#   packed_names = [n.strip() for n in nameString.split(',') if '-' in n] #build list of all widgets passed in containing '-'
+
+	#   unpacked_names=[]
+	#   for name in packed_names:
+	#     name=name.split('-') #ex. split 'b000-8'
+	#     prefix = name[0].strip('0123456789') #ex. split 'b' from 'b000'
+	#     start = int(name[0].strip('abcdefghijklmnopqrstuvwxyz') or 0) #start range. #ex. '000' #converting int('000') returns None, if case; assign 0.
+	#     stop = int(name[1])+1 #end range. #ex. '9' from 'b000-8' for range up to 9 but not including 9.
+	#     unpacked_names.extend([str(prefix)+'000'[:-len(str(num))]+str(num) for num in range(start,stop)]) #build list of name strings within given range
+
+	#   names = [n.strip() for n in nameString.split(',') if '-' not in n] #all widgets passed in not containing '-'
+
+	#   return names+unpacked_names
 
 
 
-  # def setVisibilityOnHover(self, mousePosition, widgets):
-  #   '''
-  #   Show/hide widgets on mouseover event.
-  #   args:
-  #     mousePosition=QPoint
-  #     widgets=string consisting of widget names separated by commas. ie. 'r000, r001, v000-13, i020-23'
-  #   '''
-  #   for w in self.getUiObject(widgets):
-  #     if w.geometry().contains(mousePosition):
-  #       w.show()
-  #     else:
-  #       w.hide()
+	# def getUiObject(self, widgets):
+	#   '''
+	#   Get ui objects from name strings.
+	#   args:
+	#     widgets='string' - ui object names
+	#   returns:
+	#     list of corresponding ui objects  
+	#   '''
+	#   objects=[]
+	#   for name in self.unpackNames(widgets):
+	#     try:
+	#       w = getattr(self.ui, name)
+	#       objects.append(w)
+	#     except: pass
+	#   return objects
 
 
 
-  # def setDown_(self, mousePosition, widgets):
-  #   '''
-  #   Set pushbutton down state.
-  #   args:
-  #     mousePosition=QPoint
-  #     widgets=string consisting of widget names separated by commas. ie. 'r000, r001, v000-13, i020-23'
-  #   '''
-  #   for w in self.getUiObject(widgets):
-  #     if w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos())):
-  #       w.setDown(True)
-  #     else:
-  #       w.setDown(False)
+	# def setVisibilityOnHover(self, mousePosition, widgets):
+	#   '''
+	#   Show/hide widgets on mouseover event.
+	#   args:
+	#     mousePosition=QPoint
+	#     widgets=string consisting of widget names separated by commas. ie. 'r000, r001, v000-13, i020-23'
+	#   '''
+	#   for w in self.getUiObject(widgets):
+	#     if w.geometry().contains(mousePosition):
+	#       w.show()
+	#     else:
+	#       w.hide()
 
 
 
-  # def showPopup_(self, mousePosition, widgets):
-  #   '''
-  #   Set comboBox popup state.
-  #   args:
-  #     mousePosition=QPoint
-  #     widgets=string 
-  #   '''
-  #   for w in self.getUiObject(widgets):
-  #     if w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos())):
-  #       # w.showPopup()
-  #       w.setStyleSheet('''
-  #         QComboBox {
-  #         background-color: rgba(82,133,166,200);
-  #         color: white;
-  #         }
-  #         ''')
-  #     else:
-  #       # w.hidePopup()
-  #       w.setStyleSheet('''
-  #         background-color: rgba(100,100,100,200);
-  #         color: white;
-  #         }
-  #         ''')
+	# def setDown_(self, mousePosition, widgets):
+	#   '''
+	#   Set pushbutton down state.
+	#   args:
+	#     mousePosition=QPoint
+	#     widgets=string consisting of widget names separated by commas. ie. 'r000, r001, v000-13, i020-23'
+	#   '''
+	#   for w in self.getUiObject(widgets):
+	#     if w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos())):
+	#       w.setDown(True)
+	#     else:
+	#       w.setDown(False)
+
+
+
+	# def showPopup_(self, mousePosition, widgets):
+	#   '''
+	#   Set comboBox popup state.
+	#   args:
+	#     mousePosition=QPoint
+	#     widgets=string 
+	#   '''
+	#   for w in self.getUiObject(widgets):
+	#     if w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos())):
+	#       # w.showPopup()
+	#       w.setStyleSheet('''
+	#         QComboBox {
+	#         background-color: rgba(82,133,166,200);
+	#         color: white;
+	#         }
+	#         ''')
+	#     else:
+	#       # w.hidePopup()
+	#       w.setStyleSheet('''
+	#         background-color: rgba(100,100,100,200);
+	#         color: white;
+	#         }
+	#         ''')
 
 
 

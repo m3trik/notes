@@ -1044,7 +1044,7 @@ ls -selection;
 $currentSelection = `ls -selection -showType`; //showType flag is optional
 
 //select all geometry
-cmds.SelectAllGeometry()
+pm.SelectAllGeometry()
 [pm.select (geometry, add=1) for geometry in scene]
 
 //with listRelatives -p you can find the object *precisely*
@@ -1385,7 +1385,7 @@ vtx = pm.ls(obj+'.vtx[*]', flatten=True)
 faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
 
 //get currently selected components
-components = cmds.ls(selection=True, flatten=True)
+components = pm.ls(selection=True, flatten=True)
 //selected vertices as int
 selectedVerts = [v.split('[')[-1].rstrip(']') for v in pm.filterExpand(sm=31)]
 polyEvaluate -vertexComponent $obj //selected vertices as int
@@ -1719,6 +1719,12 @@ mat = pm.shadingNode('lambert', asShader=1, name=name)
 
 //assign shader
 pm.hyperShade(face, assign=mat) //#without optional first arg specified, shader will be assigned to any selected faces/objects
+//using sets:
+shader = pm.shadingNode('lambert', asShader=True)
+shaderGrp = pm.sets(empty=True, renderable=True, noSurfaceShader=True)
+pm.connectAttr(shader+".outColor", shaderGrp+".surfaceShader", f=True)
+pm.sets(faces, e=True, forceElement=shaderGrp)
+
 
 
 //get node type
@@ -1769,7 +1775,7 @@ convertedRGB = [round(float(v)/255, 3) for v in rgb]
 //Hypershade Editor
 
 //open the hypershade widow
-mel.eval("HypershadeWindow()") //cmds.HypershadeWindow()
+mel.eval("HypershadeWindow()") //pm.HypershadeWindow()
 
 //Get the name of the hypershade panel
 panel = pm.getPanel(withFocus=True)
