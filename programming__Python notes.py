@@ -1453,7 +1453,7 @@ eg. for value in dict_.itervalues():
 #keys and values:
 eg.	for key, value in dict_.iteritems():
 #keys, values, and indices:
-eg. for index, (key, value) in enumerate(attributes.items()):
+eg. for index, (key, value) in enumerate(dict_.items()):
 
 
 
@@ -1986,10 +1986,6 @@ function_2() #evaluate function_2
 'Classes____________________________________________________________________________________'
 
 
-#get class name as a string
-eg. classInstance.__class__.__name__
-eg. if class_.__class__.__name__ == 'Create': pass
-
 #set Docstring
 class MyNewClass:
 		'''A docstring is a brief description about the class.'''
@@ -1998,28 +1994,37 @@ class MyNewClass:
 __doc__ #gives us the docstring of that class.
 
 
-#get methods of a class
+
+#get class name (as a string)
+eg. classInstance.__class__.__name__
+eg. if class_.__class__.__name__ == 'Create': pass
+
+
+
+#get class methods
 import inspect
 inspect.getmembers(Class, predicate=inspect.ismethod)
 
 
-# prints list of class attributes
-dir(Class)[:5] #limit list to 5 results
+#get class attributes
+dir(Class)[:5] #limit list to 5 results. returns: [string list of attribute names]
+Class.__dict__ #get the attributes defined for the instance. returns: {attribute name:value}
 
-print help(Class) # Class information
-
-print isinstance(potentialInstOf, Class) # is instance of class [bool]
-print issubclass(potentialSubcalss, Class) # is class subclass of [bool]
-print Class.__dict__ # print class attributes
-
-#check if an instance exists:
-import tk_main
-if 'tk_hotBox_init' not in locals() or 'tk_hotBox_init' not in globals():
-	tk_hotBox_init = tk_main.createInstance()
-tk_hotBox_init.hbShow()
+help(Class) # Class information
 
 
-#count the number of instances:
+
+#check if instance:
+obj.isinstance(potentialInstOf, Class) # is instance of class [bool]
+obj.issubclass(potentialSubcalss, Class) # is class subclass of [bool]
+
+
+#check if instance exists:
+'instance' in locals()
+'instance' in globals()
+
+
+#number of instances:
 class Obj:
     _counter = 0
     def __init__(self):
@@ -2043,19 +2048,7 @@ def get_next_id():
 
 
 
-
-# methods and attributes ---------------------------------
-#a method is a function that is a member of a class
-#object = what you want to do     
-#method = what to do it to 
-object.method()
-
-
-
-
-
-
-#Get python class object from name string.
+#get class object from name string.
 class_ = globals()['ClassName']() #(returns a dictionary with global symbol table.)
 class_ = locals()['methodName']() #(returns a dictionary with a current local symbol table.)
 #the current script/module's global variables as a dictionary 

@@ -160,7 +160,7 @@ uiList = ["init", "main", "viewport", "mainOptions", "viewportOptions", "normals
 #use index to get ui name or set stack index
 self.name = uiList[index]
 
-if (self.layout() == None):
+if(self.layout() == None):
 	self.stackedLayout = QtWidgets.QStackedLayout()
 
 	for ui in uiList:
@@ -354,7 +354,7 @@ cmb.currentText() #get current text
 
 
 # remove
-cmb.removeItem (index)
+cmb.removeItem(index)
 
 #edit line
 cmb.lineEdit(): #Returns the line edit used to edit items in the combobox, or 0 if there is no line edit.
@@ -374,7 +374,7 @@ cmb.clear()
 
 # get list contents:
 list_ = [cmb.itemText(i) for i in range(cmb.count())]
-components = pm.ls (selection=1, flatten=1)
+components = pm.ls(selection=1, flatten=1)
 cmb.addItems(components)
 
 # add string
@@ -451,7 +451,7 @@ print item.text(3) # get data
 
 
 # QListWidget
-#add key (or value) from a dictionary to a list 
+#add key(or value) from a dictionary to a list 
 listContents=[]
 for key in seqDict:
 	listContents.append(key)
@@ -522,7 +522,7 @@ ex.	if lineEdit.text() == default_text:
 ex.	QLineEdit.returnPressed.connect(self.mel_b019) #qpushbutton b019
 
 
-# .maxLength (int)  By default, this property contains a value of 32767
+# .maxLength(int)  By default, this property contains a value of 32767
 ex.	QLineEdit.maxLength()
 ex.	QLineEdit.setMaxLength(8)
 
@@ -550,7 +550,7 @@ n	#ASCII alphanumeric character permitted but not required.
 9	#ASCII digit required. 0-9.
 0	#ASCII digit permitted but not required.
 D	#ASCII digit required. 1-9.
-d	#ASCII digit permitted but not required (1-9).
+d	#ASCII digit permitted but not required(1-9).
 
 #	#ASCII digit or plus/minus sign permitted but not required.
 
@@ -641,7 +641,7 @@ def groupButtons(objectName, ui, prefix, range_):
 			buttonGroup = QtWidgets.QButtonGroup(ui)
 			buttonGroup.setObjectName(objectName)
 
-			for num in range (range_):
+			for num in range(range_):
 				numString = '000'[:-len(str(num))]+str(num) #remove zeros from string according to the length of the number
 
 				button = getattr(ui, prefix+numString) #equivilent to: (self.ui.m000)
@@ -667,7 +667,7 @@ self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
 def getObjects(name, cls=True):
     objects = []
     for obj in gc.get_objects():
-        if (isinstance(obj, QtCore.QObject) and
+        if(isinstance(obj, QtCore.QObject) and
             ((cls and obj.inherits(name)) or
              (not cls and obj.objectName() == name))):
             objects.append(obj)
@@ -752,8 +752,8 @@ def sizeHint(self):
 
 w.geometry()
 
-#holds the geometry of the widget as it will appear when shown as a normal (not maximized or full screen) top-level widget.
-#Note, the widget must be first shown for this to return something other than (0,0)
+#holds the geometry of the widget as it will appear when shown as a normal(not maximized or full screen) top-level widget.
+#Note, the widget must be first shown for this to return something other than(0,0)
 w.normalGeometry(). 
 
 
@@ -829,26 +829,38 @@ rect.left() #Returns the x-coordinate of the rectangle’s left edge. Equivalent
 rect.right() #Returns the x-coordinate of the rectangle’s right edge.
 rect.center() #Returns the center point of the rectangle.
 rect.getRect() #Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
-rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to (x , y ), and its size to the given width and height .
+rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to(x , y ), and its size to the given width and height .
 rect.getCoords() #Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
-rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to (x1 , y1 ), and the coordinates of its bottom-right corner to (x2 , y2 ).
-rect.contains(x, y) #or QPoint. Returns true if the point (x , y ) is inside or on the edge of the rectangle
+rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to(x1 , y1 ), and the coordinates of its bottom-right corner to(x2 , y2 ).
+rect.contains(x, y) #or QPoint. Returns true if the point(x , y ) is inside or on the edge of the rectangle
 rect.intersects() #Returns true if this rectangle intersects with the given rectangle.
 rect.intersect() #Use intersected(rectangle ) instead.
 rect.intersected() #Returns the intersection of this rectangle and the given rectangle . Note that r.intersected(s) is equivalent to r & s .
 rect.adjust(x1, y1, x2, y2) #Adds dx1 , dy1 , dx2 and dy2 respectively to the existing coordinates of the rectangle.
 rect.translate(dx, dy) #Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
-rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position (x , y ). The rectangle’s size is unchanged.
+rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position(x , y ). The rectangle’s size is unchanged.
 rect.isEmpty() #Returns true if the rectangle is empty.
 
 
 
 
-# Cursor position
-self.mousePosition = event.pos() #relative position to mouseEvent
-self.mousePosition = QtGui.QCursor.pos() #global position
+#event position
+event.pos() #relative position to mouseEvent
+event.x()
+event.y()
+event.globalPos()
+event.globalX()
+event.globalY()
+event.localPos()
+event.screenPos()
+event.setLocalPos(localPosition)
+event.windowPos()
 
-w.pos() #widget positon
+
+#cursor
+QtGui.QCursor.pos() #global position
+
+w.pos()
 w.mapFromGlobal(point)
 w.mapFrom(widget, point)
 w.mapTo(widget, point)
@@ -885,52 +897,61 @@ w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable but
 
 
 QtCore.QEvent.accept() #indicates whether the receiver wants the event.
+QtCore.QEvent.isAccepted() #returns bool
+QtCore.QEvent.setAccepted(True) #bool
 QtCore.QEvent.ignore() #event is propagated up the parent widget chain until a widget accepts it. (or an event filter consumes it)
+
+
 w.setAttribute(QtCore.Qt.WA_NoMousePropagation) #event will not be propagated further up the parent widget chain.
 
 
 
+event.source()
+event.button()
+event.buttons()
+event.flags()
 
-actionEvent (event)
-changeEvent (event)
+
+actionEvent(event)
+changeEvent(event)
 
 
 #move
-moveEvent (event)
+moveEvent(event)
 .moveEvent
 
 
 #size
-sizeHint ()
-resizeEvent (event)
+sizeHint()
+resizeEvent(event)
 .resizeEvent
-minimumSizeHint ()
-heightForWidth (arg__1)
+minimumSizeHint()
+heightForWidth(arg__1)
 
 
 #mouse
-mouseDoubleClickEvent (event)
-mouseMoveEvent (event)
-mousePressEvent (event)
-mouseReleaseEvent (event)
-wheelEvent (event)
-dragEnterEvent (event)
-dragLeaveEvent (event)
-dragMoveEvent (event)
-dropEvent (event)
+mouseDoubleClickEvent(event)
+mouseMoveEvent(event)
+mousePressEvent(event)
+mouseReleaseEvent(event)
+wheelEvent(event)
+dragEnterEvent(event)
+dragLeaveEvent(event)
+dragMoveEvent(event)
+dropEvent(event)
 
 
 #keyboard
-inputMethodEvent (event)
-inputMethodQuery (arg__1)
-keyPressEvent (event)
-keyReleaseEvent (event)
+inputMethodEvent(event)
+inputMethodQuery(arg__1)
+keyPressEvent(event)
+keyReleaseEvent(event)
 
 
 #Focus
-focusInEvent (event)
-focusNextPrevChild (next)
-focusOutEvent (event)
+focusInEvent(event)
+focusNextPrevChild(next)
+focusOutEvent(event)
 
 QtGui.QFocusEvent #PySide.QtGui.QFocusEvent.gotFocus() #Return type: PySide.QtCore.bool
 
@@ -941,9 +962,9 @@ w.focusInEvent = self.max_b010()
 w.focusOutEvent(MaxPlus.CUI.EnableAccelerators())
 
 
-setVisible (visible)
+setVisible(visible)
 
-showEvent (event)
+showEvent(event)
 self.showEvent(offsetPos(self, offset))
 
 
@@ -955,16 +976,16 @@ ex.
 if event.type() == QtCore.QEvent.Type.Enter:
 
 
-enterEvent (event)
+enterEvent(event)
 .enterEvent
 .leaveEvent
 
 
-hideEvent (event)
+hideEvent(event)
 
-leaveEvent (event)
+leaveEvent(event)
 
-closeEvent (event)
+closeEvent(event)
 
 
 QtGui.QDragEnterEvent(pos, actions, data, buttons, modifiers)
@@ -987,7 +1008,7 @@ drag = QtGui.QDrag(self)
 drag.setMimeData(mimeData)
 
 
-#QDrag (placed in the 'drag' widget's mouseMoveEvent)
+#QDrag(placed in the 'drag' widget's mouseMoveEvent)
 drag = QtGui.QDrag(self)
 drag.setMimeData(QtCore.QMimeData())
 drag.setHotSpot(event.pos()) # drag.setHotSpot(event.pos() - self.rect().topLeft())
@@ -1002,13 +1023,13 @@ QtCore.Qt.DropAction
 
 
 
-contextMenuEvent (event)
+contextMenuEvent(event)
 
 
-paintEvent (event)
+paintEvent(event)
 
 
-tabletEvent (event)
+tabletEvent(event)
 
 
 
@@ -1049,12 +1070,22 @@ self.blockSignals(False)
 
 
 
+#custom event type:
+#Parameters: hint=int
+#Registers and returns a custom event type.
+#The hint provided will be used if it is available, 
+#otherwise it will return a value between QEvent.User and QEvent.MaxUser that has not yet been registered. 
+#The hint is ignored if its value is not between QEvent.User and QEvent.MaxUser .
+QtCore.QEvent.registerEventType([hint=-1]) #returns: int
 
 
+#Send event directly to receiver widget;
+event = QtGui.QEnterEvent(pos, pos, pos)
+QtWidgets.QApplication.sendEvent(widget, event) #Returns the value that was returned from the event handler.
 
-
-
-
+#
+event = QtCore.QEvent(QtCore.QEvent.Leave)
+QtWidgets.QApplication.sendEvent(widget, event)
 
 
 
@@ -1078,7 +1109,7 @@ class PySide.QtGui.QMouseEvent(type, pos, globalPos, button, buttons, modifiers)
 # buttons – PySide.QtCore.Qt.MouseButtons
 # modifiers – PySide.QtCore.Qt.KeyboardModifiers
 ex.
-if (QtGui.QMouseEvent.button == QtCore.Qt.RightButton):
+if(QtGui.QMouseEvent.button == QtCore.Qt.RightButton):
 # QtCore.Qt.MiddleButton
 # QtCore.Qt.LeftButton
 
@@ -1115,28 +1146,28 @@ def setMouseTracking(self, flag):
 
 
 
-QtCore.QEvent.HoverEnter	#The mouse cursor enters a hover widget (QHoverEvent).
-QtCore.QEvent.HoverLeave	#The mouse cursor leaves a hover widget (QHoverEvent).
+QtCore.QEvent.HoverEnter	#The mouse cursor enters a hover widget(QHoverEvent).
+QtCore.QEvent.HoverLeave	#The mouse cursor leaves a hover widget(QHoverEvent).
 #setMouseTracking(True) for mouse event
 w.enterEvent #An event is sent to the widget when the mouse cursor enters the widget.
 w.leaveEvent	#A leave event is sent to the widget when the mouse cursor leaves the widget.
 w.onEnter
 w.onLeave
 
-QtCore.QEvent.MouseButtonDblClick 	#Mouse press again (QMouseEvent).
+QtCore.QEvent.MouseButtonDblClick 	#Mouse press again(QMouseEvent).
 
 .mouseDoubleClickEvent
 ex.
 def mouseDoubleClickEvent(self, event):
 	print "mouseDoubleClickEvent"
 
-QtCore.QEvent.MouseMove 	#Mouse move (QMouseEvent).
+QtCore.QEvent.MouseMove 	#Mouse move(QMouseEvent).
 w.mouseMoveEvent
 
-QtCore.QEvent.MouseButtonPress 	#Mouse press (QMouseEvent).
+QtCore.QEvent.MouseButtonPress 	#Mouse press(QMouseEvent).
 w.mousePressEvent
 
-QtCore.QEvent.MouseButtonRelease 	#Mouse release (QMouseEvent).
+QtCore.QEvent.MouseButtonRelease 	#Mouse release(QMouseEvent).
 w.mouseReleaseEvent = QtGui.QMouseEvent(
 								QtCore.QEvent.MouseButtonRelease,
 								self.cursor().pos(),
@@ -1146,12 +1177,12 @@ w.mouseReleaseEvent = QtGui.QMouseEvent(
 
 QtCore.QEvent.Type.MouseButtonRelease
 QtCore.QEvent.Type.UngrabMouse
-QtCore.QEvent.wheel 	#Mouse wheel rolled (QWheelEvent).
+QtCore.QEvent.wheel 	#Mouse wheel rolled(QWheelEvent).
 
 
 
 
-# Call grabMouse on a widget and only that widget will receive mouse events (mouseMoves etc.), 
+# Call grabMouse on a widget and only that widget will receive mouse events(mouseMoves etc.), 
 # the same applies for grabKeyboard. This means that the other widgets from your application will 
 # not get any mouse/keyboard event until you call the corresponding release function.
 QWidget.grabKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#grabKeyboard
@@ -1214,7 +1245,7 @@ def settingMask(self):
     region -= qg.QRegion(self._mainWidget.geometry())
     region += self._mainWidget.childrenRegion()
     self._mainWidget.setMask(region)
-# Also, on my system (Linux), I found I had to call this after the window is shown:
+# Also, on my system(Linux), I found I had to call this after the window is shown:
     ...
     myWinPos.show()
     myWinPos.settingMask()
@@ -1244,7 +1275,7 @@ def settingMask(self):
 
 
 w.setAttribute(QtCore.Qt.WA_InputMethodTransparent)
-w.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard (tab, backtab, or shortcut).
+w.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard(tab, backtab, or shortcut).
 
 
 
@@ -1290,7 +1321,7 @@ def down(self):
 
 
 
-#repainting (key auto repeating)
+#repainting(key auto repeating)
 if event.isAutoRepeat():
 	return
 
@@ -1327,7 +1358,7 @@ def keyPressEvent(self, event):
 	if event.key() == QtCore.Qt.Key_Y:
 		self.Y_dn()
 
-def X_dn (self):
+def X_dn(self):
 	print "x Down"
 #or possibly:
 self.keyPressEvent(self.X_dn, QtCore.Qt.Key_X) #(command/function, event)
@@ -1342,7 +1373,7 @@ def keyReleaseEvent(self, event):
 	if event.key() == QtCore.Qt.Key_Y:
 		self.Y_up()
 
-def X_up (self):
+def X_up(self):
 	print "x Up"
 
 
@@ -1359,7 +1390,7 @@ self.ui.buttonGroup.installEventFilter(self)
 
 # Define eventFilter():
 def eventFilter(self, obj, event):
-	if (obj.objectName() == "group_of_widgets"):
+	if(obj.objectName() == "group_of_widgets"):
 		if event.type() == QtCore.QEvent.Type.Enter:
 			self.drop_action(event)
 
@@ -1379,7 +1410,7 @@ self.ui.tree_widget_of_items.installEventFilter(self)
 self.ui.tree_widget_of_items.installEventFilter(self)
 
 def eventFilter(self, o, e):
-if (o.objectName() == "tree_widget_of_items"):
+if(o.objectName() == "tree_widget_of_items"):
     if e.type() == QtCore.QEvent.Type.Enter:
         self.drop_action(e)
 
@@ -1559,7 +1590,7 @@ painter.fillRect(self.rect(), QtGui.QColor(80, 80, 255, 128))
 #findsignals
 
 
-# assign signal a value. must be defined as class variable (before class init)
+# assign signal a value. must be defined as class variable(before class init)
 updated = Signal(int)
 updated = Signal(str)
 updated = Signal(object)
@@ -1578,10 +1609,10 @@ def leaveEvent(self, event):
 
 #call function with argument from signal
 #using lambda function
-w.clicked.connect (lambda: self.overlay.setVisible(False) if self.overlay.isVisible() else self.overlay.setVisible(True))
+w.clicked.connect(lambda: self.overlay.setVisible(False) if self.overlay.isVisible() else self.overlay.setVisible(True))
 #using functools.partial
 #from functools import partial
-w.clicked.connect (partial(function, arg))
+w.clicked.connect(partial(function, arg))
 #
 w.clicked.connect(partial(self.function, arg=arg['name']))
 
@@ -2037,7 +2068,7 @@ def debug(self, *args, **kwargs):
 
 
 
-#RuntimeError: '__init__' method of objects base class (MyObject) not called.
+#RuntimeError: '__init__' method of objects base class(MyObject) not called.
 #Python wrapper is created but C++ object isn’t
 ex.
 from PyQt4.QtCore import QObject
@@ -2109,10 +2140,29 @@ http://download.qt.io/snapshots/ci/pyside/
 
 'Style'#--------------------------------------------------------------------
 
-#19 predefined QColor objects accessible as members of the Qt namespace (ie. Qt::red).: 
-#white, black, red, darkRed, green, darkGreen, blue, darkBlue, 
-#cyan, darkCyan, magenta, darkMagenta, yellow, darkYellow, gray, 
-#darkGray, lightGray, color0 and color1
+# Predefined QColor objects (Qt namespace (ie. Qt::red)):
+white
+black
+red
+darkRed
+green
+darkGreen
+blue
+darkBlue
+cyan
+darkCyan
+magenta
+darkMagenta
+yellow
+darkYellow
+gray
+darkGray
+lightGray
+color0 (zero pixel value) (transparent, i.e. background)
+color1 (non-zero pixel value) (opaque, i.e. foreground)
+transparent
+
+
 ex.
 QtGui.QColor.magenta()
 
@@ -2149,21 +2199,24 @@ WA_StyleSheet #Indicates that the widget is styled using a style sheet.
 WA_WindowPropagation #Makes a toplevel window inherit font and palette from its parent.
 WA_SetPalette #Indicates that the widget has a palette of its own.
 WA_SetStyle #Indicates that the widget has a style of its own.
-WA_SetCursor #Indicates that the widget has a cursor of its own.
 WA_SetFont #Indicates that the widget has a font of its own.
 
 
 ex.
-setWindowOpacity(0.5)
+w.setWindowOpacity(0.5)
 
 ex.
-setAutoFillBackground(False)
+w.setAutoFillBackground(False)
 w.autoFillBackground(True)
 
 
 #erase area \fill with background
-fillRect(rectangle, background())
+w.fillRect(rectangle, background())
 
+
+
+# style
+w.setStyle(QtWidgets.QStyleFactory.create("plastique"))
 
 
 
@@ -2180,7 +2233,7 @@ QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, tr
 
 
 ex.
-buttonObject.setStyleSheet("") ##set style sheet to default. also (styleSheet())
+buttonObject.setStyleSheet("") ##set style sheet to default. also(styleSheet())
 self.setStyleSheet("background: transparent;") #doesn't need the style sheet itself but child widgets contained in the widget that have autoFillBackground()==True by default should have it unset or should have set QtCore.Qt.WA_TranslucentBackground or have a transparent background color set by a style sheet which is then inherited
 pushButton.setStyleSheet("background-color: transparent") #white, black, grey, magenta, etc
 setStyleSheet("background-color: rgba(227, 227, 227, 2)") #rgb + alpha. alpha value of 1 sometimes doesnt work.
@@ -2194,80 +2247,10 @@ ex.
 /* css multi-line comment */
 
 
-ex.
-w.setStyleSheet('''
-QPushButton {
-	background:rgba(127,127,127,2);
-	background-color: red;
-	color: white;
-	border-width: 2px;
-	border-radius: 10px;
-	border-color: beige;
-	border-style: outset;
-	font: bold 14px;
-	min-width: 10em;
-	padding: 5px;
-QPushButton:hover {   
-	border: 1px solid black;
-	border-radius: 5px;   
-	background-color:#66c0ff;
-QPushButton:pressed {
-	background-color: rgb(224, 0, 0);
-	border-style: inset;
-QPushButton:enabled {
-	color: red
-QComboBox {
-	image: url(:/none);}
-QComboBox::drop-down {
-	border-width: 0px; 
-	color: transparent
-QComboBox::down-arrow {
-	border: 0px solid transparent; 
-	border-width: 0px; left: 0px; top: 0px; width: 0px; height: 0px; 
-	background-color: transparent; 
-	color: transparent; 
-	image: url(:/none);
-QTreeWidget {
-	border:none;
-} 
-QTreeWidget::item {
-	height: 20px;
-QTreeView {
-  alternate-background-color: rgba(35,35,35,255);
-  background: rgba(45,45,45,255);
-}
-QMenu {
-	background-color: white; /* background-color: #ABABAB; sets background of the menu */
-	margin: 2px; /* some spacing around the menu */
-	border: 1px solid black;
-}
-QMenu::item {
-	/* sets background of menu item. set this to something non-transparent
-	if you want menu color and menu item color to be different */
-	background-color: transparent;
-	padding: 2px 25px 2px 20px;
-	border: 1px solid transparent; /* reserve space for selection border */
-}
-QMenu::item:selected { 
-	/* when user selects item using mouse or keyboard */
-	background-color: #654321;
-	border-color: darkblue;
-	background: rgba(100, 100, 100, 150);
-}
-QMenu::icon:checked { /* appearance of a 'checked' icon */
-	background: gray;
-	border: 1px inset gray;
-	position: absolute;
-	top: 1px;
-	right: 1px;
-	bottom: 1px;
-	left: 1px;
-}
-''')
 
 
 
-buttonObject.setStyleSheet("") ##set style sheet to default. also (styleSheet())
+buttonObject.setStyleSheet("") ##set style sheet to default. also(styleSheet())
 
 
 w.setStyleSheet('''QPushButton {
@@ -2281,70 +2264,44 @@ w.setStyleSheet('''QPushButton {
 	QTreeView {
   }
 
-STYLESHEET = '''
-	    background-color: #ABABAB; /* sets background of the menu */
-	    border: 1px solid black;
-
-	    /* sets background of menu item. set this to something non-transparent
-	        if you want menu color and menu item color to be different */
-	    background-color: transparent;
-
-	QMenu::item:selected { /* when user selects item using mouse or keyboard */
-	    background-color: #654321;
-	For a more advanced customization, use a style sheet as follows:
-
-	QMenu {
-	    background-color: white;
-	    margin: 2px; /* some spacing around the menu */
-
-	QMenu::item {
-	    padding: 2px 25px 2px 20px;
-	    border: 1px solid transparent; /* reserve space for selection border */
-
-	QMenu::item:selected {
-	    border-color: darkblue;
-	    background: rgba(100, 100, 100, 150);
-	}
-
-	QMenu::icon:checked { /* appearance of a 'checked' icon */
-	    background: gray;
-	    border: 1px inset gray;
-	    position: absolute;
-	    top: 1px;
-	    right: 1px;
-	    bottom: 1px;
-	    left: 1px;
-	}'''
 
 
 
+
+
+#Cursor
+WA_SetCursor #Indicates that the widget has a cursor of its own.
+
+#Set Cursor:
+w.setCursor(QtGui.QCursor(QtCore.Qt.BitmapCursor))
 
 #Cursor Shape:
-QtCore.Qt.CursorShape(2)
+QtCore.Qt.CursorShape(2) #get cursor using int value
 
-QtCore.Qt.ArrowCursor 			#The standard arrow cursor.
-QtCore.Qt.UpArrowCursor			#An arrow pointing upwards toward the top of the screen.
-QtCore.Qt.CrossCursor			#typically used to help the user accurately select a point on the screen.
-QtCore.Qt.WaitCursor			#usually shown during operations that prevent the user from interacting with the application.
-QtCore.Qt.IBeamCursor			#indicating that a widget can accept and display text input.
-QtCore.Qt.SizeVerCursor			#A cursor used for elements that are used to vertically resize top-level windows.
-QtCore.Qt.SizeHorCursor			#A cursor used for elements that are used to horizontally resize top-level windows.
-QtCore.Qt.SizeBDiagCursor		#A cursor used for elements that are used to diagonally resize top-level windows at their top-right and bottom-left corners.
-QtCore.Qt.SizeFDiagCursor		#A cursor used for elements that are used to diagonally resize top-level windows at their top-left and bottom-right corners.
-QtCore.Qt.SizeAllCursor			#A cursor used for elements that are used to resize top-level windows in any direction.
-QtCore.Qt.BlankCursor			#typically used when the cursor shape needs to be hidden.
-QtCore.Qt.SplitVCursor			#A cursor used for vertical splitters, indicating that a handle can be dragged horizontally to adjust the use of available space.
-QtCore.Qt.SplitHCursor			#A cursor used for horizontal splitters, indicating that a handle can be dragged vertically to adjust the use of available space.
-QtCore.Qt.PointingHandCursor	#A pointing hand cursor that is typically used for clickable elements such as hyperlinks.
-QtCore.Qt.ForbiddenCursor		#A slashed circle cursor, typicallyusedduringdraganddropoperationstoindicatethatdraggedcontentcannotbedroppedonparticularwidgetsorinsidecertainregions.
-QtCore.Qt.OpenHandCursor		#A cursor representing an openhand, typicallyusedtoindicatethattheareaunderthecursoristhevisiblepartofacanvasthattheusercanclickanddraginordertoscrollaround.
-QtCore.Qt.ClosedHandCursor		#A cursor representing a closed hand, typically used to indicate that a dragging operation is in progress that involves scrolling.
-QtCore.Qt.WhatsThisCursor		#An arrow with a question mark, typically used to indicate the presence of 'WhatsThis' help for a widget.
-QtCore.Qt.BusyCursor			#An hourglass or watch cursor, usually shown during operations that allow the user to interact with the application while they are performed in the background.
-QtCore.Qt.DragMoveCursor		#A cursor that is usually used when dragging an item.
-QtCore.Qt.DragCopyCursor		#A cursor that is usually used when dragging an item to copy it.
-QtCore.Qt.DragLinkCursor		#A cursor that is usually used when dragging an item to make a link to it.
-QtCore.Qt.BitmapCursor
+#cursor object 				#value	#name 			#description
+QtCore.Qt.BlankCursor		10		''				#typically used when the cursor shape needs to be hidden.
+QtCore.Qt.ArrowCursor 		0		'left_ptr'		#The standard arrow cursor.
+QtCore.Qt.UpArrowCursor		1		'up_arrow'		#An arrow pointing upwards toward the top of the screen.
+QtCore.Qt.CrossCursor		2		'cross'			#typically used to help the user accurately select a point on the screen.
+QtCore.Qt.WaitCursor		3		'wait'			#usually shown during operations that prevent the user from interacting with the application.
+QtCore.Qt.IBeamCursor		4		'ibeam'			#indicating that a widget can accept and display text input.
+QtCore.Qt.SizeVerCursor		5		'size_ver'		#A cursor used for elements that are used to vertically resize top-level windows.
+QtCore.Qt.SizeHorCursor		6		'size_hor'		#A cursor used for elements that are used to horizontally resize top-level windows.
+QtCore.Qt.SizeBDiagCursor	7		'size_bdiag'	#A cursor used for elements that are used to diagonally resize top-level windows at their top-right and bottom-left corners.
+QtCore.Qt.SizeFDiagCursor	8		'size_fdiag'	#A cursor used for elements that are used to diagonally resize top-level windows at their top-left and bottom-right corners.
+QtCore.Qt.SizeAllCursor		9		'size_all'		#A cursor used for elements that are used to resize top-level windows in any direction.
+QtCore.Qt.SplitVCursor		11		'split_v'		#A cursor used for vertical splitters, indicating that a handle can be dragged horizontally to adjust the use of available space.
+QtCore.Qt.SplitHCursor		12		'split_h'		#A cursor used for horizontal splitters, indicating that a handle can be dragged vertically to adjust the use of available space.
+QtCore.Qt.PointingHandCursor13		'pointing_hand'	#A pointing hand cursor that is typically used for clickable elements such as hyperlinks.
+QtCore.Qt.ForbiddenCursor	14		'forbidden'		#A slashed circle cursor, typicallyusedduringdraganddropoperationstoindicatethatdraggedcontentcannotbedroppedonparticularwidgetsorinsidecertainregions.
+QtCore.Qt.OpenHandCursor	17		'openhand'		#A cursor representing an openhand, typicallyusedtoindicatethattheareaunderthecursoristhevisiblepartofacanvasthattheusercanclickanddraginordertoscrollaround.
+QtCore.Qt.ClosedHandCursor	18		'closedhand'	#A cursor representing a closed hand, typically used to indicate that a dragging operation is in progress that involves scrolling.
+QtCore.Qt.WhatsThisCursor	15		'whats_this'	#An arrow with a question mark, typically used to indicate the presence of 'WhatsThis' help for a widget.
+QtCore.Qt.BusyCursor		16		'left_ptr_watch'#An hourglass or watch cursor, usually shown during operations that allow the user to interact with the application while they are performed in the background.
+QtCore.Qt.DragMoveCursor	20		'move'			#A cursor that is usually used when dragging an item.
+QtCore.Qt.DragCopyCursor	19		'copy'			#A cursor that is usually used when dragging an item to copy it.
+QtCore.Qt.DragLinkCursor	21		'link'			#A cursor that is usually used when dragging an item to make a link to it.
+QtCore.Qt.BitmapCursor		24
 
 
 
@@ -2364,424 +2321,3 @@ qapp = QtWidgets.qApp #qApp is initially just an empty wrapper. #Once the QAppli
 #But because it is static, it must always return an object of the correct type, so that it can later refer to the same underlying C++ object as QApplication.instance().
 
 
-
-
-
-
-
-maya qt menus
-
-popupMenu77
-LayerEditor
-menu8
-objDeformerPopup
-popupMenu98
-HotboxCenter2
-menuItem1045
-bifCacheMenu
-mainDynEffectsMenu
-objectMaskPopup
-listMenu
-menuItem882
-menuCreateSceneAssembly
-menuItem747
-
-menu28
-mainDisplayMenu
-popupMenu114
-popupMenu9
-menuItem1050
-HotboxWest3
-vrayAEMenu
-menu
-popupMenu8
-OptionMenu
-FilterUIAttributeFilterSubMenu
-popupMenu128
-mainWindowMenu
-modelPanel3ToolOptionsPop
-menu24
-
-outlinerPanel1Popup
-
-mainEditMeshMenu
-modelPanel2ToolOptionsPop
-Outliner
-FilterUIAttributeFilterSubMenu
-menuItem839
-popupMenu91
-menuItem521
-popupMenu138
-CommandLine
-Panels
-HotboxEast3
-compPivotPopup
-menuItem893
-mainNClothMenu
-HotboxNorth3
-mainParticlesMenu
-popupMenu62
-modelPanel3CommandPop
-popupMenu52
-mainConstraintsMenu
-objOtherPopup
-menu18
-popupMenu5
-mainPipelineCacheMenu
-menuItem852
-AEdynamicsSubMenu
-menuItem422
-HotboxNorth2
-menu4
-menu26
-Panels
-popupMenu103
-HotboxSouth1
-popupMenu81
-HotboxEast2
-compOtherPopup
-menuItem1001
-HotboxSouth3
-menuItem226
-popupMenu109
-menuItem225
-popupMenu110
-
-menu3
-modelPanel2ConvertPop
-menu13
-popupMenu83
-menuItem318
-popupMenu134
-popupMenu125
-NEXDockControl
-modelPanel3ObjectPop
-Panels
-geometryCacheMenu
-View
-vrayMenuCreateItem
-View
-menuItem510
-menuItem156
-popupMenu121
-
-
-bonusToolsMenu
-popupMenu108
-popupMenu54
-popupMenu132
-menuItem420
-popupMenu89
-View
-popupMenu82
-popupMenu78
-popupMenu80
-objSurfacePopup
-transHierItem
-HotboxCenter3
-
-
-HotBoxControlsMenu
-menu20
-menu23
-menuItem157
-mainNCacheMenu
-menu1
-modelEditorTransformSelOptionMenu
-objMarkerPopup
-popupMenu12
-FilterUIObjectFilterSubMenu
-AEshadingSubMenu
-popupMenu50
-popupMenu126
-popupMenu66
-menu25
-popupMenu79
-popupMenu117
-popupMenu113
-objRenderingPopup
-menu16
-StatusLine
-popupMenu90
-mainNConstraintMenu
-objectMenu
-menuItem1052
-menu5
-
-
-
-compMarkerPopup
-popupMenu97
-menuItem887
-popupMenu15
-popupMenu13
-mainSelectMenu
-HotboxSouth2
-focusMenu
-popupMenu1
-Shelf
-menuItem733
-addMenu
-
-popupMenu75
-polyPrimitivesItem
-mainBifrostFluidsMenu
-
-popupMenu116
-
-popupMenu73
-matchTransformsItem
-popupMenu67
-HelpMenu
-mainCartoonMenu
-popupMenu93
-popupMenu140
-mainEditMenu
-
-popupMenu131
-modelEditorTransformSelOptionMenu
-assetItem
-mainRigDeformationsMenu
-mainOptionsMenu
-objCurvePopup
-popupMenu136
-mainPlaybackMenu
-HelpMenu
-mainRigSkinningMenu
-popupMenu139
-menuItem224
-
-mainUVMenu
-
-mainRigSkeletonsMenu
-MayaWindow
-
-HotboxEast1
-
-
-menu21
-RangeSlider
-compHullPopup
-menu14
-historyPopup
-
-FilterUIObjectFilterSubMenu
-menuItem228
-modelPanel1ConvertPop
-mainRenTexturingMenu
-popupMenu86
-menuItem1057
-workspaceSelectorMenu
-compPointPopup
-menu17
-measureItem
-
-popupMenu92
-menuItem329
-View
-popupMenu141
-menuItem230
-popupMenu107
-menu15
-popupMenu65
-menuItem152
-menuItem741
-mainRenderMenu
-dash_contextual
-modelEditorTransformSelOptionMenu
-mainSurfacesMenu
-popupMenu104
-menuItem1054
-popupMenu7
-mainMeshToolsMenu
-compParmPointPopup
-surfConvItem
-
-popupMenu11
-menu12
-AEhelpMenu
-menuItem712
-popupMenu14
-outlinerPanel4Popup
-objJointPopup
-popupMenu94
-menuItem1055
-Panels
-
-popupMenu135
-ToolBox
-Show
-modelPanel1ToolOptionsPop
-menuItem734
-popupMenu63
-
-menu22
-mainMashMenu
-
-mainKeysMenu
-popupMenu123
-popupMenu105
-popupMenu6
-modelPanel1CommandPop
-menu6
-popupMenu120
-
-popupMenu87
-popupMenu2
-
-popupMenu133
-menu30
-mainGenerateMenu
-FilterUIAttributeFilterSubMenu
-mainVisualizeMenu
-mainRigConstraintsMenu
-TimeSlider
-ChannelBox
-popupMenu122
-
-modelPanel2ObjectPop
-mainCreateMenu
-mainBossMenu
-menuItem65
-popupMenu102
-menu27
-mainCurvesMenu
-modelPanel2CommandPop
-
-modelPanel3ConvertPop
-menuItem174
-popupMenu95
-graspItem
-
-popupMenu70
-objectsCompItem
-popupMenu3
-objDynamicPopup
-FilterUIAttributeFilterSubMenu
-menuItem876
-init
-popupMenu85
-menu2
-popupMenu99
-
-popupMenu96
-OpenSceneButtonRecentFileItems
-
-menuItem162
-menuItem1053
-menu31
-cbShowMenu
-
-menuItem699
-popupMenu115
-mainModifyMenu
-menuItem899
-HelpLine
-popupMenu58
-mainMeshDisplayMenu
-popupMenu100
-LightsItem
-
-menuItem1056
-menuItem1026
-popupMenu49
-popupMenu72
-menuMode
-menuItem418
-menuItem627
-mainMeshMenu
-popupMenu59
-popupMenu127
-menuItem160
-popupMenu51
-popupMenu10
-modelPanel1ObjectPop
-mainDeformMenu
-modelPanel4ConvertPop
-menu
-popupMenu130
-modelPanel4ObjectPop
-popupMenu61
-compFacetPopup
-popupMenu142
-menu10
-mainDeformationMenu
-mainStereoMenu
-popupMenu56
-popupMenu112
-menuItem870
-menu11
-mainShadingMenu
-
-menu29
-mainRigControlMenu
-FilterUIObjectFilterSubMenu
-HotboxWest1
-componentMaskPopup
-TimeSliderMenu
-modelEditorTransformSelOptionMenu
-popupMenu137
-gpuCacheMenu
-popupMenu129
-menu9
-popupMenu84
-defManipItem
-
-popupMenu53
-
-
-
-popupMenu69
-mainFieldsSolverMenu
-mainFileMenu
-HotBoxRecentCommandsMenu
-futurePopup
-popupMenu60
-AEkinematicsSubMenu
-
-popupMenu71
-alembicCacheMenu
-popupMenu74
-menu19
-popupMenu57
-menu
-
-popupMenu64
-popupMenu106
-modelPanel4CommandPop
-modelPanel4ToolOptionsPop
-mainFluidsMenu
-AEdeformersSubMenu
-popupMenu68
-
-createCurveTools
-setCurrentContainerItem
-mainHairMenu
-MainHelpMenu
-
-AElightSubMenu
-compLinePopup
-volumePrimitivesItem
-HotboxNorth1
-menu7
-menuItem416
-popupMenu55
-HotboxWest2
-menuItem172
-
-
-popupMenu88
-HotboxCenter1
-popupMenu4
-menuItem175
-popupMenu111
-popupMenu118
-menuItem811
-popupMenu119
-CommandWindow
-popupMenu124
-menuItem417
-menuItem173
-nexSoftSelectionDistanceType
-popupMenu101
-'''
