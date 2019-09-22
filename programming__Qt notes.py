@@ -29,11 +29,64 @@ QObject		# basic non-visual building block. signals, events,
 
 
 
-QtGui.QApplication.allWidgets()
+#QApplication:
+#The difference between QtWidgets.QApplication.instance() and QtWidgets.qApp is that the latter is a static module variable that must be created when the module is first imported. 
+#This results in the following initially baffling behaviour:
+inst = QtWidgets.QApplication.instance()
+qapp = QtWidgets.qApp #qApp is initially just an empty wrapper. #Once the QApplication is created, though, they will both point to the same thing:
+>>> (inst, qapp)
+(None, <PyQt5.QtWidgets.QApplication object at 0x7ff3c8bd3948>)
+#So even though no QApplication object has been created yet, the qApp variable still points to a QApplication instance. 
+#If modules were more like classes, so that they could have dynamic properties, it would be possible for qApp to work exactly like QApplication.instance() does and initially return None. 
+#But because it is static, it must always return an object of the correct type, so that it can later refer to the same underlying C++ object as QApplication.instance().
 
-#get top level widgets
-widgets = dict((w.objectName(), w) for w in QtGui.QApplication.topLevelWidgets())
-	window = widgets['MayaWindow']
+
+
+# Find item in QApplication by only the objectname:
+#top level widgets
+widgets = {w.objectName():w for w in QtWidgets.QApplication.topLevelWidgets()}
+#windows
+windows = {w.objectName():w for w in QtWidgets.QApplication.allWindows()}
+#all
+widgets = {w.objectName():w for w in QtWidgets.QApplication.allWidgets()}
+widget = widgets['MainAttributeEditorLayout']
+
+
+
+#get a list of all QObject instances either by class-name or object-name:
+#This is only really a debugging tool, as for a large application, there could easily be several hundred thousand objects to check.
+def getObjects(name, cls=True):
+    objects = []
+    for obj in gc.get_objects():
+        if(isinstance(obj, QtCore.QObject) and
+            ((cls and obj.inherits(name)) or
+             (not cls and obj.objectName() == name))):
+            objects.append(obj)
+    return objects
+
+#If you only need objects which are subclasses of QWidget, use this function:
+def getWidgets(name, cls=True):
+    widgets = []
+    for widget in QtGui.QApplication.allWidgets():
+        if ((cls and w.inherits(name)) or
+            (not cls and w.objectName() == name)):
+            widgets.append(widget)
+    return widgets
+
+
+
+
+
+#get main window instance
+#3ds max:
+#mainWindow = GetQMaxWindow() --old
+GetQmaxMainWindow()
+
+#mayaDockableMixin
+
+
+
+
 
 #get object name
 name = w.objectName()
@@ -68,18 +121,7 @@ act.pyqtConfigure(triggered=self.on_triggered)
 
 
 
-#get main window instance
-#3ds max:
-#mainWindow = GetQMaxWindow() --old
-GetQmaxMainWindow()
 
-#mayaDockableMixin
-
-
-#get all widgets from parent
-widgets = {w.objectName():w for w in QtWidgets.QApplication.allWidgets()}
-windows = {w.objectName():w for w in QtWidgets.QApplication.allWindows()}
-widget = widgets['MainAttributeEditorLayout']
 
 
 
@@ -235,7 +277,13 @@ window.setCentralWidget(stackedWidget)
 
 
 # QPushButton signals.  QtUi QPushButton signal in
-#Qt signals: clicked(), pressed(), released(), toggled(), setText(), setIcon()
+#Qt signals:
+clicked()
+pressed()
+released()
+toggled()
+setText()
+setIcon()
 #public slots: setChecked(bool), toggle()
 
 #connect to multiple slots:
@@ -660,27 +708,7 @@ self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
 
 
 
-# Find item in QApplication by only the objectname
 
-#get a list of all QObject instances either by class-name or object-name:
-#This is only really a debugging tool, as for a large application, there could easily be several hundred thousand objects to check.
-def getObjects(name, cls=True):
-    objects = []
-    for obj in gc.get_objects():
-        if(isinstance(obj, QtCore.QObject) and
-            ((cls and obj.inherits(name)) or
-             (not cls and obj.objectName() == name))):
-            objects.append(obj)
-    return objects
-
-#If you only need objects which are subclasses of QWidget, use this function:
-def getWidgets(name, cls=True):
-    widgets = []
-    for widget in QtGui.QApplication.allWidgets():
-        if ((cls and w.inherits(name)) or
-            (not cls and w.objectName() == name)):
-            widgets.append(widget)
-    return widgets
 
 
 
@@ -1875,42 +1903,6 @@ timer.start()
 
 
 
-'Populating Ui with Elements'#-----------------------------------------------
-
-#populate a grid layout with buttons
-class ButtonBlock(QtGui.QWidget):
-
-	def __init__(self, *args):
-		super(QtGui.QWidget, self).__init__()
-		grid = QtGui.QGridLayout()
-		names = ('One', 'Two', 'Three', 'Four', 'Five',
-						'Six', 'Seven', 'Eight', 'Nine', 'Ten')
-		for i, name in enumerate(names):
-			button = QtGui.QPushButton(name, self)
-			w.clicked.connect(self.make_calluser(name))
-			row, col = divmod(i, 5)
-			grid.addWidget(button, row, col)
-		self.setLayout(grid)
-
-	def make_calluser(self, name):
-		def calluser():
-			print(name)
-		return calluser
-
-app = QtGui.QApplication(sys.argv)
-tb = ButtonBlock()
-tb.show()
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1931,18 +1923,28 @@ widgets = (layout.itemAt(i).widget() for i in range(layout.count()))
 items = (layout.itemAt(i) for i in range(layout.count()))
 
 #get widgets from dynamic ui:
-for buttonName, buttonObject in ui.__dict__.iteritems(): #for each object in the ui:
-	for buttonType, signal in signalType.iteritems():
-		if buttonObject.__class__.__name__==buttonType: #if it is a type listed in the signalType dict, construct with the associated signal.
+#from a dict
+for widgetName, widgetObject in ui.__dict__.iteritems(): #for each object in the ui:
 
+#from a list
+for widget in ui.children():
+
+
+
+
+# Promote a widget in designer to use a custom class:
+#>	In Qt Designer, select all the line-edits you want to replace, then right-click them and select "Promote to...". 
+#>	In the dialog, set "Promoted class name" to "LineEdit", and set "Header file" to the python import path for the module that contains this class (e.g. myapp.LineEdit).
+#>	Then click "Add", and "Promote", and you will see the class change from "QLineEdit" to "LineEdit" in the Object Inspector pane.
+
+# Now when you re-generate your ui module with pyuic, you should see that it uses your custom LineEdit class and there will be an extra line at the bottom of the file like this:
+# from myapp.LineEdit import LineEdit
 
 
 
 
 
 #Converting the ui file
-
-
 #Using compileUi:
 ex.
 from pyside2uic import compileUi
@@ -2054,6 +2056,10 @@ dumpWidgets(dw)	#[boolean,create]  Dump all QT widgets used by Maya.
 'Errors'#--------------------------------------------------------------------
 
 
+QtCore.QDebug('')
+
+
+
 #DEBUG
 class MainWindow(QtWidgets.QMainWindow):
 	testSignal = QtCore.Signal()
@@ -2068,37 +2074,6 @@ def debug(self, *args, **kwargs):
 
 
 
-#RuntimeError: '__init__' method of objects base class(MyObject) not called.
-#Python wrapper is created but C++ object isn’t
-ex.
-from PyQt4.QtCore import QObject
-
-	def __init__(self):
-	self.field = 7
-
-obj = MyObject()
-print(obj.field)
-obj.setObjectName("New object")
-
-# MyObject constructor doesn’t call the constructor of the base class. MyObject is successfully created and can be used. But when the C++ method is called, a RuntimeError is issued. The exception explains what is wrong.
-# Fixed code:
-ex.
-class MyObject(QObject):
-	def __init__(self):
-		QObject.__init__(self)
-
-
-#garbage collection management:
-ex.
-def createLabel():
-    label = QLabel("Hello, world!")
-    label.show()
-    return label #add return. References to all created objects must be saved even if you are not going to use them
-
-app = QApplication([])
-label = createLabel()
-
-app.exec_()
 
 
 # RuntimeError: A QApplication instance already exists.
@@ -2115,9 +2090,9 @@ class Button(QtCore.QObject):
 
 
 
-'installation'
 
 
+# install
 #python wheels: (download and install locally to make sure the correct wheel gets installed)
 http://download.qt.io/snapshots/ci/pyside/
 
@@ -2307,17 +2282,5 @@ QtCore.Qt.BitmapCursor		24
 
 
 
-
-
-#QApplication:
-#The difference between QtWidgets.QApplication.instance() and QtWidgets.qApp is that the latter is a static module variable that must be created when the module is first imported. 
-#This results in the following initially baffling behaviour:
-inst = QtWidgets.QApplication.instance()
-qapp = QtWidgets.qApp #qApp is initially just an empty wrapper. #Once the QApplication is created, though, they will both point to the same thing:
->>> (inst, qapp)
-(None, <PyQt5.QtWidgets.QApplication object at 0x7ff3c8bd3948>)
-#So even though no QApplication object has been created yet, the qApp variable still points to a QApplication instance. 
-#If modules were more like classes, so that they could have dynamic properties, it would be possible for qApp to work exactly like QApplication.instance() does and initially return None. 
-#But because it is static, it must always return an object of the correct type, so that it can later refer to the same underlying C++ object as QApplication.instance().
 
 
