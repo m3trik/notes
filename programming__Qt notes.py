@@ -225,23 +225,23 @@ self.ui = self.stackedLayout.widget(index)
 #https://doc.qt.io/archives/qtjambi-4.5.2_01/com/trolltech/qt/core/Qt.WidgetAttribute.html
 
 #change of state events
-w.setAttribute(WA_WState_Created)
-w.setAttribute(WA_WState_Hidden)
-w.setAttribute(WA_WState_Visible)
-w.setAttribute(WA_WState_ExplicitShowHide)
+w.setAttribute(QtCore.Qt.WA_WState_Created)
+w.setAttribute(QtCore.Qt.WA_WState_Hidden)
+w.setAttribute(QtCore.Qt.WA_WState_Visible)
+w.setAttribute(QtCore.Qt.WA_WState_ExplicitShowHide)
 
 #disable/close events
-w.setAttribute(WA_DeleteOnClose) #Makes Qt delete this widget when the widget has accepted the close event
-w.setAttribute(WA_Disabled) #Indicates that the widget is disabled
-w.setAttribute(WA_ForceDisabled) #Indicates that the widget is explicitly disabled
-w.setAttribute(WA_QuitOnClose) #Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
+w.setAttribute(QtCore.Qt.WA_DeleteOnClose) #Makes Qt delete this widget when the widget has accepted the close event
+w.setAttribute(QtCore.Qt.WA_Disabled) #Indicates that the widget is disabled
+w.setAttribute(QtCore.Qt.WA_ForceDisabled) #Indicates that the widget is explicitly disabled
+w.setAttribute(QtCore.Qt.WA_QuitOnClose) #Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
 #
-w.setAttribute(WA_DontShowOnScreen)
-w.setAttribute(WA_ShowWithoutActivating) #Show the widget without making it active.
+w.setAttribute(QtCore.Qt.WA_DontShowOnScreen)
+w.setAttribute(QtCore.Qt.WA_ShowWithoutActivating) #Show the widget without making it active.
 
 #add/remove events
-w.setAttribute(WA_NoChildEventsForParent) #Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent.
-w.setAttribute(WA_NoChildEventsFromChildren) #Indicates that the widget does not want to receive ChildAdded or ChildRemoved events sent from its children.
+w.setAttribute(QtCore.Qt.WA_NoChildEventsForParent) #Indicates that the widget does not want ChildAdded or ChildRemoved events sent to its parent.
+w.setAttribute(QtCore.Qt.WA_NoChildEventsFromChildren) #Indicates that the widget does not want to receive ChildAdded or ChildRemoved events sent from its children.
 
 
 # Remove layout
@@ -1067,7 +1067,7 @@ tabletEvent(event)
 
 # install filter
 QtGui.qApp.installEventFilter(self)
-buttonObject.installEventFilter(self.hotBox) 
+w.installEventFilter(self.hotBox) 
 
 # return value
 return QtWidgets.w.eventFilter(self, button, event)
@@ -1262,6 +1262,7 @@ w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the 
 w.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
 w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
 
+
 #get state of attribute:
 w.testAttribute(QtCore.Qt.WA_MouseTracking) #returns bool #Indicates if the widget has mouse tracking enabled.
 
@@ -1302,7 +1303,8 @@ def settingMask(self):
 'Keyboard Event'#-----------------------------------------------------------
 
 
-w.setAttribute(QtCore.Qt.WA_InputMethodTransparent)
+w.setAttribute(QtCore.Qt.WA_InputMethodTransparent) #
+w.setAttribute(QtCore.Qt.WindowTransparentForInput) #
 w.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard(tab, backtab, or shortcut).
 
 
@@ -2162,19 +2164,18 @@ CustomizeWindowHint
 QtCore.Qt.Tool
 QtCore.Qt.FramelessWindowHint
 QtCore.Qt.X11BypassWindowManagerHint
-QtCore.Qt.WindowTransparentForInput
 QtCore.Qt.WindowStaysOnTopHint
 
-WA_WState_WindowOpacitySet
-WA_NoSystemBackground #Indicates that the widget has no background
-WA_TranslucentBackground #Indicates that the widget should have a translucent background
-WA_TintedBackground
-WA_StyledBackground #Indicates the widget should be drawn using a styled background.
-WA_StyleSheet #Indicates that the widget is styled using a style sheet.
-WA_WindowPropagation #Makes a toplevel window inherit font and palette from its parent.
-WA_SetPalette #Indicates that the widget has a palette of its own.
-WA_SetStyle #Indicates that the widget has a style of its own.
-WA_SetFont #Indicates that the widget has a font of its own.
+w.setAttribute(QtCore.Qt.WA_WState_WindowOpacitySet
+w.setAttribute(QtCore.Qt.WA_NoSystemBackground #Indicates that the widget has no background
+w.setAttribute(QtCore.Qt.WA_TranslucentBackground #Indicates that the widget should have a translucent background
+w.setAttribute(QtCore.Qt.WA_TintedBackground
+w.setAttribute(QtCore.Qt.WA_StyledBackground #Indicates the widget should be drawn using a styled background.
+w.setAttribute(QtCore.Qt.WA_StyleSheet #Indicates that the widget is styled using a style sheet.
+w.setAttribute(QtCore.Qt.WA_WindowPropagation #Makes a toplevel window inherit font and palette from its parent.
+w.setAttribute(QtCore.Qt.WA_SetPalette #Indicates that the widget has a palette of its own.
+w.setAttribute(QtCore.Qt.WA_SetStyle #Indicates that the widget has a style of its own.
+w.setAttribute(QtCore.Qt.WA_SetFont #Indicates that the widget has a font of its own.
 
 
 ex.
@@ -2208,7 +2209,7 @@ QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, tr
 
 
 ex.
-buttonObject.setStyleSheet("") ##set style sheet to default. also(styleSheet())
+w.setStyleSheet("") ##set style sheet to default. also(styleSheet())
 self.setStyleSheet("background: transparent;") #doesn't need the style sheet itself but child widgets contained in the widget that have autoFillBackground()==True by default should have it unset or should have set QtCore.Qt.WA_TranslucentBackground or have a transparent background color set by a style sheet which is then inherited
 pushButton.setStyleSheet("background-color: transparent") #white, black, grey, magenta, etc
 setStyleSheet("background-color: rgba(227, 227, 227, 2)") #rgb + alpha. alpha value of 1 sometimes doesnt work.
@@ -2225,7 +2226,7 @@ ex.
 
 
 
-buttonObject.setStyleSheet("") ##set style sheet to default. also(styleSheet())
+w.setStyleSheet("") ##set style sheet to default. also(styleSheet())
 
 
 w.setStyleSheet('''QPushButton {
@@ -2245,7 +2246,7 @@ w.setStyleSheet('''QPushButton {
 
 
 #Cursor
-WA_SetCursor #Indicates that the widget has a cursor of its own.
+w.setAttribute(QtCore.Qt.WA_SetCursor #Indicates that the widget has a cursor of its own.
 
 #Set Cursor:
 w.setCursor(QtGui.QCursor(QtCore.Qt.BitmapCursor))
