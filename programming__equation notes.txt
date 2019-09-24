@@ -3,7 +3,7 @@
 
 
 
-#REVERSE A NUMBER ---
+# REVERSE A NUMBER__________________________________________________
 x*-1
 
 
@@ -11,7 +11,7 @@ x*-1
 
 
 
-#DIFFERENCE ---------
+# DIFFERENCE________________________________________________________
 #between two numbers
 abs(x-y)
 
@@ -19,7 +19,7 @@ abs(x-y)
 
 
 
-#MEDIAN -------------
+# MEDIAN___________________________________________________________
 
 #from two or more numbers:
 #get sum of all numbers. then divide by total numbers.
@@ -29,7 +29,7 @@ num1+num2/2
 
 
 
-#PERCENTAGE ---------
+# PERCENTAGE______________________________________________________
 
 percent=(value/totalValue) *100
 
@@ -48,7 +48,7 @@ First: work out the difference (increase) between the two numbers you are compar
 
 
 
-#SQUARE ROOT --------
+# SQUARE ROOT____________________________________________________
 
 sqrt = x**(1/2.0)
 
@@ -59,7 +59,7 @@ sqrt = x**(1/2.0)
 
 
 
-#POINTS -------------
+# POINTS________________________________________________________
 
 
 
@@ -67,7 +67,7 @@ sqrt = x**(1/2.0)
 
 
 
-#VECTORS ------------
+# VECTORS________________________________________________________
 
 #add vectors: 
 eg. <1 2 3> + <3 2 1> = <4 4 4>
@@ -98,3 +98,19 @@ def angleBetweenVectors (v1, v2, acute=True, degrees=False):
 
 
 
+
+
+# GEOMETRIC EQUATIONS___________________________________________
+
+
+#arc tangent:
+#Get angle using two side lengths from the 90 degree section of a right triangle.
+total depth \ divided by total hight
+
+
+
+
+#pythagorean theorum:
+#Get length of the third side of a right triangle. (when the others are known)
+hypotanuse squared = total depth squared  + total hight squared  
+ex. H2 = td2 + th2

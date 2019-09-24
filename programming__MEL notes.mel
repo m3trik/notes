@@ -1,68 +1,3 @@
-
-
-
-
-
-
-
-
-SCRIPT EXAMPLES:
-
-GEOMETRIC EQUATIONS:
-
-arch tangent:
-atan         total depth divided by total hight   \\output in radians
-atand        total depth divided by total hight   \\output in degrees
-
-pythagorean theorum:
-             hypotanuse squared = total depth squared  + total hight squared  
-             ex. H2 = td2 + th2
-
-
-
-
-
-
-
-create, move & repeat_______________________________________________________________
-
-
-
-
-float $widthX = 0;
-
-
-____________________________________________________________________________________
-
-
-
-
-
-
-temp:
-40 72 231   foreground
-47 19 35    background
-32 185 134  line number
-
-
-
- 
-
-
-
-
-
-
-
-
-
-// { curly bracket facing wrong direction
- 
-
-
-
-
-
 MEL //execution based language based on Unix shell scripting.-------------------------------------------------------------------------------------------
 
 
@@ -177,16 +112,15 @@ isGlobal("$global_variable")
 //useful commands to run on object variables:
 namespace:
 
-//query namespace (mel):
+//query namespace:
 nameSpace = ''
-sel = mc.ls(sl=True)[0]
-if mc.referenceQuery( sel, isNodeReferenced=True ):
+sel = pm.ls(sl=1)[0]
+if pm.referenceQuery(sel, isNodeReferenced=True):
 nameSpace = sel.split(':')[0] + ':'
 print nameSpace
-
-//query namespace (pymel)
+//alt
 print pm.selected()[0].namespace() 
-	
+
 
 
 filterExpand	//avoid Maya's component compression
@@ -1873,13 +1807,19 @@ normal = [round(i-min(xyz)/(max(xyz)-min(xyz)),6) for i in xyz] #normalize and r
 
 "UI: //--------------------------------------------------------------------------------------------------------------------------------------------------" 
 
-//list ui objects
-//#List all windows.
+// get ui objects
+//#get all windows.
 eg. lsUI -windows;
 eg. pm.lsUI(windows=1)
 
-//#List all panels and editors.
+//#get all panels and editors.
 eg. pm.lsUI(panels=1, editors=1)
+
+
+//#get current window (panel)
+currentPanel = pm.getPanel(withFocus=1)
+
+
 
 //#Use the -typ/type flag to list all controls and control layouts.
 //#Alternatively, you could use the -ctl/controls and -cl/controlLayouts flags.
@@ -2239,7 +2179,6 @@ Suppress Warning Messages    When turned on, the Script editor does not show war
 Suppress Error Messages      When turned on, the Script editor does not show error messages. 
                              Error messages start with // Error:. 
 								ex. scriptEditorInfo -e -suppressWarnings true;
--
 
 
 
@@ -2248,23 +2187,6 @@ Suppress Error Messages      When turned on, the Script editor does not show err
 
 
 
-
-
-
-
-
-
-//SCRIPT EXAMPLES:
-
-//GEOMETRIC EQUATIONS:
-
-//arch tangent:
-atan  //total depth divided by total hight   \\output in radians
-atand //total depth divided by total hight   \\output in degrees
-
-//pythagorean theorum:
-ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squared  
-             
 
 
 
@@ -2295,10 +2217,29 @@ for ($i = 0; $i < $repeat; ++$i)
 	move -r 0 ($hightY * $i) ($depthZ * $i);
 } 
 
+
+
+
+
+
+
+
+
 //____________________________________________________________________________________
 
 
 
+//SCRIPT EXAMPLES:
+
+//GEOMETRIC EQUATIONS:
+
+//arch tangent:
+atan  //total depth divided by total hight   \\output in radians
+atand //total depth divided by total hight   \\output in degrees
+
+//pythagorean theorum:
+ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squared  
+             
 
 
 

@@ -1121,7 +1121,8 @@ eg. all(i in a for i in b)
 eg. any(i in a for i in b)
 #using 'any' with a generator:
 if any(x in d for x in [a, b, c]):
-
+#using zip
+[str_ for int_,str_ in zip([1,2,3], ['1','2','3']) if int_>1] #returns ['2','3']
 
 
 
@@ -1189,6 +1190,8 @@ eg. from operator import itemgetter
 		from itertools import *
 		for k, g in groupby(enumerate(list_), lambda (i,x):i-x):
 		NewList.append(map(itemgetter(1), g))
+
+
 
 
 
@@ -1305,6 +1308,11 @@ s.pop()
 s.clear()
 
 
+#combine lists as sets sorted by index
+#using zip (zip can take more than two arguments)
+zip([1,2,3], [1,2,3]) #returns [(1, 1), (2, 2), (3, 3)]
+
+
 # combining sets with other iterable objects:
 eg. print (s|=t)
 eg. print s.update(t)
@@ -1394,11 +1402,24 @@ eg. dict_ = {key: value for key in range(5)}
 #set Key:Value pair
 #d['key'] = 'value'
 eg.	myDict['key'] = 'value' #dict_name[new_key] = new_value
-
 #using setdefault
 dict_.setdefault('key', 'value') #returns 'value' and modifies dict_ with new key value pair.
 #create key:list value and append
 dict_.setdefault('key', []).append('value')
+#using update
+dict_.update({'key':'value'})
+#__setitem__ (poor performance(computationally inefficient))
+dict_.__setitem__('key', 'value')
+#using * (creates a new dict)
+eg. dict_ = {**oldDict, **{'key': 'value'}}
+
+
+
+# append to an existing key:
+dict_['key'].append('value')
+temp = dict_['key']
+temp.extend(new_value)
+dict_['key'] = temp
 
 
 
@@ -1470,17 +1491,16 @@ for key in set(dict1) & set(dict2):
 eg. all(dict2[k] == v for k, v in dict1.iteritems() if k in dict2)
 
 
-# append to an existing key:
-dict_['key'].append('value')
-temp = dict_['key']
-temp.extend(new_value)
-dict_['key'] = temp
 
 
-# add key (or value) from a dictionary to a list 
+
+# add key (or value) from a dictionary to a list
 listContents=[]
 for key in seqDict:
 	listContents.append(key)
+# using list comprehension
+eg. [k for k in _sbDict]
+
 
 
 # Switch key/value pairs:
@@ -1510,7 +1530,7 @@ for k, v in dict_.iteritems():
 # merge two dictionaries:
 dict1.update(dict2)
 #or #(without overwriting duplicates)
-dict_ = dict(dict1, **dict2)
+eg. dict_ = dict(dict1, **dict2)
 
 
 # merge values of two dictionaries by index:
@@ -1997,13 +2017,8 @@ __doc__ #gives us the docstring of that class.
 
 #get class name (as a string)
 eg. classInstance.__class__.__name__
-eg. if class_.__class__.__name__ == 'Create': pass
 
 
-
-#get class methods
-import inspect
-inspect.getmembers(Class, predicate=inspect.ismethod)
 
 
 #get class attributes
@@ -2011,6 +2026,10 @@ dir(Class)[:5] #limit list to 5 results. returns: [string list of attribute name
 Class.__dict__ #get the attributes defined for the instance. returns: {attribute name:value}
 
 help(Class) # Class information
+
+#using inspect
+inspect.getmembers(Class, predicate=inspect.ismethod)
+
 
 
 
@@ -2953,8 +2972,8 @@ eg.	module = 'tk_slots_maya_edit'
 
 
 #delete system module: (sys.modules is a dict so it is also possible to check for key)
-eg. import sys
-	del sys.modules['tk_slots_maya_edit']
+#using sys
+eg. del sys.modules['tk_slots_maya_edit']
 
 
 
