@@ -417,6 +417,20 @@ cmb.insertSeparator(index)
 cmb.hidePopup()
 cmb.showPopup()
 
+#
+cmb.setFrame(False) #bool popup frame visability.
+
+#comboBox frame
+frame = cmb.findChild(QtWidgets.QFrame) #get frame from the comboBox (after calling showPopup the comboBox instance becomes a QFrame.)
+frame.move(frame.x()+70, frame.y()-20)
+
+frame.setFrameStyle(QtGui.QFrame.Panel|QtGui.QFrame.Raised) #QFrame.NoFrame, Box, Panel, StyledPanel, HLine and VLine; the shadow styles are Plain, Raised and Sunken
+frame.frameStyle() #get frame style
+
+frame.setModal(True) #
+
+
+
 #remove contents
 cmb.clear()
 
@@ -447,11 +461,7 @@ currentIndexChanged()
 currentIndexChanged(index)
 editTextChanged()
 
-#eventFilter for button press #see also eventFilter for view event
-QComboBox.installEventFilter(self)
-def eventFilter(self,target,event):
-	if target==self.cmb and event.type()==QtCore.QEvent.MouseButtonPress:
-		print "Button press"
+
 
 #get/set data
 cmb = QtGui.QComboBox()
@@ -923,15 +933,19 @@ w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable but
 'Events'#--------------------------------------------------------------------
 
 
-
-QtCore.QEvent.accept() #indicates whether the receiver wants the event.
-QtCore.QEvent.isAccepted() #returns bool
-QtCore.QEvent.setAccepted(True) #bool
-QtCore.QEvent.ignore() #event is propagated up the parent widget chain until a widget accepts it. (or an event filter consumes it)
-
-
 w.setAttribute(QtCore.Qt.WA_NoMousePropagation) #event will not be propagated further up the parent widget chain.
 
+
+QtGui.QKeyEvent
+QtGui.QMouseEvent #supports mouse button presses, double-clicks, moves, and other related operations.
+QtGui.QWheelEvent
+QtGui.QInputEvent #base class for events that describe user input.
+QtGui.QActionEvent #provides an event that is generated when a QAction is added, removed, or changed.
+QtGui.QContextMenuEvent #contains parameters that describe a context menu event.
+QtGui.QWindowStateChangeEvent #provides the window state before a window state change.
+QtGui.QExposeEvent #contains event parameters for expose events.
+QtGui.QFileOpenEvent #provides an event that will be sent when there is a request to open a file or a URL. 
+QtGui.QResizeEvent #adds size(), oldSize() to enable widgets to discover how their dimensions have been changed.
 
 
 event.source()
@@ -1065,13 +1079,68 @@ tabletEvent(event)
 
 #custom event filter:
 
-# install filter
+# install event filter
 QtGui.qApp.installEventFilter(self)
-w.installEventFilter(self.hotBox) 
+w.installEventFilter(self)
+#install filter for widget sub object
+w.view().installEventFilter(self)
+w.viewport().installEventFilter(self)
+w.frame().installEventFilter(self)
 
-# return value
-return QtWidgets.w.eventFilter(self, button, event)
-return super(HotBox, self).eventFilter(self, event) #returns the event that occurred
+
+
+def eventFilter(self, widget, event):
+	if event.type()==QtCore.QEvent.MouseButtonPress:
+		pass
+
+	# event filter return value
+	#the event-filter should return True to stop any further handling, 
+	#return False to pass the event on for further handling
+	return Class.eventFilter(self, widget, event) #class itself.
+	return QtCore.QObject.eventFilter(self, widget, event) #inherited class.  Class(QtCore.QObject):
+	return QtWidgets.QComboBox.mouseMoveEvent(self, event) #inherited class.  Class(QtWidgets.QComboBox):
+	return super(Class, self).eventFilter(self, event) #return the event that occurred
+	return super(Class, self).eventFilter(widget, event)
+
+
+event.__class__
+event.__class__.__name__
+
+event.type()
+QtCore.QEvent.Show
+QtCore.QEvent.Hide
+QtCore.QEvent.Enter
+QtCore.QEvent.Leave
+QtCore.QEvent.MouseButtonPress
+QtCore.QEvent.MouseMove
+QtCore.QEvent.HoverEnter
+QtCore.QEvent.HoverLeave
+QtCore.QEvent.Drag
+QtCore.QEvent.Drop
+QtCore.QEvent.key
+QtCore.QEvent.KeyPress
+
+event.button()
+event.buttons()
+QtCore.Qt.NoButton
+QtCore.Qt.LeftButton
+QtCore.Qt.RightButton
+
+event.key()
+QtCore.Qt.Key_F12
+
+
+QtCore.QEvent.accept() #indicates whether the receiver wants the event.
+QtCore.QEvent.isAccepted() #returns bool
+QtCore.QEvent.setAccepted(True) #bool
+QtCore.QEvent.ignore() #event is propagated up the parent widget chain until a widget accepts it. (or an event filter consumes it)
+QtCore.QEvent.acceptProposedAction()
+
+
+
+
+
+
 
 
 
@@ -1107,6 +1176,9 @@ self.blockSignals(False)
 QtCore.QEvent.registerEventType([hint=-1]) #returns: int
 
 
+
+QtWidgets.QApplication.postEvent(widget, event)
+
 #Send event directly to receiver widget;
 event = QtGui.QEnterEvent(pos, pos, pos)
 QtWidgets.QApplication.sendEvent(widget, event) #Returns the value that was returned from the event handler.
@@ -1114,6 +1186,30 @@ QtWidgets.QApplication.sendEvent(widget, event) #Returns the value that was retu
 #
 event = QtCore.QEvent(QtCore.QEvent.Leave)
 QtWidgets.QApplication.sendEvent(widget, event)
+
+#
+QtWidgets.QApplication.notify(widget, event)
+
+
+
+
+# Re-implementation of QApplication.notify in Python which would propagate custom events.
+class MyApp(QApplication):
+    def notify(self, widget, event):
+        if event.type() > QtCore.QEvent.User:
+            while(widget):
+                # Note that this calls `event` method directly thus bypassing
+                # calling qApplications and receivers event filters
+                res = widget.event(event);
+                if res and event.isAccepted():
+                    return res
+                widget = widget.parent()
+        return super(MyApp, self).notify(receiver, event)
+# And instead of using instance of QApplication we use instance of our subclass.
+if __name__=='__main__':
+    app = MyApp(sys.argv)
+
+
 
 
 
@@ -1407,152 +1503,6 @@ def X_up(self):
 	print "x Up"
 
 
-# ----------------------------------------------
-
-
-# eventFilter
-#the event-filter should return True to stop any further handling, 
-#return False to pass the event on for further handling
-
-# Install EventFilter on component :
-self.ui.buttonGroup.installEventFilter(self)      
-# NOT self.ui.buttonGroup.installEventFilter(self.ui)
-
-# Define eventFilter():
-def eventFilter(self, obj, event):
-	if(obj.objectName() == "group_of_widgets"):
-		if event.type() == QtCore.QEvent.Type.Enter:
-			self.drop_action(event)
-
-
-ex.
-self.ui.tree_widget_of_items.installEventFilter(self)
-
-	if e.type() == QEvent.DragEnter: #remember to accept the enter event
-		e.acceptProposedAction()
-		return True
-	if e.type() == QEvent.Drop:
-		# handle the event
-		# ...
-		return True
-	return False #remember to return false for other event types
-#or
-self.ui.tree_widget_of_items.installEventFilter(self)
-
-def eventFilter(self, o, e):
-if(o.objectName() == "tree_widget_of_items"):
-    if e.type() == QtCore.QEvent.Type.Enter:
-        self.drop_action(e)
-
-
-ex.
-class MainWindow(QMainWindow):
-	def __init__(self):
-	    self.textEdit = QTextEdit()
-	    setCentralWidget(self.textEdit)
-	    textEdit.installEventFilter(self)
-
-	    if obj == textEdit:
-	        if event.type() == QEvent.KeyPress:
-	            keyEvent = event
-	            print "Ate key press", keyEvent.key()
-	            return true
-	        else:
-	            return false
-	    else:
-	        # pass the event on to the parent class
-	        return QMainWindow.eventFilter(self, obj, event)
-
-
-
-#another eventFilter example with mouse events
-ex.
-def eventFilter(self, source, event):
-	if event.type() == QtCore.QEvent.MouseMove:
-		if event.buttons() == QtCore.Qt.NoButton:
-			print("Simple mouse motion")
-		elif event.buttons() == QtCore.Qt.LeftButton:
-			print("Left click drag")
-		elif event.buttons() == QtCore.Qt.RightButton:
-			print("Right click drag")
-	elif event.type() == QtCore.QEvent.MouseButtonPress:
-		if event.button() == QtCore.Qt.LeftButton:
-			print("Press!")
-	return super(Window, self).eventFilter(source, event)
-#then install filter in widget
-self.graphicsView.viewport().installEventFilter(self)
-
-
-#Here’s a KeyPressEater class that eats the key presses of its monitored objects:
-ex.
-class KeyPressEater(QObject):
-    def eventFilter(self, obj, event):
-        if event.type() == QEvent.KeyPress:
-            print "Ate key press", event.key()
-            return True
-        else:
-            # standard event processing
-            return QObject.eventFilter(self, obj, event)
-
-#And here’s how to install it on two widgets:
-keyPressEater = KeyPressEater(self)
-pushButton = QPushButton(self)
-listView = QListView(self)
-
-pushButton.installEventFilter(keyPressEater)
-listView.installEventFilter(keyPressEater)
-
-
-
-#working example
-ex.
-w.installEventFilter(self)
-
-#filter for mouse over event
-ex.
-# class HoverEnterFilter(QtCore.QObject):
-class HoverEnterFilter(QtWidgets.QWidget):
-	def eventFilter(self, obj, event):
-		if event.type() == QtCore.QEvent.HoverEnter:
-			print "-HoverEnter"
-			# return QtCore.QObject.eventFilter(self, obj, event)
-			return True
-		else:
-			return False
-
-w.installEventFilter(HoverEnterFilter(self))
-
-
-#subClass for method overriding
-ex.
-class HoverArea(QtWidgets.QPushButton):
-	mouseHover = QtCore.Signal(bool)
-
-	def __init__(self, parent=None):
-		QtWidgets.QPushButton.__init__(self, parent)
-		self.setMouseTracking(True)
-		self.resize(61,23)
-
-	def enterEvent(self, event):
-		self.mouseHover.emit(True)
-
-	def leaveEvent(self, event):
-		self.mouseHover.emit(False)
-
-HoverArea(pushButton).mouseHover.connect(method)
-
-
-
-#QComboBox view event signal
-class ShowEventFilter(QtCore.QObject):
-	def eventFilter(self, filteredObj, event):
-		if event.type() == QtCore.QEvent.Show:
-			print "Popup Showed !"
-			# do whatever you want
-		return QtCore.QObject.eventFilter(self, filteredObj, event)
-
-eventFilter = ShowEventFilter()
-cb.view().installEventFilter(eventFilter)
 
 
 
@@ -1626,15 +1576,24 @@ updated = Signal(str)
 updated = Signal(object)
 
 
-# create a signal
-enterEvent = QtCore.Signal(bool)
 
+#subClass for method overriding
+ex.
+class HoverArea(QtWidgets.QPushButton):
+	mouseHover = QtCore.Signal(bool)
 
-def enterEvent(self, event):
-	self.enterEvent.emit(True)
+	def __init__(self, parent=None):
+		QtWidgets.QPushButton.__init__(self)
+		self.setMouseTracking(True)
 
-def leaveEvent(self, event):
-	self.enterEvent.emit(False)
+	def enterEvent(self, event):
+		self.mouseHover.emit(True)
+
+	def leaveEvent(self, event):
+		self.mouseHover.emit(False)
+
+HoverArea(pushButton).mouseHover.connect(method)
+
 
 
 #call function with argument from signal
@@ -1840,9 +1799,9 @@ parent.children() #returns [QtCore.Qbject at 0x10xxxxxx]
 #
 centralwidget.children()
 #get specific
-checkbox = parent.findChild(QtWidgets.QCheckBox, 'checkBoxEnabled')
-
-
+checkbox = parent.findChild(QtWidgets.QCheckBox, 'checkBoxEnabled') #pass a type (or tuple of types) as the first argument, and an optional string as the second argument (for matching the objectName).
+#all of type
+lineEdits = form.findChildren(QtGui.QLineEdit) #pass a type (or tuple of types) as the first argument, and an optional string as the second argument (for matching the objectName).
 
 
 
@@ -1934,14 +1893,33 @@ for widget in ui.children():
 
 
 
-# Promote a widget in designer to use a custom class:
-#>	In Qt Designer, select all the line-edits you want to replace, then right-click them and select "Promote to...". 
-#>	In the dialog, set "Promoted class name" to "LineEdit", and set "Header file" to the python import path for the module that contains this class (e.g. myapp.LineEdit).
-#>	Then click "Add", and "Promote", and you will see the class change from "QLineEdit" to "LineEdit" in the Object Inspector pane.
+# Promoting a widget in designer to use a custom class:
+# >	In Qt Designer, select all the widgets you want to replace, 
+# 		then right-click them and select 'Promote to...'. 
 
-# Now when you re-generate your ui module with pyuic, you should see that it uses your custom LineEdit class and there will be an extra line at the bottom of the file like this:
-# from myapp.LineEdit import LineEdit
+# >	In the dialog:
+# 		Base Class:		Class from which you inherit. ie. QWidget
+# 		Promoted Class:	Name of the class. ie. "MyWidget"
+# 		Header File:	Path of the file (changing the extension .py to .h)  ie. myfolder.mymodule.mywidget.h
 
+# >	Then click "Add", "Promote", 
+# 		and you will see the class change from "QWidget" to "MyWidget" in the Object Inspector pane.
+
+# register the custom widget
+# When loading the ui file:
+	from myfolder.mymodule import MyWidget
+	uiLoader = QUiLoader()
+	uiLoader.registerCustomWidget(MyWidget)
+	main_window = uiLoader.load(file)
+#or:
+# dynamically register (assuming module name and class name are identical)
+widgetPath = os.path.join(os.path.dirname(__file__), 'widgets')
+for m in os.listdir(widgetPath):
+	m = m.rstrip('.pyc') #get module name from file name
+	c = 'widgets.'+m+'.'+m
+	uiLoader.registerCustomWidget(locate(c))
+# one liner with list comprehension:
+[uiLoader.registerCustomWidget(locate('widgets.'+m +'.'+m)) for m in [file_.rstrip('.py') for file_ in os.listdir(widgetPath) if file_.endswith('.py')]]
 
 
 
@@ -2026,17 +2004,6 @@ directory = fileDialog.getExistingDirectory()
 
 
 
-
-
-
-
-'External Applications'#-----------------------------------------------------
-
-#maya
-pm.lsUI (
-numWidgets(nw)	#[boolean,create]  Reports the number of QT widgets used by Maya.
-dumpWidgets(dw)	#[boolean,create]  Dump all QT widgets used by Maya.
-)
 
 
 

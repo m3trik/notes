@@ -106,11 +106,11 @@ a / 10. #shifts decimal place left
 
 >=      #greater than or equal
 
-==      #equal to (versus = equals)
+==      #equal to
 
 !=      #not equal
 
-is      #object identity
+is      #object identity (ie. listA==listB, but not is ListB)
 
 is not  #negated object identity
 
@@ -724,23 +724,23 @@ eg. 'This, is, a, string'.split(',') #"['This','is','a','string']"
 
 #strip from left or right (removes whitespace if no argument is given)
 #strip leading characters
-eg. 'string'.lstrip('str') #returns 'ing'
+eg. 'ABxABBAxBA'.lstrip('AB') #returns 'BA' (Strips ALL 'A' or 'B' from left until encountering another char)
 #strip trailing characters
-eg. 'string'.rstrip('ing') #returns 'str'
+eg. 'ABxABBAxBA'.rstrip('BA') #returns 'AB' (Strips ALL 'A' or 'B' from right until encountering another char)
 
 
 #removes from both ends. passing no argument results in removing whitespaces
-eg. 'ABBA'.strip('AB') #returns ''
-eg. 'ABCABBA'.strip('AB') #returns 'C'
-eg. 'xABBAx'.strip('x') #returns 'ABBA' #.strip('A') will not work as you must list ALL chars from left as they appear in the string.
+eg. 'ABxABBAxBA'.strip('AB') #returns 'xABBAx' (Strips ALL 'A' or 'B' from both ends until encountering another char)
+eg. 'ABxABBAxBA'.strip('A') #returns 'BxABBAxB' #.strip('A') will not work as you must list ALL chars as they appear in the string.
 
 #strip from entire sequence
 eg. 'ABBA'.replace('B', '') #returns: 'AA'
 eg. 'ABBA'.translate({ord('B'): None}) #returns: 'AA'
 #mutiple chars:
 eg. 'ABBA'.translate({ord(i): None for i in 'AB'}) #returns: ''
-#substring:
-eg. 'ABBA'.replace('AB', '') #returns 'BA'
+#substring:  (replace elements of a string.  may work with a tuple of multiple strings or list converted to tuple)
+# replace (this, withThis, howMany) 
+eg. 'ABBA'.replace('AB', '') #returns 'BA' (Strips ALL 'AB')
 #first occurance from beginning
 eg. 'string'.replace('in', '', 0) #returns 'strg'
 #first occurance from end
@@ -749,10 +749,9 @@ eg. 'string'.replace('in', '', -1) #returns 'strg'
 eg. 'ABBA'.replace('B', '', 2) #returns 'AA'
 
 #strip numberic characters.  also lstrip/ rstrip.
-eg. 'b000'.strip('0123456789') #returns 'b' from 'b000'
+eg. 'b000'.strip('0123456789') #returns 'b'
 #strip alphanumberic characters:
-eg. 'b000'.strip('abcdefghijklmnopqrstuvwxyz') #returns '000' from 'b000'
-
+eg. 'b000'.strip('abcdefghijklmnopqrstuvwxyz') #returns '000'
 
 #strip all chars from both ends of first instance of specific chars.
 #can use different find and index slice options to tweak results.
@@ -788,12 +787,6 @@ import re
 pattern = re.compile('[\W_]+')
 pattern.sub('', string)
 
-
-
-
-#replace elements of a string.  may work with a tuple of multiple strings or list converted to tuple
-# replace (this, withThis, howMany) 
-eg. 'string'.replace('this', 'with this') 
 
 #replace all instances.
 eg. re.sub(pattern,replace,string,max=0)
@@ -2171,6 +2164,17 @@ Derived (a='aaa',b='bbb') ##calls baseClass first, then subClass
 
 
 
+#get base class from derived
+#with single inheritance, __mro__ is just the tuple of: the class, its base, its base's base, and so on up to object.
+#with multiple inheritance, __mro__ no class is duplicated, and no class comes after its ancestors, classes that first enter at the same level of multiple inheritance are in the __mro__ left to right.
+class().__class__.__mro__[1] #mro() (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <type 'object'>)
+class().__class__.__bases__[0]
+#get base class name from derived
+class().__class__.__mro__[1].__name__
+class().__class__.__bases__[0].__name__
+
+
+
 #super(subClass, instance).method(args)
 #using 'super' to call base class init method and get base class arguments 
 super().__init__(argsFromBaseClass) 
@@ -2476,7 +2480,7 @@ def getMousePosition():
 
 # .net framework
 #--getKeyState---------------------------------------------------------------------------
-from ctypes import windll
+#using ctypes (from ctypes import windll)
 #The state will either be 0 or 1 when not pressed, and increase to something like 60000 when 
 #pressed, so to get a True/False result, checking for > 1
 #key = virtual-key code #https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
@@ -2539,8 +2543,7 @@ ctypes.windll.user32.mouse_event(20, 0, 0, 0,0) #left down
 
 
 
-#using keyboard module:
-import keyboard
+#using keyboard module (import keyboard)
 shortcut = 'alt+x' #define hot-key
 
 def event():
@@ -2593,7 +2596,7 @@ eg. 'HOME' in os.environ
 # FILE PATH
 
 #get all paths:
-import sys;
+#using sys (import sys)
 for s in  sys.path: print s
 
 
@@ -2611,28 +2614,33 @@ eg. os.path.join('c:\\', 'temp', 'new folder')
 # from relative path
 eg. script_dir = os.path.dirname(__file__)
 #alt
-eg. script_path = os.path.abspath(__file__) # i.e. /path/to/dir/foobar.py
-		script_dir = os.path.split(script_path)[0] #i.e. /path/to/dir/
-		rel_path = 'subfolder/file.txt'
-		abs_file_path = os.path.join(script_dir, rel_path)
+script_path = os.path.abspath(__file__) # i.e. /path/to/dir/foobar.py
+script_dir = os.path.split(script_path)[0] #i.e. /path/to/dir/
+rel_path = 'subfolder/file.txt'
+abs_file_path = os.path.join(script_dir, rel_path)
 #combine both approaches
 eg. os.path.dirname(os.path.abspath(__file__))
 
 
+#get path above current file path:
+'/'.join(os.path.dirname(os.path.abspath(__file__)).split('\\')[:-1]) #adjust the [:int] for each dir above.
+
+
 
 # dir navigation
-'..'      #up one directory
-
-'../..'   #up two directory levels etc
-#import sys, os.path as path
-eg. two_up =  path.abspath(path.join(__file__ ,'../..')) #__file__=current file. can substitute this for another dir
+#up one directory
+'..'
+#up two directory levels etc
+'../..'
+#using os.path (import os.path)
+eg. two_up =  os.path.abspath(os.path.join(__file__ ,'../..')) #__file__=current file. can substitute this for another dir
 
 
 
 #append to system path
 path = os.path.expandvars(r'%CLOUD%/_programming/Python/2.7/__path/Lib/site-packages/win32')
 sys.path.append(path)
-import win32api, win32con
+
 
 
 #Append multiple directories to the system path
@@ -2663,7 +2671,7 @@ eg. for (dir,_,files) in os.walk('.'): #('./')
 
 
 # using glob.glob to list all the files in the current working directory whose filename ends with .mod:
-# import fileinput,glob,sys
+#import fileinput, glob, sys
 eg. for line in fileinput.input(glob.glob('*.mod'), inplace=True):
 			if fileinput.filelineno() == 32:     
 				sys.stdout.write('TextToInsertIntoLine32' '\n') #adds new line and text to line 32 
@@ -2701,8 +2709,7 @@ B = os.path.dirname(os.path.realpath(__file__))
 C = os.path.abspath(os.path.dirname(__file__))
 # C is the absolute path of the directory where the program resides.
 
-# You can see the various values returned from these here:
-import os
+# You can see the various values returned from these here (import os)
 print __file__
 print os.path.join(os.path.dirname(__file__), '..')
 print os.path.dirname(os.path.realpath(__file__))
@@ -2732,8 +2739,7 @@ eg.	with open(file_) as f: #reassign opened file with a simplified variable
 
 
 
-#open last modified file of a given extension.
-#import glob, os
+#open last modified file of a given extension (import glob, os)
 eg. path = 'C:\Users\m3\AppData\Roaming\Autodesk\MAYA\Autosave'
 		extentions = '*.[mb][ma]*' #* for all, *.mb for single
 
@@ -2852,8 +2858,7 @@ eg.	file_='/tmp/foo.txt'
 #alt delete syntax
 eg. os.unlink('/tmp/<file_name>.txt')
 
-#using Exception Handling:
-#import os
+#using Exception Handling (import os)
 eg.	file_= raw_input('Enter file name to delete: ') #Get input
 		try: #Try to delete the file
 			os.remove(file_)
@@ -2891,67 +2896,63 @@ eg. from datetime import datetime
 
 
 # implicitly import a module 
-#using imp
-#import imp
+#using imp (import imp)
 eg. moduleVar = imp.load_source('file', 'fullpath/file.ext')
 #
 eg. max_customTools_main = imp.load_source('max_customTools_main', os.path.expandvars('%CLOUD%/____Graphics/3ds Max/Scripts/_Python/___Python_path/max_customTools_main.py'))
 
 
 # importing a module. kw: import module
-module    #imported code containing functions.  
-					eg. moduleName.variable  #to access that variable`s functions and values
+eg. moduleName.variable  #to access that variable`s functions and values
 
-					#single
-					eg. from module import method
-					eg. import method from module
-					eg. import module.method
-					eg. import module.method as var
-					#multiple
-					eg. from module import method1#, method2, method3
-					eg. from module import (method1,
-																	method2,
-																	method3)
-					eg. from module import method1 as var1#, method2 as var2
-					#all
-					eg. from module import * #import all
-					eg. from module.classid import *
+#single
+eg. from module import method
+eg. import method from module
+eg. import module.method
+eg. import module.method as var
+#multiple
+eg. from module import method1
+eg. from module import (method1, method2, method3)
+eg. from module import method1 as var1#, method2 as var2
+#all
+eg. from module import * #import all
+eg. from module.classid import *
 
 
 
-#using importlib:
-# import importlib
-eg. module = importlib.import_module(str(module), package=None)
+#using importlib (import importlib)
+#The first(name) argument specifies what module to import in absolute or relative terms (e.g. either pkg.mod or ..mod).
+#If the name is specified in relative terms, then the package argument must be specified to the package which is to act as the anchor for resolving the package name (e.g. import_module('..mod', 'pkg.subpkg') will import pkg.mod).
+eg. module = importlib.import_module(str(module), package=None) #the specified module will be inserted into sys.modules and returned.
 eg. importlib.import_module(module, module[module.rfind('_')+1:])
 
 
 #using __import__:
-eg. module = __import__(module)
-eg. __import__(module, globals(), locals(), [module[module.rfind('_')+1:]]) #ie. import tk_buttons_maya_init as init. use module[strip at char] to get module variable from module name
+eg. module = __import__('module') #returns module
+#
+eg. module = __import__(module, globals(), locals(), [module[module.rfind('_')+1:]]) #ie. import tk_buttons_maya_init as init. use module[strip at char] to get module variable from module name
+#using relative path
+eg. module = __import__('path.to.module.Module', fromlist=[''])
 #if module name is not a string
 eg. module = __import__(str(module))
 #import all
-eg. __import__(module, globals(), locals(), ['*'])
+eg. module = __import__(module, globals(), locals(), ['*'])
 
 
 
 # pass variable on import
-eg. import someModule
-	someModule.somemethod(variablesPassedAsArguments)
-	x = someModule.someClass(range(1, 5))
-import someModule
-someModule.somemethod(variablesPassedAsArguments)
-x = someModule.someClass(range(1, 5))
+eg.
+	module.method(variablesPassedAsArguments)
+	x = module.Class(range(1, 5))
 
 
 
 #get module file name
 eg. module = os.path.splitext(os.path.basename(__file__))[0]
-#or
-#import sys
+#using sys (import sys)
 eg. __import__(sys.argv[1]) #sys.argv[0]
 #using special variable
-eg. __name__ #when run directly the name will be main. else when importing, it will be full name of the module
+eg. module.__name__ #when run directly the name will be main. else when importing, it will be full name of the module
  
 
 
@@ -2972,8 +2973,12 @@ eg.	module = 'tk_slots_maya_edit'
 
 
 #delete system module: (sys.modules is a dict so it is also possible to check for key)
-#using sys
+#using sys (import sys)
 eg. del sys.modules['tk_slots_maya_edit']
+
+
+
+
 
 
 
@@ -3000,9 +3005,8 @@ eg. pip show PySide2
 'Time_______________________________________________________________________________________'
 
 # pause, stop, wait, or sleep
-import time
-
 #sleep
+#using time (import time)
 ex.
 time.sleep(5) #wait for 5 seconds
 time.sleep(.300) #wait for 300 milliseconds
@@ -3067,8 +3071,9 @@ raise RuntimeError('')
 
 # print error on exception:
 eg.
-except Exception as error: 
-	print(error)
+except Exception as error:
+	if not type(error)==AttributeError:
+		raise error
 
 
 #traceback module provides methods for formatting and printing exceptions and their tracebacks, 
@@ -3078,7 +3083,15 @@ import traceback
 except: traceback.print_exc()
 
 
+
+
 #Exceptions:
+AttributeError: #attempting to access an attribute on an object that does not exist
+
+KeyError:		#attempting to access a key in a dictionary that does not exist
+
+TypeError:		#raised when an argument to a function is not the right type (e.g. a str instead of int)
+
 ImportError:    #an import fails; python cannot find the module
 
 IndexError:     #a list is indexed with an out-of-range number;
@@ -3087,17 +3100,17 @@ NameError:      #an unknown variable is used;
 
 SyntaxError:    #the code cant be parsed properly;
 
-TypeError:      #a function is called on a value of an inappropriate type;
+TypeError:      #a function is called on a value of an inappropriate type; when an argument to a function is the right type but not in the right domain (e.g. an empty string)
 
-ValueError:     #a function is called on a value of the correct type, but with an 
-								#inappropriate value. 
+ValueError:     #a function is called on a value of the correct type, but with an inappropriate value.
 
-IOError:        #If the file cannot be opened.
+IOError:        #If the file cannot be opened. raised when Python cannot access a file correctly on disk
 
 KeyboardInterrupt:#Raised when the user hits the interrupt key (normally Control-C or Delete)
 
 EOFError:       #Raised when one of the built-in functions (input() or raw_input()) hits an
 								#end-of-file condition (EOF) without reading any data
+
 
 
 

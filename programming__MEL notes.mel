@@ -1808,6 +1808,12 @@ normal = [round(i-min(xyz)/(max(xyz)-min(xyz)),6) for i in xyz] #normalize and r
 "UI: //--------------------------------------------------------------------------------------------------------------------------------------------------" 
 
 // get ui objects
+pm.lsUI (
+numWidgets=True,	//#[bool, create]  Reports the number of QT widgets used by Maya.
+dumpWidgets=True	//#[bool, create]  Dump all QT widgets used by Maya.
+)
+
+
 //#get all windows.
 eg. lsUI -windows;
 eg. pm.lsUI(windows=1)
