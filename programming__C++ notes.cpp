@@ -1,4 +1,7 @@
-'C++_notes___________________________________________________________________________________'
+// C++ notes
+
+
+
 
 // A C# program consists of the following parts:
 
@@ -136,6 +139,10 @@ sizeof    //used to get a variable or data type's size in bytes (varies from mac
 
 
 
+
+
+
+
 'Mathmatical Operators______________________________________________________________________'
 order of operation:
 (parenthases)
@@ -164,6 +171,12 @@ prefix ex:   x = 5;                   postfix ex.   x = 5;
 decriment:
 -x        //prefix.  decriments by 1 then evaluates the expression (ex. x = x - 1)
 x-        //postfix. evaluates expression then decriments by 1 (ex. x = x + 1)
+
+
+
+
+
+
 
 
 'Comparators________________________________________________________________________________'
@@ -198,10 +211,26 @@ relational operators:
 !=        //not equal to
 
 
+
+#ifdef    //(if defined) - test if a preprocessor variable has been "defined".
+#ifndef   //(if not defined)
+#endif    //
+
+
+
+
+
 'Boolean Operations_________________________________________________________________________'
 
 booleans:
 bool      (ex. bool x = false; bool y = true;) //holds true or false value
+
+
+
+
+
+
+
 
 
 'Conditionals_______________________________________________________________________________'
@@ -226,6 +255,13 @@ bool      (ex. bool x = false; bool y = true;) //holds true or false value
 
 
 
+
+
+
+
+
+
+
 'Lists__(arrays)____________________________________________________________________________'
 
 (ex. int x[5]; = {11, 45, 62, 70, 88}; cout<< 0\n <<cout 4;)
@@ -237,6 +273,12 @@ multi-dimentional arrays:
      {8,9,10}  //second row
 };
 cout<< x[0][2] <<endl; //outputs 4
+
+
+
+
+
+
 
 
 
@@ -274,6 +316,11 @@ return-type  //data type of value returned by function
 function name //name of the function
 parameters //when a function is invoked, you pass a value to the parapeter. parameter list refers to the type, order, and number of the parameters of a function. parameters are optional.
 body of the function //collection of statements defining what the function does.
+
+
+
+
+
 
 
 

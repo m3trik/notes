@@ -7,11 +7,15 @@
 
 
 
-QtCore		# core non-graphical classes used by other modules
-QtGui		# base classes for UI components
-QtWidgets	# classes to extend qt GUI with c++ widgets
-QObject		# basic non-visual building block. signals, events,
-#Additional: QtCharts, QtMultimedia, QtNetwork, QtQuick, QtTest,
+QtCore							# core non-graphical classes used by other modules
+QtGui							# base classes for UI components
+QtWidgets						# classes to extend qt GUI with c++ widgets
+QObject							# basic non-visual building block. signals, events,
+#QtCharts
+#QtMultimedia
+#QtNetwork
+#QtQuick
+#QtTest
 
 
 
@@ -93,13 +97,16 @@ name = w.objectName()
 
 
 #get widget type:
-w.__class__.__name__ #returns class name as a string
+w.__class__.__name__ 			#returns class name as a string
 #alt using QMetaObject:
 w.metaObject().className()
 #alt using type():
 type(widget)
-type(widget).__name__ #same as: w.__class__
+type(widget).__name__ 			#same as: w.__class__
 
+#
+w.inherits('classname')			#Returns true if this object is an instance of a class that inherits className or a PySide.QtCore.QObject subclass that inherits className
+qobject_cast<Type *>(object)	#determine whether an object is an instance of a particular class for the purpose of casting it
 
 
 #Toggle
@@ -132,10 +139,10 @@ act.pyqtConfigure(triggered=self.on_triggered)
 #toggle visibility
 w.setVisible(not w.isVisible()) 
 
-w.isEnabled	#bool
+w.isEnabled						#Returns Bool - 
 
-w.isVisible	#bool
-w.isHidden	#bool
+w.isVisible						#Returns Bool - 
+w.isHidden						#Returns Bool - 
 w.setHidden(True)
 
 w.show()
@@ -160,7 +167,7 @@ w.hasFocus()
 w.setFocus()
 w.clearFocus()
 
-w.activateWindow() #Sets the top-level widget containing this widget to be a top-level window that has keyboard input focus.
+w.activateWindow() 				#Sets the top-level widget containing this widget to be a top-level window that has keyboard input focus.
 
 
 #shedule refresh 
@@ -177,10 +184,8 @@ w.update()
 #Remove widget
 for i in reversed(range(self.layout.count())): 
 	widgetToRemove = self.layout.itemAt(i).widget()
-	# remove it from the layout list
-	self.layout.removeWidget(widgetToRemove)
-	# remove it from the gui
-	widgetToRemove.setParent(None)
+	self.layout.removeWidget(widgetToRemove) #remove it from the layout list
+	widgetToRemove.setParent(None) #remove it from the gui
 
 
 
@@ -235,7 +240,8 @@ w.setAttribute(QtCore.Qt.WA_DeleteOnClose) #Makes Qt delete this widget when the
 w.setAttribute(QtCore.Qt.WA_Disabled) #Indicates that the widget is disabled
 w.setAttribute(QtCore.Qt.WA_ForceDisabled) #Indicates that the widget is explicitly disabled
 w.setAttribute(QtCore.Qt.WA_QuitOnClose) #Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
-#
+
+#visibility
 w.setAttribute(QtCore.Qt.WA_DontShowOnScreen)
 w.setAttribute(QtCore.Qt.WA_ShowWithoutActivating) #Show the widget without making it active.
 
@@ -272,18 +278,26 @@ window.setCentralWidget(stackedWidget)
 
 
 
-# Visual style
+#QPushButton
+b = QtWidgets.QPushButton()
 
-
-
-# QPushButton signals.  QtUi QPushButton signal in
+#signals. (signal in)
 #Qt signals:
-clicked()
-pressed()
-released()
-toggled()
-setText()
-setIcon()
+b.clicked() 					#bool checked=False #QPushButton.clicked()
+b.pressed()
+b.released()
+b.toggled()
+b.setText()
+b.setIcon()
+
+b.click() 						#emits clicked signal
+
+
+b.clicked.connect(method)
+#or with arguments
+b.clicked.connect(lambda x=arg: method(x))
+b.clicked.connect(lambda: method(x))
+
 #public slots: setChecked(bool), toggle()
 
 #connect to multiple slots:
@@ -294,30 +308,16 @@ map(self.dial.valueChanged.connect, [self.spinbox.setValue, self.getValue_dial])
 
 
 #enable/ disable button objects
-b.setEnabled(False) #either method serves both functions. must be used with an argument
+b.setEnabled(False) 			#either method serves both functions. must be used with an argument
 b.setDisabled(True)
 
-b.setDefault #QPushButton.setDefault() #Sets the button as default
+b.setDefault() 					#QPushButton.setDefault() #Sets the button as default
 
-#hide/ unhide objects
-b.setVisible(False)
-#query visible state
-b.isHidden()
+b.pressed() 					#bool #QPushButton.pressed()
+b.released() 					#bool #QPushButton.released()
 
-
-b.click() #emits clicked signal
-
-b.clicked() #bool checked=False #QPushButton.clicked()
-b.clicked.connect(method)
-#or with arguments
-b.clicked.connect(lambda x=arg: method(x))
-b.clicked.connect(lambda: method(x))
-
-b.pressed() #bool #QPushButton.pressed()
-b.released() #bool #QPushButton.released()
-
-b.toggled() #bool. query pushbutton toggle state.
-b.toggle() #Toggles the state of a checkable button.
+b.toggled() 					#bool. query pushbutton toggle state.
+b.toggle() 						#Toggles the state of a checkable button.
 
 
 
@@ -327,24 +327,20 @@ b.toggle() #Toggles the state of a checkable button.
 #		self.ui.connect(HandleSelection, SIGNAL(toggled(bool)),MEL_HandleSelection,SLOT(setVisible(bool)));
 #		QObject::connect(moreButton, SIGNAL(toggled(bool)), tertiarypb7Box, SLOT(setVisible(bool)));
 
-b.stateChanged() #QCheckBox.stateChanged()
+b.stateChanged() 				#QCheckBox.stateChanged()
 b.stateChanged.connect(method)
-
-
-
-b.setCheckable(True) #Recognizes pressed and released states of button if set to true
-
-b.isChecked() #QPushButton.isChecked()
-# Returns Boolean state of button
-b.isChecked()
+#
+b.setCheckable(True) 			#Recognizes pressed and released states of button if set to true
+b.isChecked()					#Returns Bool - state of button
 #setChecked
-b.setChecked(True)
+b.setChecked(True)				#Bool
+b.setChecked(not b.isChecked())	#toggle
 
 
 #button text
-b.text #QPushButton.text() #Retrieves buttons’ caption or textfields value
-b.setText #QPushButton.setText() #Programmatically sets buttons’ caption or textfields value
-b.setText(0, 'text '+str(num)) #append integer
+b.text 							#QPushButton.text() #Retrieves buttons’ caption or textfields value
+b.setText 						#QPushButton.setText() #Programmatically sets buttons’ caption or textfields value
+b.setText(0, 'text '+str(num))	#append integer
 b.setText(0, "Parent {}".format(num)) #alt
 
 
@@ -364,112 +360,140 @@ cmb.setItemIcon(index, QtGui.QIcon(pixmap))
 
 
 #QSpinBox. (for a double value use QDoubleSpinBox)
-s.setMinimum(-5) #Sets the lower bound of counter
-s.setMaximum(5) #Sets the upper bound of counter
-s.setRange(0,10) #Sets the minimum, maximum and step value
-s.setWrapping(s) #Set whether spin box is circular. Both bounds must be set for this to have an effect.
-s.singleStep() #gets the step value of counter
-s.setSingleStep(1) #Sets the step value.
-s.setValue(2) #set value
-s.value() #Get the current value
-s.cleanText() #get the current value excluding any prefix or suffix
-s.setPrefix("") #Set a string prefix.
-s.setSuffix("") #Set the string suffix appended to the spinbox text.
-s.text() #gets prefix/suffix string value
+s = QtWidgets.QSpinbox()
 
-QSpinbox.valueChanged.connect(method)
+#signals:
+s.valueChanged(arg)				#optional arg=unicode or int of specific value that has been modified. ie. s.valueChanged[unicode].connect(callback_unicode)
+
+
+#get
+s.text() 						#Returns Unicode - gets prefix/suffix string value
+s.value() 						#Returns  - Get the current value
+s.cleanText() 					#get the current value excluding any prefix or suffix
+s.singleStep() 					#gets the step value of counter
+#set
+s.setMinimum(-5) 				#Sets the lower bound of counter
+s.setMaximum(5) 				#Sets the upper bound of counter
+s.setRange(0,10) 				#Sets the minimum, maximum and step value
+s.setWrapping(s) 				#Set whether spin box is circular. Both bounds must be set for this to have an effect.
+s.setSingleStep(1) 				#Sets the step value.
+s.setValue(2) 					#set value
+s.setPrefix("") 				#Set a string prefix.
+s.setSuffix("") 				#Set the string suffix appended to the spinbox text.
+
+
+
+s.valueChanged.connect(method)
 
 
 
 
 #QComboBox
+cmb = QtWidgets.QComboBox()
+
+#signals:
+cmb.activated.connect(method)
+cmb.activated[str].connect(method)
+cmb.activated(int).connect() 	#index of the selected item
+cmb.activated(unicode).connect(method) #[str] text of selected item
+
+cmb.highlighted().connect(method) #index of the selected item
+cmb.highlighted(index).connect(method) #[str] text of selected item
+
+cmb.currentIndexChanged.connect(method)
+cmb.currentIndexChanged(index).connect(method)
+
+cmb.editTextChanged.connect(method)
+
+
+
 #get list contents:
 #set contents
 cmb.addItem(string, userData=None) #string/data
-cmb.addItems(list_) #string/data
+cmb.addItems(list_) 			#string/data
 cmb.insertItem(index, string, userData=None) #at index
 cmb.insertItems(index, list_)
-cmb.setItemData(index, value) #data
+cmb.setItemData(index, value) 	#data
 #get contents
-cmb.findText(text) #get index using string
-cmb.itemText(index) #get string using index
-cmb.itemData(index) #data
-cmb.findData(data) #data
+cmb.findText(text) 				#get index using string
+cmb.itemText(index) 			#get string using index
+cmb.itemData(index) 			#data
+cmb.findData(data) 				#data
 #set index
 cmb.setCurrentIndex(0)
 #get index
-cmb.currentText() #get current text
+cmb.currentText() 				#get current text
 
 
 # remove
 cmb.removeItem(index)
 
-#edit line
-cmb.lineEdit(): #Returns the line edit used to edit items in the combobox, or 0 if there is no line edit.
-cmb.setLineEdit(edit) #Sets the line edit to use instead of the current line edit widget.
 
 #block signals
 
 #separator
 cmb.insertSeparator(index)
 
-#expand/collapse
-cmb.hidePopup()
-cmb.showPopup()
-
-#
-cmb.setFrame(False) #bool popup frame visability.
-
-#comboBox frame
-frame = cmb.findChild(QtWidgets.QFrame) #get frame from the comboBox (after calling showPopup the comboBox instance becomes a QFrame.)
-frame.move(frame.x()+70, frame.y()-20)
-
-frame.setFrameStyle(QtGui.QFrame.Panel|QtGui.QFrame.Raised) #QFrame.NoFrame, Box, Panel, StyledPanel, HLine and VLine; the shadow styles are Plain, Raised and Sunken
-frame.frameStyle() #get frame style
-
-frame.setModal(True) #
-
 
 
 #remove contents
 cmb.clear()
 
-# get list contents:
+#get combobox contents:
 list_ = [cmb.itemText(i) for i in range(cmb.count())]
-components = pm.ls(selection=1, flatten=1)
-cmb.addItems(components)
+
 
 # add string
 cmb.addItem(component)
-
-# add signals:
-comboboxes = ['cmb000']
-for cmb in comboboxes:
-	method = getattr(class_, cmb)
-	ui = getattr(ui, cmb)
-	ui.currentIndexChanged.connect(method)
-	ui.activated.connect(method)
-	method() #init comboboxes
-
-#additional signals:
-cmb.activated.connect(method)
-QComboBox.activated(int).connect() #index of the selected item
-QComboBox.activated(unicode).connect() #[str] text of selected item
-highlighted() #index of the selected item
-highlighted(index) #[str] text of selected item
-currentIndexChanged()
-currentIndexChanged(index)
-editTextChanged()
+cmb.addItems(components)
 
 
 
 #get/set data
-cmb = QtGui.QComboBox()
-cmb.addItem( 'description', my_data ) # set description, set data
-print cmb.currentText() # get description
-print cmb.itemData( cmb.currentIndex() ) # get data
+cmb.addItem('string', data) 	#set string, set data
+cmb.currentText() 				#get current index string
+cmb.itemData(cmb.currentIndex()) #get current data
 
 
+#expand/collapse
+cmb.hidePopup()
+cmb.showPopup()
+
+
+
+#edit line
+#get
+cmb.lineEdit(): 				#Returns the line edit used to edit items in the combobox, or 0 if there is no line edit. QtGui.QLineEdit widget is a one-line text editor.
+#set
+cmb.setLineEdit(edit) 			#Sets the line edit to use instead of the current line edit widget.
+
+
+#combobox model (QtCore.QAbstractItemModel, QtGui.QStandardItemModel)
+#get
+cmb.model()						#Returns QStandardItemModel - of the combobox. The model class provides a generic model for storing custom data.
+cmb.modelColumn()				#the column in the model that is visible. If set prior to populating the combo box, the pop-up view will not be affected and will show the first column (using this property’s default value).
+cmb.rootModelIndex()			#Returns the root model item index for the items in the combobox.
+#set
+cmb.setModal(model) 			#Sets the model. model must not be 0. If you want to clear the contents of a model, call QtWidgets.QComboBox.clear().
+
+
+#combobox view (QtGui.QAbstractItemView, QtWidgets.QListView)
+#get
+cmb.view()						#Returns QListView - of the combobox popup. The view class provides a list or icon view onto a model.
+#set
+cmb.setView(itemView)			#Sets the view to be used in the combobox popup to the given itemView . The combobox takes ownership of the view. Note: If you want to use the convenience views (like QtWidgets.QListWidget , QtWidgets.QTableWidget or QtWidgets.QTreeWidget), make sure to call QtWidgets.QComboBox.setModel() on the combobox with the convenience widgets model before calling this function.
+
+
+#comboBox frame
+#get
+frame = cmb.findChild(QtWidgets.QFrame) #Returns QFrame(or None) - of the comboBox.
+frame.frameStyle() 				#get frame style
+
+#set
+cmb.setFrame(False) 			#Bool - popup frame visability.
+frame.setFrameStyle(QtGui.QFrame.Panel|QtGui.QFrame.Raised) #QFrame.NoFrame, Box, Panel, StyledPanel, HLine and VLine; the shadow styles are Plain, Raised and Sunken
+frame.move(frame.x()+70, frame.y()-20)
+frame.setModal(True) 			#
 
 
 
@@ -484,7 +508,7 @@ item.setData( QtCore.Qt.UserRole, my_data ) # set data
 table_widget.setItem( 0, 0, item ) # add item to table on row 0, colum 0
 current_row = table_widget.currentRow() # selected row
 item = table_widget.item( 0, 0 )
-print item.text() # get description
+print item.text() 				#get description
 print item.data( QtCore.Qt.UserRole ) # get data
 
 
@@ -496,13 +520,13 @@ print item.data( QtCore.Qt.UserRole ) # get data
 #get/set data
 tree_widget = QtGui.QTreeWidget()
 item = QtGui.QTreeWidgetItem( tree_widget, ['description'] ) # set description
-item.setData(1, QtCore.Qt.EditRole, my_data) # set data
-item.setData(2, QtCore.Qt.EditRole, my_data) # set data
-item.setData(3, QtCore.Qt.EditRole, my_data) # set data
-print item.text(0) # get description
-print item.text(1) # get data
-print item.text(2) # get data
-print item.text(3) # get data
+item.setData(1, QtCore.Qt.EditRole, my_data) #set data
+item.setData(2, QtCore.Qt.EditRole, my_data) #set data
+item.setData(3, QtCore.Qt.EditRole, my_data) #set data
+print item.text(0) 				#get description
+print item.text(1) 				#get data
+print item.text(2) 				#get data
+print item.text(3)				#get data
 
 
 
@@ -642,11 +666,11 @@ ex.	QLineEdit.setValidator(QtGui.QDoubleValidator(0, 100, 2))
 #add text
 text = QString('string')
 #
-t.append('string') #append text as new line
+t.append('string') 				#append text as new line
 #
 t.insertHtml(text)
 #
-t.insertPlainText(text) #add text
+t.insertPlainText(text) 		#add text
 
 #clear text
 t.clear()
@@ -668,7 +692,7 @@ highlight = QtGui.QColor(128, 128, 0) #QtGui.QColor.yellow()
 baseColor = t.textColor()
 
 t.setTextColor(baseColor)
-t.append(key) #t.append(key+str(value))
+t.append(key) 					#t.append(key+str(value))
 t.setTextColor(highlight)
 t.insertPlainText(str(value))
 
@@ -738,64 +762,87 @@ self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
 'Size'#---------------------------------------------------------------------
 
 
-# get size:
-w..width = self.ui.frameGeometry().width()
-w..height = self.ui.frameGeometry().height()
-
-#for widget:
-mainWindow = QtGui.QWidget()
-width = w.frameGeometry().width()
-height = w.frameGeometry().height()
-#for screen:
-mainWindow = QtGui.QWidget()
-screenShape = QtGui.QDesktopWidget().screenGeometry()
+QtGui.QSizePolicy				#The size policy of a widget is an expression of its willingness to be resized in various ways, and affects how the widget is treated by the layout engine.
+#set
+w.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding) #policyX, policyY - Fixed, Minimum, Maximum, Preferred, Expanding, MinimumExpanding, Ignored
 
 
-# set size:
-QtCore.QSize.setWidth() 
-QtCore.QSize.setHeight()
 
-#resize
-w.resize(100,30)
-w.resize(w*2,h*2)
-w.resize(w//2,h//2)
-w.resize(width, height) #window size
+#get size:
+#.width / .height can be derived from anything that returns a QSize
+w.size()						#Returns QtCore.QSize
+w.size().width()				#Returns int - width
+w.size().height()				#Returns int - height
+w.geometry()					#Returns QtCore.QSize - geometry of the widget as it will appear when shown as a normal(not maximized or full screen) top-level widget. #Note, the widget must be first shown for this to return something other than(0,0)
+w.normalGeometry()				#Returns QtCore.QSize - geometry of the widget as it will appear when shown as a normal (not maximized or full screen) top-level widget.
+w.frameSize()					#Returns QtCore.QSize - holds the size of the widget including any window frame.
+w.frameGeometry()				#Returns QtCore.QSize - geometry of the widget relative to its parent including any window frame.
 
-#shrink the window to minimum size.
+#get recommended widget size
+w.sizeHint()
+w.sizeHint().width()
+w.sizeHint().height()
+
+#set size:
+w.resize(width, height) 		#int, int or QSize
+w.setBaseSize(width, height)	#int, int or QSize - The base size is used to calculate a proper widget size if the widget defines QtWidgets.QWidget.sizeIncrement().
+w.setFixedSize(width, height)	#int, int or QSize
+
+
+#set in one direction
+w.setFixedWidth(width)			#int or QSize
+w.setFixedHeight(height)		#int or QSize
+w.resize(w.width(), w.minimumSizeHint().height())
+
+#resize to fit content
+w.adjustSize()
+
+#set minimum size to recommended
+w.setMinimumSize(w.layout.sizeHint())
+
+#set to minimum size.
 w.resize(minimumSizeHint())
 w.setFixedSize(w.sizeHint())
 
-# If you want to only shrink in height, then you can do something like:
-w.resize(w.width(), w.minimumSizeHint().height())
 
-#automaticly resize to fit content
-w.adjustSize()
-
+#get screen size
+screenShape = QtWidgets.QDesktopWidget().screenGeometry()
 #resize to fit screen
 w.resize(w.screenShape.width(), w.screenShape.height())
 
-# get recommended widget size
-w.sizeHint
-w.setMinimumSize(w.layout.sizeHint())
 
 
-ui.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)		
-
-
-# overload sizeHint:
-def sizeHint(self):
-	return QtCore.QSize(15, 15)
-
-
-
-w.geometry()
-
-#holds the geometry of the widget as it will appear when shown as a normal(not maximized or full screen) top-level widget.
-#Note, the widget must be first shown for this to return something other than(0,0)
-w.normalGeometry(). 
+#area
+QtCore.QSize					#defines the size of a two-dimensional object using integer point precision.
+#get
+QtCore.QSize.width() 			#Returns int - width.
+QtCore.QSize.height()			#Returns int - height.
+#set
+QtCore.QSize.setWidth(int) 		#Sets the height.	
+QtCore.QSize.setHeight(int)		#Sets the width.
+QtCore.QSize.scale()
 
 
 
+QtCore.QRect 					#holds the internal geometry of the widget excluding any window frame.
+#get
+w.rect().size()					#Returns QSize - size of the rectangle.
+w.rect().size().width()			#Returns int - rect width
+w.rect().size().height()		#Returns int - rect height
+w.rect().width() 				#Returns int - the width of the rectangle.
+w.rect().height() 				#Returns int - the height of the rectangle.
+w.rect().adjusted(x1,y1,x2,y2) 	#Returns QRect - new rectangle with x1, y1, x2, y2 added respectively to the existing coordinates of this rectangle.
+w.rect().united(rect)			#Returns QRect - the bounding rectangle of this rectangle and the given rectangle. ex. combinedRect = rect1.united(rect2)
+w.rect()intersect(rect) 		#Returns QRect - Use intersected(rectangle) instead.
+
+#set
+w.rect().setSize()				#QSize - Sets the size of the rectangle to the given size . The top-left corner is not moved.
+w.rect().setWidth(w)			#int - Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
+w.rect().setHeight(h)			#int - Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
+w.rect()setWidth(w) 			#Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
+w.rect()setHeight(h) 			#Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
+w.rect().adjust(x1,y1,x2,y2) 	#Adds x1, y1, x2, y2 respectively to the existing coordinates of the rectangle.
+w.rect()unite(rect)				#Use united(rectangle) instead. rect1.unite(rect2)
 
 
 
@@ -814,76 +861,79 @@ w.normalGeometry().
 
 'Position'#-----------------------------------------------------------------
 
-# Position
-.offsetPos
-w.offsetPos(offset)
+
+QtCore.QPoint()					#Returns QPoint - (int, int) if no args given; Constructs a null point, i.e. with coordinates (0, 0)
+QtCore.QPoint.setX()
+QtCore.QPoint.setY()
 
 
-#move
-w.move(<QPoint>)
-w.move(15,15)
-w.move.y(15)
+#get
+w.pos()							#Returns QPoint
+w.pos().y()						#Returns int
+w.mapFromParent(point)			#Returns QPoint - Parent coordinate to child coordinate.
+w.mapToParent(point)			#Returns QPoint - Child coordinate to parent coordinate.
+w.mapFromGlobal(point)			#Returns QPoint - Screen coordinate to widget coordinate.
+w.mapToGlobal(point)			#Returns QPoint - Widget coordinate to screen coordinate. ex. mapToGlobal(QPoint(0,0)) returns: the global coordinates of the widget's top-left pixel.
+w.mapFrom(widget, point)		#Returns QPoint - Widget coordinate from the coordinate system of parent, to this widget’s coordinate system. Must be a parent of the calling widget.
+w.mapTo(widget, point)			#Returns QPoint - Widget coordinate to the coordinate system of parent. Must be a parent of the calling widget.
+
+w.parentWidget().rect().center().x() #Returns int - x coord of parents center
 
 
-#center of widget
-w.rect().center()
-#relative to its parent
-w.mapToParent(c)
-#relative to the screen
-w.mapToGlobal(c)
+#set
+w.move(QPoint)
+w.move(x, y)
+w.move.y(int)
 
 
-#x coord of parents center
-w.parentWidget().rect().center().x()
+
 
 #QPoint
-point.isNull() #Returns true if both the x and y coordinates are set to 0
-point.manhattanLength() #Returns the sum of the absolute values of QPoint.x() & QPoint.y()
-point.setX(x)
-point.setY(y)
+#get
+point.x() 						#Returns the x coordinate of this point.
+point.y() 						#Returns the y coordinate of this point.
+point.isNull() 					#Returns Bool - True if both the x and y coordinates are set to 0
+point.manhattanLength() 		#Returns QPoint - the sum of the absolute values of QPoint.x() & QPoint.y()
+#set
+point.setX(int)
+point.setY(int)
 point.toTuple()
-point.x() #Returns the x coordinate of this point.
-point.y() #Returns the y coordinate of this point.
 
 
-#QRect
-rect.x() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to left()
-rect.y() #Returns the y-coordinate of the rectangle’s top edge. Equivalent to top()
-rect.setX(x) #Sets the left edge of the rectangle to the given x coordinate. May change the width, but will never change the right edge of the rectangle.
-rect.setY(y) #Sets the top edge of the rectangle to the given y coordinate. May change the height, but will never change the bottom edge of the rectangle.
-rect.size() #Returns the size of the rectangle.
-rect.setSize(s) #Sets the size of the rectangle to the given size . The top-left corner is not moved.
-rect.width() #Returns the width of the rectangle.
-rect.setWidth(w) #Sets the width of the rectangle to the given width . The right edge is changed, but not the left one.
-rect.height() #Returns the height of the rectangle.
-rect.setHeight(h) #Sets the height of the rectangle to the given height . The bottom edge is changed, but not the top one.
-rect.top() #Returns the y-coordinate of the rectangle’s top edge.
-rect.topLeft() #Returns the position of the rectangle’s top-left corner.
-rect.topRight() #Returns the position of the rectangle’s top-right corner.
-rect.bottom() #Returns the y-coordinate of the rectangle’s bottom edge.
-rect.bottomLeft() #Returns the position of the rectangle’s bottom-left corner.
-rect.bottomRight() #Returns the position of the rectangle’s bottom-right corner.
-rect.left() #Returns the x-coordinate of the rectangle’s left edge. Equivalent to x().
-rect.right() #Returns the x-coordinate of the rectangle’s right edge.
-rect.center() #Returns the center point of the rectangle.
-rect.getRect() #Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
-rect.setRect(x, y, w, h) ##Sets the coordinates of the rectangle’s top-left corner to(x , y ), and its size to the given width and height .
-rect.getCoords() #Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
-rect.setCoords(x1, y1, x2, y2) #Sets the coordinates of the rectangle’s top-left corner to(x1 , y1 ), and the coordinates of its bottom-right corner to(x2 , y2 ).
-rect.contains(x, y) #or QPoint. Returns true if the point(x , y ) is inside or on the edge of the rectangle
-rect.intersects() #Returns true if this rectangle intersects with the given rectangle.
-rect.intersect() #Use intersected(rectangle ) instead.
-rect.intersected() #Returns the intersection of this rectangle and the given rectangle . Note that r.intersected(s) is equivalent to r & s .
-rect.adjust(x1, y1, x2, y2) #Adds dx1 , dy1 , dx2 and dy2 respectively to the existing coordinates of the rectangle.
-rect.translate(dx, dy) #Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
-rect.moveTo(x, t) #Moves the rectangle, leaving the top-left corner at the given position(x , y ). The rectangle’s size is unchanged.
-rect.isEmpty() #Returns true if the rectangle is empty.
+
+#QRect rect()
+#get
+rect.getRect() 					#Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
+rect.x() 						#Returns int - the x-coordinate of the rectangle’s left edge. Equivalent to left()
+rect.y() 						#Returns int - the y-coordinate of the rectangle’s top edge. Equivalent to top()
+rect.top() 						#Returns int - the y-coordinate of the rectangle’s top edge.
+rect.topLeft()#.x()				#Returns QPoint - the position of the rectangle’s top-left corner.
+rect.topRight()#.y()			#Returns QPoint - the position of the rectangle’s top-right corner.
+rect.bottom() 					#Returns int - the y-coordinate of the rectangle’s bottom edge.
+rect.bottomLeft()#.x()			#Returns QPoint - the position of the rectangle’s bottom-left corner.
+rect.bottomRight()#.y()			#Returns QPoint - the position of the rectangle’s bottom-right corner.
+rect.left() 					#Returns int - the x-coordinate of the rectangle’s left edge. Equivalent to x().
+rect.right() 					#Returns int - the x-coordinate of the rectangle’s right edge.
+rect.center()#.x()				#Returns QPoint - the center point of the rectangle.
+rect.getCoords() 				#Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
+rect.contains(x, y) #or QPoint	#Returns Bool - True if the point(x , y ) is inside or on the edge of the rectangle
+rect.united(r)					#Returns QRect - bounding rectangle of this rectangle and the given rectangle .
+rect.intersects() 				#Returns Bool - True if this rectangle intersects with the given rectangle.
+rect.intersected() 				#Returns QRect - the intersection of this rectangle and the given rectangle. rect1.intersected(rect2) is equivalent to rect1 & rect2.
+rect.isEmpty()					#Returns Bool - True if the rectangle is empty.
+#set
+rect.setRect(x, y, w, h) 		#Sets the coordinates of the rectangle’s top-left corner to(x , y ), and its size to the given width and height .
+rect.setX(x) 					#Sets the left edge of the rectangle to the given x coordinate. May change the width, but will never change the right edge of the rectangle.
+rect.setY(y) 					#Sets the top edge of the rectangle to the given y coordinate. May change the height, but will never change the bottom edge of the rectangle.
+rect.setCoords(x1, y1, x2, y2) 	#Sets the coordinates of the rectangle’s top-left corner to(x1 , y1 ), and the coordinates of its bottom-right corner to(x2 , y2 ).
+rect.translate(dx, dy) 			#Moves the rectangle dx along the x axis and dy along the y axis, relative to the current position. Positive values move the rectangle to the right and down.
+rect.moveTo(x, t) 				#Moves the rectangle, leaving the top-left corner at the given position(x , y). The rectangle’s size is unchanged.
 
 
 
 
 #event position
-event.pos() #relative position to mouseEvent
+event.pos() 					#relative position to mouseEvent
 event.x()
 event.y()
 event.globalPos()
@@ -895,25 +945,19 @@ event.setLocalPos(localPosition)
 event.windowPos()
 
 
-#cursor
-QtGui.QCursor.pos() #global position
+#cursor pos
+QtGui.QCursor.pos() 			#global position
 
-w.pos()
-w.mapFromGlobal(point)
-w.mapFrom(widget, point)
-w.mapTo(widget, point)
-w.mapFromParent(point)
-w.mapToParent(point)
+
 
 #check if cursor is inside widget
 w.rect().contains(w.mapFromGlobal(QtGui.QCursor.pos()))
 w.geometry().contains(event.pos())
-w.underMouse() #Returns True if the widget is under the mouse cursor; else False.
-
+w.underMouse() 					#Returns True if the widget is under the mouse cursor; else False.
 
 
 #
-w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
+w.hitButton(pos)				#Returns: bool. Returns true if pos is inside the clickable button rectangle; otherwise returns false.
 
 
 
@@ -933,19 +977,76 @@ w.hitButton(pos) #Returns: bool. Returns true if pos is inside the clickable but
 'Events'#--------------------------------------------------------------------
 
 
-w.setAttribute(QtCore.Qt.WA_NoMousePropagation) #event will not be propagated further up the parent widget chain.
+#custom event type
+#Registers and returns a custom event type. The hint provided will be used if it is available, 
+#otherwise it will return a value between QEvent.User and QEvent.MaxUser that has not yet been registered. 
+#The hint is ignored if its value is not between QEvent.User and QEvent.MaxUser .
+QtCore.QEvent.registerEventType([hint=-1]) #Returns: int Parameters: hint=int
+#
+QtWidgets.QApplication.notify(widget, event)
 
+
+#QtWidgets.QApplication / QtCore.QCoreApplication
+#get
+QtWidgets.QApplication.hasPendingEvents() #Returns Bool - True if there are pending events. Pending events can be either from the window system or posted events using QtCore.QCoreApplication.postEvent().
+QtWidgets.QApplication.postEvent(widget, event) #Adds the event, with the widget as the receiver of the event, to an event queue, and returns immediately.
+ex.
+focusEvent = QtGui.QFocusEvent(QtCore.QEvent.FocusIn, QtCore.Qt.OtherFocusReason)
+QtWidgets.QApplication.postEvent(self.lineEdit(), focusEvent)
+#set
+QtWidgets.QApplication.sendEvent (widget, event) #Returns Bool(from the event hander) - Sends event event directly to receiver widget, using the PySide.QtCore.QCoreApplication.notify() function. Returns the value that was returned from the event handler.
+ex.
+event = QtCore.QEvent(QtCore.QEvent.Leave)
+QtWidgets.QApplication.sendEvent(widget, event)
+
+
+
+event.__class__
+event.__class__.__name__
+
+event.type()
+QtCore.QEvent.show 				#QtCore.QEvent.Type.Show
+QtCore.QEvent.Hide
+QtCore.QEvent.Enter 			#event = QtGui.QEnterEvent(pos, pos, pos)
+QtCore.QEvent.Leave
+QtCore.QEvent.MouseButtonPress
+QtCore.QEvent.MouseMove
+QtCore.QEvent.HoverEnter
+QtCore.QEvent.HoverLeave
+QtCore.QEvent.Drag
+QtCore.QEvent.Drop
+QtCore.QEvent.key
+QtCore.QEvent.KeyPress
 
 QtGui.QKeyEvent
-QtGui.QMouseEvent #supports mouse button presses, double-clicks, moves, and other related operations.
+QtGui.QMouseEvent 				#supports mouse button presses, double-clicks, moves, and other related operations.
 QtGui.QWheelEvent
-QtGui.QInputEvent #base class for events that describe user input.
-QtGui.QActionEvent #provides an event that is generated when a QAction is added, removed, or changed.
-QtGui.QContextMenuEvent #contains parameters that describe a context menu event.
-QtGui.QWindowStateChangeEvent #provides the window state before a window state change.
-QtGui.QExposeEvent #contains event parameters for expose events.
-QtGui.QFileOpenEvent #provides an event that will be sent when there is a request to open a file or a URL. 
-QtGui.QResizeEvent #adds size(), oldSize() to enable widgets to discover how their dimensions have been changed.
+QtGui.QInputEvent 				#base class for events that describe user input.
+QtGui.QActionEvent 				#provides an event that is generated when a QAction is added, removed, or changed.
+QtGui.QContextMenuEvent 		#contains parameters that describe a context menu event.
+QtGui.QWindowStateChangeEvent 	#provides the window state before a window state change.
+QtGui.QExposeEvent 				#contains event parameters for expose events.
+QtGui.QFileOpenEvent 			#provides an event that will be sent when there is a request to open a file or a URL. 
+QtGui.QResizeEvent 				#adds size(), oldSize() to enable widgets to discover how their dimensions have been changed.
+QtGui.QFocusEvent 				#PySide.QtGui.QFocusEvent.gotFocus() #Return type: PySide.QtCore.bool
+
+
+event.button()
+event.buttons()
+QtCore.Qt.NoButton
+QtCore.Qt.LeftButton
+QtCore.Qt.RightButton
+
+event.key()
+QtCore.Qt.Key_F12
+
+
+QtCore.QEvent.accept() 			#indicates whether the receiver wants the event.
+QtCore.QEvent.isAccepted() 		#returns bool
+QtCore.QEvent.setAccepted(True) #bool
+QtCore.QEvent.ignore() 			#event is propagated up the parent widget chain until a widget accepts it. (or an event filter consumes it)
+QtCore.QEvent.acceptProposedAction()
+
 
 
 event.source()
@@ -956,6 +1057,23 @@ event.flags()
 
 actionEvent(event)
 changeEvent(event)
+
+#Focus
+focusInEvent(event)
+.focusInEvent 					#w.focusInEvent = self.max_b010()
+
+focusOutEvent(event)
+.focusOutEvent 					#w.focusOutEvent(MaxPlus.CUI.EnableAccelerators())
+focusNextPrevChild(next)
+
+
+#show
+showEvent(event)				#self.showEvent(offsetPos(self, offset))
+
+#enter
+enterEvent(event)
+.enterEvent
+.leaveEvent
 
 
 #move
@@ -990,39 +1108,6 @@ keyPressEvent(event)
 keyReleaseEvent(event)
 
 
-#Focus
-focusInEvent(event)
-focusNextPrevChild(next)
-focusOutEvent(event)
-
-QtGui.QFocusEvent #PySide.QtGui.QFocusEvent.gotFocus() #Return type: PySide.QtCore.bool
-
-.focusInEvent #w.focusInEvent()
-.focusOutEvent #w.focusOutEvent
-
-w.focusInEvent = self.max_b010()
-w.focusOutEvent(MaxPlus.CUI.EnableAccelerators())
-
-
-setVisible(visible)
-
-showEvent(event)
-self.showEvent(offsetPos(self, offset))
-
-
-QtCore.QEvent.HoverMove
-
-ex.
-if event.type() == QtCore.QEvent.HoverEnter:
-ex.
-if event.type() == QtCore.QEvent.Type.Enter:
-
-
-enterEvent(event)
-.enterEvent
-.leaveEvent
-
-
 hideEvent(event)
 
 leaveEvent(event)
@@ -1030,6 +1115,7 @@ leaveEvent(event)
 closeEvent(event)
 
 
+#drag and drop
 QtGui.QDragEnterEvent(pos, actions, data, buttons, modifiers)
 # Parameters:
 # pos – PySide.QtCore.QPoint
@@ -1053,10 +1139,10 @@ drag.setMimeData(mimeData)
 #QDrag(placed in the 'drag' widget's mouseMoveEvent)
 drag = QtGui.QDrag(self)
 drag.setMimeData(QtCore.QMimeData())
-drag.setHotSpot(event.pos()) # drag.setHotSpot(event.pos() - self.rect().topLeft())
+drag.setHotSpot(event.pos())	# drag.setHotSpot(event.pos() - self.rect().topLeft())
 drag.setDragCursor(QtGui.QCursor(QtCore.Qt.CrossCursor).pixmap(), QtCore.Qt.MoveAction) #Sets the position of the hot spot relative to the top-left corner of the pixmap used to the point specified by hotspot.
 dropAction = drag.exec_(QtCore.Qt.MoveAction) #drag.start(QtCore.Qt.MoveAction)
-target = drag.target() #the widget where the drag object was dropped. (needs to be placed after drag.exec_/drag.start)
+target = drag.target() 			#the widget where the drag object was dropped. (needs to be placed after drag.exec_/drag.start)
 
 
 QtCore.Qt.MoveAction
@@ -1076,8 +1162,6 @@ tabletEvent(event)
 
 
 
-
-#custom event filter:
 
 # install event filter
 QtGui.qApp.installEventFilter(self)
@@ -1099,49 +1183,8 @@ def eventFilter(self, widget, event):
 	return Class.eventFilter(self, widget, event) #class itself.
 	return QtCore.QObject.eventFilter(self, widget, event) #inherited class.  Class(QtCore.QObject):
 	return QtWidgets.QComboBox.mouseMoveEvent(self, event) #inherited class.  Class(QtWidgets.QComboBox):
-	return super(Class, self).eventFilter(self, event) #return the event that occurred
-	return super(Class, self).eventFilter(widget, event)
-
-
-event.__class__
-event.__class__.__name__
-
-event.type()
-QtCore.QEvent.Show
-QtCore.QEvent.Hide
-QtCore.QEvent.Enter
-QtCore.QEvent.Leave
-QtCore.QEvent.MouseButtonPress
-QtCore.QEvent.MouseMove
-QtCore.QEvent.HoverEnter
-QtCore.QEvent.HoverLeave
-QtCore.QEvent.Drag
-QtCore.QEvent.Drop
-QtCore.QEvent.key
-QtCore.QEvent.KeyPress
-
-event.button()
-event.buttons()
-QtCore.Qt.NoButton
-QtCore.Qt.LeftButton
-QtCore.Qt.RightButton
-
-event.key()
-QtCore.Qt.Key_F12
-
-
-QtCore.QEvent.accept() #indicates whether the receiver wants the event.
-QtCore.QEvent.isAccepted() #returns bool
-QtCore.QEvent.setAccepted(True) #bool
-QtCore.QEvent.ignore() #event is propagated up the parent widget chain until a widget accepts it. (or an event filter consumes it)
-QtCore.QEvent.acceptProposedAction()
-
-
-
-
-
-
-
+	return super(Class, self).eventFilter(widget, event) #class or inherited class.
+	super().showPopup()
 
 
 
@@ -1167,28 +1210,7 @@ self.blockSignals(False)
 
 
 
-#custom event type:
-#Parameters: hint=int
-#Registers and returns a custom event type.
-#The hint provided will be used if it is available, 
-#otherwise it will return a value between QEvent.User and QEvent.MaxUser that has not yet been registered. 
-#The hint is ignored if its value is not between QEvent.User and QEvent.MaxUser .
-QtCore.QEvent.registerEventType([hint=-1]) #returns: int
 
-
-
-QtWidgets.QApplication.postEvent(widget, event)
-
-#Send event directly to receiver widget;
-event = QtGui.QEnterEvent(pos, pos, pos)
-QtWidgets.QApplication.sendEvent(widget, event) #Returns the value that was returned from the event handler.
-
-#
-event = QtCore.QEvent(QtCore.QEvent.Leave)
-QtWidgets.QApplication.sendEvent(widget, event)
-
-#
-QtWidgets.QApplication.notify(widget, event)
 
 
 
@@ -1218,6 +1240,20 @@ if __name__=='__main__':
 
 
 'Mouse Event'#--------------------------------------------------------------
+
+#mouse/keyboard
+w.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
+
+w.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
+w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
+w.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
+w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
+w.setAttribute(QtCore.Qt.WA_NoMousePropagation) #mouse events will not be propagated further up the parent widget chain.
+
+#get state of attribute:
+w.testAttribute(QtCore.Qt.WA_MouseTracking) #returns bool #Indicates if the widget has mouse tracking enabled.
+
+
 
 #mouse move
 event.type() == QtCore.QEvent.MouseMove
@@ -1299,8 +1335,6 @@ w.mouseReleaseEvent = QtGui.QMouseEvent(
 								QtCore.Qt.LeftButton,
 								QtCore.Qt.NoModifier)
 
-QtCore.QEvent.Type.MouseButtonRelease
-QtCore.QEvent.Type.UngrabMouse
 QtCore.QEvent.wheel 	#Mouse wheel rolled(QWheelEvent).
 
 
@@ -1314,7 +1348,7 @@ QWidget.releaseKeyBoard() #http://qt-project.org/doc/qt-5/qwidget.html#releaseKe
 QWidget.mouseGrabber() #Returns the widget that is currently grabbing the mouse input. else: None 
 QWidget.releaseMouse() #Releases the mouse grab.
 
-
+QtCore.QEvent.UngrabMouse
 
 
 
@@ -1349,18 +1383,6 @@ QtTest.QTest.mouseRelease(widget, button[, stateKey=0[, pos=QPoint()[, delay=-1]
 # delay – PySide.QtCore.int
 
 
-
-#mouse/keyboard
-w.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
-
-w.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
-w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
-w.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
-w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
-
-
-#get state of attribute:
-w.testAttribute(QtCore.Qt.WA_MouseTracking) #returns bool #Indicates if the widget has mouse tracking enabled.
 
 
 
@@ -1448,8 +1470,7 @@ def down(self):
 
 
 #repainting(key auto repeating)
-if event.isAutoRepeat():
-	return
+event.isAutoRepeat()
 
 
 
@@ -1567,7 +1588,16 @@ painter.fillRect(self.rect(), QtGui.QColor(80, 80, 255, 128))
 
 
 'Signals'#------------------------------------------------------------------
-#findsignals
+
+
+
+#The Signal class provides a way to declare and connect Qt signals in a pythonic way.
+signal = QtCore.Signal(bool)
+#
+signal.connect(widget)			#Create a connection between this signal and a receiver, the receiver can be a Python callable, a Slot or a Signal.
+signal.disconnect(widget)		#Disconnect this signal from a receiver, the receiver can be a Python callable, a Slot or a Signal.
+signal.emit(*args)				#args is the arguments to pass to any connected slots, if any.
+
 
 
 # assign signal a value. must be defined as class variable(before class init)
@@ -1596,9 +1626,9 @@ HoverArea(pushButton).mouseHover.connect(method)
 
 
 
-#call function with argument from signal
+
 #using lambda function
-w.clicked.connect(lambda: self.overlay.setVisible(False) if self.overlay.isVisible() else self.overlay.setVisible(True))
+w.clicked.connect(lambda: overlay.setVisible(not overlay.isVisible()))
 #using functools.partial
 #from functools import partial
 w.clicked.connect(partial(function, arg))
@@ -1662,8 +1692,8 @@ def main():
 
 #block a signal
 ex.
-cmb.blockSignals(True)
-cmb.blockSignals(False)
+w.blockSignals(True)
+w.blockSignals(False)
 
 
 
@@ -1795,7 +1825,7 @@ button = QtWidgets.QPushButton('ButtonName', parent=widget)
 
 
 #get child objects:
-parent.children() #returns [QtCore.Qbject at 0x10xxxxxx]
+parent.children() 				#returns [QtCore.Qbject at 0x10xxxxxx]
 #
 centralwidget.children()
 #get specific
@@ -1843,6 +1873,8 @@ _GCProtector.widgets.append(applicationWindow) #append to garbage collector
 
 _timer = QtCore.QTimer()
 
+#call a slot after a specified interval:
+QtCore.QTimer.singleShot(0, lambda: self.setFocus()) #QTimer with a timeout of 0 will time out as soon as all the events in the window system's event queue have been processed.
 
 
 #set interval
@@ -1850,7 +1882,7 @@ timer = QtCore.QTimer()
 timer.setInterval(1000.0 / 25)  #25 times per second
 timer.timeout.connect(<function>)
 timer.start()
-# timer.stop()  # Call this to stop printing
+# timer.stop()  				#Call this to stop printing
 
 
 
@@ -2176,7 +2208,7 @@ QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, tr
 
 
 ex.
-w.setStyleSheet("") ##set style sheet to default. also(styleSheet())
+w.setStyleSheet("") 			#set style sheet to default. also(styleSheet())
 self.setStyleSheet("background: transparent;") #doesn't need the style sheet itself but child widgets contained in the widget that have autoFillBackground()==True by default should have it unset or should have set QtCore.Qt.WA_TranslucentBackground or have a transparent background color set by a style sheet which is then inherited
 pushButton.setStyleSheet("background-color: transparent") #white, black, grey, magenta, etc
 setStyleSheet("background-color: rgba(227, 227, 227, 2)") #rgb + alpha. alpha value of 1 sometimes doesnt work.
@@ -2193,7 +2225,7 @@ ex.
 
 
 
-w.setStyleSheet("") ##set style sheet to default. also(styleSheet())
+w.setStyleSheet("") 			#set style sheet to default. also(styleSheet())
 
 
 w.setStyleSheet('''QPushButton {

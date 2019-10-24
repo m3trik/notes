@@ -86,8 +86,37 @@ eg. round(1.1111, 2) #returns 1.11
 
 
 
-#distance between two numbers:
+#difference (distance) between two numbers:
 eg. abs(1-2) #returns 1
+#appropriately-signed distance between any two numbers. using math (import math)
+def distance(a, b):
+	if (a == b):
+		return 0
+	elif (a < 0) and (b < 0) or (a > 0) and (b > 0):
+		if (a < b):
+			return (abs(abs(a) - abs(b)))
+		else:
+			return -(abs(abs(a) - abs(b)))
+	else:
+		return math.copysign((abs(a) + abs(b)),b)
+#alt:
+def distance(a, b):
+	return (max(a, b) - min(a, b)) * (-1 if a > b else 1)
+
+
+#differnce (distance) between elements in an array
+#using numpy (import numpy as np)
+np.diff([1,5,6,8])	#returns: array([4, 1, 2])
+
+
+#distance between two points
+dist = math.hypot(x2 - x1, y2 - y1)
+#alt
+dist = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+#
+p1 = [4, 0]
+p2 = [6, 6]
+distance = math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
 
 #move decimal place
@@ -237,15 +266,15 @@ finally:
 
 #try with multiple statements:
 for code in (
-    lambda: a / b,
-    lambda: a / (b + 1),
-    lambda: a / (b + 2),
-    ):
-    try: print(code())
-    except Exception as ev: continue
-    break
+	lambda: a / b,
+	lambda: a / (b + 1),
+	lambda: a / (b + 2),
+	):
+	try: print(code())
+	except Exception as ev: continue
+	break
 else:
-    print('it failed: %s' % ev)
+	print('it failed: %s' % ev)
 
 #using and/or
 	mod = obj.modifiers['TurboSmooth'] or obj.modifiers['TurboSmooth_Pro'] or obj.modifiers['OpenSubDiv']
@@ -274,73 +303,53 @@ eg. if [x for x in ['0','2','1'] if x=='1']:
 
 
 
-# switch/ case style in python
-# // C Language version of a simple 'switch/case'.
-switch( key ) 
-{
-		case 'a' :
-				result = 1;
-		case 'b' :
-				result = 2;
-				break;
-		default :
-				result = -1;
-}
-# You can even assign multiple variables by using tuples:
-choices = {'a': (1, 2, 3), 'b': (4, 5, 6)}
-(result1, result2, result3) = choices.get(key, ('default1', 'default2', 'default3'))
-
-
-
-# alternative switch/ case:
+# switch/ case:
 # The following example is pretty much the exact use-case of a dictionary,
 # but is included for its simplicity. Note that you can include statements
 # in each suite.
 v = 'ten'
 for case in switch(v):
-		if case('one'):
-				print 1
-		if case('two'):
-				print 2
-		if case('ten'):
-				print 10
-		if case('eleven'):
-				print 11
-		if case(): # default, could also just omit condition or 'if True'
-				print 'something else!'
-				# No need to break here, it'll stop anyway
+	if case('one'):
+		print 1
+	if case('two'):
+		print 2
+	if case('ten'):
+		print 10
+	if case('eleven'):
+		print 11
+	if case(): # default, could also just omit condition or 'if True'
+		print 'default'
 
-# break is used here to look as much like the real thing as possible, but
-# elif is generally just as good and more concise.
 
-# Empty suites are considered syntax errors, so intentional fall-throughs
-# should contain 'pass'
-c = 'z'
-		if case('a'): pass # only necessary if the rest of the suite is empty
-		if case('b'): pass
-		if case('y'): pass
-		if case('z'):
-		if case('A'): pass
-		# ...
-		if case('Z'):
-
-# As suggested by Pierre Quentel, you can even expand upon the
-# functionality of the classic 'case' statement by matching multiple
-# cases in a single shot. This greatly benefits operations such as the
-# uppercase/lowercase example above:
-import string
+# matching multiple cases in a single shot. (import string)
 c = 'A'
 for case in switch(c):
-		if case(*string.lowercase): # note the * for unpacking as arguments
-				print 'c is lowercase!'
-		if case(*string.uppercase):
-				print 'c is uppercase!'
-				break
-		if case('!', '?', '.'): # normal argument passing style also applies
-				print 'c is a sentence terminator!'
-				break
-		if case(): # default
-				print 'I dunno what c was!'
+	if case(*string.lowercase): # note the * for unpacking as arguments
+		print 'lowercase'
+	if case(*string.uppercase):
+		print 'uppercase'
+		break
+	if case('!', '?', '.'): # normal argument passing style also applies
+		print 'terminator'
+		break
+	if case(): # default
+		print 'default'
+
+
+#switch/case using a dict
+def dispatch_dict(operator, x, y):
+	return {
+		'add': lambda: x + y,
+		'sub': lambda: x - y,
+		'mul': lambda: x * y,
+		'div': lambda: x / y,
+	}.get(operator, lambda: None)() #default value of None
+
+#dispatch_dict('mul', 2, 8) Returns: 16
+#dispatch_dict('unknown', 2, 8) Returns: None
+
+
+
 
 
 
@@ -842,7 +851,13 @@ eg. n = re.search(r'\d+$', 'string08')
 
 
 
+
+
+
+
 'Lists__(arrays)____________________________________________________________________________'
+
+
 
 # create an empty list.
 list_=[]          
@@ -853,12 +868,10 @@ list_=list()
 list_ = ['red', 'blue', 'green', 3.5, 3]
 
 
-
-
 # populate a list within a given range:
 eg. list(range(9)) #returns [0, 1, 2, 3, 4, 5, 6, 7, 8]
 #create a list within a set range: range(start, stop, step) 
-eg. list_ = list(range(3,8,2)) #creates list with a 2 unit interval. in this case [3, 5, 7]
+eg. list(range(3,8,2)) #creates list with a 2 unit interval. in this case [3, 5, 7]
 #between two values:
 eg. list(range(140, 151)) #140-150 ie. [140, 141, 142,..]
 #between two values with increment amount:
@@ -881,16 +894,15 @@ list_[:] = list_ #or ex. [-2:] for last two elements
 
 
 
-
-#check if object is a list:
-if isinstance(obj, list):
-
-
 #length of list (or dictionary)
 eg. len(list_)
 #length of first second and last index combined
 eg. len([0,1,-1])  
 
+
+
+#check if object is a list:
+isinstance(obj, list):
 
 
 #check Membership:
@@ -900,9 +912,9 @@ eg. 3 in [1, 2, 3] #results in True
 eg. if index < len(List_)
 #using try/except
 eg. try:
-    	list_[1]
-	except IndexError:
-    	print "Index doesn't exist!"
+		list_[1]
+	except IndexError, e:
+		print e #'Index doesn't exist'
 
 
 
@@ -955,7 +967,6 @@ eg. list_[-1] if list_ else None
 eg. list.index('x') #returns index of element
 
 #get the Total number of occurrences
-.count()
 (x, mylist.count(x)) for x in set(mylist)
 
 
@@ -2038,10 +2049,10 @@ obj.issubclass(potentialSubcalss, Class) # is class subclass of [bool]
 
 #number of instances:
 class Obj:
-    _counter = 0
-    def __init__(self):
-        Obj._counter += 1
-        self.id = Obj._counter
+	_counter = 0
+	def __init__(self):
+		Obj._counter += 1
+		self.id = Obj._counter
 #using itertools:
 from itertools import count
 
@@ -2049,13 +2060,13 @@ class Obj(object):
   _ids = count(0)
 
   def __init__(self):
-    self.id = next(self._ids)
+	self.id = next(self._ids)
 #using a generator:
 def get_next_id():
-    curr_id = 1
-    while True:
-        yield curr_id
-        curr_id += 1
+	curr_id = 1
+	while True:
+		yield curr_id
+		curr_id += 1
 
 
 
@@ -2123,11 +2134,11 @@ instance = getattr(module, 'ClassName')()
 
 #bypass/override init method when calling a class
 def skip_init(cls):
-    actual_init = cls.__init__
-    cls.__init__ = lambda *args, **kwargs: None
-    instance = cls()
-    cls.__init__ = actual_init
-    return instance
+	actual_init = cls.__init__
+	cls.__init__ = lambda *args, **kwargs: None
+	instance = cls()
+	cls.__init__ = actual_init
+	return instance
 #use
 # a = skip_init(Class)
 # a.myfunction()
@@ -2380,50 +2391,75 @@ __repr__            debugging output. generate output which can be read by the i
 #Perform “rich comparisons” between a and b
 #https://docs.python.org/2/library/operator.html
 
-Ordering              operator.lt(a, b)           #equivalent to a < b
-Ordering              operator.le(a, b)           #equivalent to a <= b
-Equality              operator.eq(a, b)           #equivalent to a == b
-Difference            operator.ne(a, b)           #equivalent to a != b
-Ordering              operator.ge(a, b)           #equivalent to a >= b
-Ordering              operator.gt(a, b)           #equivalent to a > b
-
-Bitwise And           operator.and_(a, b)         #Return a + b, for a and b numbers    
-Bitwise Or            operator.or_(a, b)          #Return the bitwise or of a and b
-Bitwise Exclusive Or  operator.xor(a, b)          #Return the bitwise exclusive or of a and b
-Bitwise Inversion     operator.invert(obj)        #Return the bitwise inverse of the number obj  
-Negation (Logical)    operator.not_(obj)          #Return the outcome of not obj     
-Truth Test            operator.truth(obj)         #Return True if obj is true, and False otherwise
-Identity              operator.is_(a, b)          #Return a is b. Tests object identity
-Identity              operator.is_not             #Return a is not b. Tests object identity
-
-Addition              operator.add(a, b)          #Return a + b, for a and b numbers
-Subtraction           operator.sub(a, b)          #Return a - b
-Multiplication        operator.mul(a, b)          #Return a * b, for a and b numbers
-Division              operator.div(a, b)          #Return a / b
-Division              operator.floordiv(a, b)     #Return a // b
-Exponentiation        operator.pow(a, b)          #Return a ** b
-Absolute Value        operator.abs(obj)           #Return the absolute value of obj
-Modulus               operator.mod(a, b)          #Return a % b
-
-Negation (Arithmetic) operator.neg(obj)           #Return obj negated (-obj)
-Positive              operator.pos(obj)           #Return obj positive (+obj)
-
-Left Shift            operator.lshift(a, b)       #Return a shifted left by b
-Right Shift           operator.rshift(a, b)       #Return a shifted right by b
-
-Number of Occurrences operator.countOf(a, b)      #Return the number of occurrences of b in a
-Containment Test      operator.contains(a, b)     #Return the outcome of the test b in a
-Indexing              operator.index(a)           #Return the index of the first of occurrence of b in a
-Indexing              operator.indexOf(a, b)      #Return the index of the first of occurrence of b in a
-Indexing              operator.getitem(a, b)      #Return the value of a at index b
-Indexed Assignment    operator.setitem(a, b, c)   #Set the value of a at index b to c
-Indexed Deletion      operator.delitem(a, b)      #Remove the value of a at index b
-Slicing               .getitem(seq, slice(i, j))          #Return seq[i:j]
-Slice Assignment      .setitem(seq, slice(i, j), values)  #Return seq[i:j] = values
-Slice Deletion        .delitem(seq, slice(i, j))          #Delete seq[i:j]
-
-Concatenation         operator.concat(a, b)       #Return a + b for a and b sequences
-String Formatting     mod(s, obj)                 #Return s % obj
+# Ordering
+operator.lt(a, b)           #equivalent to a < b
+operator.le(a, b)           #equivalent to a <= b
+operator.ge(a, b)           #equivalent to a >= b
+operator.gt(a, b)           #equivalent to a > b
+# Equality
+operator.eq(a, b)           #equivalent to a == b
+# Difference
+operator.ne(a, b)           #equivalent to a != b
+# Bitwise And
+operator.and_(a, b)         #Return a + b, for a and b numbers    
+# Bitwise Or
+operator.or_(a, b)          #Return the bitwise or of a and b
+#Exclusive Or
+operator.xor(a, b)          #Return the bitwise exclusive or of a and b
+#Bitwise Inversion
+operator.invert(obj)        #Return the bitwise inverse of the number obj  
+# Negation (Logical)
+operator.not_(obj)          #Return the outcome of not obj     
+# Truth Test
+operator.truth(obj)         #Return True if obj is true, and False otherwise
+# Identity
+operator.is_(a, b)          #Return a is b. Tests object identity
+operator.is_not             #Return a is not b. Tests object identity
+# Addition
+operator.add(a, b)          #Return a + b, for a and b numbers
+# Subtraction
+operator.sub(a, b)          #Return a - b
+# Multiplication
+operator.mul(a, b)          #Return a * b, for a and b numbers
+# Division
+operator.div(a, b)          #Return a / b
+operator.floordiv(a, b)     #Return a // b
+# Exponentiation
+operator.pow(a, b)          #Return a ** b
+# Absolute Value
+operator.abs(obj)           #Return the absolute value of obj
+# Modulus
+operator.mod(a, b)          #Return a % b
+# Negation (Arithmetic)
+operator.neg(obj)           #Return obj negated (-obj)
+# Positive
+operator.pos(obj)           #Return obj positive (+obj)
+# Left Shift
+operator.lshift(a, b)       #Return a shifted left by b
+# Right Shift
+operator.rshift(a, b)       #Return a shifted right by b
+# Number of Occurrences
+operator.countOf(a, b)      #Return the number of occurrences of b in a
+# Containment Test
+operator.contains(a, b)     #Return the outcome of the test b in a
+# Indexing
+operator.index(a)           #Return the index of the first of occurrence of b in a
+operator.indexOf(a, b)      #Return the index of the first of occurrence of b in a
+operator.getitem(a, b)      #Return the value of a at index b
+#Indexed Assignment
+operator.setitem(a, b, c)   #Set the value of a at index b to c
+#Indexed Deletion
+operator.delitem(a, b)      #Remove the value of a at index b
+# Slicing
+.getitem(seq, slice(i, j))          #Return seq[i:j]
+#Slice Assignment
+.setitem(seq, slice(i, j), values)  #Return seq[i:j] = values
+#Slice Deletion
+.delitem(seq, slice(i, j))          #Delete seq[i:j]
+# Concatenation
+operator.concat(a, b)       #Return a + b for a and b sequences
+# String Formatting
+mod(s, obj)                 #Return s % obj
 
 
 
@@ -2905,6 +2941,7 @@ eg. max_customTools_main = imp.load_source('max_customTools_main', os.path.expan
 # importing a module. kw: import module
 eg. moduleName.variable  #to access that variable`s functions and values
 
+
 #single
 eg. from module import method
 eg. import method from module
@@ -2918,6 +2955,10 @@ eg. from module import method1 as var1#, method2 as var2
 eg. from module import * #import all
 eg. from module.classid import *
 
+
+# from string
+#using eval:
+eval("from %s%s import QtCore, QtGui' % ('Python', 'Qt')")
 
 
 #using importlib (import importlib)
@@ -2985,14 +3026,36 @@ eg. del sys.modules['tk_slots_maya_edit']
 
 'Packages___________________________________________________________________________________'
 
+
 # pip install
 eg. python -m install pip
-eg. python -m pip install --upgrade pip
+eg. python -m pip install --upgrade pip #windows env variable.
+eg. C:/python -m pip install --upgrade pip #explicit dir
 eg. python -m pip #install, uninstall, download, list, show, check, config, search, wheel, version, 
 # uninstall
 eg. pip uninstall PySide2
 # version, location, dependancies 
 eg. pip show PySide2
+
+
+
+
+
+
+
+
+
+
+
+
+'Encoding___________________________________________________________________________________'
+
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+
 
 
 
@@ -3028,6 +3091,22 @@ print t1-t0
 % python -mtimeit  'function'
 
 
+
+
+
+
+
+
+'Processes__________________________________________________________________________________'
+
+
+
+#kill system process (import os, psutil)
+pid = os.getpid()
+parent = psutil.Process(pid)
+for child in parent.children(recursive=True):
+	child.kill()
+parent.kill()
 
 
 
