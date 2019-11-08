@@ -764,7 +764,8 @@ self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
 
 QtGui.QSizePolicy				#The size policy of a widget is an expression of its willingness to be resized in various ways, and affects how the widget is treated by the layout engine.
 #set
-w.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding) #policyX, policyY - Fixed, Minimum, Maximum, Preferred, Expanding, MinimumExpanding, Ignored
+#Fixed, Minimum, Maximum, Preferred, Expanding, MinimumExpanding, Ignored
+w.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding) #policyX, policyY
 
 
 
@@ -2193,6 +2194,10 @@ w.fillRect(rectangle, background())
 # style
 w.setStyle(QtWidgets.QStyleFactory.create("plastique"))
 
+ex. #setting styles from a comboBox
+list_ = QtGui.QStyleFactory.keys() #get styles from QStyleFactory
+style = cmb.findText(QtGui.qApp.style().objectName(), QtCore.Qt.MatchFixedString)
+QtGui.qApp.setStyle(style)
 
 
 # styleSheet

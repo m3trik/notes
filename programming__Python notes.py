@@ -547,7 +547,7 @@ eg. float('6.66')
 #convert string '0' to int 0: (useful when string is unknown but may be 0)
 eg. int('0' or 0) #returns 0  #int('0') returns None.
 #check if string is an int
-eg. str.isdigit('23.4') #Returns: False
+eg. '23.4'.isdigit() #Returns: False
 
 
 
@@ -1665,41 +1665,34 @@ dict_.clear()
 
 
 'Functions_(subroutines)____________________________________________________________________'
-#functions are first-class objects. This means that 
-functions can be passed around#, and used as arguments, just like any other value 
-																												#(e.g, string, int, float)
-eg.       def foo(bar):
-						return bar + 1
+#functions are first-class objects. This means that functions can be passed around
+#, and used as arguments, just like any other value 
 
-					print(foo)
-					print(foo(2))
-					print(type(foo))
 
-					def call_foo_with_arg(foo, arg):
-						return foo(arg)
+#lambda
+ex.
+widgetType = lambda n='i021': n[0] if [c for c in n[1:] if c.isdigit()] else n
 
-					print(call_foo_with_arg(foo, 3))
 
-nested functions define functions inside other functions.
+#nested functions
 #Inner functions can access variables from the enclosing scope.
-eg.       def parent():
-						print('Printing from the parent() function.')
+eg.		def parent():
+			print('Printing from the parent() function.')
 
-						def first_child():
-							return 'Printing from the first_child() function.'
+			def first_child():
+				return 'Printing from the first_child() function.'
 
-						def second_child():
-							return 'Printing from the second_child() function.'
+			def second_child():
+				return 'Printing from the second_child() function.'
 
-					print(first_child())
-					print(second_child())
-					#calling parent() returns; Printing from the parent() function.
-																		#Printing from the first_child() function.
-																		#Printing from the second_child() function
+		print(first_child())
+		print(second_child())
+		#calling parent() returns; Printing from the parent() function.
+															#Printing from the first_child() function.
+															#Printing from the second_child() function
 
-#you can return a function from within another function.
-
-built-in  functions list:   https://docs.python.org/2/library/functions.html
+#return a function from within another function.
+built-in  functions list:   #https://docs.python.org/2/library/functions.html
 
 
 header    The header includes the def keyword, the variable name of the function
