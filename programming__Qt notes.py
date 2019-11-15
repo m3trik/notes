@@ -421,6 +421,7 @@ cmb.itemData(index) 			#data
 cmb.findData(data) 				#data
 #set index
 cmb.setCurrentIndex(0)
+cmb.setCurrentIndex(cmb.findText('')) #using string
 #get index
 cmb.currentText() 				#get current text
 
@@ -482,6 +483,7 @@ cmb.setModal(model) 			#Sets the model. model must not be 0. If you want to clea
 cmb.view()						#Returns QListView - of the combobox popup. The view class provides a list or icon view onto a model.
 #set
 cmb.setView(itemView)			#Sets the view to be used in the combobox popup to the given itemView . The combobox takes ownership of the view. Note: If you want to use the convenience views (like QtWidgets.QListWidget , QtWidgets.QTableWidget or QtWidgets.QTreeWidget), make sure to call QtWidgets.QComboBox.setModel() on the combobox with the convenience widgets model before calling this function.
+cmb.view().setMinimumWidth(cmb.minimumSizeHint().width()) #set view width to fit contents.
 
 
 #comboBox frame

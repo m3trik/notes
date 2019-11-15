@@ -2122,20 +2122,53 @@ createMelWrapper(module.function, retType='string[]'); //specify return type if 
 
 
 //To associate a MEL script with a hotkey, you must first add the script to the list of available hotkey commands, then assign a hotkey to the command you created.
-Select Window > Settings/Preferences > Hotkey Editor.
+>	Select Window > Settings/Preferences > Hotkey Editor.
 //Commands are grouped into categories. 
-Click the category name in the Categories list you want to put your script in.
-In the command area at the bottom of the hotkey editor, click New.
-Type a Name and Description for the new command.
-In the Command text box, type the MEL commands you want the hotkey to run.
-Click Accept.
-Type a key name in the Key text box and turn on any modifiers you want on the hotkey.
+>	Click the category name in the Categories list you want to put your script in.
+>	In the command area at the bottom of the hotkey editor, click New.
+>	Type a Name and Description for the new command.
+>	In the Command text box, type the MEL commands you want the hotkey to run.
+>	Click Accept.
+>	Type a key name in the Key text box and turn on any modifiers you want on the hotkey.
 //For example, type m in the text box and turn on the Alt setting to assign the marking menu to  + m.
 //As you edit these settings, Maya shows the command currently assigned to the hotkey, if any. Only assign the hotkey if you don’t mind overriding this command.
-Set the Direction option. //If you select Press, Maya runs the command when you press the key down. If you select Release, Maya runs the command when you let the key up.
+>	Set the Direction option. //If you select Press, Maya runs the command when you press the key down. If you select Release, Maya runs the command when you let the key up.
 //The distinction between Press and Release can be important, for example when you assign a hotkey to a snapping mode. You want to assign the command to turns the snapping mode on to the key press, and the command that turns the snapping mode off to the key release.
-Click Assign.
+>	Click Assign.
 //If the hotkey you set already has a command assigned, Maya asks if you want to override it.
+
+
+//via script:
+//MEL
+if (!`runTimeCommand -exists Name`) {
+    runTimeCommand
+        -annotation "Print the word \"Hello\""
+        -category "Custom Scripts"
+        -command ("print \"Hello\\n\"")
+        -showInHotkeyEditor true
+        Name;
+}
+//python (import pymel.core as pm)
+if not pm.runtimeCommand(exists='Name'):
+	pm.runTimeCommand("Name",
+			annotation='Description',
+			category="Custom Scripts",
+			command="print \"Hello\\n\"",
+			showInHotkeyEditor=1)
+
+
+
+//custom command (with hotkey):
+nameCommand
+	-annotation "Freeze Transforms"
+	-command "makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;"
+	freezeNamedCommand;
+//The hotkey calls the named command
+hotkey 
+	-k "f" 
+	-alt 
+	-name "freezeNamedCommand";
+
 
 
 
