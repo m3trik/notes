@@ -949,7 +949,7 @@ list_[:3] #up to 2
 list_[3:] #from 3
 
 #get subsection with a step amount
-eg. list(2:6:3) #from index 2-5, with a step of 3. so returns index 2,5
+eg. list(2:6:3) #from index 2-5, with a step of 3. so returns indices 2,5
 
 
 #with negative integers, the search is counted from the end of the list.
@@ -984,9 +984,10 @@ eg. a_iter = iter(a)
 
 
 #get index:
-eg. ['foo', 'bar', 'baz'].index('bar') #returns 1. 
-#results in a ValueError if the item not present.
-#check with 'if item in list_' or try/except block that catches valueError. 
+#use 'if item in list_' or try/except block that catches valueError when item not present.
+eg. list_.index('') #returns index 
+eg. reverse(list_).index('')
+
 
 #get index based on partial string
 eg. l = [mylist.index(i) for i in mylist if 'aa' in i]

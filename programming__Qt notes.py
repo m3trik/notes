@@ -2168,16 +2168,16 @@ QtCore.Qt.FramelessWindowHint
 QtCore.Qt.X11BypassWindowManagerHint
 QtCore.Qt.WindowStaysOnTopHint
 
-w.setAttribute(QtCore.Qt.WA_WState_WindowOpacitySet
-w.setAttribute(QtCore.Qt.WA_NoSystemBackground #Indicates that the widget has no background
-w.setAttribute(QtCore.Qt.WA_TranslucentBackground #Indicates that the widget should have a translucent background
-w.setAttribute(QtCore.Qt.WA_TintedBackground
-w.setAttribute(QtCore.Qt.WA_StyledBackground #Indicates the widget should be drawn using a styled background.
-w.setAttribute(QtCore.Qt.WA_StyleSheet #Indicates that the widget is styled using a style sheet.
-w.setAttribute(QtCore.Qt.WA_WindowPropagation #Makes a toplevel window inherit font and palette from its parent.
-w.setAttribute(QtCore.Qt.WA_SetPalette #Indicates that the widget has a palette of its own.
-w.setAttribute(QtCore.Qt.WA_SetStyle #Indicates that the widget has a style of its own.
-w.setAttribute(QtCore.Qt.WA_SetFont #Indicates that the widget has a font of its own.
+w.setAttribute(QtCore.Qt.WA_WState_WindowOpacitySet)
+w.setAttribute(QtCore.Qt.WA_NoSystemBackground) #Indicates that the widget has no background
+w.setAttribute(QtCore.Qt.WA_TranslucentBackground) #Indicates that the widget should have a translucent background
+w.setAttribute(QtCore.Qt.WA_TintedBackground)
+w.setAttribute(QtCore.Qt.WA_StyledBackground) #Indicates the widget should be drawn using a styled background.
+w.setAttribute(QtCore.Qt.WA_StyleSheet) #Indicates that the widget is styled using a style sheet.
+w.setAttribute(QtCore.Qt.WA_WindowPropagation) #Makes a toplevel window inherit font and palette from its parent.
+w.setAttribute(QtCore.Qt.WA_SetPalette) #Indicates that the widget has a palette of its own.
+w.setAttribute(QtCore.Qt.WA_SetStyle) #Indicates that the widget has a style of its own.
+w.setAttribute(QtCore.Qt.WA_SetFont) #Indicates that the widget has a font of its own.
 
 
 ex.
@@ -2187,9 +2187,6 @@ ex.
 w.setAutoFillBackground(False)
 w.autoFillBackground(True)
 
-
-#erase area \fill with background
-w.fillRect(rectangle, background())
 
 
 
@@ -2204,11 +2201,9 @@ QtGui.qApp.setStyle(style)
 
 # styleSheet
 # docs: http://doc.qt.io/archives/qt-4.8/stylesheet-examples.html
-#print the stylesheet if there is one:
-print self.pushButton.styleSheet()
+w.styleSheet() #query the widgets style sheet.
+print w.styleSheet() #print the stylesheet if there is one:
 
-#w.styleSheet
-pushButton.styleSheet #query the widgets style sheet.
 
 #If you would prefer that the font and palette propagate to child widgets, you can set the Qt::AA_UseStyleSheetPropagationInWidgetStyles flag, like this:
 QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, true);
@@ -2216,14 +2211,14 @@ QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, tr
 
 ex.
 w.setStyleSheet("") 			#set style sheet to default. also(styleSheet())
-self.setStyleSheet("background: transparent;") #doesn't need the style sheet itself but child widgets contained in the widget that have autoFillBackground()==True by default should have it unset or should have set QtCore.Qt.WA_TranslucentBackground or have a transparent background color set by a style sheet which is then inherited
-pushButton.setStyleSheet("background-color: transparent") #white, black, grey, magenta, etc
-setStyleSheet("background-color: rgba(227, 227, 227, 2)") #rgb + alpha. alpha value of 1 sometimes doesnt work.
+w.setStyleSheet("background: transparent;") #doesn't need the style sheet itself but child widgets contained in the widget that have autoFillBackground()==True by default should have it unset or should have set QtCore.Qt.WA_TranslucentBackground or have a transparent background color set by a style sheet which is then inherited
+w.setStyleSheet("background-color: transparent") #white, black, grey, magenta, etc
+w.setStyleSheet("background-color: rgba(227, 227, 227, 2)") #rgb + alpha. alpha value of 1 sometimes doesnt work.
 
 
 ex.
-.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
-.setStyleSheet("QLabel {font-size: 100px; opacity:0.5}")
+w.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
+w.setStyleSheet("QLabel {font-size: 100px; opacity:0.5}")
 
 #comment css
 /* css multi-line comment */
