@@ -804,7 +804,7 @@ w.adjustSize()
 w.setMinimumSize(w.layout.sizeHint())
 
 #set to minimum size.
-w.resize(minimumSizeHint())
+w.resize(w.minimumSizeHint())
 w.setFixedSize(w.sizeHint())
 
 
@@ -2210,36 +2210,20 @@ QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, tr
 
 
 ex.
-w.setStyleSheet("") 			#set style sheet to default. also(styleSheet())
+w.setStyleSheet('') 			#set style sheet to default. also(styleSheet())
 w.setStyleSheet("background: transparent;") #doesn't need the style sheet itself but child widgets contained in the widget that have autoFillBackground()==True by default should have it unset or should have set QtCore.Qt.WA_TranslucentBackground or have a transparent background color set by a style sheet which is then inherited
-w.setStyleSheet("background-color: transparent") #white, black, grey, magenta, etc
-w.setStyleSheet("background-color: rgba(227, 227, 227, 2)") #rgb + alpha. alpha value of 1 sometimes doesnt work.
+#comment css/qss
+	/* multi-line */
 
+# setting property:
+	qApp.setStyleSheet("QLineEdit#name[prop=true] {background-color:transparent;}") #does't effect the lineEdit with objectName 'name' if that buttons property 'styleSheet' is false (c++ lowercase). 
+	self.setProperty('prop', True) #set the widget property.
 
-ex.
-w.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
-w.setStyleSheet("QLabel {font-size: 100px; opacity:0.5}")
+# gradient:
+	'background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #E0E0E0, stop: 1 #FFFFFF);'
 
-#comment css
-/* css multi-line comment */
-
-
-
-
-
-w.setStyleSheet("") 			#set style sheet to default. also(styleSheet())
-
-
-w.setStyleSheet('''QPushButton {
-}''')
-
-
-.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
-
-	QTreeWidget {border:none;} 
-	QTreeWidget::item {height: 20px;}
-	QTreeView {
-  }
+# multiple widgets:
+	'QComboBox:!editable, QComboBox::drop-down:editable { ... }'
 
 
 

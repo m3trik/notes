@@ -91,7 +91,7 @@ global string $lotsOfInfo[] = {"like this","this","and this"};
 
 // access it
 global string $lotsOfInfo[];
-print( $lotsOfInfo[0] + "\n" );
+print($lotsOfInfo[0] + "\n");
 
 
 
@@ -541,7 +541,7 @@ if (`exists $myCommand`)
 
 // Select an object if and only if it exists.
 eg. // Print a warning if it does not exist.
-if (`objExists surface1` ) 
+if (`objExists surface1`) 
 {
 	select surface1;
 }
@@ -606,7 +606,7 @@ eg.	global proc string performSmoothProxy (int $option)
 
 		switch ($option) {
 		case 0:
-			eval( assembleCmd() ); //assembleCmd is a separate procedure that queries any additional settings/flags
+			eval(assembleCmd()); //assembleCmd is a separate procedure that queries any additional settings/flags
 			break;
 
 		case 1:
@@ -769,13 +769,13 @@ eg.// Initialize the list
   stringArrayInsertAtIndex(1, $list, "item2"); // Result: item1 item2 item3
 
   // Insert before the first element
-  stringArrayInsertAtIndex(-1, $list, "item4" );
+  stringArrayInsertAtIndex(-1, $list, "item4");
 
   // Insert at (or after) the end of the sequence. //If $index is greater than the last index of $list, $item will be placed at the end of the list.
-  stringArrayInsertAtIndex( 10, $list, "item4" ); // Result: item1 item2 item3 item4
+  stringArrayInsertAtIndex(10, $list, "item4"); // Result: item1 item2 item3 item4
 
   // Insert at the beginning of the sequence
-  stringArrayInsertAtIndex( 0, $list, "item0" ); // Result: item0 item1 item2 item3 item4 //
+  stringArrayInsertAtIndex(0, $list, "item0"); // Result: item0 item1 item2 item3 item4 //
 
 
 
@@ -826,7 +826,7 @@ for($i=0; $i<$size; ++$i)// access the value by providing an index into the arra
 	{						 //		where the first index is 0 
 	$value = $int_array[ $i ];
 
-	print( $value + "\n" );// print the value
+	print($value + "\n");// print the value
 	}
 
 // another array loop example
@@ -864,7 +864,7 @@ stringArrayAddPrefix
 stringArrayCatenate		//eg. stringArrayCatenate($stringArray1, $stringArray2); // append one string array to another. Result: string1 string2 string3 string4 string5 //
 stringArrayContains		//eg. stringArrayContains ($thisString, $inThisArray)
 stringArrayCount			//eg. int $count = stringArrayCount("searchFor", $inArray); //Return the number of times the string in $item occurs in the string array $list. Zero is returned if the string is not in the list.
-stringArrayFind				//eg. int $index = stringArrayFind( "searchFor", 0, $inArray ); // ("itemToSeachFor",indexToSeachFrom,$arrayToSearch) Returns the index of only the first occurrence of $item in $array. If $item is not found then -1 is returned.
+stringArrayFind				//eg. int $index = stringArrayFind("searchFor", 0, $inArray); // ("itemToSeachFor",indexToSeachFrom,$arrayToSearch) Returns the index of only the first occurrence of $item in $array. If $item is not found then -1 is returned.
 stringArrayInsertAtIndex
 stringArrayIntersector
 stringArrayRemove
@@ -939,8 +939,8 @@ matrix $m[2][1]; //2 rows, 1 column.  $matrix << 0.0; 0.0 >>
 //access elements in a matrix
 eg.
 	matrix $m[2][4] = << 3,4,6,7; 3,9,0,1 >>; //first row, second row
-	print( $m[0][0]); //result: 3
-	print( $m[1][3]); //result: 1
+	print($m[0][0]); //result: 3
+	print($m[1][3]); //result: 1
 	
 
 
@@ -1334,7 +1334,7 @@ faces = pm.filterExpand(obj+'.f[*]', sm=34)
 verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
 //alt:
 int $vertcount = polyEvaluate -vertex $object; 
-string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]" );
+string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
 //edges
 edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
 
@@ -1909,7 +1909,7 @@ position(pos) //The position that the message will appear at relative to the act
 
 
 ex. //pymel
-pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter', fade=True )
+pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter', fade=True)
 
 
 
@@ -1918,7 +1918,7 @@ pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter',
 
 "ERROR HANDLING: //--------------------------------------------------------------------------------------------------------------------------------------"
 
-objExists	eg. if( `objExists surface1` ) {  // remember to enclose in high commas because you are expectin a return value
+objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas because you are expectin a return value
     						select surface1;
 							} else {
     						warning("No surface exists");
@@ -2066,23 +2066,23 @@ unloadPlugin			ex. pm.unloadPlugin ('newNode.py')
 
 //http://help.autodesk.com/view/MAYAUL/2016/ENU/?guid=GUID-55B63946-CDC9-42E5-9B6E-45EE45CFC7FC
 
-python( "import sys" );
+python("import sys");
 
 // Call some python that will return a list of values. Note that we are
 // calling the python command with a single python statement. We have to
 // do that if we want to get a result back
 //
-string $version[] = python( "sys.version_info" );
+string $version[] = python("sys.version_info");
 
 // The result will be an array of strings because one of the elements will
 // contain a string. Extract the major and minor parts of the version number
 //
-int $major = int( $version[0] );
-int $minor = int( $version[1] );
+int $major = int($version[0]);
+int $minor = int($version[1]);
 
 // You can do mult-statement Python scripts, but there won't be a return
 // value
-python( "import os\nprint os.environ ['MAYA_LOCATION']" );
+python("import os\nprint os.environ ['MAYA_LOCATION']");
 
 
 // Creating new variables requires the use of the initVar function to specify the type:
@@ -2090,7 +2090,7 @@ pm.melGlobals.initVar('string', 'gMyStrVar')
 // returns '$gMyStrVar'
 pm.melGlobals['gMyStrVar'] = 'fooey'
 // The variable will now be accessible within MEL as a global string.
-pm.melGlobals.initVar( 'string[]', '$tk_selection2' )
+pm.melGlobals.initVar('string[]', '$tk_selection2')
 //MelGlobals.VALID_TYPES = ['string', 'string[]', 'int', 'int[]', 'float', 'float[]', 'vector', 'vector[]']
 
 
@@ -2138,25 +2138,6 @@ createMelWrapper(module.function, retType='string[]'); //specify return type if 
 //If the hotkey you set already has a command assigned, Maya asks if you want to override it.
 
 
-//via script:
-//MEL
-if (!`runTimeCommand -exists Name`) {
-    runTimeCommand
-        -annotation "Print the word \"Hello\""
-        -category "Custom Scripts"
-        -command ("print \"Hello\\n\"")
-        -showInHotkeyEditor true
-        Name;
-}
-//python (import pymel.core as pm)
-if not pm.runtimeCommand(exists='Name'):
-	pm.runTimeCommand("Name",
-			annotation='Description',
-			category="Custom Scripts",
-			command="print \"Hello\\n\"",
-			showInHotkeyEditor=1)
-
-
 
 //custom command (with hotkey):
 nameCommand
@@ -2168,6 +2149,58 @@ hotkey
 	-k "f" 
 	-alt 
 	-name "freezeNamedCommand";
+
+
+//via script:
+//MEL
+if (!`runTimeCommand -exists Name`) {
+    runTimeCommand
+        -annotation "Print the word \"Hello\""
+        -category "Custom Scripts"
+        -command ("print \"Hello\\n\"")
+        Name;
+}
+//python (import pymel.core as pm)
+if not pm.runtimeCommand('Name', exists=1):
+	pm.runTimeCommand("Name",
+			annotation='Description',
+			category="Custom Scripts",
+			command="print \"Hello\\n\"",
+)
+
+
+//Create a new context type
+pm.hotkeyCtx(insertTypeAt=('Global', 'CustomEditor'))
+pm.hotkeyCtx(ita=('CustomEditor', 'CustomTool'))
+
+//Query all existing context types
+ctxTypes = pm.hotkeyCtx(typeArray=True, query=True)
+print str(ctxTypes)
+
+//Remove an existing context type
+pm.hotkeyCtx(removeType='CustomTool')
+
+//Determine if the given context type exists.
+pm.hotkeyCtx(te='CustomTool', query=True)
+
+//Associate the clients to the specific context type.
+pm.hotkeyCtx(t='CustomEditor', ac=['hyperGraphPanel', 'outlinerPanel'])
+
+//Set current context
+pm.hotkeyCtx(t='CustomEditor', cc='hyperGraphPanel')
+
+//Unassign the client from the specific context type.
+pm.hotkeyCtx(t='CustomEditor', rc='outlinerPanel')
+
+//Query all associated clients for the given context type.
+cl = pm.hotkeyCtx(t='CustomEditor', ca=True, query=True)
+print str(cl)
+
+//Remove all associated clients
+pm.hotkeyCtx(t='CustomEditor', rac=True)
+
+
+
 
 
 

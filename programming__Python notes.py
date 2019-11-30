@@ -996,6 +996,11 @@ eg. indices = [i for i, s in enumerate(mylist) if 'aa' in s]
 
 
 
+#number of occurances: (import collections)
+collections.Counter(iterable) #returns the number of times an element occurs in an iterable.
+iterable.most_common(3) #returns the three most common elements.
+
+
 #lowest number in the list
 eg. min(1, 2, 3, 4, 0, 2, 1) #returns 0
 #highest number
@@ -1757,6 +1762,15 @@ eg. func(**dict_)
 
 
 'Lambda_Expressions_(anonymous_function)____________________________________________________'
+
+# Are single-expression functions that are not necessarily bound to a name (they can be anonymous).
+# Can't use regular Python statements and always include an implicit return statement.
+
+eg. add = lambda x, y: x + y #add(5, 3) returns: 8
+#alt:
+eg. (lambda x, y: x + y)(5, 3) #returns: 8
+
+
 
 eg. lambda x,y: x+y #can be assigned a variable although it is usually better to just define a function with def
  

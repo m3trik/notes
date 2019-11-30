@@ -210,6 +210,13 @@ reload(tk_main)
 
 
 
+problem in tk_slots_maya_editors.py - <type 'exceptions.SyntaxError'>: invalid syntax (tk_slots_maya_editors.py, line 31)
+problem in tk_slots_maya_convert - <type 'exceptions.ImportError'>: No module named MaxPlus
+
+
+
+
+
 fix maya's delete shortcut.  reg delete button works.
 
 
