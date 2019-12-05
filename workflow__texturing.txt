@@ -192,10 +192,10 @@ vrayMtl node properties:
 	
 	NORMAL -> BUMP map (tangent space normal, openGL, RAW) (in the normal map properties; click on the “Bitmap” input. This will open a file browser window. In this window, with the same texture selected, go to “Gamma”, select “Override”, and set it to 1.0)
 	
-	ROUGHNESS ALPHA --> ROUGHNESS amount (sRGB)(Invert: In Substance, black on a roughness map indicates a smooth surface (sharp reflections), and white indicates rough (diffuse reflections). In V-Ray, it is the opposite.)
+	ROUGHNESS ALPHA --> ROUGHNESS amount (sRGB)(Invert: In Substance, black=smooth surface (sharp reflections), and white=rough (diffuse reflections). In V-Ray, it is the opposite.)
 	
 	REFLECTION COLOR -> REFLECTION COLOR (sRGB, or composite(color) spec map and diffuse) 
-	REFLECTION GLOSSINESS -> HILIGHT GLOSSINESS
+	REFLECTION GLOSSINESS -> HILIGHT GLOSSINESS - 
 	
 	GLOSSINESS ALPHA -> REFLECTION GLOSSINESS (RAW)
 	GLOSSINESS COLOR -> REFRACTION COLOR (RAW)
@@ -304,23 +304,5 @@ EMISSIVE:
 
 
 
-MATERIALS:
-//VRay:
 
-glass (generic)
->	Set reflection to pure black (if you need less reflection, reduce the IOR)
->	Set reflection glossiness to 1.0
->	Set refraction to white
->	Set refraction glossiness to 1.0
->	IOR 1.5 (1.4 acryllic.  1.6-1.8 flint)
->	Check "Affect Shadows" option ON under refraction parameters.
->	Optional: Set the glass color via Fog Color parameter under Refraction options.
-
->	Falloff map plugged into the reflect slot. (slight negative bezier start with overall slight positive curve. black-white)
-
-
-
-metal (generic)
-> Set reflection to pure black
-> IOR 20-70
 

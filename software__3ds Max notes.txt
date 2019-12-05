@@ -1,37 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
-		
-
-	
-		
-		
-
-
-
-
-
-
-
-
 ||||||||   3ds Max Notes    ||||||
 
 
@@ -65,9 +31,9 @@ multi-cut	- 'cut'
 		
 
 insert edgeloop		- modeling > edit > 'swiftloop' tool (interactive) or select edge ring > right mouse menu > 'connect'
-	
-		
-		
+
+
+
 merge vertex	- 'weld' / 'target weld'
 
 combine		- 'attach'
