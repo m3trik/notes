@@ -442,6 +442,22 @@ functionToCall keyword:arg1  keyword:arg2
 -- https://help.autodesk.com/view/3DSMAX/2018/ENU/?guid=__files_GUID_DAABD302_FB6A_40BB_882A_888631488FB7_htm
 
 
+
+--create a MaxScript Array (import pymxs; rt = pymxs.runtime):
+rt.execute(" gma = #(1,2,3)") --#output: #(1,2,3)
+--add value at index:
+rt.gma[1] = 999 --#output: 999
+
+l = list(rt.gma) #[1,999,3]
+--add value at index:
+l[2] = 888 --#output: [1, 888, 3]
+
+
+--# create a MaxScript Array via python sequence
+ma = rt.Array(*(1, 2, 3)) --#output: #(1,2,3)
+
+
+
 --Arrays/Lists
 --create array
 ex. #()
@@ -895,8 +911,6 @@ for obj in selection do instance $Downlight001 pos:obj.pos
 "CREATE: //----------------------------------------------------------------"
 
 
-
-
 --[Primitives]
 --http://docs.autodesk.com/3DSMAX/16/ENU/MAXScript-Help/index.html?url=files/GUID-BD5ADFE5-379A-40D5-8FA2-3EB9649F088B.htm,topicNumber=d30e280686
 --universal attributes
@@ -963,7 +977,8 @@ convertToNURBSCurve <node> -- mapped
 
 
 
---[Modifiers]
+"MODIFIERS: //-------------------------------------------------------------"
+
 
 
 --open modifier panel.
@@ -974,7 +989,7 @@ ex. if getCommandPanelTaskMode() != #modify do (max modify mode)
 ex. rt.modPanel.getCurrentObject()
 
 --get modifier by name:
-ex. rt.selection.modifiers['TurboSmooth'].renderIterations = 0
+ex. rt.selection[0].modifiers['TurboSmooth']
 --set modifier by name
 ex. rt.modPanel.setCurrentObject(obj)
 
@@ -984,9 +999,8 @@ ex. rt.selection.modifiers[-1].renderIterations
 ex. rt.modPanel.setCurrentObject(obj.modifiers[0])
 
 --get index
-ex. index = rt.modPanel.getModifierIndex(obj, mod)
--- 
-ex. index = [mod for mod in obj.modifiers].index(mod)+1 --add one to convert index from python to maxscript
+ex. index = rt.modPanel.getModifierIndex(obj, m)
+ex. index = [m for m in obj.modifiers].index(m)+1 --add one to convert index from python to maxscript
 
 --set index
 
@@ -999,31 +1013,42 @@ MaxPlus.Factory.CreateWorldSpaceModifier(MaxPlus.Class_ID(0x000110b4, 0x00007f9e
 
 --add modifier to top of stack:
 --addModifier $ (Bend())	--add bend modifier to selected
-ex. obj.AddModifier()
-addModifier $ (Taper amound:1 primaryAxis:1)
+ex. obj.AddModifier(rt.Taper(amount=1, primaryAxis=1)) --rt.addModifier(obj, mod, before=index)
+ex. addModifier $ (Taper amount:1 primaryAxis:1)
+
+
 --create modifier
-mod = rt.Smooth()
-mod.autoSmooth = True --set attributes
-mod.threshold = angle
-
-	rt.addModifier (obj, mod)
-
---if not exists; create, else; modify
-try:
-	obj = rt.selection[0]
-	mod = obj.modifiers[rt.Symmetry]
-except:
-	mod = rt.symmetry()
-	for obj in rt.selection:
-		rt.addModifier (obj, mod)
-	
-mod.axis = 0 #0(x), 1,(y), 2(z)
-mod.flip = True #negative axis
+m = rt.Smooth()
+m.autoSmooth = True --set attributes
+m.threshold = angle
 
 
--- to selection:
+--if not exists; create, else; modify.
+obj = rt.selection[0]
+m = obj.modifiers[rt.Symmetry] --or string 'Symmetry'
+if not m:
+	m = rt.symmetry()
+	index = len(obj.modifiers) --add to bottom of stack (or before a specific modifier).
+	rt.addModifier(obj, uv, before=index) --optional index.
+
+m.axis = 0 #0(x), 1,(y), 2(z) --set attributes
+m.flip = True #negative axis
+
+
+
+--add to selection:
 --Used in place of 'addModifier()' Applies a modifier above current stack index.
-ex. rt.modpanel.addModToSelection(mod)
+ex. rt.modpanel.addModToSelection(m)
+
+
+--add modifier to components:
+max modify mode-- open mod panel
+select $box01-- select box01 into mod panel
+subObjectLevel = 3-- subobject level to Face
+addModifier $box01 (ffd_2x2x2())-- add FFD mod to those faces
+
+
+
 
 
 --Tests whether a particular modifier or modifier class may be added the given <node> or 
@@ -1944,6 +1969,14 @@ m.value(rt.Matrix3([1,0,0] [0,1,0] [0,0,1] [0,0,0])) --Matrix3. The complete mat
 
 
 
+
+
+
+
+
+
+
+
 "NORMALS: //---------------------------------------------------------------"
 
 
@@ -1981,6 +2014,108 @@ ex. rt.polyop.autoSmooth(obj) --The face smoothing threshold angle is a property
 
 --reverse face normal
 ex. rt.polyop.flipNormals(obj, <facelist>) --Flips the normal of the specified faces.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"UV: //--------------------------------------------------------------------"
+
+
+
+uv = rt.selection[0].modifiers['Unwrap_UVW']
+
+
+--cut:
+uv.breakSelected()		--Presses the Break icon in the edit floater.
+uv.detachEdgeVertices()	--Detaches any vertex that is not completely surrounded by selected vertices.
+
+
+--sew:
+uv.weld()				--Presses the Target Weld icon in the edit floater.
+uv.weldSelected()		--Presses the Weld Selected button in the edit floater.
+uv.weldOnlyShared(True) --only selected vertices will be welded. default: True
+uv.WeldAllShared()		--Welds all shared vertices.
+uv.WeldSelectedShared() --Welds the shared selected vertices.
+uv.FlattenBySmoothingGroup(rescale=False, rotate=True, padding=0.2)
+uv.FlattenByMaterialID(rescale=False, rotate=True, padding=0.2)
+uv.stitchVerts(align=True, bias=1.0) --Bias of 0.0 the vertices will move to the source and 1.0 they will move to the target. 
+uv.stitchVertsNoParams() --Execute the Stitch function using the current defaults.
+--
+uv.stitchVertsDialog()	--Open the Stitch dialog.
+--get:
+uv.getWeldThreshold()	--Returns the weld threshold.
+--set:
+uv.setWeldThreshold(height=0.1) --Sets the threshold values for welds.
+
+
+--pack:
+uv.packNoParams()		--Executes the Pack function using the current default settings.
+uv.pack(method=1, spacing=0.5, normalize=True, rotate=True, fillholes=True) --Lets you pack the texture vertex elements so that they fit within a square space.
+	--method - 0 is a linear packing algorithm fast but not that efficient, 1 is a recursive algorithm slower but more efficient.
+	--spacing - the gap between cluster in percentage of the edge distance of the square
+	--normalize - determines whether the clusters will be fit to 0 to 1 space.
+	--rotate - determines whether a cluster will be rotated so it takes up less space.
+	--fillholes - determines whether smaller clusters will be put in the holes of the larger cluster.
+--
+uv.packDialog()			--Opens the Pack UVs dialog.
+
+
+--rescale:
+uv.RescaleCluster(obj, facesel=[bitArray])
+--get:
+uv.GetPackRescaleCluster()
+--set:
+uv.SetPackRescaleCluster(rescale=True)
+
+
+--sketch:
+uv.sketchNoParams()		--Executes the Sketch function using the current defaults.
+uv.sketch(indexList=[int array], positionList=[point3 array] --Sketches UV coordinates using the supplied index list array and the position list array.
+uv.sketchReverse()		--Reverses the order of the select vertices that are being used for sketch when you use the Use Current Selection option.
+--
+uv.sketchDialog()		--Opens the Sketch Vertices dialog.
+
+
+
+uv.MirrorGeomSelection = False
+--additional:
+['DisplayPixelUnits', 
+'MirrorGeomSelection', 'MirrorSelectionAxis', 'MirrorSelectionThreshold', 
+'PaintFallOff', 'PaintFallOffType', 'PaintFullStrength', 'PaintMoveBrush', 
+'RelaxMoveBrush', 
+'SelectionPreview', 
+'TextureCheckerMaterial', 
+'TypeInLinkUV', 
+'autoPin', 
+'baseMaterial', 'baseMaterial_list', 
+'buttonpanel_height1', 'buttonpanel_height2', 'buttonpanel_visible', 'buttonpanel_width', 
+'checkerMaterial', 
+'edgeSnap', 
+'editorHWnd', 'editorViewHWnd', 
+'filterPin', 
+'gridSnap', 
+'groupDensity', 'groupDisplay', 'groupName', 
+'localDistortion', 
+'peelAutoEdit', 
+'quick_map_align', 'quick_map_preview', 
+'renderuv_edgeColor', 'renderuv_edgealpha', 'renderuv_fillColor', 'renderuv_fillalpha', 'renderuv_fillmode', 'renderuv_force2sided', 'renderuv_height', 'renderuv_invisibleedges', 'renderuv_overlapColor', 'renderuv_seamColor', 'renderuv_seamedges', 'renderuv_showframebuffer', 'renderuv_showoverlap', 'renderuv_visibleedges', 'renderuv_width',  
+'showImageAlpha', 'showTileGridlines', 
+'splinemap_advanceMethod', 'splinemap_display', 'splinemap_iterations', 'splinemap_manualseams', 'splinemap_node', 'splinemap_projectiontype', 'splinemap_resampleCount', 'splinemap_uoffset', 'splinemap_uscale', 'splinemap_voffset', 'splinemap_vscale', 
+'texMapIDList', 'texMapList', 
+'toolBarVisible', 
+'vertexSnap']
+
 
 
 
@@ -2309,6 +2444,19 @@ animate on (at time 50f (move$ [0,0,5]))	--with AutoKey on, move object at frame
 
 animate on (at time 100f ($.radius = 10))	--with AutoKey on, set radius at frame 100
 
+
+
+-- import pymxs
+at = pymxs.attime; t = rt.Teapot()
+
+--animate it
+with pymxs.animate(True):
+	with at(1):
+		t.pos = rt.Point3(2,2,2)
+	with at(12):
+		t.pos = rt.Point3(10, 10, 10)
+	with at(21):
+		t.pos = rt.Point3(20,20,20)
 
 
 
@@ -2874,51 +3022,13 @@ ParamCollectorOps.getParameterIndex 1 1 1
 --wrapper for the MAXScript engine, exposes virtually all the Interfaces, globals, and classes available in MAXScript
 --see demoPyMXSTypeInterop.py example file in cloud 3ds scripts pymxs directory.
 
-
-import pymxs
-at = pymxs.attime
---create Teapot
-t = rt.Teapot()
-
---animate it
-with pymxs.animate(True):
-with at(1):
-    t.pos = rt.Point3(2,2,2)
-with at(12):
-    t.pos = rt.Point3(10, 10, 10)
-with at(21):
-    t.pos = rt.Point3(20,20,20)
-
-
-
-import pymxs
-rt = pymxs.runtime
-
---create and visit a MaxScript Array
-rt.execute(" gma = #(1,2,3)")
-print rt.gma    
-len(rt.gma)    
---#output: 3
-rt.gma[1] = 999
-rt.Print(rt.gma[1])    
---#output: 999
-l = list(rt.gma) #[1,999,3]
-l[2] = 888
-print l    
---#output: [1, 888, 3]
-print rt.gma   
---# output: #(1, 999, 3)
-
---# create a MaxScript Array via python sequence
-ma = rt.Array(*(1, 2, 3))
-print ma    
---#output: #(1,2,3)
-
-
-
-
 --print in pymxs
 pymxs.print_()
+
+
+
+
+
 
 
 

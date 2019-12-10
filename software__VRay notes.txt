@@ -110,11 +110,13 @@ fabric (generic):
 
 
 Leather (generic):
->	Leather Bitmap in diffuse slot
->	Reflection Color value 45 (grayscale).
->	RGlossiness value between 0.6 – 0.85.
->	Fresnel IOR 3.5
->	Bump map and reflection map derived from a greyscale diffuse texture.
+>	diffuse - Leather grain Bitmap
+>	Reflect - greyscale value 45 - reflect map - color corrected diffuse to grayscale.
+>	RGlossiness value between 0.5 – 0.85.
+>	Fresnel IOR 3.5-5
+>	Bump map - color corrected diffuse to grayscale.
+>	GGX falloff - 2.5
+>	Anisotropy - .3
 
 
 Velvet/Suede:
@@ -194,11 +196,11 @@ Crystal Glass:
 
 Wood (generic):
 >	Reflect - greyscale value 30.
->	Reflect map - greyscale wood texture ('color correction' diffuse to grayscale).
+>	Reflect map - color corrected diffuse to grayscale.
 >	RGlossiness between 0.4 – 0.9.
 >	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
 >	Fresnel IOR between 3.0 – 4.0.
->	Bump map - greyscale wood texture ('color correction' diffuse to grayscale).
+>	Bump map - color corrected diffuse to grayscale.
 
 
 Wood with Antique/Worn Edges:
@@ -327,7 +329,7 @@ C. Using Multiple Dirt Maps
 
 
 
--------------------------------------------------------------
+--------------------------------------------------------------
 
 
 
@@ -339,3 +341,53 @@ C. Using Multiple Dirt Maps
 
 
 
+Modifiers_____________________________________________________
+
+
+VRayDisplacementModifier:
+
+>	connect greyscale texture to an output node. then to the Texmap slot of the Displacement Modifier.
+
+
+
+Type:
+	These are different ways that the displacement is calculated. Generally, you should only use 3D Mapping.
+
+Texmap/Texture chan/Filter texmap/Filter blur:
+	These control the texture image that is used for the displacement. You already know what the Texmap box is for. Texture chan determines which UV channel is used for the Texmap. Filter texmap allows you add a small amount of blur and smoothing to the image (controllable with Filter Blur) to smooth out any super-sharp details. Generally, you can check the Filter box and leave it at the default of .001 if you are using a good map for your displacement.
+
+Amount:
+	The amount the displacement pushes out in real-world units.
+
+Shift:
+	You may notice that your displacement will tend to “puff out” the entire model. This is because displacement will take the surface geometry and move them outwards according to the value set in the Amount. If your texture is mostly white, this means that your model can grow in size infinitely depending on what value you set!
+
+	We often see rugs get eaten up by a floor if the floor’s displacement value is set too high – again, because the surface is being moved outwards.
+
+	To combat this, we can use the Shift value. What this basically does is “move” the surface inwards before starting the displacement, thus limiting the maximum height of the final displaced surface. See the graphic below and watch this video.
+
+Water Level:
+	Water level will cut off everything below the value. For example, if you set the amount to 1 and the water level to .5, any low-lying geometry will be culled from the render. You can easily make your model disappear if you set this too high! For example in the render below, the Amount is set to 1 but the water level is set to .5 – so everything from 0 to half an inch is just removed.
+
+Relative to bbox:
+	This will change the way Max calculates the displacement heights. Leave it unchecked.
+
+Texmap min/max:
+	These are useful when using a 16-bit texture as it will allow black to actually displace inwards, grey to be 0, and white to displace outwards. Generally, however we do not use this functionality. If you would like to learn more, watch this Youtube video. Basically when you generate a 16-bit texture, some of the values will actually be negative. These min/max values act as clamps on that value – so if you have a black value of -5 in your texture, then you can set -5 as the minimum value here and it will allow that negative value to act as a displacement. We rarely work with 16 bit textures and this option doesn’t work with procedural textures.
+
+Edge length:
+	Earlier we explained how displacement will automatically subdivide geometry to add more edges. The amount of edges that are added are controlled using this number. If you are getting artifacts or a polygonal look to your displacement, increase this value. It measures the maximum amount of pixels an edge is allowed to occupy before it is subdivided into a smaller triangle. The smaller the number, the more subdivided the model gets.
+
+View-dependant:
+	When checked, the above explanation works. When unchecked, Edge length is in world units instead instead of pixels. So a value of 1 in the Edge length becomes 1 inch before the edge is subdivided again. Generally, you should keep it on.
+
+Keep continuity:
+	This is a very important checkbox, but it’s off by default. When a displacement rounds a corner, it can displace the two surfaces on either side of the corner away from each other, creating a gap that will appear in the render as a black area. Enabling this option will make sure that your edges stay together! In the images below you can see when this is disabled (left) vs. when it is enabled (right).
+
+Edge thresh:
+	This value controls the blending between different maps on different faces. Keep it low – generally you shouldn’t change it from the default
+
+
+
+
+--------------------------------------------------------------

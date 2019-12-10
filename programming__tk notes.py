@@ -1,8 +1,6 @@
 '''
 
 #times
-tk_signals
-time: 0.11471084274
 tk_slots_max_viewport
 time: 0.0632666986347
 tk_slots_max_polygons

@@ -2034,12 +2034,20 @@ eg. classInstance.__class__.__name__
 
 
 #get class attributes
-dir(Class)[:5] #limit list to 5 results. returns: [string list of attribute names]
+#using dir(): 
+dir(Class)
+#get only keyword results (empty string returns all)
+kw = ''
+limit = None #int or None - limit amount of returned results.
+print [i for i in dir(uv) if kw in i or kw.title() in i or kw.swapcase() in i or kw.upper() in i or kw.lower() in i][:limit]
+
+#using __dict__:
 Class.__dict__ #get the attributes defined for the instance. returns: {attribute name:value}
 
+#using help():
 help(Class) # Class information
 
-#using inspect
+#using inspect (import inspect):
 inspect.getmembers(Class, predicate=inspect.ismethod)
 
 
