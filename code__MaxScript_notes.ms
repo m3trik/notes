@@ -2032,7 +2032,7 @@ ex. rt.polyop.flipNormals(obj, <facelist>) --Flips the normal of the specified f
 "UV: //--------------------------------------------------------------------"
 
 
-
+--Unwrap_UVW modifier:
 uv = rt.selection[0].modifiers['Unwrap_UVW']
 
 
@@ -2047,8 +2047,8 @@ uv.weldSelected()		--Presses the Weld Selected button in the edit floater.
 uv.weldOnlyShared(True) --only selected vertices will be welded. default: True
 uv.WeldAllShared()		--Welds all shared vertices.
 uv.WeldSelectedShared() --Welds the shared selected vertices.
-uv.FlattenBySmoothingGroup(rescale=False, rotate=True, padding=0.2)
-uv.FlattenByMaterialID(rescale=False, rotate=True, padding=0.2)
+uv.FlattenBySmoothingGroup(rescale=False, rotate=False, padding=0.2) --keyword args not working in pymxs
+uv.FlattenByMaterialID(rescale=False, rotate=False, padding=0.2)
 uv.stitchVerts(align=True, bias=1.0) --Bias of 0.0 the vertices will move to the source and 1.0 they will move to the target. 
 uv.stitchVertsNoParams() --Execute the Stitch function using the current defaults.
 --
@@ -2061,7 +2061,7 @@ uv.setWeldThreshold(height=0.1) --Sets the threshold values for welds.
 
 --pack:
 uv.packNoParams()		--Executes the Pack function using the current default settings.
-uv.pack(method=1, spacing=0.5, normalize=True, rotate=True, fillholes=True) --Lets you pack the texture vertex elements so that they fit within a square space.
+uv.pack(method=1, spacing=0.01, normalize=True, rotate=False, fillholes=True) --Lets you pack the texture vertex elements so that they fit within a square space.
 	--method - 0 is a linear packing algorithm fast but not that efficient, 1 is a recursive algorithm slower but more efficient.
 	--spacing - the gap between cluster in percentage of the edge distance of the square
 	--normalize - determines whether the clusters will be fit to 0 to 1 space.
@@ -2087,24 +2087,31 @@ uv.sketchReverse()		--Reverses the order of the select vertices that are being u
 uv.sketchDialog()		--Opens the Sketch Vertices dialog.
 
 
+--straighten:
+uv.straighten()
+
+
+--relax:
+uv.relax(1, 0.01, True, True)
+
 
 uv.MirrorGeomSelection = False
---additional:
+
+uv.renderuv_seamedges = not uv.renderuv_seamedges
+uv.renderuv_visibleedges = not uv.renderuv_visibleedges
+
+--additional Unwrap_UVW:
 ['DisplayPixelUnits', 
 'MirrorGeomSelection', 'MirrorSelectionAxis', 'MirrorSelectionThreshold', 
 'PaintFallOff', 'PaintFallOffType', 'PaintFullStrength', 'PaintMoveBrush', 
 'RelaxMoveBrush', 
-'SelectionPreview', 
-'TextureCheckerMaterial', 
+'SelectionPreview',  
 'TypeInLinkUV', 
-'autoPin', 
-'baseMaterial', 'baseMaterial_list', 
+'autoPin', 'filterPin',
+'baseMaterial', 'baseMaterial_list', 'checkerMaterial', 'TextureCheckerMaterial',
 'buttonpanel_height1', 'buttonpanel_height2', 'buttonpanel_visible', 'buttonpanel_width', 
-'checkerMaterial', 
-'edgeSnap', 
+'edgeSnap', 'vertexSnap', 'gridSnap', 
 'editorHWnd', 'editorViewHWnd', 
-'filterPin', 
-'gridSnap', 
 'groupDensity', 'groupDisplay', 'groupName', 
 'localDistortion', 
 'peelAutoEdit', 
@@ -2113,8 +2120,22 @@ uv.MirrorGeomSelection = False
 'showImageAlpha', 'showTileGridlines', 
 'splinemap_advanceMethod', 'splinemap_display', 'splinemap_iterations', 'splinemap_manualseams', 'splinemap_node', 'splinemap_projectiontype', 'splinemap_resampleCount', 'splinemap_uoffset', 'splinemap_uscale', 'splinemap_voffset', 'splinemap_vscale', 
 'texMapIDList', 'texMapList', 
-'toolBarVisible', 
-'vertexSnap']
+'toolBarVisible']
+
+
+
+--UVW_Xform modifier:
+uv = rt.selection[0].modifiers['Unwrap_UVW']
+
+
+--additional UVW_Xform:
+['Map_or_Vertex_Color', 
+'Rotation_Angle', 'Rotation_Center', 
+'U_Flip', 'V_Flip', 'W_Flip',
+'U_Offset', 'V_Offset', 'W_Offset',
+'U_Tile', 'V_Tile', 'W_Tile',
+'map_channel']
+
 
 
 

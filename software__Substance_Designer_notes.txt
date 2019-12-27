@@ -1,3 +1,8 @@
+Substance Designer notes.
+
+
+node documentation:
+https://support.allegorithmic.com/documentation/display/SDDOC/Node+Library
 
 
 
@@ -10,34 +15,36 @@
 
 
 
+keyboard shortcuts -----------------------------------------------------------------
 
-	
+collapse node to parent			[d key]
 
+duplicate w/o connections		[ctrl+ shft+ d]
 
-
-
-				
-				
-				
-				
+drag inputs to another node		[shft+ left mouse drag]
 
 
-				
-				
-				
-				
-			
 
-		
+autosave		if setup; files are located in the project folder.
+				remember to resave to the original file after opening the backup
 
 
 
 
 
 
+views -----------------------------------------------------------------
+
+view outputs in 3d view		-rt click empty graph area (context menu)
 
 
-shapes -------------
+load 3d mesh		-drag-drop it into explorer resource folder
+
+
+
+
+
+shapes -----------------------------------------------------------------
 
 
 Shape node
@@ -61,241 +68,12 @@ Splatter Circular
 	circular pattern, concentric circles
 
 
-	
 
 
 
 
 
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-	
-
-	
-	
-
-
-
-
-
-	
-
-										
-
-
-
-
-
-	
-	
-	
-
-	
-	
-	
-	
-	
-		
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-	
-	
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
->	save the new graph template to the template directory.
-to see or change the directory location:
->	add new (+ icon)
-
-
-
-
-
-
-
-
-
-
-
-
-Substance Designer notes-----------------------------------
-
-
-node documentation:
-https://support.allegorithmic.com/documentation/display/SDDOC/Node+Library
-
-
-
-
-keyboard shortcuts --
-
-collapse node to parent			[d key]
-
-duplicate w/o connections		[ctrl+ shft+ d]
-
-drag inputs to another node		[shft+ left mouse drag]
-
-
-
-autosave		if setup; files are located in the project folder.
-				remember to resave to the original file after opening the backup
-
-	
-
-views --------------
-
-view outputs in 3d view		-rt click empty graph area (context menu)
-
-
-load 3d mesh		-drag-drop it into explorer resource folder
-				
-				
-				
-				
-
-
-				
-				
-				
-				
-			
-
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-transform ----------
+transform -----------------------------------------------------------------
 
 transform node		-
 
@@ -306,7 +84,7 @@ distance node		-
 
 
 
-blur ---------------
+blur -----------------------------------------------------------------
 
 Slope Blur Greyscale	
 	Directional blur driven by greyscale slope map
@@ -328,7 +106,7 @@ edge blur
 	
 
 
-edges --------------
+edges -----------------------------------------------------------------
 
 Bevel node
 
@@ -379,7 +157,7 @@ Fiber Glass Edge Wear
 	
 	
 		
-height -------------
+height -----------------------------------------------------------------
 
 Normal to Height node	-never be able to provide a 100% correct result, as information is lost. good for simple details.
 
@@ -392,7 +170,7 @@ Normal to Height node	-never be able to provide a 100% correct result, as inform
 
 
 
-normal -------------
+normal -----------------------------------------------------------------
 
 From Height:
 	Height to Normal node	(world units)
@@ -421,7 +199,7 @@ Repair:
 	
 	
 
-channels -----------
+channels -----------------------------------------------------------------
 
 channels shuffle	-mix rgba values between inputs 1 and 2
 
@@ -436,7 +214,7 @@ channels mixer		-adjust rgb values of 1 input
 
 
 
-convert ------------
+convert -----------------------------------------------------------------
 
 color to greyscale	-Grayscale conversion node (right click 'add node' menu)
 
@@ -478,7 +256,7 @@ histogram shift
 
 
 
-opacity ------------
+opacity -----------------------------------------------------------------
 
 create opacity map:
 >	right click, add node, (opacity) output
@@ -491,7 +269,7 @@ create opacity map:
 
 
 
-noise --------------
+noise -----------------------------------------------------------------
 
 Splatter
 	Most people mistake this Node for “Scatter”, because that’s what it does really
@@ -517,7 +295,7 @@ Perlin Noise
 
 
 
-dynamic functions --
+dynamic functions -----------------------------------------------------------------
 
 create new function:
 >	in the main graph (root) options create an input parameter
@@ -549,7 +327,7 @@ sample color	-sample color per pixel
 
 
 
-switch -------------
+switch -----------------------------------------------------------------
 
 switch				Returns either Input 1 or Input 2 based on the Switch parameter setting.
 switch greyscale	
@@ -571,7 +349,7 @@ if else function:
 
 
 
-outputs ------------
+outputs -----------------------------------------------------------------
 
 Add an output node:
 	Right-click in an empty area; Add Node --> Output
@@ -595,6 +373,9 @@ creating a preset graph template
 
 >	edit> preferences> projects> general tab> templates directories
 >	add new
+>	save the new graph template to the template directory.
+to see or change the directory location:
+>	add new (+ icon)
 
 
 
@@ -604,9 +385,18 @@ creating a preset graph template
 
 
 
+procedures -----------------------------------------------------------------
+
+masking techniques:
+
+>	blend node on subtract to histogram scan (which can drive opacity in another blend)
 
 
-errors -------------
+
+
+
+
+errors -----------------------------------------------------------------
 
 export cooking fail (error 13)
 enable output computation in current graph settings
