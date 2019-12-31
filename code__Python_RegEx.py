@@ -29,29 +29,6 @@ ex. re.match('0{1,3}', '01111011') #
 
 
 
-#char classes:
-#combine ranges: [A-G][025]
-#invert class: [^A-G] (find all except A-G)
-ex. re.match('[10]', '011') #returns the regex object <0>
-#match any lowercase char
-ex. re.match('[a-z]', '') #matches lowercase char 'a' - 'z'
-#match any uppercase char
-ex. re.match('[B-G]', '011') #matches uppercase char 'B' - 'G'
-#match any digit
-ex. re.match('[0-4]', '011') #matches uppercase char '0' - '4'
-
-
-
-#char groups:
-#multiple and nested: '0(1(1)1)(00)'
-#named groups: (?P<name>...) #name of the group and ... is the pattern. can be accessed by given name string.
-#non-capturing groups: (?...) #ommited from group()
-re.match('0(111)', '01111011') #returns <0111>
-re.match('0(111)', '01111011').group(0) #returns '0111'
-re.match('0(111)', '01111011').groups() #returns ('111')
-
-
-
 #special sequences:
 #(\d) digits (\D matches non-digits)
 re.match(r'\d', '011') #
@@ -64,7 +41,31 @@ re.match(r'\A011\Z', '011') #
 #(\b) empty string (\B matches the empty string anywhere else)
 re.match(r'\b(011)\b', '011 011 011') #
 #(\0-99)
-re.match(r'(011) \1', '011 011') #returns <011 011>
+re.match(r'(011)\1', '011 011') #returns <011 011>
+
+
+
+#char classes:
+#combine ranges: [A-G][025]
+#invert class: [^A-G] (find all except A-G)
+#match any lowercase char
+ex. re.match('[a-z]', '') #matches lowercase char 'a' - 'z'
+#match any uppercase char
+ex. re.match('[B-G]', '011') #matches uppercase char 'B' - 'G'
+#match any digit
+ex. re.match('[0-4]', '011') #matches uppercase char '0' - '4'
+#
+ex. re.match('[10]', '011') #returns the regex object <0>
+
+
+
+#char groups:
+#multiple and nested: '0(1(1)1)(00)'
+#named groups: (?P<name>...) #name of the group and ... is the pattern. can be accessed by given name string.
+#non-capturing groups: (?...) #ommited from group()
+re.match('0(11)', '01111011') #returns <011>
+re.match('0(11)', '01111011').group(0) #returns '011'
+re.match('0(11)', '01111011').groups() #returns ('11')
 
 
 
