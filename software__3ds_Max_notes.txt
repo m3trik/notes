@@ -1,0 +1,47 @@
+||||||||   3ds Max Notes    ||||||
+
+
+
+
+
+
+
+--Modeling--
+
+
+-component modifiers
+
+
+
+
+
+
+
+maya / max equivalents 
+
+channel box translate coordinates	- coordinates located bottom menu
+
+extrude
+	keep faces together		- 'by polygon' option
+
+extrude edge	- freeform > polydraw > 'extend' or shift drag edge	
+
+		
+multi-cut	- 'cut'
+		
+
+insert edgeloop		- modeling > edit > 'swiftloop' tool (interactive) or select edge ring > right mouse menu > 'connect'
+
+
+
+merge vertex	- 'weld' / 'target weld'
+
+combine		- 'attach'
+
+
+duplicate	- shift drag
+
+
+
+
+

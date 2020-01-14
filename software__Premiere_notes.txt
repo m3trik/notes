@@ -1,0 +1,24 @@
+Premiere notes
+
+
+
+
+
+
+
+
+procedures:______________________
+
+
+add effect:
+>	drag the effects to the clip in the Timeline (To apply to more than one clip, first select the clips.)
+
+remove effect:
+-single effect
+>	Press Delete or Backspace
+-multiple effects
+>	From the Effect Controls panel menu, choose Remove Effects
+-or:
+>	Right-click a clip in the timeline, and select Remove Attributes.
+
+

@@ -1,0 +1,393 @@
+- VRay notes ---
+
+
+
+
+
+MATERIALS:____________________________________________________
+//VRay:
+
+general:
+Reflection		Think of reflections as a layer on top of diffuse color.
+				(If the material has 0% reflections, it shows 100% of the Diffuse color. If the material has 30% reflections, the Diffuse color is weakened to just 70%, and so on.)
+				
+Glossiness		almost never below 0.3.
+
+H.Glossiness	locked
+R.Glossiness	under .98 - plug in dust/speckle/fingerprint maps
+
+Reflection IOR	should be locked to Refraction IOR.
+				(All real life materials have the same reflection IOR and refraction IOR.)
+
+IOR				Default: 1.52
+				Water: 1.33
+				Plastic: 1.45
+				Glass: 1.5 – 1.8
+				Diamond: 2.4
+				Leather: 3.5
+				Compound materials like wood, stone, concrete etc.: 3 – 6
+				Metals: 18-100 (Though you should rarely exceed 40)
+			
+Fresnel			on and unlocked - spread of reflection across the surface 
+				depending on viewing angle.
+				(In real life, light will reflect differently from different angles.)
+				polished wood - 18-50 (entire surface is reflective)
+				wood/leather  - 4-6 (more reflective at grazing angles)
+
+BDRF			Microfacet GTR(GGX) - 1.6-2.2 softness of highlight across surface.
+
+--------------------------------------------------------------
+
+metal (generic):
+>	no diffuse color (black). Metal color in reflect channel.
+>	Set reflection to 95-98% black
+>	Reflection map - greyscale unless the metal is a conductor of electricity.
+>	IOR 20-70 (40)
+
+
+Polished Chrome:
+>	Diffuse color value 1 (almost completely black).
+>	Reflection color value 210 (Light Grey).
+>	RGlossiness .98 - RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR 90 (Chrome is the most reflective metal).
+>	Noise map in bump (the surface is rarely perfectly smooth) set to an intensity of around 2-5%.
+>	Roughness of .3 for “surface dust”
+>	Reflect a value of 210 in the HSV black color slider
+>	Max Depth at 10
+>	GGX falloff at 3 for a sharp highlight
+
+
+Stainless Steel:
+>	Diffuse value of 251 under the HSV black color slider
+>	Reflect a value of 180 in the HSV black color slider
+>	R.Glossiness at .7
+>	Fresnel IOR is 50
+>	Max Depth at 10
+>	GGX falloff at 4
+>	Procedural noise scaled to .08 in Anisotropy map
+>	Anisotropy set to .9 and Rotation at 45
+
+
+Polished Aluminum:
+>	Diffuse color value 10 (Dark Grey).
+>	Reflection color value 180 (grey).
+>	RGlossiness 0.7.
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR 50.
+>	Noise map in bump (the surface is rarely perfectly smooth) set to an intensity of around 2-5%.
+
+
+Brushed Aluminum:
+>	Diffuse color value 10 (Dark Grey).
+>	Reflection color value 180 (grey).
+>	RGlossiness 0.7.
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR 50.
+>	Stretched noise map in bump (the surface is rarely perfectly smooth) set to an intensity of around 2-5%.
+
+
+Polished Copper:
+>	Diffuse color value 5 (Dark Grey).
+>	Reflection color value: R 243, G 98, B 48.
+>	RGlossiness 0.9.
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR 40.
+>	Noise map in bump (the surface is rarely perfectly smooth) set to an intensity of around 2-5%.
+
+
+Antique Silver
+>	VrayDirt in Diffuse slot, Occluded color black, Unoccluded color value 8.
+>	VRayDirt in Reflection slot, Occluded color black, Unoccluded color value: R 190, G 179, B 168.
+>	RGlossiness 0.9, Dirtmap in RGlossiness slot, map value 5.0*
+>	Also, composite maps with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR 40.
+>	Noise map in bump (the surface is rarely perfectly smooth) set to an intensity of around 2-5%.
+
+--------------------------------------------------------------
+
+fabric (generic):
+>
+
+
+Leather (generic):
+>	diffuse - Leather grain Bitmap
+>	Reflect - greyscale value 45 - reflect map - color corrected diffuse to grayscale.
+>	RGlossiness value between 0.5 – 0.85.
+>	Fresnel IOR 3.5-5
+>	Bump map - color corrected diffuse to grayscale.
+>	GGX falloff - 2.5
+>	Anisotropy - .3
+
+
+Velvet/Suede:
+>	Use a falloff map in the diffuse slot, 100% black, 50% white,
+>	Perpendicular/Parallel and adjust the mix curve.
+>	50% white is for lighter textures, use a higher percentage for dark textures.
+>	Fresnel IOR 1.6.
+>	Use a noise as a bump map to create the ‘hair’ effect on velvet/suede.
+
+--------------------------------------------------------------
+
+Glossy Plastic:
+>	Reflection color value 160.
+>	RGlossiness 0.95.
+>	Fresnel IOR 1.45.
+>	Bump map and RGlossiness map with subtle grunge/scratch.
+
+
+Matte Plastic:
+>	Reflection color value 160.
+>	RGlossiness 0.3.
+>	Fresnel IOR 1.45.
+>	Bump map and RGlossiness map with subtle grunge/scratch.
+
+
+Clear White Plastic:
+>	Diffuse color Black (Value: 1)
+>	Reflection color value 180.
+>	RGlossiness 0.7.
+>	Refraction color value 160.
+>	Glossiness 0.88.
+>	Check “Affect shadows” under “Refract” options.
+>	IOR 1.45.
+>	Bump map and RGlossiness map with subtle grunge/scratch.
+
+
+Clear Color Plastic:
+>	Diffuse color Black (Value: 1).
+>	Reflection color value 180.
+>	RGlossiness 0.95.
+>	Refraction color value 235.
+>	Glossiness 1.0.
+>	Check ‘Affect shadows’.
+>	IOR 1.45.
+>	Use Fog Color to color the plastic.
+>	Fog multiplier 0.6 (decrease for lighter effect).
+>	Bump map and RGlossiness map with subtle grunge/scratch.
+
+--------------------------------------------------------------
+
+glass (generic):
+>	Set reflection to 98% black (if you need less reflection, reduce the IOR)
+>	Set reflection glossiness to 1.0
+>	Set refraction to white
+>	Set refraction glossiness to 1.0
+>	IOR 1.5 (1.4 acryllic.  1.6-1.8 flint)
+>	Check "Affect Shadows" option ON under refraction parameters.
+>	Optional: Set the glass color via Fog Color parameter under Refraction options.
+
+>	Falloff map plugged into the reflect slot. (slight negative bezier start with overall slight positive curve. black-white)
+
+
+Crystal Glass:
+>	Diffuse color Black (Value: 1)
+>	Reflection color 220 (Almost white).
+>	RGlossiness .99.
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Refraction color 230* (Almost white)
+>	Glossiness 1.0.
+>	Check ‘Affect shadows’.
+>	Check ‘Abbe number’.
+>	Abbe value 20.0 (lower is more dispersion and longer render times).
+>	IOR 1.9.
+>	Max depth 12.
+
+--------------------------------------------------------------
+
+Wood (generic):
+>	Reflect - greyscale value 30.
+>	Reflect map - color corrected diffuse to grayscale.
+>	RGlossiness between 0.4 – 0.9.
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR between 3.0 – 4.0.
+>	Bump map - color corrected diffuse to grayscale.
+
+
+Wood with Antique/Worn Edges:
+>	Use VRayDirt material in Diffuse slot.
+>	In VRayDirt add the diffuse texture in the unoccluded color slot
+>	Occluded color(for worn edges): Lighter color.
+>	Radius: Noise map or diffuse black and white dirt texture. In the dirt texture, black will
+>	Reflection Color value 30*
+>	Reflection map with wood texture
+>	Not all wood grain reflects the same way. This can be a grayscale version of the diffuse.
+>	RGlossiness between 0.4 – 0.9*
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR between 3.0 – 4.0.
+>	Bump map with wood texture.
+
+
+Painted Wood:
+>	Reflection color value 50.
+>	RGlossiness 0.8 (Lower number for matte paint).
+>	RGlossiness map with fingerprints, smudges, scratches, nicks, etc.
+>	Fresnel IOR 2.5
+>	BRDF GGX
+>	Bump: Mix noise map with black and white wood bump.
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+Nodes_________________________________________________________
+
+
+vray dirt:
+ Adding VRayDirt to a material will add render to render times. So you want to use as few dirt nodes as possible to avoid this. Some tricks to increasing the intensity of a VRayDirt is to add one instance several times into a a Composite node with each of the blends sent to “Multiply”.
+
+VRayDirt Parameters:
+
+Radius:						Determines the spread of coverage where dirt is produced.
+Occluded Color: 			The color/map that is acting as your dirt.
+Unoccluded Color:			The color/map that is the overall surface.
+Distribution: 				Forces the dirt effect into or away from contact areas.
+Falloff: 					Controls the spread from occluded to unoccluded areas.
+Subdivs: 					Controls the quality of the dirt effect (adds to render time).
+Bias: 						Forces the dirt effect in those directions (negative inverts).
+Ignore for GI: 				Lets you see dirt effect in light cache renders.
+Consider same object only: 	When checked, dirt will NOT collect around areas where separate objects touch. By default this is off.
+Double-Sided: 				Creates and effect where edges and creavase are occluded.
+Invert Normal: 				Reverses direction of dirt placement. When off, dirt sits in crevices, when on dirt will render at the open corners/edges.
+Work with transparency: 	Takes into account object opacity.
+
+
+A. Ambient Occlusion with Dirt:
+
+	starting values:
+		Radius 0.5”
+		Distribution -50
+		Falloff 0.2
+		Radius Mapped where noted
+	
+	>	create a composite node and add 2-4 layers to it. (This is going to let us 
+		blend the dirt pass with the objects diffuse, but also increase the intensity of the dirt effect using blend modes (set to multiply) without using additional VRayDirt nodes).
+
+	>	layer1 - diffuse, vrayDirt - layer2, layer3, layer4.
+
+	>	grunge bitmap and noise to a mix map. which is plugged into the vrayDirt radius.
+		(When you add a map to the radius of a VRayDirt node it acts as a mask and creates a more random, realistic wear to the surface)
+
+
+
+B. Masking Corners with Dirt:
+
+	starting values:
+		Radius .5”
+		Distribution -100
+		Falloff .15
+		Invert Normal – Checked
+
+	>	Create a composite node and add 4 layers to it
+
+	>	Set layers 2, 3 and 4 to multiply
+
+	>	Plug your dirt map into all 4 slots
+
+	>	Connect that into the Blend 1 slot of the VRayBlendMtl
+
+	>	Next create a cellular map with the following values under Cell Characteristics:
+			Chips
+			Size .2
+			Spread .5
+		
+	>	Plug that into the radius of your dirt and render. You’ll now have a chipped effect going across the edges of your object.
+
+
+C. Using Multiple Dirt Maps
+
+	In a duplicated dirt use these values:
+		Radius 6”
+		Distribution 1
+		Falloff .25
+		Bias -50 in Z
+
+	Create a smoke map and use these values:
+		Size 2
+		Iterations 8
+		Exponent 2
+
+	Use the smoke in the new dirts radius and create a new composite node that has 2 layers with layer 2 set to multiply blend mode.
+
+	This is an easy way to create complex looking edge wear with just 2 procedural materials and some use of composite nodes to increase intensity and variation across.
+
+	>	Create a new composite node with 2 layers and plug the composite node from the cellular setup into layer 1
+
+	>	Plug the smoke setup in layer 2 of the new composite and set the blend to multiply
+
+	>	Plug the cellular and smoke maps into the masks for layers 2 and 3 on the opposite composite nodes
+
+	>	Plug the new composite node into the blend 1 slot of our material.
+
+
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+Modifiers_____________________________________________________
+
+
+VRayDisplacementModifier:
+
+>	connect greyscale texture to an output node. then to the Texmap slot of the Displacement Modifier.
+
+
+
+Type:
+	These are different ways that the displacement is calculated. Generally, you should only use 3D Mapping.
+
+Texmap/Texture chan/Filter texmap/Filter blur:
+	These control the texture image that is used for the displacement. You already know what the Texmap box is for. Texture chan determines which UV channel is used for the Texmap. Filter texmap allows you add a small amount of blur and smoothing to the image (controllable with Filter Blur) to smooth out any super-sharp details. Generally, you can check the Filter box and leave it at the default of .001 if you are using a good map for your displacement.
+
+Amount:
+	The amount the displacement pushes out in real-world units.
+
+Shift:
+	You may notice that your displacement will tend to “puff out” the entire model. This is because displacement will take the surface geometry and move them outwards according to the value set in the Amount. If your texture is mostly white, this means that your model can grow in size infinitely depending on what value you set!
+
+	We often see rugs get eaten up by a floor if the floor’s displacement value is set too high – again, because the surface is being moved outwards.
+
+	To combat this, we can use the Shift value. What this basically does is “move” the surface inwards before starting the displacement, thus limiting the maximum height of the final displaced surface. See the graphic below and watch this video.
+
+Water Level:
+	Water level will cut off everything below the value. For example, if you set the amount to 1 and the water level to .5, any low-lying geometry will be culled from the render. You can easily make your model disappear if you set this too high! For example in the render below, the Amount is set to 1 but the water level is set to .5 – so everything from 0 to half an inch is just removed.
+
+Relative to bbox:
+	This will change the way Max calculates the displacement heights. Leave it unchecked.
+
+Texmap min/max:
+	These are useful when using a 16-bit texture as it will allow black to actually displace inwards, grey to be 0, and white to displace outwards. Generally, however we do not use this functionality. If you would like to learn more, watch this Youtube video. Basically when you generate a 16-bit texture, some of the values will actually be negative. These min/max values act as clamps on that value – so if you have a black value of -5 in your texture, then you can set -5 as the minimum value here and it will allow that negative value to act as a displacement. We rarely work with 16 bit textures and this option doesn’t work with procedural textures.
+
+Edge length:
+	Earlier we explained how displacement will automatically subdivide geometry to add more edges. The amount of edges that are added are controlled using this number. If you are getting artifacts or a polygonal look to your displacement, increase this value. It measures the maximum amount of pixels an edge is allowed to occupy before it is subdivided into a smaller triangle. The smaller the number, the more subdivided the model gets.
+
+View-dependant:
+	When checked, the above explanation works. When unchecked, Edge length is in world units instead instead of pixels. So a value of 1 in the Edge length becomes 1 inch before the edge is subdivided again. Generally, you should keep it on.
+
+Keep continuity:
+	This is a very important checkbox, but it’s off by default. When a displacement rounds a corner, it can displace the two surfaces on either side of the corner away from each other, creating a gap that will appear in the render as a black area. Enabling this option will make sure that your edges stay together! In the images below you can see when this is disabled (left) vs. when it is enabled (right).
+
+Edge thresh:
+	This value controls the blending between different maps on different faces. Keep it low – generally you shouldn’t change it from the default
+
+
+
+
+--------------------------------------------------------------

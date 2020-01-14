@@ -1,0 +1,842 @@
+zbrush 4R7 http://docs.pixologic.com/user-guide/3d-modeling/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PRIMITIVES: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+: existing primitives
+	create:
+		select and drag out from the tool menu 
+
+	modify:
+		initalize pallet> modify attributes
+
+
+	zSpheres:
+		click and drag out shapes
+
+
+
+convert to poly:
+>	make unified skin (right hand menu)
+>	a key toggles preview of poly mesh (before converting to poly)
+	(adaptive skin creates poly model from zspheres: right menu list)
+
+
+zSketch: (works on top of existing zSpheres)
+>	drag freeform shapes by brush size
+	(alt; delete as you sketch in zSketch)
+	(shift; smooth zSketch transitions)     
+
+
+create using shadowbox: (define the shape in 3 perspectives)
+	draw	ctrl
+	erase	ctrl + alt   
+	finish	subtool>shadowbox  unhilight
+
+
+
+
+
+
+
+
+	
+
+SUBTOOLS: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+: subract sub-tool  (keywords: boolean,inverse,subtract subtool,create difference mesh)
+>	subtool to subtract below
+>	put lower subtool in difference mode (second remesh mode icon)
+>	on lower subtool - Tool\PolyGroups\Group As DynaMesh Sub
+>	merge down
+>	run dynamesh remesh to subtract (ctrl + drag canvas)
+
+
+
+: extract mask to new subtool
+>	subtool menu>	extract>	extract by mask or visibility
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+POLYGROUPS: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+select polygroup:			ctrl + shift + click, release keys drag
+
+create polygroup:			polygroups> group visible
+create polygroup from mask:	ctrl + w
+
+toggle polyframe:			shift + f
+
+show entire mesh:			ctrl + shift + click canvas
+isolate polygroup:			ctrl + shift + click polygroup
+select/ isolate/ polygroup:	ctrl + click polygroup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MASKING: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+paint mask		ctrl
+erase mask		ctrl + alt
+invert mask		ctrl + click canvas
+un-mask all		ctrl + drag canvas
+drag mask		ctrl + drag
+
+soften mask		ctrl + click model         
+sharpen mask	ctrl + alt click model
+invert mask		ctrl + click canvas
+
+mask by cavity (auto mask low areas)
+mask by ambient acclusion (auto mask shadow areas)
+
+
+
+
+: transpose smart masking
+>	using smart transpose brush, hold the Ctrl key while dragging the Action Line.
+(hold Shift key to add a Mask to the previously created one. ALT to unmask)
+
+
+: transpose curve deformation
+>	bend only the portion of your surface that is located between the two furthest circles of the action line.
+>	in Move mode, hold the ALT key & drag the Action Line’s center circle to bend surface.
+
+
+: mask polygroup
+>	press W or click the Move button
+>	Ctrl + Shift + click on any PolyGroup (All other groups will immediately be masked).
+
+
+
+: Save Mask
+>	Polypaint mode. (Brush> ZAdd off, Brush> RGB on, greyscale value) 
+>	Create polyPaint layer. (tool> layers)
+>	Mask by Intensity.
+(you can only have one polygroups set, but you can have as many layers as you want)
+
+
+
+
+
+
+
+
+
+
+SELECTION: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+Pivot:
+: center on selection
+>	click white circle to center your selection pivot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TRANSPOSE: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/transpose/
+
+
+
+: move mode (w key)   
+click + drag to move manipulator
+
+	outer middle ring	move manipulator (all three rings)
+	outer end rings		move manipulator end position (hold shift; constrain movement)
+	center red ring		move object
+	outer red ring		skew\stretch object
+
+
+
+
+: scale (e key)
+	outer red rings      scale constrained by opposite end point
+	center red ring      scale constrained by both end points
+
+
+
+
+: rotate  (r key)
+	outer red rings      rotate
+	center red ring      twist 
+
+
+
+: transpose perpendicular
+>	click polygon to auto-draw transpose line from its normal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DUPLICATE & MIRROR GEOMETRY: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+: duplicate
+>	in Move mode hold Ctrl to duplicate the mesh. 
+
+
+
+: mirror
+>	geometry> modify topology> copy
+>	deformation> mirror
+>	geometry> modify topology> paste append
+
+
+
+: re-sym
+>	mask side to protect from change.
+>	deformation> smart re-sym (to mirror one side to the next) averages both sides by default.
+
+
+
+
+
+
+
+
+
+
+
+CURVES: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+profile editor:  edit point curve type -drag a point off the editor and leaving the mouse button pressed move back onto the editor.
+
+
+
+
+
+
+: Delete Curve
+delete all curves:
+>	Stroke> Curve Functions> Delete Curve
+
+delete curve on surface:
+>	With curve brush active, click on surface.
+
+
+
+
+
+
+
+
+
+
+BRUSHES: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+brush mode:
+Zadd            sculpt (add)
+Rgb             paint
+Zsub            sculpt (subtraction)
+Mrgb
+
+
+constrain brush direction:
+hold shft after starting stroke
+
+repeat brush stroke: (1 key)
+replay last brush stroke with differnt settings or tool
+
+repeat relative:  (shft + 1)
+replay last brush stroke anywhere on the mesh (as long as the mesh has not been rotated)
+
+
+
+
+
+: Insert Brush         
+insert mesh primitives  (keywords: insert brush)
+                  adjust proportions - hold alt after starting to drag (holding alt before flips normals)
+                  hight              - controlled by the z intesity slider
+                  reset proportions  - ctrl
+                  subtract           - (see subract sub-tool)
+
+
+
+
+
+: IMM Brush (m key (IMM mesh insert menu))
+insert multi mesh  (keywords: multimesh, multi-mesh)
+basic use:
+>	make one part an IMM brush
+>	then make a ploygroup around the target edge
+>	draw out the IMM brush on the polygroup, position/scale the IMM
+>	control-drag twice on background to merge the two
+(loop around mesh by holding shft key after drag)
+(delete old curve by clicking model (if IMM brush still active) or stroke> curve functions> delete curve(delete all curves))
+
+
+
+
+
+
+
+: Clip Brush
+	Move clip area                   - hold spacebar
+	reverse clip area                – Alt (hold down)
+	ClipCurve soft direction change  – click Alt once
+	ClipCurve sharp direction change – click Alt twice
+	disable 5 degree snapping        - release shift key
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ZMODELER: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- - -
+
+actions:      polygon actions: http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/creating-meshes/zmodeler/zmodeler-actions/polygon-actions/
+   
+edge actions: http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/creating-meshes/zmodeler/zmodeler-actions/edge-actions/
+
+point actions: http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/creating-meshes/zmodeler/zmodeler-actions/point-actions/
+
+curve actions: http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/creating-meshes/zmodeler/zmodeler-actions/curve-actions/
+
+
+
+
+paint temp polygroup:
+(zmodeler> polygroup)
+>	alt click existing polygroup to add temp polygroup (symmetry off to paint center polys) to an existing.
+
+
+
+
+
+extrude:
+	hold ctrl to extrude withought new edgeloop and polygroup
+	
+	hold shift to extrude along normal without adding geometry
+	tap alt after starting a qmesh extrude to change polygrouping
+
+insert edgeloop:
+	hold shift to constain new edgeloop to a staight line  *inserting an edgeloop over an existing edgeloop and hitting alt will delete that edge loop
+
+polygroup:
+	polygroup>overwrite. adds polys to a polygroup.  click on polygon, hold Shift. ZBrush will copy the polygon’s PolyGroup. Release the click. Then click to paste. *doesnt seem to work on base polygroup  (keywords: add to polygroup)
+
+align edge:
+	select first edge then click + drag second edge.
+
+add to curve:
+	generate a curve corresponding to the selected Target. The created curves can later be used with Curve Actions or other Curve brushes. 
+
+bridge:
+	connects one or more edges with polygons. This Action makes it possible for you to connect two edges or two edge borders together.
+
+equalize:
+	evaluate the surface and add geometry to surface that has been stretched and is light on geometry
+
+nanomesh:	http://docs.pixologic.com/user-guide/3d-modeling/nanomesh/
+>	m key select subtool or IMM mesh
+>	use target option to select placement
+>	after placement the nanomesh palette becomes active and the instance can be modified.  (You can delete the geometry the nanomesh was built on after converting to polymesh 3d.)
+
+
+stitch:
+	close holes or change topology
+
+split:
+	inserts a point on the clicked edge and connects it to all adjacent edges. Dragging the point during the Split Action allows you to move it along the edge.
+	alt: collapse the edge by welding its two points together at the location of the one closest to the click.
+				 
+unweld:
+	disconnects the clicked edges corresponding to the Target and creates creasing on the border edges. Extruded polygons are created to keep the original shape visually separate when Dynamic Subdivision is enabled.
+
+
+
+zmodeler modifiers:
+align:
+	select two edges of an edgeloop. then align according to the modifier
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MODIFY TOPOLOGY: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+
+subdivide:	(ctrl + d)
+up subdivision level:	d
+down subdivision level:	shft + d
+
+
+
+
+smooth:	(shft)
+also: alternative brush; smooth Directional
+
+: Ultimate Smooth
+>	hold shift to smooth
+>	release shift while smoothing	
+
+
+
+
+toggle polyframe (mesh visability)	shft + f
+
+
+
+
+
+
+
+
+
+: Bridge Geometry
+Using the curve brush:
+>	Turn off symmetry.
+>	Using the curve brush, draw perpendicular to the first edge, press shift before releasing.
+>	Repeat for the second edge.
+
+
+
+
+
+: Create Holes
+>	With the SliceCircle brush, create a new polygroup for the hole.
+>	Hide and delete that polygroup.
+>	Bridge two openings using CurveBridge brush and re-DynaMesh the object. (Don't forget that when using the CurveBridge brush, press Shift to have it automatically draw/close the guide on the opening)
+
+
+
+
+
+
+: Create ZRemesherGuide Loops
+You want your joints in a specific place, so you create guide loops with ZRemesherGuide brush. The best way of doing this is with CreaseCurve brush. 
+>	Turn ON PolyF to see the wire frame.
+>	Use CreaseCurve.
+>	Stroke menu> Curve Functions; deactivate the Border and Frame Mesh options.
+
+
+
+: Group Loops (edgeloop polygroups) then transpose in to center.  delete any remaining artifacts, repolygroup and dynamesh
+
+
+
+: Extract
+mask area
+extract masked area (then clear selection to move)
+
+
+
+: Extrude
+basic extrude using transpose: (does not work with subdivision levels. freeze transforms first)
+>	in transpose mode hold alt key to extrude unmasked area.
+
+extrude clean edges using transpose:
+>	isolate the area to be extruded.
+>	polygroup
+>	tool> geometry> edgeloop> groupsLoops. (set number of loops)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RETOPOLOGY: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+: zremesher 
+(target polygon count 1 = 1000 polys)
+
+
+
+
+
+: dynamesh (evenly redistribute poly mesh)
+>	geometry> dynamesh
+(re-run dynamesh;  ctrl + drag canvas)
+
+
+
+
+
+: Topology brush (keywords: retopology)
+(does not work with subdivision levels. curves cannot be edited beyond extending and deleting (editing can be done however using another curve brush, making sure that Bend is on and completing your edits).
+ 
+	Brush size			controls curve density.
+	
+	Draw size			controls the thickness of the generated geometry (change brush size before generating). A Draw Size of 1 will generate a mesh with no thickness.
+	
+	contrain line		hold shift (you can use the Clip Curve combined with masks to align vertices quickly create straight lines.  Mask rectangle over edgeloop\invert mask\clip curve line to straighten (also zmodeler\slide edge to reposition))
+	
+	generate topology	click support mesh
+	delete curve		alt + drag over curve  (This operation will only work if the 	removal curve begins on the model surface. Otherwise you will rotate the model instead.)             
+	delete parts of curves that are not quads or tris - alt + drag on mesh surface away from curves
+
+
+
+
+
+
+: Remesh and retain details (by freezing subdivision levels)
+>	Tool> Geometry> Freeze Subdivisions on the SubTool you would like to retopologize.
+(If level one doesn’t have enough polys to maintain the sculpt’s form, choose the subdivision level with the desired silhouette and Del Lower. After which you can return to the highest and Freeze Subdivision Levels)
+>	Use ZRemesher with any desired settings.
+>	Freeze Subdivisons again. (ZBrush will now recalculate your subdivision levels and project the details onto the new mesh topology)
+
+
+
+
+: Project Mesh Details (from one mesh to another)
+>	Tool> SubTool> Duplicate (ctrl + D)
+>	Hide all other SubTools, (including the duplicate).
+>	Use ZRemesher with any desired settings.
+>	Turn on the copy of the SubTool that has the sculpted details (make sure that this SubTool is at the highest subdivision level).
+>	(with the remeshed model still selected), Tool> SubTool> Project All (adjust Dist slider).
+(repeat until until you have the desired number of subdivision levels.)
+
+
+
+
+
+
+
+
+
+
+
+
+SCULPTING: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+
+: skin
+pores:
+	standard brush + stroke spray + alpha 07
+wrinkles:
+	""					""		  + alpha 58
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+POLYPAINT: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+allows individual polys to be painted
+polypaint> colorize
+
+
+
+
+concept painting:
+
+on polyPlane:
+>	drag out polyplane primitive. 
+>	turn brush rgb channel on. (draw> rgb channel)
+>	masking   (masking> mask by color> mask by intensity)(invert mask)
+>	move  (move topological)(move curve)
+
+
+Quicksketch:
+>	erase - Select the PenSoft brush and paint over. 
+	(Use the ‘v’ key to switch between dark/light colors)
+>	exit  - initialize zbrush  (preferences>init zbrush)    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TEXTURES: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+: Create Tiled Noise Texture
+>	Set Document> (canvas) width and height to 512/1024/2048 resolution.
+>	exit edit mode and the drag geometry to tile into the canvas.
+>	re-enter edit mode and scale
+>	exit edit mode, hold tilda key, and position geometry.
+>	use layers to add more instances of geometry to tile.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LAYERS: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+append          after a tool is created or imported select the tool and append to subtool 
+rename          change name of subtool
+all low/high    lowers/raises all subtool subdivision levels
+groups split    seperates polygroups
+split hidden    ctrl + shft + click, release keys & drag to select geometry to seperate
+merge down      combine adjacent subtools
+merge visible   merge all visible subtools into one new tool layer
+merge visible\weld   also merges the vertices
+
+
+layer modes:
+	Remesh> Add (default)
+	Remesh> Subtract
+	Remesh> Intersection
+	Polypaint on/off (Shift+click the paintbrush icon to turn polypaint on/off for all SubTools) 
+	Visibility on/off (click below the icon to just turn off the selected SubTool (it will remain in view until you switch to a different SubTool)).
+
+
+
+
+
+
+	
+	
+
+
+HOTKEYS: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+Set Hotkey:
+>	hold CTRL + ALT & click on the interface item you want to assign a hotkey to.
+>	Press the intended hotkey or press ESC to exit.
+
+
+
+Tablet Hotkeys:
+rotate				pen button1 drag without touching surface.
+pan					alt + pen button1 drag without touching surface.
+zoom				ctrl + pen button1 drag without touching surface.
+right click			pen button1
+erase/pen toggle	pen button2
+
+tool menu			z
+tablet menu			y
+frame				f
+
+deformation menu	shft + z
+					sfht + y
+					shft + f
+
+					alt + z
+					alt + y
+					alt + f
+
+					ctrl + z
+					ctrl + y
+					ctrl + f
+
+interface:
+ctrl + hover            show expanded tool tips
+ctrl + o                open project
+ctrl + g                GoZ
+   
+
+menus:
+tab                     show /hide interface palettes
+shft + select submenus  open multiple menus at a time
+ctrl + n                clear canvas
+,                       open /close lightbox
+
+
+customize ui:         preferences>config>enable customize
+ctrl + alt drag       move to shelf
+ctrl + alt click      rename custom ui menu (enable customize and Ctrl+Alt click on it's header,  leave blank to delete) custom subpallet
+Ctrl + Alt click      set shelf hotkey. (disable enable customize hold Ctrl+Alt and click on your custom menus header.
+macro                 save text file to a subfolder of the macros folder. File name will be the macros name.
+
+
+view:
+focus /frame          f key
+perspective           draw>perspective distortion   adjust perspective view
+silhouette            v key toggles silhouette mode  
+
+
+
+
+
+
+
+
+NAVIGATION: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+*middleMouse plug-in
+*default
+left mouseButton      tumble
+ctrl + left mouse     zoom
+alt + left mouse      move
+hold shift + rotate   rotate in 90 degree segments
+local centering       when activated it will shift tumble navigation focal point
+
+solo/dynamic          When Dynamic is turned on & Solo mode itself is off, ZBrush will hide all SubTools except the selected subtool during move, scale or rotate navigation.
+
+
+selection:
+ctrl + shft                (left click drag marqee) selection mode
+ctrl + shft + lasso        click on polyloop to hide (hide polyloop)
+crtl + shft + alt          hide selected (left click drag marqee or single click poly or polygroup)  
+ctrl + shft click model    invert selection
+ctrl + shft + x            grow selection
+ctrl + shft + s            shrink selection
+ctrl + shft click canvas   unhide /show all
+also:  polygroups   group and save selections
+
+
+selecting subtools:
+alt + left mouse      select subtool          
+arrow keys            navigate subtools
+ctrl + arrow          move subtools
+shft + move button    move subtool all the way to top or bottom of the subtool pallet
+shift + x             eplode view sub-tools
+
+
+Mesh Visibility:
+Show mesh portion – Shift+Ctrl+Click, release keys & drag (green selection area)
+Hide mesh portion - Shift+Ctrl+Click, release keys & drag – press Alt (red selection area)
+Show entire mesh – Shift+Ctrl+Click Background
+Show only selected Polygroup (on fully visible mesh) – Shift+Ctrl+Click
+Hide selected Polygroup (on fully visible mesh) – Shift+Ctrl+Click twice
+Hide selected Polygroup (on partially visible mesh) – Shift+Ctrl+Click
+Reverse visibility – Shift+Ctrl+Click & drag Background
+Hide edge loop – with Lasso option selected, Shift+Ctrl+click on edge that crosses loop
+
+
+
+
+
+
+
+
+
+
+
+
+PLUG-INS: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+
+: GoZ
+maya shelf: shelf_GoZBrush();

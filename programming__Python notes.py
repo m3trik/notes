@@ -2056,6 +2056,8 @@ inspect.getmembers(Class, predicate=inspect.ismethod)
 #check if instance:
 obj.isinstance(potentialInstOf, Class) # is instance of class [bool]
 obj.issubclass(potentialSubcalss, Class) # is class subclass of [bool]
+#
+issubclass(SubClass, object)
 
 
 #check if instance exists:

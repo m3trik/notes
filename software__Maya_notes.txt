@@ -1,0 +1,247 @@
+- Maya notes --------------------------------------------
+
+
+
+Procedures:
+curve warp a mesh
+>	select the mesh and then the input curve.
+>	go to Deform > (Create) Curve Warp. (Maya creates a curveWarp node and automatically assigns the selected curve as its input curve.)
+
+
+
+
+shrink wrap one object to another
+>	create a poly plane with enough subdivisions to deform correctly
+>	parent the wrapped object to the plane as a rig by using deform> wrap
+>	select the plane and the surface object and deform> shrink wrap
+
+
+
+
+Break node connection in attribute editor
+>	right click on an attribute name with an incoming or outgoing connection.
+>	select break connections
+
+
+
+
+	 
+
+___selection
+ctrl + marquee       deselect only
+ctrl + right click   selection marking menu	 
+
+move selection marquee:		alt + LMB
+
+grow selection (shrink);	hold shft + > (or <)
+
+
+___transform:
+nudge values-				highlight alt+ up/down/left/right arrow keys
+
+
+
+___snapping
+
+snap to grid                 = ctrl+x
+snap to curve                = crtl+c
+snap to CV, vertex, or pivot = ctrl+v
+
+slide vertice along edge  -  while holding c, middle mouse click EDGE and drag.
+
+
+___pivot:
+hold d key  -  while moving or rotating pivot point
+reset pivot point and other settings  -  hold d, right click on canvas (also tool settings while holding d)
+set position:		hold shift while in edit mode.  (with component or object selected)
+set orientation:	hold ctrl while in edit mode. ("")
+
+
+___edges
+ctrl+alt+rt arrow  spin edge
+slide edge                -click select edge then middle mouse drag (located:mesh tools\)
+
+
+edgeloops:
+split vertex (edgeloop around vertice)
+>	select vertex
+>	extrude (If the vertex pops forward, go into your extrude menu and change the Length value to 0.  The Width value represents the percentage of distance to the last edge loop. For instance, a Width value of .50 places your edge loop exactly in the middle, while .99 will put right next to the outer edge of the cylinder. You can adjust this later under the INPUTS node in the Channel Box.)
+
+add edge loop in tricky area
+>	select edges/edgeloop and extrude
+
+
+
+___joints and pivot points
+to move a joint without moving its children, you can just move its pivot point.
+move pivot point;   hit insert or hold down the D key while moving.
+
+
+
+___combining nurbs curves
+1.select then unparent (shft+P)  2.freeze transformations. turn display shapes on 
+in outliner.  create empty group.   4.ctrl select the new group & the curves from their current groups.  5. execute mel command;  parent -r -s
+
+
+
+
+__cameras
+
+adjust viewport clipping planes
+cameraShape> properties>
+	near clipping plane
+	far clipping plane
+	object display> loctor scale (scale camera locator icon in viewport)
+
+
+
+edge normals
+shft + right click   marking menu
+
+
+
+___smoothing
+convert the smoothed preview to real polygons via Modify > Convert > Smooth mesh preview to Polygon
+
+
+
+___UV Editor
+
+
+
+
+___Menus:
+dragging items to custom shelf or marking menu editor: hold ctrl +shift or MMB for scripts
+
+
+___Channel Box:
+alter value by percentage-	highlight *=percente eg. *=50
+
+delete word(s) in node names	-use modify>search and replace and replace word(s) with . 
+
+
+___Outliner:
+show selected object in outliner-	right click in outliner window> reveal selected
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+___tools
+
+
+brush tool
+holding b and left-click dragging changes brush size
+
+
+
+
+
+
+___plug-ins
+mental ray 
+plug-in   mayatomr.mll
+
+
+
+
+GoZ
+
+1. 
+copy 
+C:\Users\Public\Pixologic\GoZApps\Maya\shelf_GoZBrush.mel
+into
+C:\Documents and Settings\m3\My Documents\maya\2016\prefs\shelves
+
+(fixes GoZ shelf doesn't appear in your Maya shelf issue.)
+
+
+2.
+copy
+C:\Program Files\Autodesk\Maya2016\scripts\startup\GoZScript.mel
+into
+C:\Documents and Settings\m3\My Documents\maya\2016\scripts
+Then add one line into your userSetup.mel(if it doesn't exist just create it.)*1
+eval ("source \"C:/ProgramFiles/Autodesk/Maya2016/scripts/startup/GoZScript.mel\"");
+
+
+
+3.
+Open Maya, now you can see the GoZBrush shelf in your Maya shelf.
+
+Open Shelf Editor, select GoZBrush then change to Edit Commands tab. Just add one more line below the first line*2:
+source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZScript.mel" ;
+(fixes GoZ launching multiple instances of maya issue and Maya?ZBrush does not success issue.)
+
+GoZ button script:
+print("GoZ to Maya");
+source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZBrushFromMaya.mel" ;
+source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZScript.mel" ;
+
+
+
+
+
+
+
+
+
+
+
+___hotkeys
+scale interface    preferences>interface>use custom scaling
+custom shelf       ctrl + shift select items from drop down menus or middle mouse drag items from shelves
+
+keys 1-10    default:                               custom:
+              				
+     1 -     Low Quality Display setting			backface culling
+     2 -     Medium Quality Display setting			smooth lvl-3 (smooth preview)
+     3 -     High Quality Display setting			wireframe on mesh   
+     4 -     Shading > Wireframe					object/component mode
+	 5 -	 Shading > Shaded Display				toggle display mode (wireframe/shaded) //add functionality to cycle through all modes or possibly just leave default hotkeys 6 & 7 active
+
+	 f1-	 										toggle grid
+	 f2-	 										isolate selected
+	 f3-	 										x-ray (mesh transparency)
+	 f4-											x-ray (ghost all other)
+	 
+     6 -     Shading > Shaded & Textured display
+	 7 -	 Shading > Lighting
+	 8 -     Open Paint Effects panel
+     
+	 9 -     										toggle status line
+     0 -     										toggle grid
+	 
+	 
+	 
+	 
+notable hotkeys:	 
+	 t -	Hold to rotate an object in 15 degrees increments.
+	 d -	toggle pivot translate mode
+	 g -	repeat last (alt-g: repeat last at mouse pos)
+	 y -	nonSacredTool (finish current action but keep tool active)
+	 h -	recent commands window
+	 
+	 ctrl+alt+LMB	drag -zoom in drag right,  -out drag left
+	 
+notable marking menus:	 
+	 w + LMB					transform marking menu
+	 pivot edit mode + RMB		pivot edit menu

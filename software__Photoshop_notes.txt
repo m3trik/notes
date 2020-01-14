@@ -1,0 +1,170 @@
+.....:photoshop.notes:::.:.:.........................
+
+
+
+
+
+
+
+
+
+
+
+
+Procedures: _______________________________________________
+
+
+
+___SELECTION
+selection shortcuts:
+	f8 quick toggles between object and component mode
+
+	Add to selection: hold down Shift while using the following tools: Magic Wand, Lasso tools, Marquee tools
+
+	Deselect: Ctrl/Cmd + D to deselect everything
+
+	Invert selection: Ctrl/Cmd + I to deselect what was previously selected and select what was not selected
+
+	Move selection: hold down Space while still drawing the selection with Marquee tools to move it around
+
+	Rotate selection: Select >Transform Selection or Q / Select / transform / rotate / Deselect / Q
+
+	Draw selection from the center: hold down Alt/Option with Elliptical or Rectangular Marquee tools while creating them
+
+'select' drop down menu/color range:
+make selection based on color (you can use color picker to select and expand the range)
+
+ability to save selections:
+Select >Save Selection
+
+
+
+
+
+
+
+
+
+
+___MASKING
+
+quick mask:
+You need to click on the icon at the bottom of the toolbar to enter Quick Mask mode or press Q
+
+
+
+
+
+
+
+
+
+
+___DUPLICATING
+Duplicate via Step & Repeat:     process of duplicating an object and spacing
+       hold alt (transform a duplicate instead of origional)+  ctrl t (edit>Free Transform)
+       move the copy into place and hit enter
+       hold alt (to transform a duplicate) and shft + ctrl + t (edit>Transform Again) to repeat the process.        
+
+
+Clone source options
+up/down arrow           rotate clone stamp by .1
+shft + up/down arrow    rotate by 1 degree segments
+
+healing brush tool uses same reference source as clone stamp. 
+
+
+
+
+
+
+
+
+
+___DEFINE CUSTOM SHAPE
+use the pen tool to create a path. then click on the path layer.
+edit> define custom shape (or right click inside work path> define custom shape)
+(if define custom shape is greyed out. click the work path (in paths tab by layers))
+
+
+
+
+
+
+
+
+
+
+___ADJUSTMENT LAYERS
+
+clip adjustment layer to an existing layer (effects only that layer)
+--click on the clip button at the bottom of the adjustment rollout.
+
+presets can be a good starting point
+double click name to reset adjustment ex.hue,saturation
+you can select color and mouse drag to change values on the fly 
+
+
+
+
+
+
+
+
+
+___IMAGE RESIZING & RESOLUTION
+
+image>image size
+
+resample up then sharpen
+
+
+
+
+
+
+
+
+
+
+
+___STROKE
+fx icon at bottom of layers panel> stroke
+
+
+
+
+
+
+
+
+
+
+
+___PERSPECTIVE
+perspective adjustment options:       (keywords: adjust perspective, correct perspective, fix perspective)
+
+        Lens Correction filter  -  fixes camera lens distortion  (Filter>Lens Correction) 
+                                   fix camera lens distortion manually  (Filter>Lens Correction>Custom tab)  
+                                   
+        Perspective Warp        -  Manipulate control points on a grid   
+                                   drag out guids
+                                   draw out perspective warp grid (Edit>Perspective Warp)
+                                   hit enter to go into adjustment mode
+                                   move warp pins to manipulate perspective       
+
+
+
+								   
+								   
+								   
+								   
+
+___IMPORT/EXPORT
+
+as vector:
+	single element:
+	right click on selection> Export as> svg
+	
+
+

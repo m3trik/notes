@@ -1,0 +1,57 @@
+Unreal Engine notes
+
+General hotkeys
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MATERIAL EDITOR:
+
+
+node hotkeys
+1234	- 1-4 vector constant node
+u		- TexCoord (uv coorinates) node
+t 		- Texture sampler node
+s/v		-scalar or vector parameter
+a/d/m 	-Create an Add, Divide, Multiply node
+
+
+Nodes:
+vector1		- 0-1 greyscale
+vector3		- full rgb
+
+Lerp 	-mix a/b/ alpha
+
+
+
+Fresnel 	-the lower the angle, the stronger the reflection becomes
+
+
+
+uv:
+
+
+
+
+
+BLUEPRINTS:
+
+
+conditionals:
+
+
+
+branch	-boolean
+
+event tick	-increments every frame
+

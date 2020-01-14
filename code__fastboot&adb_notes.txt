@@ -1,0 +1,129 @@
+##if error-make sure your your data cable is working correctly##
+
+
+fastboot________________________________________________________________________________
+
+
+fastboot devices
+fastboot usb
+fastboot flash recovery recovery.img
+fastboot flash boot boot.img
+fastboot erase cache
+
+fastboot reboot -recovery
+fastboot reboot -bootloader
+fastboot reboot -system
+
+
+
+
+re-lock /unlock_________________________________________________________________________
+
+fastboot oem lock
+
+fastboot oem get_identifier_token
+fastboot flash unlocktoken Unlock_code.bin
+
+
+
+
+adb_____________________________________________________________________________________
+
+
+adb kill-server
+adb start-server
+adb devices
+adb usb
+
+
+
+
+
+
+full list;
+
+
+ADB Commands
+
+adb devices – list all connected devices
+adb push <local> <remote> – copy file/dir to device
+adb pull <remote> [<local>] – copy file/dir from device
+adb sync [ <directory> ] – copy host->device only if changed
+(-l means list but don’t copy)
+(see ‘adb help all’)
+adb shell – run remote shell interactively
+adb shell <command> – run remote shell command
+adb emu <command> – run emulator console command
+adb logcat [ <filter-spec> ] – View device log
+adb forward <local> <remote> – forward socket connections forward specs are one of: tcp:<port>
+localabstract:<unix domain socket name>
+localreserved:<unix domain socket name>
+localfilesystem:<unix domain socket name>
+dev:<character device name>
+jdwp:<process pid> (remote only)
+adb jdwp – list PIDs of processes hosting a JDWP transport
+adb install [-l] [-r] [-s] <file> – push this package file to the device and install it
+(‘-l’ means forward-lock the app)
+(‘-r’ means reinstall the app, keeping its data)
+(‘-s’ means install on SD card instead of internal storage)
+adb uninstall [-k] <package> – remove this app package from the device
+(‘-k’ means keep the data and cache directories)
+adb bugreport – return all information from the device
+that should be included in a bug report.
+adb help – show this help message
+adb version – show version num
+DATAOPTS:
+(no option) – don’t touch the data partition
+-w – wipe the data partition
+-d – flash the data partition
+scripting:
+adb wait-for-device – block until device is online
+adb start-server – ensure that there is a server running
+adb kill-server – kill the server if it is running
+adb get-state – prints: offline | bootloader | device
+adb get-serialno – prints: <serial-number>
+adb status-window – continuously print device status for a specified device
+adb remount – remounts the /system partition on the device read-write
+adb reboot [bootloader|recovery] – reboots the device, optionally into the bootloader or recovery program
+adb reboot-bootloader – reboots the device into the bootloader
+adb root – restarts the adbd daemon with root permissions
+adb usb – restarts the adbd daemon listening on USB
+adb tcpip <port> – restarts the adbd daemon listening on TCP on the specified port
+networking:
+adb ppp <tty> [parameters] – Run PPP over USB.
+Note: you should not automatically start a PPP connection.
+< tty> refers to the tty for PPP stream. Eg. dev:/dev/omap_csmi_tty1
+[parameters] – Eg. defaultroute debug dump local notty usepeerdns
+adb sync notes: adb sync [ <directory> ]
+< localdir> can be interpreted in several ways:
+– If <directory> is not specified, both /system and /data partitions will be updated.
+– If it is “system” or “data”, only the corresponding partition is updated.environmental variables:
+ADB_TRACE – Print debug information. A comma separated list of the following values
+1 or all, adb, sockets, packets, rwx, usb, sync, sysdeps, transport, jdwp
+ANDROID_SERIAL – The serial number to connect to. -s takes priority over this if given.
+ANDROID_LOG_TAGS – When used with the logcat option, only these debug tags are printed
+.
+
+Fastboot Commands
+
+ Example (fastboot flash recovery TWRP-recovery.img) then hit enter this will flash a recovery image to the device.
+usage: fastboot [ <option> ] <command>
+commands:
+update <filename> reflash device from update.zip
+flashall flash boot + recovery + system
+flash <partition> [ <filename> ] write a file to a flash partition
+erase <partition> erase a flash partition
+getvar <variable> display a bootloader variable
+boot <kernel> [ <ramdisk> ] download and boot kernel
+flash:raw boot <kernel> [ <ramdisk> ] create bootimage and flash it
+devices list all connected devices
+reboot reboot device normally
+reboot-bootloader reboot device into bootloader
+options:
+-w erase userdata and cache
+-s <serial number> specify device serial number
+-p <product> specify product name
+-c <cmdline> override kernel commandline
+-i <vendor id> specify a custom USB vendor id
+-b <base_addr> specify a custom kernel base address
+-n <page size> specify the nand page size. default: 2048

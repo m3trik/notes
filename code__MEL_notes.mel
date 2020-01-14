@@ -1,0 +1,2366 @@
+MEL //execution based language based on Unix shell scripting.-------------------------------------------------------------------------------------------
+
+
+//mel command referance:  linked under help tab in the script editor
+//http://help.autodesk.com/cloudhelp/2015/ENU/Maya-Tech-Docs/Commands/index.html
+
+
+Imperative syntax:  //command simply prints its return value to the Script Editor, it does not provide a usable return value
+(command)			eg.  attributeExists visibility mySphere;
+					eg.  abs -50;
+				
+Function syntax:    //command returns a value
+(procedure)			eg.  attributeExists("visibility", "mySphere");
+					eg.  abs(-50);
+
+
+
+
+
+
+
+"COMMENTING:" 
+
+//single line 
+
+/* 
+multiple 
+lines 
+*/
+
+
+
+
+"VARIABLES:  //start with $---ex. $myVariable------------------------------------------------------------------------------------------------------------"
+
+//declare multiple variables in one line.
+//assignment chaining
+int $var1, var2;
+$var1 = $var2 = 0; //same as $var1 = 0, $var2 = $var1
+
+
+
+whatIs	//query the type of variable   eg. whatIs "$tmp"; // Result: int variable
+
+
+//variable's type CANNOT be redefined once it is created, until the maya session is ended.
+types.  
+int $variable 	 = assign an integer;			eg. int $a = 5;         //integer
+float $variable  = assign a float value;	eg.	float $b = 3.456;   //float value
+string $variable = "strings in quotes";		eg.	"String Variable"   //double quotes		
+vector $variable = <<X, Y, Z>>;						eg. vector $variable = <<2.5, 5.0, 7.5>>; //always float values
+						 eg. vector $variable = <<X, Y, Z>>; //or assign values as variables
+											$variable.X = 2.5; 
+											$variable.Y = 5.0; 
+											$variable.Z = 7.5; 
+matrix $table[#of rows][#of columns];
+matrix $table[3][5] = <<1,2,3,4,5 ; 6,7,8,9,10 ; 11,12,13,14,15>> 
+
+							1		2		3		4		5
+							6		7		8		9		10
+							11	12	13	14	15
+
+
+eg. //convert to different type:
+string $var1 = "4";	//initial string
+float $var2  = $var; //converted to a float (must use a new variable name)
+int $var3 	 = $var; //repeated to an int
+
+//convert from array to string
+eg. string $newStringVar = ($floatArray[0] + "_" + $floatArray[1] + "_" + $floatArray[2]);
+
+eg. //check variable type:
+whatIs "$var1"; //result: string variable
+whatIs "$var2"; //result: float variable
+whatIs "$var3"; //result: int variable
+
+
+implicit    $variable = 1234;           //maya will determine the value as integers
+explicit    string $variable = "1234";  //you are defining the value as a string
+//explicitly defining a variable speeds up the interpreting process eg. string $objs[] = `selectNodes`;
+
+
+local       //default.  exist in procedure only
+//local variables can be passed to functions as arguments
+global      //seen throughout maya
+//variables & procedures defined in the script editor are all global. Use {code blocks} to circumvent this. 
+
+
+// assign global variable
+global string $lotsOfInfo[] = {"like this","this","and this"};
+
+// access it
+global string $lotsOfInfo[];
+print($lotsOfInfo[0] + "\n");
+
+
+
+
+//check if global variable exists
+global proc int isGlobal(string $varName)
+	string $vars[] = `env`;
+	for ($var in $vars)
+		{
+		if($var == $varName)
+			return true;	
+		}
+	return false;
+//call procedure
+isGlobal("$global_variable")
+
+
+//useful commands to run on object variables:
+namespace:
+
+//query namespace:
+nameSpace = ''
+sel = pm.ls(sl=1)[0]
+if pm.referenceQuery(sel, isNodeReferenced=True):
+nameSpace = sel.split(':')[0] + ':'
+print nameSpace
+//alt
+print pm.selected()[0].namespace() 
+
+
+
+filterExpand	//avoid Maya's component compression
+// #change [u'bodyShell.vtx[4:5]'] to [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
+edgeVertices = pm.filterExpand (edgeVertices, expand=1, selectionMask=31)
+
+
+
+rand 	//generate random value	
+rand 42; //random from 0 to 42
+// Result: 39.1327 //
+rand -80 42; //from -80 to 42
+// Result: -12.1565 //
+rand <<1,1,1>>; //matrices from 0 to 1
+// Result: <<0.531557, 0.920261, 0.515431>>  //
+rand <<1,1,1>> <<100, 200, 300>>; //matrix from 1 to 100, 200, 300
+// Result: <<81.2325, 38.4956, 266.008>>  //
+
+// Multiple random number stream examples:
+string $s1 = "stream1";
+// Result: stream1 //
+rand $s1 42;
+// Result: 39.1327 //
+
+// Example using the convenience method which allows an integer to be used
+// as the stream name:
+// Assume `particleID' is an integer... //
+rand particleID -80 42;
+// Result: 33.6711 //
+
+floor 	//round. Returns the largest integer value that is not greater than the argument.
+floor 2;
+// Result: 2 //
+floor 2.82;
+// Result: 2 //
+floor -2.82;
+// Result: -3 //
+
+trunc 	//truncate. Returns the largest whole value that is not greater than the argument.
+trunc 2.82;
+// Result: 2 //
+trunc -2.82;
+// Result: -2 //
+
+//to round a float $value to $n decimal places simply use this:
+eg.
+$roundTruncatedValue = trunc($floatValue*`pow 10 $n`+0.5)/`pow 10 $n`;
+//if however you want a literal truncation, remove the "+0.5" bit
+eg.
+$truncatedValue = trunc($floatValue*`pow 10 $n`)/`pow 10 $n`;
+
+
+"STRINGS:	//-------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+string $myString = "hello world" ;  //declare and define a string variable.
+
+//split strings across multiple lines 
+eg.						//using a line continuation character '\' or concatenate '+'
+string $str = "first part of this line \ 
+second part on this line"
+
+
+//concatenate strings
+eg. ""+""
+
+
+\		//line continuation (multi-line strings in mel without having to use concatenation)
+
+//special characters
+\t      //tab
+\n      //new line
+\r      //carriage return
+\\      //backslash
+"\""   //insert a quote character -in some cases its necesarry to use \\\ eg. \"\\\"\"
+
+
+//Regular Expressions
+
+.	//Matches any single character
+*	//Match zero or more occurances of the preceeding expression
++	//Match one or more occurances of the preceeding expression (example below)
+^	//Matches (anchors) the expression to the start of a line
+$	//Matches (anchors) the expression to the end of a line
+\	//Escape character. Use this in front of a special character (e.g. '*') when you wish
+	//to match the actual character. Note that MEL strings resolve control characters that
+	//use '\' when they are first parsed. So, to use a '\' character in an expression, you
+	//must escape it (e.g. "\\") so that it is passed through to match.
+[...]	//Matches any one of the enclosed characters. All of the special pattern matching
+		//characters except "\" and "]" lose their special meaning between the brackets and
+		//just match themselves. A pair of characters separated by "-" matches any character
+		//lexically between the pair, inclusive (e.g. "[0-9]" matches any digit).
+		//A "-" can be included in the character set by putting it as the first or last character.
+[^..]	//(e.g. "[^ab]" will match any character except "a" or "b").
+(...)	//Used to group part of an expression together
+
+//Strip component
+string $node = "pCube1.f[2]";
+string $no_component = `match "^[^\.]*" $node`;
+// Result: "pCube1"
+
+//Extract component or attribute, with '.'
+string $node = "pCube1.f[2]";
+string $component = `match "\\..*" $node`;
+// Result: ".f[2]"
+
+string $attrName = `match "\\..*" $nodeAttr`;
+// Result: ".color"
+
+string $nodeAttr = "blinn1.color";
+string $attrName = `substitute "^[^.]*\\." $nodeAttr ""`;
+// Result: "color"
+
+//Extract parent UI control from full path
+string $uiControl = "OptionBoxWindow|formLayout52|formLayout55|button6";
+string $uiParent = `substitute "|[^|]*$" $uiControl ""`;
+// Result: OptionBoxWindow|formLayout52|formLayout55
+
+//Strip trailing CR, if any
+//This is useful when processing text input read from a file using ‘fgetline’.
+string $input = "line\n";
+string $line = `match "^[^(\r\n)]*" $input`;
+// Result: "line"
+
+//Extract directory from path
+//Note that this leaves a trailing slash.
+string $path = "C:/AW/Maya5.0/bin/maya.exe";
+string $dir = `match "^.*/" $path`;
+// Result: "C:/AW/Maya5.0/bin/"
+
+// Extract file from path
+string $path = "C:/AW/Maya5.0/bin/maya.exe";
+string $filepart = `match "[^/\\]*$" $path`;
+// Result: "maya.exe"
+
+// Strip numeric suffix
+string $node = "pCube1|pCubeShape223";
+string $noSuffix = `match ".*[^0-9]" $node`;
+// Result: "pCube1|pCubeShape"
+
+// Extract numeric suffix
+string $node = "pCube1|pCubeShape223";
+string $suffix = `match "[0-9]+$" $node`;
+// Result: "223"
+
+// Extract short name of DAG or control path
+string $dagPath = "pCube1|pCubeShape223";
+string $shortName = `match "[^|]*$" $dagPath`;
+// Result: pCubeShape223
+
+
+match 	//Returns the portion of the second string argument which matches the regular expression in the first string argument.
+//Regular expressions are strings that contain special characters which define matching criteria.
+//The basic building blocks of a regular expression are as follows:
+
+eg. //string match
+match "a+b+" "abbcc";// Result: abb
+// The following will fail because there has to be at least one "a"
+match "a+b+" "bbccc";// will fail because there has to be at least one "a"
+
+eg. // using [] to match ranges of characters. 
+match "[0-9]*" "sceneRender019.iff";// Result: 019
+
+eg. // using () to match specific characters 
+match "(abe)*" "123abeabe456";// Result: abeabe
+
+// the escape charater
+// as mentioned above, MEL parses '\' escape characters in strings.  So,
+// to pass an actual '\' character through to match, you must escape it.
+
+match("\\^.", "ab^c");// which translates to: "\^."
+// Result: ^c
+
+
+gmatch	//gmatch provides shell-style pattern matching, also known as "glob" matching.
+
+*			//matches any string
+eg.
+gmatch "matches" "m*s";
+// Result: 1
+eg.
+gmatch "matches" "mat*";
+// Result: 1
+
+?			//matches any single character
+eg.
+gmatch "matches" "ma?ches";
+// Result: 1
+eg.
+gmatch "no match" "?atch";
+// Result: 0
+
+[...]	//Matches any one of the enclosed characters.
+eg.
+gmatch "matches" "ma[a-z]ches";
+// Result: 1
+eg.
+gmatch "matches" "ma[!a-m]ches";
+// Result: 1
+
+
+substring 	//returns the portion of the first string argument bounded by starting and ending positions
+eg.
+substring "Hello There" 1 5; //arguments are 1 (first char) and 5 (last char)
+// returns the string "Hello".
+
+
+substitute 	//substitute $this $inThis $withThis;
+eg.	//you can use "somesequenceofcharacters" to substitute a specific sequence
+string $string = "my string has spaces ";
+string $result = substituteAllString($string, " ", "");
+print $result;
+eg.	
+string $test = "Hello there there hello there";
+string $regularExpr = "t.*e"; //everything in between the 't' and 'e' characters
+string $s1 = `substitute $regularExpr $test "Mel"`;
+print $s1;
+// Result: Hello Mel //
+string $s2 = `substitute "foo" $test "Mel"`;
+print $s2;
+// Result: Hello there there hello there //
+
+// The string $s1 will contain "Hello Mel" and the string $s2 will
+// contain "Hello -%there%-".
+
+
+tokenize	//split the first string argument up according to split characters provided in the
+//optional second argument. If this argument is not provided, tokenize will use a default split
+//string consisting of whitespace characters.
+
+eg.// Buffer will contain 4 strings, not 2: "A", "B", "C", "D" and $numTokens will be 4.
+string $buffer[];
+$numTokens = `tokenize "A/B//C/D" "//" $buffer`;
+
+eg.// Buffer will contain 4 strings: "Mildred", "Pierce", "Femme", and "Fatale." and $numTokens will be 4.
+string $buffer[];
+$numTokens = tokenize("Mildred Pierce Femme Fatale", $buffer);
+
+eg.// Buffer will contain 2 strings: "testing" and "non-default separators." and $numTokens will be 2.
+string $buffer[];
+$numTokens = `tokenize "testing=non-default separators" "=" $buffer`;
+
+
+//string manipulation:
+basenameEx 
+capitalizeString 
+containsMultibyte 
+encodeString
+endString 
+endsWith 
+format
+gmatch
+interToUI 
+isValidString 
+match
+size
+sizeBytes
+sort
+sortCaseInsensitive
+startString 
+startsWith 
+strcmp
+stringAddPrefix
+stringRemovePrefix 
+stringToStringArray 
+strip 
+substitute
+substituteAllString 
+substring
+tokenize
+tokenizeList 
+tolower
+toupper
+
+
+
+
+
+"OPERATORS: //-------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//precedence of operation
+(),[]    !,++,--    *,/,%,^    +,-    <,<=,>,>=    ==,!=    &&    ||    ?:    =,+=,-=,/=
+
+%		modulus			//remainder
+^		cross product	//used to calcualte the cross product of two vectors. *see vectors
+
+
+//In-Place Arithmatic Operators
+$var += 3.2; //same as $var = $var + 3.2
+//other arithmatic operators incude: -= *= /= %=
+
+
+++	//Increment /decrement Operators
+$var++; //same as $var = $var + 1;
+$var--; //same as $var = $var - 1;
+eg. ++.5 //increment by '.5' 
+
+
+true	boolean			// 1, yes, on, true
+false	boolean			// 0, no, off, false
+
+&&		and				eg. $x && $y
+||		or				eg. $x || $y 	
+								eg. if ($i == 10 || $i == 20)
+!			not				eg. !$x
+
+abs
+pow				//raise a number to a given exponent
+ceil
+floor
+clamp
+min
+max
+
+
+
+
+"ITERATORS: //-------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+for 	 loop			//repeat something a known number of times.
+for in	 loop			//specifically do something to the contents of an array
+while	 loop			//evaluates while true
+do while loop			//test condition is evaluated after the 'do' operation
+						eg. do {operation;} 
+							while(test_condition);
+
+
+//For-In Statement
+eg. //standard for loop					eg. //reduced to
+int $array[4] = {4,7,2,3};				int $array[4] = {4,7,2,3};
+int $item;								int $item;
+int $i;									for ($item in $array)
+
+
+
+
+
+ex. //do while
+int $a = 1; int $b = 2; int $c = 10;
+
+do {
+	if (($a + $b) < $c)
+    print ($a + $b);
+    $a++;
+}
+while ($a < $c);
+
+
+ex. //same as above. alternative syntax
+for ($a; $a < $c; $a++)
+	if (($a + $b) < $c)
+	{
+	print ($a + $b);
+	}
+}
+
+
+
+// perform an operation x# of times
+for ($i=1; $i<19; ++$i) duplicate -rr -st;
+
+
+for ($i = 0; $i < size($array); $i++)
+	$item = $array[$i];
+
+continue 				//continue outside of the current function
+
+
+
+
+
+
+
+
+
+
+"CONDITIONALS: //(if and switch statements)-------------------------------------------------------------------------------------------------------"
+
+//Every statement in MEL must end with a semi-colon(;) even at the end of a block
+eg. 
+if ($a > $b) {print("hello");};
+
+
+
+if (`window -query -exists myWindow`)
+	deleteUI myWindow;
+
+string $myCommand="cone";
+
+
+if ($x > 10) 
+	print("It's greater than 10!\n");
+}
+
+if ($x > 10)
+	print("It's greater than 10!\n");
+	print("Run!!!\n");
+} 
+else 
+{
+	print("It's not above 10.\n");
+	print("It's safe... for now.\n");
+}
+
+if (`window -query -exists myWindow`)
+{
+	deleteUI myWindow;
+}
+
+string $myCommand="cone";
+if (`exists $myCommand`) 
+{
+	eval $myCommand;
+}
+
+
+// Select an object if and only if it exists.
+eg. // Print a warning if it does not exist.
+if (`objExists surface1`) 
+{
+	select surface1;
+}
+else
+{
+	warning("No surface exists");
+}
+
+
+
+//alternative 'if' syntax.  also see 'toggle' command eg. toggle -object;
+ex.
+	$currentPanel = `getPanel -withFocus`; //set variable for current viewport panel
+	$state = `modelEditor -q -xray $currentPanel`; //set variable for query of xray boolean
+	modelEditor -edit -xray (!$state) $currentPanel; //reverse boolean value
+//other state change examples
+ex.
+	$state = `selectPref -query -popupMenuSelection`;  //query the current state
+	selectPref -popupMenuSelection (!$state);  //set state to !current boolean value
+ex.	//same as above written in one line:
+	selectPref -popupMenuSelection (!`selectPref -query -popupMenuSelection`);
+
+ex. //optionVar	
+	optionVar -intValue showGrid (!`optionVar -query showGrid`); //set 'intValue' to !not queried value 
+	grid -toggle (`optionVar -query showGrid`);	//toggle flag bool is queried value
+
+ex.	//toggle
+	toggle //write example for this command
+
+
+
+?: //Conditional Operator
+int $a = 3;						//same as:	int $a = 3;
+$var = ($a > 1) ? 100 : 50; 	//			if ($a > 1)
+								//				$var = 100;
+								//			else
+								//				$var = 50;
+
+//Switch Statement
+eg.										eg. //situation where some break statements need to be ommited
+int $a = 3;								int $a = 2;
+switch ($a)								switch ($a)
+{													{
+	case 1:										case -1:
+		print "a is 1";					case -2:
+		break;										print "below zero";
+	case 2:											break;
+		print "a is 2";					case 0:
+		break;										print "zero";
+	case 3:											break;
+		print "a is 3";					case 1:
+		break;									case 2:
+	default:										print "above zero";
+		print "a is another number";			break;
+		break;								}
+}								
+
+
+eg.	global proc string performSmoothProxy (int $option)
+	{
+		string $cmd="";
+
+		switch ($option) {
+		case 0:
+			eval(assembleCmd()); //assembleCmd is a separate procedure that queries any additional settings/flags
+			break;
+
+		case 1:
+			smoothProxyOptions;
+			break;
+
+		default:
+			$cmd = assembleCmd();
+		}
+
+		return $cmd;
+	}
+
+
+
+//object exists
+//mel or python
+pm.objExists (object)
+//mel only
+if (`exists $Var`){
+	'do something' $Var;
+	}
+eg. //command flag
+if (`headsUpDisplay -exists HUD_helpLine`){
+	headsUpDisplay -remove HUD_helpLine;}
+
+
+
+break 	//line break instruction exits a loop from any point in its block, bypassing the 
+//loop’s condition.  Execution resumes at the next statement after the loop. 
+//You can use a break instruction with a 'while', 'do', or 'for' loop.
+eg.
+string $words[] = {"a","bb","ccc","dddd","eeeee","ffffff"};
+string $long = "";
+for ($i = 0; $i < size($words); ++$i) {
+	if (size($words[$i]) > 4) {
+		$long = $words[$i];
+		break;
+	}
+	print($words[$i] + " is too short...\n");
+};
+print($long + " is the first long word.\n");
+
+
+
+
+
+
+"PROCEDURES: //(Functions)-------------------------------------------------------------------------------------------------------------------------------"
+
+
+eg. proc procedure (int $var1, string $var2)
+	{ //start and end blocks define scope
+		int $var3 = $var1 + $var2; //statements
+		return $var3; //return result
+	}
+
+
+//check if global procedure exists
+global proc whereIs(string $cmd)
+{
+	$path = `whatIs $cmd`;
+	if ($path != "Unknown")
+	{
+		$path = substituteAllString($path,"Mel procedure found in: ","");
+		$path = substituteAllString($path,"/","\\");
+		print $path;
+		$path = "explorer /select,\""+$path+"\"";
+		system($path);
+	}
+	else
+	{
+		warning($cmd+": unknown command");
+	}
+}	
+
+
+
+//The procedure declaration must contain the type of value which is returned from the procedure 
+eg.//(float, int, string, vector, etc.)
+proc string [] findTheObjectsName (string $array[])//in this case the return value is expected to be a string array
+{
+	...
+	return $objectName;
+}
+
+//Calling a procedure and awaiting a return value would be implemented like this
+//The $returnString variable would then contain the string that is returned as a result from calling the sub-procedure.
+string $returnString = `findTheObjectsName`;
+
+
+
+
+
+
+
+
+"ARRAYS: //(lists)---------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//arrays are a collection of variables of the SAME type
+//[] (brackets) define a variable as an array
+
+	string $array[]; //create an array of defaul 16 elements initialized at 0
+	string $array[3]; //it is best to guess at the array size when initializing an array. doesnt prevent from adding elements later.
+	string $array[3] = {"I ","like ","pie"}; //create an array with elements
+
+
+
+//returning an element from an array 
+	int $array[4] = {1, 2, 3, 4};     
+	print ($array[0] + $array[2]);
+//returns: 1 and 3
+
+//get last value of an array. 
+//can't use $array[-1]
+//to get the last value of an array use the size command. remember to use high commas when querying a value
+
+//returning a segment or the entire array
+eg. 
+	print ($array [33:40]);	//prints segment
+	print ($array ["*"]);		//prints all
+
+
+
+//query the size of an array
+eg.
+	size($array);
+
+
+eg. //append directly
+	int $array[]; 
+	$array[0] = 2;
+	$array[2] = 7; //since array[1] hasnt been defined it is initiallized as '0'
+	//result '2 0 7' 
+
+eg. //append to end of an array
+	$array [size($array)] = 3; //append '3' to the array
+
+eg. //Append multiple strings or the contents of another array:
+//appendIntArray
+//appendFloatArray
+//appendStringArray($copyTo, $copyFrom, int $numberOfElementsToCopy)
+string $to[] = { "a", "b", "c" };
+string $from[] = { "d", "e", "f" };
+appendStringArray($to, $from, 2);
+// $to == { "a", "b", "c", "d", "e" }
+
+//or copy the entire array:
+eg.
+appendStringArray($to, $from, size($from)); //append $from to the end of $to
+
+
+
+stringArrayInsertAtIndex	//Insert $item at $index in the string array $list. 
+eg.// Initialize the list
+  string $list[] = {"item1", "item3"}; // Result: item1 item3
+  
+  // Insert in the middle of the sequence
+  stringArrayInsertAtIndex(1, $list, "item2"); // Result: item1 item2 item3
+
+  // Insert before the first element
+  stringArrayInsertAtIndex(-1, $list, "item4");
+
+  // Insert at (or after) the end of the sequence. //If $index is greater than the last index of $list, $item will be placed at the end of the list.
+  stringArrayInsertAtIndex(10, $list, "item4"); // Result: item1 item2 item3 item4
+
+  // Insert at the beginning of the sequence
+  stringArrayInsertAtIndex(0, $list, "item0"); // Result: item0 item1 item2 item3 item4 //
+
+
+
+eg. //to modify a value in an array;
+	$array[2] = 6 //changes the value of 3 in the list to 6
+
+
+
+// substitute or remove items
+while (`match "[0-9]" $item` != "")
+	{
+	$item = `substitute "[0-9]" $item ""`; 
+	}
+
+//delete/ remove an element	
+//you have to create a temp array, copy over all the elements you want to keep and then re-assign the temp var to the origional array
+//stringArrayRemove
+//string[] stringArrayRemove(string[] $item, string[] $list)
+eg.
+string $remove[] = {$itemToRemove};
+$list = stringArrayRemove($remove, $list);
+
+eg.
+string $list[]  = { "a", "b", "c", "d", "e", "f", "g" };
+string $items[] = { "a", "c", "e", "g" };
+string $diff[] = stringArrayRemove($items, $list);
+
+eg. //stringArrayRemoveAtIndex	
+stringArrayRemoveAtIndex(1, $array);
+
+eg.//remove all elements using the clear command
+	clear($array);
+
+
+
+eg//reverse the order of an array
+$array = `sort $array`;
+
+
+
+// loop through the array and print each value
+eg.
+int $int_array[] = {10,9,8,7,6,5,4,3,2,1,0};// declare an array of 11 elements
+
+int $size = size($int_array);// you can use size to determine the number of elements
+
+for($i=0; $i<$size; ++$i)// access the value by providing an index into the array,
+	{						 //		where the first index is 0 
+	$value = $int_array[ $i ];
+
+	print($value + "\n");// print the value
+	}
+
+// another array loop example
+eg.
+$nodes = `ls`;// declare an array called $nodes. Call ls to list the nodes in the scene
+
+// loop through the array and print each value [for in loop notes]
+for($node in $nodes)
+	{
+	print($node + "\n");// print the node name
+	}
+
+//	Dictionary Workaround
+//	create two arrays and use one to set the key for the others index value
+
+
+//additional array manipulation:
+floatArrayContains
+floatArrayCount
+floatArrayFind
+floatArrayInsertAtIndex
+floatArrayRemove
+floatArrayRemoveAtIndex
+floatArrayToString
+
+intArrayContains
+intArrayCount
+intArrayFind
+intArrayInsertAtIndex
+intArrayRemove
+intArrayRemoveAtIndex
+intArrayToString
+
+stringArrayAddPrefix
+stringArrayCatenate		//eg. stringArrayCatenate($stringArray1, $stringArray2); // append one string array to another. Result: string1 string2 string3 string4 string5 //
+stringArrayContains		//eg. stringArrayContains ($thisString, $inThisArray)
+stringArrayCount			//eg. int $count = stringArrayCount("searchFor", $inArray); //Return the number of times the string in $item occurs in the string array $list. Zero is returned if the string is not in the list.
+stringArrayFind				//eg. int $index = stringArrayFind("searchFor", 0, $inArray); // ("itemToSeachFor",indexToSeachFrom,$arrayToSearch) Returns the index of only the first occurrence of $item in $array. If $item is not found then -1 is returned.
+stringArrayInsertAtIndex
+stringArrayIntersector
+stringArrayRemove
+stringArrayRemoveAtIndex	//eg. stringArrayRemoveAtIndex(1, $array);
+stringArrayRemoveDuplicates
+stringArrayRemoveExact	//as opposed to 'stringArrayRemove', for each occurrence of an entry in $item, only one entry from $list will be removed.
+stringArrayRemovePrefix
+stringArrayToString
+
+
+sets //
+eg.	// create a set with whatever is currently active
+select sphere1;
+string $newSet1 = `sets`;
+select cone1;
+string $newSet2 = `sets`;
+
+eg.	// Query the members of a set
+sets -query $newSet1;
+
+eg.	// create a set which contains two sets
+sets -name setOfSets $newSet1 $newSet2;
+
+listSets	//
+eg.
+$allSets = `listSets -allSets`;
+
+for ($set in $allSets)
+	{
+	string $match = `match "s+e+l+e+c+t+i+o+n+S+e+t" $set`;
+	if ($match == "selectionSet")
+		{
+		sets -clear $set;
+		print ($set+" deleted\n");
+		}
+	}
+
+
+"VECTORS: //---------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+eg.
+	vector $vector; //defines $vector <<0.0, 0.0, 0.0>>
+
+//assign a value to existing vector by essentially creating a new vector
+eg. 
+	vector $vector = << 10.0, 8.0, 2.5 >>; 
+	$vector = << 9.5, $vector.y, $vector.z >>; //vector point x is changed while y and z are retained
+
+^ //the cross product of two vectors is a vector that is perpendicular (normal) to the two original vectors.
+eg. crossproduct(a,b)= (a.y x b.z - a.z x b.y,
+						a.z x b.x - a.x x b.z,
+						a.x x b.y - a.y x b.x)
+	
+
+	
+	
+	
+	
+	
+	
+
+"MATRICES: //--------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//matrices cannot be resized
+//a matrix can only hold float values
+
+//create an empty matrix
+matrix $m[2][1]; //2 rows, 1 column.  $matrix << 0.0; 0.0 >>
+
+//access elements in a matrix
+eg.
+	matrix $m[2][4] = << 3,4,6,7; 3,9,0,1 >>; //first row, second row
+	print($m[0][0]); //result: 3
+	print($m[1][3]); //result: 1
+	
+
+
+
+
+
+
+
+"OBJECTS & ATTRIBUTES: //--------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+// Selection: ---------------------------------------------
+
+//object selection: // eg. select -replace polySurface1.map;
+select -all;
+		-add
+		-addFirst // the specified items should be added to the front of the active list
+		-replace
+		-toggle // active list should be removed,those not on the active list should be added
+		-clear
+		-symmetry
+		-symmetrySide
+		-hierarchy // children, grandchildren, should also be selected
+		-allDagObjects
+		-allDependencyNodes
+
+eg. selection = pm.ls(selection=1, flatten=1)
+	pm.select(deselect=1)
+	pm.select(selection) //#select all from list
+
+
+//get current selection
+ls -selection;
+$currentSelection = `ls -selection -showType`; //showType flag is optional
+
+//select all geometry
+pm.SelectAllGeometry()
+[pm.select (geometry, add=1) for geometry in scene]
+
+//with listRelatives -p you can find the object *precisely*
+ls -selection -objectsOnly;
+//pymel
+shapeName = pm.ls(selection=1, objectsOnly=1)
+
+
+//track selection order of components
+selectPref -trackSelectionOrder true;
+
+//get last selected object (not working with components)
+$lastSelected = ls -selection -tail 1;
+
+//get all nodes below the selected node
+ls -dag -ap -sl;
+
+
+
+
+//object types
+pm.ls(nodeTypes=1) //#list all node types
+
+//query object type
+pm.objectType('sphere1Shape')
+//
+pm.objectType('sphere1Shape', isType='nurbsSurface') //# Result: 1
+//get all objects of the specified type.
+$objectType = `ls -type "";
+
+
+//get all geometry
+geometry = pm.ls(geometry=1)
+geometry = pm.ls(type='mesh')
+transforms = pm.listRelatives(geometry, p=1, path=1)
+
+// geometry shapes and their types
+ls -type geometryShape -showType;
+
+
+//get only visible dag nodes. -dagObjects for all in scene.
+ls -visible;
+
+
+
+
+
+
+
+// Naming: -------------------------------------------------
+
+
+
+
+//rename object
+pm.rename(obj, 'newName') //#optional arg: ignoreShape=Indicates that renaming of shape nodes below transform nodes should be prevented.
+//create with a unique name using '#' suffix
+pm.modelPanel('name#', cam='persp')
+
+
+
+//get node by name
+//list current selection and filter by name
+pm.ls('*endsWith', selection=1)
+
+//To list all instances of sphere1, use the -ap/allPaths flag.
+pm.ls('sphere1', allPaths=True)
+
+
+//object type can be found by tooltip description in outliner
+//name
+ex. node.name()
+//history and transform nodes
+ex. pm.ls(sl=1, objectsOnly=1) //#returns list ie. [nt.PolyCone(u'polyCone1'), nt.Transform(u'pCone1')]
+// transform
+//ie.	pPlane1
+//using string formatting	ie.pPlane1 from pPlaneShape1
+ex. transforms = [node.replace('Shape','') for node in nodes]
+//transform from shape:
+ex. transforms = pm.listRelatives(shapes, parent=1, fullPath=1) //#returns list ie. [nt.Transform(u'pCone1')]
+//transform from selection
+ex. transforms = pm.listRelatives(pm.ls(type='mesh'),type='transform',p=True)
+
+//shape
+//ie.	pPlaneShape1
+//Shape nodes are child nodes of transform nodes
+//in mel
+ex string $shapes[] = `listRelatives -shapes $node`;
+//shape from transform:
+shapes = pm.listRelatives(transforms, children=1, shapes=1) //#returns list ie. [nt.Mesh(u'pConeShape1')]
+
+
+ex. shapes = pm.ls(selection=1, objectsOnly=1)
+
+//history node 	ie.polyPlane1
+historyNode = pm.listConnections(shapes, source=1, destination=0)
+//from selected objects
+ex. historyNodes = [n[1] for n in pm.ls(sl=1, objectsOnly=1)]
+
+
+
+//relatives
+//get direct parent nodes
+parents = pm.listRelatives(obj, parent=1) //Returns list containing the objects direct parent
+//get all parent nodes
+parents = pm.listRelatives(obj, allParents=1)
+//get direct child nodes
+childNodes = pm.listRelatives(obj, children=1)
+//get all child nodes
+childNodes = pm.listRelatives(obj, allDescendents=1)
+
+
+//connections
+//incoming connections:
+ex. nodes = pm.listConnections(shapes, source=1, destination=0) //#returns list ie. [nt.PolyCone(u'polyCone1')]
+//outgoing connections:
+ex. nodes = pm.listConnections(shapes, source=0, destination=1) //#returns list ie. [nt.ShadingEngine(u'initialShadingGroup')]
+
+
+
+
+//get the shape node name from component
+pm.ls("pCube1.vtx[0]", objectsOnly=1)
+//returns pCubeShape1
+
+//get the transform node name from component
+pm.listRelatives(pm.ls("pCube1.vtx[0]", objectsOnly=True), p=True)
+
+//in python, split the components using partition:
+object, _, component = "pCube1.vtx[0]".partition(".")
+//where the _ is python slang for 'ignore me'
+
+//get polymesh objects
+string $transforms[] = `ls -tr`; //lists all the transform nodes in the scene
+string $polyMeshes[] = `filterExpand -sm 12 $transforms`; //filters out all the non-polymesh nodes
+// transforms = pm.ls (tr=1) #lists all the transform nodes in the scene
+// polyMeshes = pm.filterExpand (transforms, sm=12) #filters out all the non-polymesh nodes
+// or:
+string $meshes[] = `ls -typ mesh`; 
+//polymeshes = pm.ls (typ="mesh") 
+
+
+
+
+
+
+
+
+//node attributes
+//list
+ex. pm.listAttr(node)
+//get
+ex. pm.getAttr()
+//get attributes:values as dictionary
+//MEL (using ie. nt.PolyCone(u'polyCone1') as node)
+ex. {attr:pm.getAttr(node+'.'+attr) for attr in pm.listAttr(node)}
+//pure python
+ex. {n:getattr(node, n) for n in dir(node)} //returns: {'upper': <built-in method upper of unicode object at 0x000001C7873982A0>, 'isnumeric': <built-in method isnumeric of unicode object at 0x000001C7873982A0>, ect..
+//set
+ex. pm.setAttr()
+ex. pm.setAttr(obj+'.keepFacesTogether'=1)
+//using a dictionary. attributes={'attribute':value}
+ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
+
+
+
+
+
+
+
+
+listAttr	eg. listAttr $objectName;  eg. $bBox = `listAttr ($objectName + ".boundingBox")`; print $bBox; 
+					//return all possible attributes associated with an object.
+
+getAttr   eg.	pm.getAttr ("vraySettings.renderMaskMode")
+
+setAttr   eg. setAttr ("persp.translateY", 23.2);
+					eg.	setAttr "vraySettings.renderMaskMode" 4;
+					// pymel
+					eg.	pm.setAttr ("vraySettings.renderMaskMode", 4)
+
+connectAttr;
+
+optionVar			set & query variables which are persistent between different invocations of Maya.
+
+
+modelEditor			//edit geometry attributes such as 
+					activeComponentsXray, activeOnly, activeView, addObjects, addSelected, allObjects, backfaceCulling, bufferMode, bumpResolution, camera, cameraName, cameraSetup, cameras, colorMap, colorResolution, control, controlVertices, cullingOverride, default, defineTemplate, deformers, dimensions, displayAppearance, displayLights, displayTextures, docTag, dynamicConstraints, dynamics, editorChanged, exists, filter, fluids, fogColor, fogDensity, fogEnd, fogMode, fogSource, fogStart, fogging, follicles, forceMainConnection, grid, hairSystems, handles, headsUpDisplay, highlightConnection, hulls, ikHandles, interactive, jointXray, joints, lights, lineWidth, locators, lockMainConnection, lowQualityLighting, mainListConnection, manipulators, maxConstantTransparency, nCloths, nParticles, nRigids, noUndo, nurbsCurves, nurbsSurfaces, occlusionCulling, panel, parent, pivots, planes, polymeshes, removeSelected, rendererList, rendererListUI, rendererName, selectionConnection, selectionHiliteDisplay, setSelected, shadows, smoothWireframe, sortTransparent, stateString, strokes, subdivSurfaces, textureAnisotropic, textureDisplay, textureHilight, textureMaxSize, textureMemoryUsed, textureSampling, textures, transpInShadows, transparencyAlgorithm, twoSidedLighting, unParent, unlockMainConnection, updateColorMode, updateMainConnection, useBaseRenderer, useColorIndex, useDefaultMaterial, useInteractiveMode, useRGBImagePlane, useTemplate, userNode, viewObjects, viewSelected, wireframeBackingStore, wireframeOnShaded, xray
+
+
+repeatLast	//add command to recent commands list
+					-edit
+					-query
+					-addCommand           String
+					-addCommandLabel     	String
+					-commandList          Int
+					-commandNameList     	Int
+					-historyLimit         Int
+					-item                 Int
+					-numberOfHistoryItems
+
+
+
+
+// INSTANCES
+//get instance
+obj.getInstances()
+//create an instance
+pm.instance()
+
+
+
+
+
+// GROUPING AND PARENTING
+
+//#group /ungroup
+groupName = "_group"
+if pm.objExists (groupName): //#if group exists; add object to group by parenting
+	pm.parent (obj, groupName)
+else: //#else create group with object
+	pm.group (obj, name=groupName)
+
+
+// get parent
+obj.getParent()
+
+
+
+
+
+
+"Components: //------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+// select all vertices of given object
+ex. pm.select('pCube1.f[*]')
+//select inverse
+ex. pm.select("myobject.f[*]", tgl=True)
+
+
+//Use polyEvaluate -v to get the number of vertices. Then use the select command to select them
+ex. $currentSelection = `ls -selection -showType`;
+
+if (size($currentSelection) < 1) 
+{
+	print "// Warning: No object selected. Must select an object or component";
+}
+
+if (size($currentSelection) >= 1)
+{
+	for ($object in $currentSelection)
+	{
+		int $count[] = `polyEvaluate -vertex $object`;
+		$vertices = $object + ".vtx [0:" + ($count[0] - 1) + "]";
+		select -replace $vertices;
+	}
+}
+
+//alternative method
+select -r ($myObj + ".vtx ");
+
+
+
+
+
+
+
+// component selection mask
+faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1)
+edges = pm.filterExpand(selection, selectionMask=32, expand=1)
+
+
+//get:
+//query object mode.
+$mode = `selectMode -query -object`;
+pm.selectMode(query=1, object=1)
+pm.selectType(query=1, allObjects=1)
+//query component selection mode/type:
+$mode = `selectMode -query -component`;
+pm.selectMode(query=1, component=1)
+//vertex
+$maskVertex = `selectType -query -vertex`;
+pm.selectType(query=1, vertex=1)
+//edge
+$maskEdge = `selectType -query -edge`;
+pm.selectType(query=1, edge=1)
+//face
+$maskFacet = `selectType -query -facet`;
+pm.selectType(query=1, facet=1)
+
+
+//set:
+//object mode
+pm.selectMode(object=1)
+//component mode
+pm.selectMode(component=1)
+//objects
+pm.selectType(allObjects=1)
+pm.selectType(vertex=1)
+pm.selectType(edge=1)
+pm.selectType(facet=1)
+
+
+
+
+
+
+//surface info
+//edge, face, area (returns surface area of of selected object as float), uvComponent (selected UV faces as int)
+numVerts = pm.polyEvaluate (obj, vertex=1)
+numEdges = pm.polyEvaluate (obj, edge=1)
+numFaces = pm.polyEvaluate (obj, face=1)
+
+
+
+pm.xform (vertices, query=1, t=1, ws=1)
+
+
+// object name extensions:
+objectName.map 	UV
+""				.e 		edge
+""				.f 		face
+""				.v    vert
+//all components
+polySphereShape.f[*]
+
+
+
+
+// get components
+//get all [.vtx, .f, .e]
+//alt using ls
+obj = 'pSphere1'
+vtx = pm.ls(obj+'.vtx[*]', flatten=True)
+//alt using polyevaluate
+faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
+
+//get currently selected components
+components = pm.ls(selection=True, flatten=True)
+//selected vertices as int
+selectedVerts = [v.split('[')[-1].rstrip(']') for v in pm.filterExpand(sm=31)]
+polyEvaluate -vertexComponent $obj //selected vertices as int
+selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(sm=32)]
+polyEvaluate -edgeComponent $obj //
+selectedFaces = [f.split('[')[-1].rstrip(']') for f in pm.filterExpand(sm=34)]
+polyEvaluate -faceComponent $obj //
+
+//get all faces from object
+faces = pm.filterExpand(obj+'.f[*]', sm=34)
+//verts
+verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
+//alt:
+int $vertcount = polyEvaluate -vertex $object; 
+string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
+//edges
+edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
+
+//alt (get anything polyevaluate querys)
+faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
+
+
+//get vertices of an object within given range
+ex. obj.vtx[0:1135];
+
+
+//get number of faces
+numFaces = pm.polyEvaluate(duplicatedObject, face=1)
+
+polyEvaluate -vertex $obj;
+			 -vertexComponent //selected vertices as int
+			 -edge
+			 -edgeComponent //selected edges as int
+			 -face
+			 -faceComponent //selected faces as int
+			 -area //returns surface area of of selected object as float
+			 -uvComponent //selected UV faces as int
+
+
+
+
+// optional components arg (else use selection).
+// optional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
+//vertex
+verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
+//edge
+edges = pm.filterExpand(edges, expand=1, selectionMask=32)
+//face
+faces = pm.filterExpand(faces, expand=1, selectionMask=34)
+
+
+
+
+
+//get adjacent faces
+selFaces = pm.filterExpand(sm=34)
+adjEdges = pm.polyListComponentConversion(selFaces, ff=1, te=1) //#face to edge
+adjFaces = pm.polyListComponentConversion(adjFaces, fe=1, tf=1) //#edges to faces
+//remove orig selected face:
+adjFaces.remove(face)
+
+
+
+
+// comvert component from one type to another
+eg.
+vertices = pm.ls (pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
+//convert selection to vertices
+ConvertSelectionToVertices;
+//or
+PolySelectConvert 3; //3=verts, 2=edges, 1=faces
+
+// get vertices without changing selection in the viewport:
+vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
+points = []
+for vertex in vertices:
+	point = pm.pointPosition (vertex)
+	points.append(point)
+//or
+componentName = str(component).split(".")[0]
+vertices = pm.polyInfo (component, edgeToVertex=1)[0] //edgeToFace,vertexToFace,faceToEdge,faceToVertex,edgeToVertex,vertexToEdge
+vertices = vertices.split()
+vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //".vtx",".e",".f"
+//or (expanding on above)
+vertexList = []
+for vertex in vertices.split():
+	vertexList.append(componentName+".vtx["+vertex+"]")
+
+
+
+
+vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //'.vtx','.e','.f'
+
+
+
+
+//get selected edge length:
+//pymel
+import math
+
+selection = pm.ls(selection=1, flatten=1)
+edgeLengths = []
+for edge in selection:
+	p = pm.xform (edge, query=True, t=True, worldSpace=True)
+	length = math.sqrt (math.pow(p[0]-p[3],2)+math.pow(p[1]-p[4],2)+math.pow(p[2]-p[5],2))
+	edgeLengths.append(length)
+print sum(edgeLengths)
+
+
+
+
+
+
+"TRANSFORM: //-------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+// create, edit, or query a move manip context.
+manipMoveContext
+manipScaleContext
+manipRotateContext
+
+manipPivot(
+	// [moveToolOri=int], 
+	// [o=[float, float, float]], //orientation
+	// [oriValid=boolean], 
+	// [pinPivot=boolean], 
+	// [pos=[float, float, float]], 
+	// [posValid=boolean], 
+	// [reset=boolean], 
+	// [resetOri=boolean], 
+	// [resetPos=boolean], 
+	// [rotateToolOri=int], 
+	// [scaleToolOri=int], 
+	// [snapOri=boolean], 
+	// [snapPos=boolean], 
+	// [valid=boolean]) 
+
+move
+rotate
+scale
+
+nonLinear
+
+xform 
+// centerPivots () 
+// pivots (linear, linear, linear)
+// scalePivot (linear, linear, linear) 
+// rotatePivot (linear, linear, linear)
+// zeroTransformPivots ()
+
+// translation (linear, linear, linear)
+// rotation (angle, angle, angle)
+// rotateAxis (angle, angle, angle)
+// rotateTranslation (linear, linear, linear)
+// scale (float, float, float)
+// scaleTranslation (linear, linear, linear) 
+
+// get objects current rotation value:
+ex. origRotationValue = pm.xform(query=1, rotation=1)
+// set the rotation
+ex. pm.xform(rotation=[x,y,z])
+// restore the original rotation value:
+ex. pm.xform(object_, rotation=origRotationValue)
+
+
+
+// get vertex point position
+ex. pm.xform(vertices, query=1, t=1, ws=1)
+
+
+
+
+
+// pivots
+// get/set objects pivot point:
+ex.
+getAttr ball.scalePivot;
+ex.
+setAttr ball.scalePivot;
+//or
+ex.
+xform -query -scalePivot -worldSpace $ObjectName;
+
+// get/set objects rotate pivot position:
+ex.
+getAttr ball.rotatePivot;
+ex.
+setAttr ball.rotatePivot;
+//or
+ex.
+xform -query -rotatePivot -worldSpace $ObjectName;
+
+
+
+
+
+//VECTORS
+// declare a 3D vector
+vector $vec = <<5.2, 1.9, 0.3>>;
+// declare 2 vectors
+vector $x=<<1,-0.2,0.4>>, $y=<<0.2,1,0.9>>;
+// assign a value
+$vec = <<$vec.x, $vec.y, 10>>;
+// perform cross product
+$z = cross($x, $y);
+// perform dot product
+dot($x,$y);
+// determine the length of the vector, use mag
+mag($x); 
+// calculate some noise using our vector
+noise($x);
+
+
+//MATRICES
+// declare a 4x4 matrix
+matrix $m1[4][4];
+// declare a matrix with values
+matrix $m2[4][4] = <<1,0,0,0;
+                     0,1,0,0;
+                     0,0,1,0;
+                     1,2,3,1>>;
+matrix $m3[4][4] = <<1,0,0,0;
+                     0,1,0,0;
+                     0,0,1,0;
+                     0,0,0,1>>;				 
+// assign a value to a matrix element
+$m3[3][0] = 0.3;
+$m3[3][1] = 0.4;
+$m3[3][2] = 0.6;
+// multiply together
+$m1 = $m2 * $m3;
+
+
+
+// freeze transformations
+pm.makeIdentity (obj, apply=1, t=1, r=1, s=1, n=0, pn=1)
+
+
+
+
+
+"SYMMETRY: //--------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//get symmetry state
+symmetry = pm.symmetricModelling(query=1, symmetry=1)
+
+//get current axis
+axis = pm.symmetricModelling(query=1, axis=1)
+
+
+
+
+
+
+"RIGGING: //---------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//joints
+//get all
+joints = pm.ls(type="joint")
+
+//check type
+pm.objectType(obj, isType='joint') //#Returns: bool
+
+//display size
+pm.jointDisplayScale(1.5) //#set global joint display size
+
+//set root
+pm.reroot() //#re-root joints
+
+//set orientation
+pm.joint(edit=1, orientJoint='xyz', zeroScaleOrient=1, ch=1) //#orient joints
+
+//connect
+pm.connectJoint(cm=1) //#connect joint
+
+//remove
+pm.removeJoint(obj) //#remove joints
+
+
+
+
+
+
+
+"NORMALS:_________________________________________________________________________________"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"MATERIALS: //-------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+//get material
+pm.hyperShade('', shaderNetworksSelectMaterialNodes=1) //#selects the material node. doesnt return anything. optional first argument=obj with material.
+mat = pm.ls(selection=1, materials=1)[0] //#now add the selected node to a variable
+//select all with material (using above):
+pm.hyperShade (objects='') //#select all with material. "" defaults to currently selected materials.
+//get all scene materials
+materials = pm.ls(mat=1, flatten=1)
+for shading_engine in pm.ls(type=pm.nt.ShadingEngine): //#No need to pass in a string to `type`, if you don't want to.
+	if len(shading_engine): //#ShadingEngines are collections, so you can check against their length
+		for material in shading_engine.surfaceShader.listConnections(): //#You can call listConnections directly on the attribute you're looking for.
+			yield material
+//Loop over the materials and graph them
+for material in pm.ls(mat=1, flatten=1):
+	pm.hyperGraph(pm.getPanel(withFocus=True), edit=True, addDependNode=material)
+	//mel.eval("hyperShadePanelGraphCommand(\"%s\", \"addSelected\")" % hsPanel //#alt to above.
+
+
+
+
+
+//create shader
+mat = pm.shadingNode('lambert', asShader=1, name=name)
+
+
+//assign shader
+pm.hyperShade(face, assign=mat) //#without optional first arg specified, shader will be assigned to any selected faces/objects
+//using sets:
+shader = pm.shadingNode('lambert', asShader=True)
+shaderGrp = pm.sets(empty=True, renderable=True, noSurfaceShader=True)
+pm.connectAttr(shader+".outColor", shaderGrp+".surfaceShader", f=True)
+pm.sets(faces, e=True, forceElement=shaderGrp)
+
+
+
+//get node type
+pm.nodeType(node) //returns ie. 'VRayMultiSubTex'
+//select by node type
+node = pm.ls(selection=1, type='VRayMultiSubTex') //#List all objects of the specified type. exactType=not objects that are descendents of that type
+
+
+
+
+// first, select your object. This line finds it's shape node:
+string $child[] = listRelatives -c;
+// next, find all the shadingGroups (which are sets) that this shape belongs too:
+string $shadingGroups[] = listSets -t 1 -o $child[0];
+// on the shadingGroup, find the incomming connections. This should return both the shape node, and the material
+string $connections[] = listConnections -s 1 -d 0 $shadingGroups[0];
+// on the first entry of incomming connections (which should be the material), find the color value
+float $colors[] = getAttr ($connections[0] + ".color");
+
+
+
+
+
+//get/set attributes
+//using getAttr(), setAttr()
+//mat ID
+pm.setAttr(name+'.vrayMaterialId', 1)
+//or:
+pm.setAttr('%s.%s'%(name,'vrayMaterialId') ,1)
+//color:
+pm.setAttr(name+'.color', rgb)
+pm.setAttr(name+'.colorR', rgb[0])
+pm.setAttr(name+'.colorG', rgb[1])
+pm.setAttr(name+'.colorB', rgb[2])
+
+
+
+//generate random rgb values
+rgb = [random.randint(0, 255) for _ in range(3)]
+
+
+//convert RGB to 0-1 values (and round to 3)
+convertedRGB = [round(float(v)/255, 3) for v in rgb]
+
+
+
+
+//Hypershade Editor
+
+//open the hypershade widow
+mel.eval("HypershadeWindow()") //pm.HypershadeWindow()
+
+//Get the name of the hypershade panel
+panel = pm.getPanel(withFocus=True)
+
+//clear the panel
+pm.hyperShade(resetGraph=True, dependGraphArea=True)
+
+
+
+
+
+
+
+"LIGHTING: //--------------------------------------------------------------------------------------------------------------------------------------------"
+
+//get all scene lights
+lights = pm.ls(lights=1) //#List all lights in the DAG.
+
+
+
+
+
+
+
+
+
+"CAMERAS: //---------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//get scene cameras and their transforms:
+//# Get all cameras first
+cameras = pm.ls(type=('camera'), l=True) //#List all cameras in the DAG.
+//# Let's filter all startup / default cameras
+startup_cameras = [c for c in cameras if pm.camera(c.parent(0), q=1, startupCamera=1)]
+//# non-default cameras are easy to find now. Please note that these are all PyNodes
+non_startup_cameras_pynodes = list(set(cameras) - set(startup_cameras))
+//# Let's get their respective transform names, just in-case
+non_startup_cameras_transform_pynodes = map(lambda x: x.parent(0), non_startup_cameras_pynodes)
+//# Now we can have a non-PyNode, regular string names list of them
+non_startup_cameras = map(str, non_startup_cameras_pynodes)
+non_startup_cameras_transforms = map(str, non_startup_cameras_transform_pynodes)
+
+
+
+
+
+
+
+
+"NORMALS: //---------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//get face normal
+xyz = pm.polyInfo (component, faceNormals=1)
+//vertex normals
+xyz = pm.polyNormalPerVertex (query=True, xyz=True)
+//get vertex normals average:
+vertices = pm.ls (sl=1)
+xyz = pm.polyNormalPerVertex (vertices, query=True, xyz=True)
+x=[];y=[];z=[]
+i=0
+length = len(xyz)/3
+for _ in range(len(xyz)/3):
+	x.append(xyz[i]); y.append(xyz[i+1]); z.append(xyz[i+2])
+	i+=3
+average = [sum(x, 0.0) / len(x), sum(y, 0.0) / len(y), sum(z, 0.0) / len(z)]
+
+
+
+//normalize value
+//The unit vector obtained by normalizing the normal vector 
+//(i.e., dividing a nonzero normal vector by its vector norm) is the unit normal vector, often known simply as the "unit normal."
+//using mel
+normal = mel.eval("unit <<"+str(xyz[0])+", "+str(xyz[1])+", "+str(xyz[2])+">>;") 
+//
+normal = [round(i-min(xyz)/(max(xyz)-min(xyz)),6) for i in xyz] #normalize and round value using python
+
+
+
+
+
+
+"DEPENDENCY GRAPH: //------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+
+
+
+
+
+
+
+
+
+"UI: //--------------------------------------------------------------------------------------------------------------------------------------------------" 
+
+// get ui objects
+pm.lsUI (
+numWidgets=True,	//#[bool, create]  Reports the number of QT widgets used by Maya.
+dumpWidgets=True	//#[bool, create]  Dump all QT widgets used by Maya.
+)
+
+
+//#get all windows.
+eg. lsUI -windows;
+eg. pm.lsUI(windows=1)
+
+//#get all panels and editors.
+eg. pm.lsUI(panels=1, editors=1)
+
+
+//#get current window (panel)
+currentPanel = pm.getPanel(withFocus=1)
+
+
+
+//#Use the -typ/type flag to list all controls and control layouts.
+//#Alternatively, you could use the -ctl/controls and -cl/controlLayouts flags.
+eg. pm.lsUI(type=['control','controlLayout'])
+//#alt: ("window", "menu", "menuItems", "panels", "editors", "control", "controlLayout", "collection", "radioMenuItemCollections")
+eg. pm.lsUI(controls=True, controlLayouts=True)
+
+
+
+//search
+//qtWidgets with the string 'layer' and 'Layout'
+keyword1 = 'layer' //case insensitive.
+keyword2 = 'Layout' //case sensitive. Can be left as empty string.
+widgets = {w.objectName():w for w in QtWidgets.QApplication.allWidgets() if keyword1 in w.objectName() and keyword2 in w.objectName() or keyword1.title() in w.objectName() and keyword2 in w.objectName()}
+//using lsUi to find editors,panels,windows,menus,controls,controlLayouts with the string 'channel'
+keyword1 = 'channel' //case insensitive.
+print [str(i.keyword1()) for i in pm.lsUI(editors=1,panels=1,windows=1,menus=0,controls=0, controlLayouts=1) if keyword1 in i or keyword1.title() in i]
+
+
+
+
+
+
+"LAYER EDITOR: //----------------------------------------------------------------------------------------------------------------------------------------"
+
+// # Create a layer.
+layer = pm.createDisplayLayer()
+// # Change layer visibility to reference. '2'
+pm.setAttr("{}.displayType".format(layer), 2)
+
+
+
+
+
+
+
+
+
+"IN-VIEW MESSEGES: //------------------------------------------------------------------------------------------------------------------------------------"
+
+
+inViewMessage 		//Used for displaying in-view messages.
+					ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
+					//html tags. Dont forget to close your tags like this </tag>
+					<em> – Italics
+					<hl> – Highlight (not HTML, but it works)
+					<small> – Small
+					<i> – Italics
+					<sub> – Subscript
+					<sup> – Superscript
+					<blockquote> – Indented Quote
+					<h1> – Large heading
+					<h2> – Medium heading
+					<h3> – Small heading
+					<br> – Line break
+					<p> – Paragraph
+					<span> – Allows you to set the font colour and size amongst other things.
+
+//flags:
+message(msg) //The message to be displayed, can be html format. General message
+assistMessage(amg) //The user assistance message to be displayed, can be html format.
+statusMessage(smg) //The status info message to be displayed, can be html format.
+
+
+fontSize(fts)	//Sets the message font size.
+
+dragKill(dk) //Use this flag if the message needs to be deleted on mouse drag.
+
+position(pos) //The position that the message will appear at relative to the active viewport. The supported positions are:
+"topLeft"
+"topCenter"
+"topRight"
+"midLeft"
+"midCenter"
+"midCenterTop"
+"midCenterBot"
+"midRight"
+"botLeft"
+"botCenter"
+"botRight"
+
+
+ex. //pymel
+pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter', fade=True)
+
+
+
+
+
+
+"ERROR HANDLING: //--------------------------------------------------------------------------------------------------------------------------------------"
+
+objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas because you are expectin a return value
+    						select surface1;
+							} else {
+    						warning("No surface exists");
+							}
+
+break	 				//break out of current loop but continue statements within the current function
+continue 			//continue outside of the current function
+
+error 	eg. if (size($l) == 0) {
+						error "error display string"; //halts execution
+						} // Error: error display string //
+
+//generally best practice is to use objExists, if ($node != "") or similar rather than catch
+catch			//takes a MEL expression as an argument.
+					//returns '1' if the expression in parenthesis produces an error and 0 otherwise
+				ex.	if (catch(`createNode -name myTransform transform`)){
+						print "Could not create sphere\n";
+					} else {
+						// continue on as usual...
+					}
+
+catchQuiet 	//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
+						//catchQuiet behaves like catch, except that it supresses warnings and errors.
+
+ 
+MayaNodeError		//
+
+MayaAttributeError	//
+
+MayaObjectError		//both exceptions can be caught using 'MayaObjectError'
+
+
+
+
+
+
+
+
+
+"UNDO: //------------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+
+//
+undoInfo -openChunk;
+pm.undoInfo (openChunk=1)
+
+// operation
+undoInfo -closeChunk;
+pm.undoInfo (closeChunk=1)
+
+
+
+
+
+
+
+
+
+
+
+"EXTERNAL FILES: //--------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+
+
+//set environment variable
+eg. putenv "MYHOME"  `getenv "HOME"`; // Result: 0 //
+//get environment variable
+eg. $s=`getenv "MYHOME"`; // Result: /u/userName //
+eg. getenv	//get windows environment variable
+				eg. $s=`getenv "PATH"`;
+
+
+
+
+//get maya environment variable values:
+eg. scriptPath = os.environ['MAYA_SCRIPT_PATH']				
+
+
+
+source		compiles & executes the contents of a script. 
+			//'source' is not a MEL command. It is a directive that tells the interpreter what to compile and execute. If a script has 'source' directives
+			//in it, then all sourced files will be compiled at the same time as the script. This will happen regardless of where the source directive
+			//appears in the file. And, if the script with the 'source' directives is re-run, the sourced files will not be recompiled. It is possible to
+			//override this behavior by enclosing the source directive in an 'eval' statement. A sourced script should not "source" any other scripts.
+eg.
+source file_name; //If only the script name is provided, then MEL will attempt to locate it in the MEL search path. If the name or path 
+								//has no suffix, then MEL will add a ".mel" suffix before the search. If a full path is provided, then it must be 
+								//surrounded in quotes.
+file_name("directory");
+
+
+//Maya's MEL script command "source" will not let you source a path through a variable. 
+//Example, the following will NOT work
+//string $myScriptPath = "C:/myScript.mel" ;
+//source $myScriptPath ;
+//correct format using the eval command:
+string $command = "source \"C:/script.mel\" ;" ;
+eval $command ;
+
+//"eval" will run the string as a command, thus sourcing it and your script/variable.
+//Another option here is to create your own proc, let's call it betterSource() ;
+global proc betterSource (string $script) 
+{
+	string $command = "source \""+$script+"\"";
+	eval $command ;
+}
+
+// Now you can run:
+string $path = "C:/script.mel" ;
+betterSource $path ;
+
+
+
+rehash;	//checks the script search path for new MEL scripts.
+
+
+
+file -open "file.ma";
+
+
+
+
+"Plug-ins:-----------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+pluginInfo				ex. pm.pluginInfo ('vrayformaya.mll', query=1, loaded=1)
+								
+isPluginDisabled	ex. isPluginDisabled ("vrayformaya"); //only available in mel. ex. mel.eval ('isPluginDisabled ("vrayformaya")')
+
+loadPlugin				ex. pm.loadPlugin ('newNode.py') //will except an array as an argument
+unloadPlugin			ex. pm.unloadPlugin ('newNode.py')
+
+
+
+
+
+
+"PYTHON:	//run a snippit of python code in a mel script-------------------------------------------------------------------------------------------------"
+
+
+//http://help.autodesk.com/view/MAYAUL/2016/ENU/?guid=GUID-55B63946-CDC9-42E5-9B6E-45EE45CFC7FC
+
+python("import sys");
+
+// Call some python that will return a list of values. Note that we are
+// calling the python command with a single python statement. We have to
+// do that if we want to get a result back
+//
+string $version[] = python("sys.version_info");
+
+// The result will be an array of strings because one of the elements will
+// contain a string. Extract the major and minor parts of the version number
+//
+int $major = int($version[0]);
+int $minor = int($version[1]);
+
+// You can do mult-statement Python scripts, but there won't be a return
+// value
+python("import os\nprint os.environ ['MAYA_LOCATION']");
+
+
+// Creating new variables requires the use of the initVar function to specify the type:
+pm.melGlobals.initVar('string', 'gMyStrVar')
+// returns '$gMyStrVar'
+pm.melGlobals['gMyStrVar'] = 'fooey'
+// The variable will now be accessible within MEL as a global string.
+pm.melGlobals.initVar('string[]', '$tk_selection2')
+//MelGlobals.VALID_TYPES = ['string', 'string[]', 'int', 'int[]', 'float', 'float[]', 'vector', 'vector[]']
+
+
+
+//Python variable in MEL
+$myMELvariable = python ("myPythonVariable");
+
+//MEL global variable in Python //import maya.mel as mel
+myPythonVariable = mel.eval ('global $myMELvariable; $temp=$myMELvariable;')
+
+
+
+// To retrieve existing global variables, just use the name as a key:
+pm.melGlobals['gResourceFileList']
+// returns [u'defaultRunTimeCommands.res.mel', u'localizedPanelLabel.res.mel', ...]
+// works with or without $
+
+
+//Registering a Python function as a MEL procedure:
+//You can use the 'createMelWrapper' function to register a Python function as a MEL procedure. Then, when the MEL procedure is invoked, 
+//it calls the Python function, passing any arguments it receives and returning the function's result.
+python ("import module");
+createMelWrapper(module.function, retType='string[]'); //specify return type if needed
+
+
+
+
+"HOTKEYS: //Bind a hotkey to a mel command---------------------------------------------------------------------------------------------------------------"
+
+
+//To associate a MEL script with a hotkey, you must first add the script to the list of available hotkey commands, then assign a hotkey to the command you created.
+>	Select Window > Settings/Preferences > Hotkey Editor.
+//Commands are grouped into categories. 
+>	Click the category name in the Categories list you want to put your script in.
+>	In the command area at the bottom of the hotkey editor, click New.
+>	Type a Name and Description for the new command.
+>	In the Command text box, type the MEL commands you want the hotkey to run.
+>	Click Accept.
+>	Type a key name in the Key text box and turn on any modifiers you want on the hotkey.
+//For example, type m in the text box and turn on the Alt setting to assign the marking menu to  + m.
+//As you edit these settings, Maya shows the command currently assigned to the hotkey, if any. Only assign the hotkey if you don’t mind overriding this command.
+>	Set the Direction option. //If you select Press, Maya runs the command when you press the key down. If you select Release, Maya runs the command when you let the key up.
+//The distinction between Press and Release can be important, for example when you assign a hotkey to a snapping mode. You want to assign the command to turns the snapping mode on to the key press, and the command that turns the snapping mode off to the key release.
+>	Click Assign.
+//If the hotkey you set already has a command assigned, Maya asks if you want to override it.
+
+
+
+//custom command (with hotkey):
+nameCommand
+	-annotation "Freeze Transforms"
+	-command "makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;"
+	freezeNamedCommand;
+//The hotkey calls the named command
+hotkey 
+	-k "f" 
+	-alt 
+	-name "freezeNamedCommand";
+
+
+//via script:
+//MEL
+if (!`runTimeCommand -exists Name`) {
+    runTimeCommand
+        -annotation "Print the word \"Hello\""
+        -category "Custom Scripts"
+        -command ("print \"Hello\\n\"")
+        Name;
+}
+//python (import pymel.core as pm)
+if not pm.runtimeCommand('Name', exists=1):
+	pm.runTimeCommand("Name",
+			annotation='Description',
+			category="Custom Scripts",
+			command="print \"Hello\\n\"",
+)
+
+
+//Create a new context type
+pm.hotkeyCtx(insertTypeAt=('Global', 'CustomEditor'))
+pm.hotkeyCtx(ita=('CustomEditor', 'CustomTool'))
+
+//Query all existing context types
+ctxTypes = pm.hotkeyCtx(typeArray=True, query=True)
+print str(ctxTypes)
+
+//Remove an existing context type
+pm.hotkeyCtx(removeType='CustomTool')
+
+//Determine if the given context type exists.
+pm.hotkeyCtx(te='CustomTool', query=True)
+
+//Associate the clients to the specific context type.
+pm.hotkeyCtx(t='CustomEditor', ac=['hyperGraphPanel', 'outlinerPanel'])
+
+//Set current context
+pm.hotkeyCtx(t='CustomEditor', cc='hyperGraphPanel')
+
+//Unassign the client from the specific context type.
+pm.hotkeyCtx(t='CustomEditor', rc='outlinerPanel')
+
+//Query all associated clients for the given context type.
+cl = pm.hotkeyCtx(t='CustomEditor', ca=True, query=True)
+print str(cl)
+
+//Remove all associated clients
+pm.hotkeyCtx(t='CustomEditor', rac=True)
+
+
+
+
+
+
+
+
+"MAYA SCRIPT EDITOR OPTIONS:"
+
+
+HELP:
+// highlight command in script and right click to select command documentation link
+// ctrl + space   -  suggest possible commands based on current input
+
+//tab
+tab		shift+tab //indent /unindent highlighted block
+//comment
+ctrl+/ //toggle comment highlighted block
+
+
+help<command name>  ex. help move
+
+						help -list "*keyword or fragment*";
+						
+						runTimeCommand -query -command "runtimeCommand";   (to figure out what a runtime commmand does)
+						defaultRunTimeCommands.mel //scripts\startup folder of the Maya installation directory
+						
+						whatIs command;                 (to figure out where a proc is defined and read that MEL script)
+
+
+
+							 
+scriptEditorInfo	        http://help.autodesk.com/cloudhelp/2016/ENU/Maya-Tech-Docs/Commands/scriptEditorInfo.html 
+							//script editor options mel commands
+							ex. scriptEditorInfo -clearHistory //Clears the read-only text in the upper field of the script editor.
+
+Show Stack Trace             Opens another window which lists errors and their line numbers in external script files.
+                             This is very useful for debugging scripts in external files. 
+
+Suppress Command Results     When turned on, the Script editor does not show the result of 
+                             commands. Result messages start with // Result:
+
+Suppress Info Messages       When turned on, the Script editor does not show informational 
+                             messages. Informational messages are of many different types and do 
+                             not have a set prefix (except for //). 
+
+Suppress Warning Messages    When turned on, the Script editor does not show warning messages. 
+                             Warning messages start with // Warning:. 
+
+Suppress Error Messages      When turned on, the Script editor does not show error messages. 
+                             Error messages start with // Error:. 
+								ex. scriptEditorInfo -e -suppressWarnings true;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"create, move & repeat_______________________________________________________________"
+
+//'for loop' syntax 
+ex.  
+for (<start condition>; <end condition>; <update counter>)
+{
+	//commands to repeat
+}
+
+
+
+ex.
+float $widthX = 0;
+float $hightY = 0;
+float $depthZ = 0;
+int $repeat = 0;
+
+for ($i = 0; $i < $repeat; ++$i)
+{
+	polyCube -w $widthX -h $hightY -d $depthZ;
+	move -r 0 ($hightY * $i) ($depthZ * $i);
+} 
+
+
+
+
+
+
+
+
+
+//____________________________________________________________________________________
+
+
+
+//SCRIPT EXAMPLES:
+
+//GEOMETRIC EQUATIONS:
+
+//arch tangent:
+atan  //total depth divided by total hight   \\output in radians
+atand //total depth divided by total hight   \\output in degrees
+
+//pythagorean theorum:
+ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squared  
+             
+
+
+
+
+
+
+
+ 
+
+
+"Debugging: non-descript syntax errors and typos"
+
+
+//errors and possible causes
+
+// ERROR: }
+// missing ';' and the end of a command line
+
+// ERROR: SYNTAX ERROR
+// procedure name written with '$'
+// variable decalred without '$'
+// missing () around (or within) command eg. for ($node in $nodes) eg.print ($object + "\n");
+
+// ERROR: Invalid expression type for IF test condition.
+// missing opening or closing {}
+// used = instead of ==
+
+// ERROR: invalid scope '{}'
+// procedure called before it is defined
+
+// { curly bracket facing wrong direction
+ 
+// ERROR: "" is not an array. //
+// argument passed to the procedure is not defined as array type. eg. proc xxx (string $yyy[])
+
+// ERROR: Cannot cast data of type "" to ""
+// when passing a variable into a command string sometimes quotes are needed around the passed variable eg. mel.eval("doSelectSimilar 1 {\""+ tolerance +"\"}")
+
+// ERROR: Procedures cannot be nested within each other.
+// missing closing '}'
+
+// ERROR: Invalid use of Maya object ""
+// missing '`' high comma
+// missing $ from variable
+// missing "" from command variable
+
+// ERROR: "" is an undeclared variable
+// declare variable type. ie. string $stringVar
+// the procedure calling the variable has been } closed out of scope
+
+// NO ERROR: But not behaving correctly
+// variables not defined correctly with type eg. string[] $var or re-defined with type twice

@@ -1,0 +1,48 @@
+
+maps"
+opacity  greyscale alpha
+bump     grayscale alpha
+
+drag and drop a diffuse layer over another diffuse layer to transform it into a mask layer
+
+
+-right click optioms
+solo as diffuse    displays layer as greyscale values
+adjust color       control over hue saturation of a layer
+
+stencils:
+edit\  edit stencil  
+
+       -stencil display options (black&white,  color, fully opaque)
+       -grab and adjust stencil while in edit mode
+
+
+
+sculpting:
+
+
+
+
+
+
+
+
+painting:
+
+projection can darken when offset is lower then 100 percent
+
+clone tool alt click area to be cloned
+
+
+
+
+
+UV's:
+
+lines displayed on model uv seams are just a glitch and will display properly when exported
+
+
+
+troubleshooting:
+
+projection too dark:  adjust stencil offset down
