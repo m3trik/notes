@@ -2394,11 +2394,69 @@ __contains__        In
 
 __str__             enduser output.   readable output.
 __repr__            debugging output. generate output which can be read by the interpreter 
-										#possible use for formatting
+					#possible use for formatting
+
+
+__abstractmethods__
+__base__
+__bases__ 				#The tuple of base classes of a class object.
 
 
 
+__basicsize__
+__call__
+__class__ 				#The class to which a class instance belongs.
+__delattr__
+__dict__ 				#A dictionary or other mapping object used to store an object’s (writable) attributes.
+__dictoffset__
+__dir__
+__doc__
+__eq__
+__flags__
+__format__
+__ge__
+__getattribute__
+__gt__
+__hash__
+__init__
+__instancecheck__
+__itemsize__
+__le__
+__lt__
+__module__				
+__mro__ 				#also: mro() This attribute is a tuple of classes that are considered when looking for base classes during method resolution.
+__name__ 				#The name of the class, type, function, method, descriptor, or generator instance.
+__ne__
+__new__
+__prepare__
+__qualname__
+__reduce__
+__reduce_ex__
+__repr__
+__setattr__
+__sizeof__
+__str__
+__subclasscheck__
+__subclasses__ 			#Each new-style class keeps a list of weak references to its immediate subclasses. This method returns a list of all those references still alive.
+__subclasshook__
+__weakrefoffset__
 
+
+
+python3:
+__self__ 		#(Read-Only) the class instance object, 
+__func__ 		#(Read-Only) the function object;
+__doc__ 		#(Writable) The function’s documentation string, or None if unavailable; not inherited by subclasses.
+__name__ 		#(Writable) The function’s name.
+__qualname__	#(Writable) The function’s qualified name.
+__module__		#(Writable) The name of the module the function was defined in, or None if unavailable.
+__defaults__	#(Writable) A tuple containing default argument values for those arguments that have defaults, or None if no arguments have a default value.
+__code__		#(Writable) The code object representing the compiled function body.
+__globals__		#(Read-Only) A reference to the dictionary that holds the function’s global variables — the global namespace of the module in which the function was defined.
+__dict__		#The namespace supporting arbitrary function attributes.
+__closure__		#(Read-Only) None or a tuple of cells that contain bindings for the function’s free variables. See below for information on the cell_contents attribute.
+__annotations__ #(Writable) A dict containing annotations of parameters. The keys of the dict are the parameter names, and 'return' for the return annotation, if provided.
+__kwdefaults__	#(Writable) A dict containing defaults for keyword-only parameters.
 
 
 
@@ -3308,3 +3366,4 @@ self.ui.button.buttonId('m',10)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

@@ -76,6 +76,33 @@ bug: transform negative '-' sets spinbox value to 0.
 # -----------------------------------------------
 
 
+polygons> boolean options>
+	maya:
+	PolygonBooleanUnion;
+	polyPerformBooleanAction 1 o 0;
+
+	PolygonBooleanDifference;
+	polyPerformBooleanAction 2 o 0;
+
+	PolygonBooleanIntersection;
+	polyPerformBooleanAction 3 o 0;
+
+	PolygonBooleanUnionOptions;
+	polyPerformBooleanAction 1 o 1;
+
+	PolygonBooleanDifferenceOptions;
+	polyPerformBooleanAction 2 o 1;
+	
+	PolygonBooleanIntersectionOptions;
+	polyPerformBooleanAction 3 o 1;
+
+
+fix maya extrude:
+	(add options)
+	polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 0 -pvx 1.004961016 -pvy 2.957140207 -pvz -1.501686156 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0.03 -smoothingAngle 30 pPlane13.f[0:23];
+
+
+
 combine bridge and tri-fill buttons in polygons.  remove reverse normals and instead check for surrounding normal direction.
 
 
