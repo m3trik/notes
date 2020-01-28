@@ -76,6 +76,9 @@ bug: transform negative '-' sets spinbox value to 0.
 # -----------------------------------------------
 
 
+keep list of any checked flags such as constraints and add them to the hud info if they are active.
+
+
 polygons> boolean options>
 	maya:
 	PolygonBooleanUnion;
