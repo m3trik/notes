@@ -458,6 +458,28 @@ int $i;									for ($item in $array)
 
 
 
+//'for loop' syntax 
+ex.  
+for (<start condition>; <end condition>; <update counter>)
+{
+	//commands to repeat
+}
+
+
+
+ex.
+float $widthX = 0;
+float $hightY = 0;
+float $depthZ = 0;
+int $repeat = 0;
+
+for ($i = 0; $i < $repeat; ++$i)
+{
+	polyCube -w $widthX -h $hightY -d $depthZ;
+	move -r 0 ($hightY * $i) ($depthZ * $i);
+} 
+
+
 
 
 ex. //do while
@@ -1562,6 +1584,10 @@ pm.makeIdentity (obj, apply=1, t=1, r=1, s=1, n=0, pn=1)
 
 
 
+
+
+
+
 "SYMMETRY: //--------------------------------------------------------------------------------------------------------------------------------------------"
 
 
@@ -1600,20 +1626,6 @@ pm.connectJoint(cm=1) //#connect joint
 
 //remove
 pm.removeJoint(obj) //#remove joints
-
-
-
-
-
-
-
-"NORMALS:_________________________________________________________________________________"
-
-
-
-
-
-
 
 
 
@@ -1864,95 +1876,6 @@ pm.setAttr("{}.displayType".format(layer), 2)
 
 
 
-"IN-VIEW MESSEGES: //------------------------------------------------------------------------------------------------------------------------------------"
-
-
-inViewMessage 		//Used for displaying in-view messages.
-					ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
-					//html tags. Dont forget to close your tags like this </tag>
-					<em> – Italics
-					<hl> – Highlight (not HTML, but it works)
-					<small> – Small
-					<i> – Italics
-					<sub> – Subscript
-					<sup> – Superscript
-					<blockquote> – Indented Quote
-					<h1> – Large heading
-					<h2> – Medium heading
-					<h3> – Small heading
-					<br> – Line break
-					<p> – Paragraph
-					<span> – Allows you to set the font colour and size amongst other things.
-
-//flags:
-message(msg) //The message to be displayed, can be html format. General message
-assistMessage(amg) //The user assistance message to be displayed, can be html format.
-statusMessage(smg) //The status info message to be displayed, can be html format.
-
-
-fontSize(fts)	//Sets the message font size.
-
-dragKill(dk) //Use this flag if the message needs to be deleted on mouse drag.
-
-position(pos) //The position that the message will appear at relative to the active viewport. The supported positions are:
-"topLeft"
-"topCenter"
-"topRight"
-"midLeft"
-"midCenter"
-"midCenterTop"
-"midCenterBot"
-"midRight"
-"botLeft"
-"botCenter"
-"botRight"
-
-
-ex. //pymel
-pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter', fade=True)
-
-
-
-
-
-
-"ERROR HANDLING: //--------------------------------------------------------------------------------------------------------------------------------------"
-
-objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas because you are expectin a return value
-    						select surface1;
-							} else {
-    						warning("No surface exists");
-							}
-
-break	 				//break out of current loop but continue statements within the current function
-continue 			//continue outside of the current function
-
-error 	eg. if (size($l) == 0) {
-						error "error display string"; //halts execution
-						} // Error: error display string //
-
-//generally best practice is to use objExists, if ($node != "") or similar rather than catch
-catch			//takes a MEL expression as an argument.
-					//returns '1' if the expression in parenthesis produces an error and 0 otherwise
-				ex.	if (catch(`createNode -name myTransform transform`)){
-						print "Could not create sphere\n";
-					} else {
-						// continue on as usual...
-					}
-
-catchQuiet 	//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
-						//catchQuiet behaves like catch, except that it supresses warnings and errors.
-
- 
-MayaNodeError		//
-
-MayaAttributeError	//
-
-MayaObjectError		//both exceptions can be caught using 'MayaObjectError'
-
-
-
-
 
 
 
@@ -2112,8 +2035,7 @@ pm.melGlobals['gResourceFileList']
 //Registering a Python function as a MEL procedure:
 //You can use the 'createMelWrapper' function to register a Python function as a MEL procedure. Then, when the MEL procedure is invoked, 
 //it calls the Python function, passing any arguments it receives and returning the function's result.
-python ("import module");
-createMelWrapper(module.function, retType='string[]'); //specify return type if needed
+mel.createMelWrapper(module.method, retType='string[]'); //specify return type if needed
 
 
 
@@ -2150,6 +2072,10 @@ hotkey
 	-alt 
 	-name "freezeNamedCommand";
 
+//python (import pymel.core as pm)
+pm.nameCommand('name', annotation='', command=<>)
+pm.hotkey(key='1', altModifier=True, name='name')
+
 
 //via script:
 //MEL
@@ -2163,9 +2089,9 @@ if (!`runTimeCommand -exists Name`) {
 //python (import pymel.core as pm)
 if not pm.runtimeCommand('Name', exists=1):
 	pm.runTimeCommand("Name",
-			annotation='Description',
-			category="Custom Scripts",
-			command="print \"Hello\\n\"",
+	annotation='Description',
+	category="Custom Scripts",
+	command="print \"Hello\\n\"",
 )
 
 
@@ -2258,6 +2184,24 @@ Suppress Error Messages      When turned on, the Script editor does not show err
 
 
 
+"MAYA ENVIRONMENT:"
+
+//execute from batch or command line:
+maya -batch -file someMayaFile.mb -command "file -save"
+//For Windows:
+mayabatch -file someMayaFile.mb -command "file -save"
+
+
+-archive [file]	//Displays a list of files required to archive the specified scene and then exits Maya.
+-command [mel command] //Runs the specified command on startup. The command should be enclosed in double quotes to protect any special characters, including spaces.
+-log [file] //Copies all standard output and error messages (those that normally appear in the Output Window) to the specified file (use complete file name).This flag is for Windows only.
+-noAutoloadPlugins //Do not auto-load any plug-ins.
+-optimizeRender [file] [outfile] //Processes the specified scene file to optimize it for rendering, puts the result in outfile and then exits. Use maya -optimizeRender -help for more options. See -optimizeRender flags.
+-proj [dir] //Looks for scene files in the specified project directory.
+-recover //Recovers the last journal file.
+-script [file] //Sources the specified file (which is expected to be a MEL script) on startup.
+-v //Displays the product version and cut number, and then exits.
+-3 //Enable Python 3000 compatibility warnings.
 
 
 
@@ -2265,31 +2209,9 @@ Suppress Error Messages      When turned on, the Script editor does not show err
 
 
 
-
-"create, move & repeat_______________________________________________________________"
-
-//'for loop' syntax 
-ex.  
-for (<start condition>; <end condition>; <update counter>)
-{
-	//commands to repeat
-}
-
-
-
-ex.
-float $widthX = 0;
-float $hightY = 0;
-float $depthZ = 0;
-int $repeat = 0;
-
-for ($i = 0; $i < $repeat; ++$i)
-{
-	polyCube -w $widthX -h $hightY -d $depthZ;
-	move -r 0 ($hightY * $i) ($depthZ * $i);
-} 
-
-
+//standalone:
+import maya.standalone
+maya.standalone.initialize()
 
 
 
@@ -2313,6 +2235,95 @@ atand //total depth divided by total hight   \\output in degrees
 ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squared  
              
 
+
+
+
+
+"IN-VIEW MESSEGES: //------------------------------------------------------------------------------------------------------------------------------------"
+
+
+inViewMessage 		//Used for displaying in-view messages.
+					ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
+					//html tags. Dont forget to close your tags like this </tag>
+					<em> – Italics
+					<hl> – Highlight (not HTML, but it works)
+					<small> – Small
+					<i> – Italics
+					<sub> – Subscript
+					<sup> – Superscript
+					<blockquote> – Indented Quote
+					<h1> – Large heading
+					<h2> – Medium heading
+					<h3> – Small heading
+					<br> – Line break
+					<p> – Paragraph
+					<span> – Allows you to set the font colour and size amongst other things.
+
+//flags:
+message(msg) //The message to be displayed, can be html format. General message
+assistMessage(amg) //The user assistance message to be displayed, can be html format.
+statusMessage(smg) //The status info message to be displayed, can be html format.
+
+
+fontSize(fts)	//Sets the message font size.
+
+dragKill(dk) //Use this flag if the message needs to be deleted on mouse drag.
+
+position(pos) //The position that the message will appear at relative to the active viewport. The supported positions are:
+"topLeft"
+"topCenter"
+"topRight"
+"midLeft"
+"midCenter"
+"midCenterTop"
+"midCenterBot"
+"midRight"
+"botLeft"
+"botCenter"
+"botRight"
+
+
+ex. //pymel
+pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter', fade=True)
+
+
+
+
+
+
+"ERROR HANDLING: //--------------------------------------------------------------------------------------------------------------------------------------"
+
+objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas because you are expectin a return value
+    						select surface1;
+							} else {
+    						warning("No surface exists");
+							}
+
+break	 				//break out of current loop but continue statements within the current function
+continue 			//continue outside of the current function
+
+error 	eg. if (size($l) == 0) {
+						error "error display string"; //halts execution
+						} // Error: error display string //
+
+//generally best practice is to use objExists, if ($node != "") or similar rather than catch
+catch			//takes a MEL expression as an argument.
+					//returns '1' if the expression in parenthesis produces an error and 0 otherwise
+				ex.	if (catch(`createNode -name myTransform transform`)){
+						print "Could not create sphere\n";
+					} else {
+						// continue on as usual...
+					}
+
+catchQuiet 	//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
+						//catchQuiet behaves like catch, except that it supresses warnings and errors.
+
+ 
+MayaNodeError		//
+
+MayaAttributeError	//
+
+MayaObjectError		//both exceptions can be caught using 'MayaObjectError'
 
 
 

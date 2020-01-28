@@ -223,9 +223,9 @@ eg. myfunc = itertools.cycle([0,1]).next
 
 # using a generator
 eg. def alternate():
-			while True:
-				yield 0
-				yield 1
+		while True:
+			yield 0
+			yield 1
 
 alternator = alternate()
 print alternator.next()
@@ -3337,9 +3337,13 @@ class Class(object):
 
 
 
-
-# 'int' object has no attribute '__getitem__'
+# Attribute Error:  object has no attribute '__getitem__'
 #when attempting to apply the index operator [] on an int, not a list.
+
+
+# Attribute Error:  object has no attribute
+#specify the full path to the file.
+import folder.file
 
 
 # TypeError: unbound method xxxx() must be called with xxxx instance as first argument (got xxxx instance instead)
