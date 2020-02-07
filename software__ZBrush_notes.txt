@@ -457,23 +457,85 @@ Equalize (ZModeler):
 
 
 
+	
+
+RETOPOLOGY:    -----------------------------------------------------------------------
+
+
+: zremesher 
+(target polygon count 1 = 1000 polys)
+
+
+
+
+: dynamesh (evenly redistribute poly mesh)
+>	geometry> dynamesh
+(re-run dynamesh;  ctrl + drag canvas)
+
+
+
+
+: Topology brush (keywords: retopology)
+(does not work with subdivision levels. curves cannot be edited beyond extending and deleting (editing can be done however using another curve brush, making sure that Bend is on and completing your edits).
+ 
+	Brush size			controls curve density.
+	
+	Draw size			controls the thickness of the generated geometry (change brush size before generating). A Draw Size of 1 will generate a mesh with no thickness.
+	
+	contrain line		hold shift (you can use the Clip Curve combined with masks to align vertices quickly create straight lines.  Mask rectangle over edgeloop\invert mask\clip curve line to straighten (also zmodeler\slide edge to reposition))
+	
+	generate topology	click support mesh
+	delete curve		alt + drag over curve  (This operation will only work if the 	removal curve begins on the model surface. Otherwise you will rotate the model instead.)             
+	delete parts of curves that are not quads or tris - alt + drag on mesh surface away from curves
+
+
+
+
+: Remesh and retain details (by freezing subdivision levels)
+>	Tool> Geometry> Freeze Subdivisions on the SubTool you would like to retopologize.
+(If level one doesn’t have enough polys to maintain the sculpt’s form, choose the subdivision level with the desired silhouette and Del Lower. After which you can return to the highest and Freeze Subdivision Levels)
+>	Use ZRemesher with any desired settings.
+>	Freeze Subdivisons again. (ZBrush will now recalculate your subdivision levels and project the details onto the new mesh topology)
+
+
+
+
+: Project Mesh Details (from one mesh to another)
+method 1
+>	Tool> SubTool> Duplicate (ctrl + D)
+>	Hide all other SubTools, (including the duplicate).
+>	Use ZRemesher with any desired settings.
+>	Turn on the copy of the SubTool that has the sculpted details (make sure that this SubTool is at the highest subdivision level).
+>	(with the remeshed model still selected), Tool> SubTool> Project All (adjust Dist slider).
+(repeat until until you have the desired number of subdivision levels.)
+
+method 2 (storing a morph target)
+>	on the highest subdivision level,
+>	tool> morph target> store morph target
+>	tool> layers> create new layer
+>	tool> subtool> project> project all (PA blur 0) (projecting one subdivision at at time starting from lowest level can slightly improve results)
+>	use brush> morph brush where needed.
+
 
 
 
 SCULPTING:    ------------------------------------------------------------------------
 
 
-techniques:
+
 : skin
 pores:
-	standard brush + stroke spray + alpha 07
+>	standard brush + stroke spray + alpha 07
+
 wrinkles:
-	""					""		  + alpha 58
+>	""					""		  + alpha 58
 
 
 
 
-
+: Erase
+>	tool> morph target> store morph target
+>	use morph target brush to remove any details that were sculpted after the target was stored.
 
 
 
@@ -581,57 +643,6 @@ http://docs.pixologic.com/user-guide/3d-modeling/nanomesh/
 
 
 
-RETOPOLOGY:    -----------------------------------------------------------------------
-
-
-: zremesher 
-(target polygon count 1 = 1000 polys)
-
-
-
-
-: dynamesh (evenly redistribute poly mesh)
->	geometry> dynamesh
-(re-run dynamesh;  ctrl + drag canvas)
-
-
-
-
-: Topology brush (keywords: retopology)
-(does not work with subdivision levels. curves cannot be edited beyond extending and deleting (editing can be done however using another curve brush, making sure that Bend is on and completing your edits).
- 
-	Brush size			controls curve density.
-	
-	Draw size			controls the thickness of the generated geometry (change brush size before generating). A Draw Size of 1 will generate a mesh with no thickness.
-	
-	contrain line		hold shift (you can use the Clip Curve combined with masks to align vertices quickly create straight lines.  Mask rectangle over edgeloop\invert mask\clip curve line to straighten (also zmodeler\slide edge to reposition))
-	
-	generate topology	click support mesh
-	delete curve		alt + drag over curve  (This operation will only work if the 	removal curve begins on the model surface. Otherwise you will rotate the model instead.)             
-	delete parts of curves that are not quads or tris - alt + drag on mesh surface away from curves
-
-
-
-
-: Remesh and retain details (by freezing subdivision levels)
->	Tool> Geometry> Freeze Subdivisions on the SubTool you would like to retopologize.
-(If level one doesn’t have enough polys to maintain the sculpt’s form, choose the subdivision level with the desired silhouette and Del Lower. After which you can return to the highest and Freeze Subdivision Levels)
->	Use ZRemesher with any desired settings.
->	Freeze Subdivisons again. (ZBrush will now recalculate your subdivision levels and project the details onto the new mesh topology)
-
-
-
-
-: Project Mesh Details (from one mesh to another)
->	Tool> SubTool> Duplicate (ctrl + D)
->	Hide all other SubTools, (including the duplicate).
->	Use ZRemesher with any desired settings.
->	Turn on the copy of the SubTool that has the sculpted details (make sure that this SubTool is at the highest subdivision level).
->	(with the remeshed model still selected), Tool> SubTool> Project All (adjust Dist slider).
-(repeat until until you have the desired number of subdivision levels.)
-
-
-
 
 
 
@@ -659,17 +670,51 @@ TEXTURES:    -------------------------------------------------------------------
 
 
 
+
+
+
+
+
+
+UV:		------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
 POLYPAINT:    ------------------------------------------------------------------------
 
 
-allows individual polys to be painted
-polypaint> colorize
+tun on/off polypaint:
+>	Tool> Polypaint> Colorize
+>	Turn off Zadd or ZSub
+>	Turn on Rgb and set RGB Intensity to 100
+
+
+Gradient Polypainting:
+>	Color> Gradient or below the color picker
 
 
 
 
-concept painting:
-on polyPlane:
+Concept painting: (on polyPlane)
 >	drag out polyplane primitive. 
 >	turn brush rgb channel on. (draw> rgb channel)
 >	masking   (masking> mask by color> mask by intensity)(invert mask)
@@ -683,7 +728,28 @@ Quicksketch:
 
 
 
+Convert Polypaint to Texture Map: (model must have UVs)
+>	Tool> UV Map> Width to xxxx
+>	Tool> UV Map> Height to xxxx
+>	Tool> Texture Map> New From Polypaint
+(to continue PolyPainting simply press Tool> Texture: Map> Texture Off and continue painting)
 
+
+
+Transfer color data: (from non-uv mesh to uv)
+>	Select the mesh with UV's, and subD it to the same level as the painted one.
+>	Switch to RGB
+>	With the UVed model selected, and the painted model visable, Press Project All.
+(If project all gives errors, turn on RGB, backface masking, and the zproject brush can fix them)
+
+
+
+
+
+
+
+
+TEXTURES:	--------------------------------------------------------------------------
 
 
 

@@ -128,6 +128,10 @@ Velvet/Suede:
 
 --------------------------------------------------------------
 
+Plastic (generic):
+	Plastic, being a softer material, will show surface wear more than glass would, so bump maps and R.Glossiness maps would be slightly more noticable.
+
+
 Glossy Plastic:
 >	Reflection color value 160.
 >	RGlossiness 0.95.
@@ -167,16 +171,42 @@ Clear Color Plastic:
 
 --------------------------------------------------------------
 
-glass (generic):
+Glass (generic):
 >	Set reflection to 98% black (if you need less reflection, reduce the IOR)
->	Set reflection glossiness to 1.0
->	Set refraction to white
->	Set refraction glossiness to 1.0
->	IOR 1.5 (1.4 acryllic.  1.6-1.8 flint)
+>	Set reflection glossiness to .98-1.0
+	Add a grunge map to the R.Gloss slot and set it’s strength to 10. We want the effect to be subtle and just enough to break up the highlights.
+	Fresnel Reflection values stay on and locked at the defaults.
+>	Set refraction to 98-100% white
+	This is controlling how transparent the object is. Color if needed.
+>	Set refraction glossiness to 1.0 Controls the clarity of the refraction.
+>	IOR 1.54 (1.4 acryllic.  1.6-1.8 flint)
+	IOR is controlling how the light bends as it passes through. A higher refraction IOR will bend light more, causing the image through the glass to be more distorted and bent. 
 >	Check "Affect Shadows" option ON under refraction parameters.
 >	Optional: Set the glass color via Fog Color parameter under Refraction options.
 
 >	Falloff map plugged into the reflect slot. (slight negative bezier start with overall slight positive curve. black-white)
+
+>	Scaled procedural noise to the bump map with a low value to give the glass that subtle imperfection in the refractions and add to the overall realism in the material.
+
+
+
+Hollow Glass:
+>	use a shell modifier on the geometry.	https://knowledge.autodesk.com/support/3ds-max/learn-explore/caas/CloudHelp/cloudhelp/2016/ENU/3DSMax/files/GUID-E38BD284-3283-4311-AC29-3F699B2F04AA-htm.html
+
+
+
+Tinted Glass:
+	The accurate way to colorize a glass material is by using Fog Color because it renders the thinner parts lighter and thicker parts darker. 
+>	Fog Multiplier changes the strength of the tint.
+>	Fog Bias negative values make the thin parts of the objects more transparent and the thicker parts more opaque and vice-versa (positive numbers make thinner parts more opaque and thicker parts more transparent).
+>	Refract Color can be used to colorize glass using bitmaps or procedurals for less accurate results.
+
+
+
+Frosted Glass:
+>	Refract Glossiness around .5
+>	Reflection Glossiness would be .6 to blur the refraction but still allow light through.
+
 
 
 Crystal Glass:

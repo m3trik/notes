@@ -1024,7 +1024,7 @@ ls -dag -ap -sl;
 //object types
 pm.ls(nodeTypes=1) //#list all node types
 
-//query object type
+//query object type: ('nurbsSurface', 'shape', transform', 'mesh', 'objectSet')
 pm.objectType('sphere1Shape')
 //
 pm.objectType('sphere1Shape', isType='nurbsSurface') //# Result: 1
@@ -1037,7 +1037,12 @@ geometry = pm.ls(geometry=1)
 geometry = pm.ls(type='mesh')
 transforms = pm.listRelatives(geometry, p=1, path=1)
 
-// geometry shapes and their types
+// get shape node
+//from transform
+shapeNodes = pm.listRelatives(transforms, shapes=1)
+//
+shapeNodes = pm.listRelatives(components, parent=1)
+//
 ls -type geometryShape -showType;
 
 
@@ -1312,9 +1317,9 @@ pm.selectType(facet=1)
 
 //surface info
 //edge, face, area (returns surface area of of selected object as float), uvComponent (selected UV faces as int)
-numVerts = pm.polyEvaluate (obj, vertex=1)
-numEdges = pm.polyEvaluate (obj, edge=1)
-numFaces = pm.polyEvaluate (obj, face=1)
+numVerts = pm.polyEvaluate(obj, vertex=1)
+numEdges = pm.polyEvaluate(obj, edge=1)
+numFaces = pm.polyEvaluate(obj, face=1)
 
 
 
@@ -1335,7 +1340,6 @@ polySphereShape.f[*]
 // get components
 //get all [.vtx, .f, .e]
 //alt using ls
-obj = 'pSphere1'
 vtx = pm.ls(obj+'.vtx[*]', flatten=True)
 //alt using polyevaluate
 faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
@@ -1349,6 +1353,9 @@ selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(sm=32)]
 polyEvaluate -edgeComponent $obj //
 selectedFaces = [f.split('[')[-1].rstrip(']') for f in pm.filterExpand(sm=34)]
 polyEvaluate -faceComponent $obj //
+//
+selFaces = pm.filterExpand(sm=34)
+
 
 //get all faces from object
 faces = pm.filterExpand(obj+'.f[*]', sm=34)
@@ -1360,7 +1367,7 @@ string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
 //edges
 edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
 
-//alt (get anything polyevaluate querys)
+//alt (get anything polyEvaluate querys)
 faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
 
 

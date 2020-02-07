@@ -1,0 +1,171 @@
+__AutoHotkey notes_________________________________________________________________
+
+
+
+
+
+
+; Commenting-------------------------------------------------------------------------
+
+;single line
+
+/*
+multiple
+line
+*/
+
+
+
+
+
+; Keyboard mapping-------------------------------------------------------------------
+
+
+
+; Mouse
+General buttons
+LButton		Left mouse button
+RButton		Right mouse button
+MButton		Middle or wheel mouse button
+
+
+; Advanced buttons
+XButton1	4th mouse button. Typically same as Browser_Back.
+XButton2	5th mouse button. Typically same as Browser_Forward.
+Wheel
+WheelDown	Turn the wheel downward (toward you).
+WheelUp		Turn the wheel upward (away from you).
+WheelLeft
+WheelRight	[v1.0.48+]: Scroll to the left or right.
+
+
+
+
+; Keyboard
+b is the "b" key and 5 is the "5" key. -Although any single character can be used as a key name, its meaning (scan code or virtual keycode) depends on the current keyboard layout. Additionally, some special characters may need to be escaped or enclosed in braces, depending on the context. [v1.1.27+]: The letters a-z or A-Z can be used to refer to the corresponding virtual keycodes (usually vk41-vk5A) even if they are not included in the current keyboard layout.
+
+
+
+
+; General keys
+CapsLock	Caps lock
+Space		Space bar
+Tab			Tab key
+Enter 		Enter key
+Escape		Esc key
+Backspace 	Backspace
+Cursor		control keys
+ScrollLock	Scroll lock
+Delete 		Delete key
+Insert 		Insert key
+Home		Home key
+End			End key
+PgUp		Page Up key
+PgDn		Page Down key
+Up			Up arrow key
+Down		Down arrow key
+Left		Left arrow key
+Right		Right arrow key
+
+
+
+; Numpad keys
+Due to system behavior, the following keys seperated by a slash are identified differently depending on whether NumLock is ON or OFF. If NumLock is OFF but Shift is pressed, the system temporarily releases Shift and acts as though NumLock is ON.
+
+Numpad0 / 	NumpadIns	0 / Insert key
+Numpad1 / 	NumpadEnd	1 / End key
+Numpad2 / 	NumpadDown	2 / Down arrow key
+Numpad3 / 	NumpadPgDn	3 / Page Down key
+Numpad4 / 	NumpadLeft	4 / Left arrow key
+Numpad5 / 	NumpadClear	5 / typically does nothing
+Numpad6 / 	NumpadRight	6 / Right arrow key
+Numpad7 / 	NumpadHome	7 / Home key
+Numpad8 /	NumpadUp	8 / Up arrow key
+Numpad9 / 	NumpadPgUp	9 / Page Up key
+NumpadDot / NumpadDel	Decimal separation / Delete key
+NumLock		Number lock
+NumpadDiv	Divide
+NumpadMult	Multiply
+NumpadAdd	Add
+NumpadSub	Subtract
+NumpadEnter	Enter key
+
+
+
+
+; Function keys
+F1 - F24	The 12 or more function keys at the top of most keyboards.
+
+
+
+
+; Modifier keys
+LWin	Left Windows logo key. Corresponds to the <# hotkey prefix.
+RWin	
+Right Windows logo key. Corresponds to the ># hotkey prefix.
+
+Note: Unlike Control/Alt/Shift, there is no generic/neutral "Win" key because the OS does not support it. However, hotkeys with the # modifier can be triggered by either Win key.
+
+Ctrl	 	Control key. As a hotkey (Control::) it fires upon release unless it has the tilde prefix. Corresponds to the ^ hotkey prefix.
+Alt			As a hotkey (Alt::) it fires upon release unless it has the tilde prefix. Corresponds to the ! hotkey prefix.
+Shift		Shift key. As a hotkey (Shift::) it fires upon release unless it has the tilde prefix. Corresponds to the + hotkey prefix.
+LControl 	(or LCtrl)	Left Control key. Corresponds to the <^ hotkey prefix.
+RControl 	(or RCtrl)	Right Control key. Corresponds to the >^ hotkey prefix.
+LShift		Left Shift key. Corresponds to the <+ hotkey prefix.
+RShift		Right Shift key. Corresponds to the >+ hotkey prefix.
+LAlt		Left Alt key. Corresponds to the <! hotkey prefix.
+RAlt		Right Alt key. Corresponds to the >! hotkey prefix.
+
+
+
+
+; Mouse position:
+
+$LButton::
+   MouseGetPos, mouseX, mouseY
+   loop, 9
+   {   click, L, %mouseX%, %mouseY%
+       Sleep 100
+   }
+Return
+
+
+
+; Key Press:
+
+
+; special chars (can be used in combination)
+{key}	-
+!key	-toggle
+~key	-
+$key	-disallows the hotkey to be triggered without explicity doing so inside the function.
+#key	-
+^key	-suspend[,mode]. prevents other hotkeys from interfering with the currently executing hotkey for
+example if I have a hotkey that is activated by the middle mouse button I can prevent
+it from triggering using suspend, on until the routine allows it to by using Suspend Off.
+
+
+; Send
+Send up
+Send down
+Send single
+Send double
+Send longpress
+Send {LButton 2} ;2=number of events
+MButton::Click 2 ;2=number of events
+
+
+
+
+; Key State:
+GetKeyState()	; ex. KeyIsDown := GetKeyState(f12)
+
+KeyWait		; ex. KeyWait, f12
+
+
+; Timer:
+oo
+
+
+
+

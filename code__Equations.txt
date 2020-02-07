@@ -100,6 +100,21 @@ def angleBetweenVectors (v1, v2, acute=True, degrees=False):
 
 
 
+
+
+
+# ASPECT RATIO__________________________________________________
+
+# get percentage from size:
+# image width / height
+e.g. For a 1280x720 image (16:9), 1280/720= 1.777777…, so set Repeat UV: 1.000; 1.778, where 1 represents height, 1.778 is width
+
+
+
+
+
+
+
 # GEOMETRIC EQUATIONS___________________________________________
 
 
