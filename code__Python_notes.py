@@ -25,40 +25,41 @@ sys.stdout.write('\n')
 
 
 'Mathmatical Operators______________________________________________________________________'
-/         #division
-					#to get floating point result in python 2
-					eg. c = a / float(b) #If the numerator or denominator is a float, then the result will be also
-					eg. from __future__ import division #Python 3 division behavior.
 
-//        #floor division. #drops and remainder and rounds down.
+#division '/'
+#to get floating point result in python 2
+eg. c = a / float(b) #If the numerator or denominator is a float, then the result will be also
+eg. from __future__ import division #Python 3 division behavior.
 
-**        #Exponentiation. 
-					eg. 2**3 #equivalent to: 2*2*2 = 8 
-					#or 
-					ex. pow(2, 3)
+#floor division. #drops and remainder and rounds down. '//'
+//
 
-%         #Modulus.
-					eg. 26 % 7 is 5 #If 26 / 7, then the division remainder is 5. (since 7+7+7=21 and 26-21=5.) 
+#Exponentiation. **
+eg. 2**3 #equivalent to: 2*2*2 = 8 
+#or 
+ex. pow(2, 3)
 
 
-#increment/ decrement
-+=				eg. i += 1 #AND assignment operator, eg. x += 5 is equivanent to x = x + 5
--=				eg. i -= 1 #AND assignment operator, eg. x -= 5 is equivanent to x = x - 5
+#Modulus %
+eg. 26 % 7 is 5 #If 26 / 7, then the division remainder is 5. (since 7+7+7=21 and 26-21=5.) 
+
+
+#increment/ decrement '+=' '-='
+eg. i += 1 #AND assignment operator, eg. x += 5 is equivanent to x = x + 5
+eg. i -= 1 #AND assignment operator, eg. x -= 5 is equivanent to x = x - 5
+
 
 #additonal assignment operators:
-*=				#x *= 5	x = x * 5
-/=				#x /= 5	x = x / 5
-%=				#x %= 5	x = x % 5
-//=				#x //= 5	x = x // 5
-**=				#x **= 5	x = x ** 5
-&=				#x &= 5	x = x & 5
-|=				#x |= 5	x = x | 5
-^=				#x ^= 5	x = x ^ 5
->>=				#x >>= 5	x = x >> 5
-<<=				#x <<= 5	x = x << 5
-
-
-
+*=		#x *= 5	x = x * 5
+/=		#x /= 5	x = x / 5
+%=		#x %= 5	x = x % 5
+//=		#x //= 5	x = x // 5
+**=		#x **= 5	x = x ** 5
+&=		#x &= 5	x = x & 5
+|=		#x |= 5	x = x | 5
+^=		#x ^= 5	x = x ^ 5
+>>=		#x >>= 5	x = x >> 5
+<<=		#x <<= 5	x = x << 5
 
 
 #reverse the sign of a number. (turn a neg number positive and vice versa):
@@ -143,6 +144,10 @@ is      #object identity (ie. listA==listB, but not is ListB)
 
 is not  #negated object identity
 
+
+#compare multiple
+#is/is not
+eg. x in [str, float]
 
 
 
@@ -1205,6 +1210,49 @@ eg. from operator import itemgetter
 		NewList.append(map(itemgetter(1), g))
 
 
+#combine lists that share elements ie. l = [['a', 'b', 'c'], ['d', 'e', 'a'], ['f', 'g']]
+eg:	out=[]
+	while len(l)>0:
+	    first, *rest = l
+	    first = set(first)
+
+	    lf = -1
+	    while len(first)>lf:
+	        lf = len(first)
+
+	        rest2 = []
+	        for r in rest:
+	            if len(first.intersection(set(r)))>0:
+	                first |= set(r)
+	            else:
+	                rest2.append(r)     
+	        rest = rest2
+
+	    out.append(first)
+	    l = rest
+
+	print(out)
+
+#using itertools: (import itertools; from itertools import product, groupby)
+eg.	l=[set(x) for x in l] #inner lists to sets (to list of sets)
+
+	for a,b in product(l,l): #cartesian product merging elements if some element in common
+	    if a.intersection( b ):
+	       a.update(b)
+	       b.update(a)
+
+	l = sorted([sorted(list(x)) for x in l]) #back to list of lists
+	list(l for l,_ in groupby(l)) #remove duplicates
+
+#alt using itertools: (import itertools)
+eg.	ll = set(itertools.chain.from_iterable(l)) #ll is {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'k', 'o', 'p'}
+
+	for each in ll:
+	  components = [x for x in l if each in x]
+	  for i in components:
+	    l.remove(i)
+	  l += [list(set(itertools.chain.from_iterable(components)))]
+
 
 
 
@@ -1225,9 +1273,9 @@ eg. list_ = [x for x in list_ if x != 20]
 #by index or specify a slice [::-1]
 eg. del list_[-1] #deletes the last element
 #to delete an item x.pop(index)
-eg. x.pop(0) del(n[1]) #delete index 1 in list n
+eg. x.pop(0) del(list_[1]) #delete index 1
 #
-eg. s.pop(list_.index(x))
+eg. x.pop(list_.index(x))
 
 
 #remove duplicates in a list: 
