@@ -6,6 +6,60 @@ zbrush 4R7	http://docs.pixologic.com/user-guide/3d-modeling/
 
 
 
+Mesh Visibility:
+
+Show mesh portion – Shift+Ctrl+Click, release keys & drag (green selection area)
+Hide mesh portion - Shift+Ctrl+Click, release keys & drag – press Alt (red selection area)
+Show entire mesh – Shift+Ctrl+Click Background
+Show only selected Polygroup (on fully visible mesh) – Shift+Ctrl+Click
+Hide selected Polygroup (on fully visible mesh) – Shift+Ctrl+Click twice
+Hide selected Polygroup (on partially visible mesh) – Shift+Ctrl+Click
+Reverse visibility – Shift+Ctrl+Click & drag Background
+Hide edge loop – with Lasso option selected, Shift+Ctrl+click on edge that crosses loop
+
+
+
+
+transpose smart masking      using smart transpose brush, hold the Ctrl key while dragging the Action Line. hold Shift key to add a Mask to the previously created one. alt to unmask
+transpose curve deformation  bend only the portion of your surface that is located between the two furthest circles of the action line. in Move mode, hold the ALT key & drag the Action Line’s center circle to bend surface. 
+transpose perpendicular    click polygon to auto-draw transpose line from its normal
+center on selection        click white circle to center your selection pivot
+  
+masking transpose smart mask or (move mode, move tool activated) x to toggle masking symmetry while in transpose mode
+mask           ctrl + click drag on geometry
+add to mask    ctrl + alt click drag 
+
+mask polygroup             press W or click the Move button and then Ctrl+Shift+click on any PolyGroup. All other groups will immediately be masked.
+
+ctrl                       paint mask
+ctrl + alt                 erase mask
+ctrl + click canvas        invert mask
+ctrl + drag canvas         un-mask all
+ctrl + drag                drag mask
+                             also:  ctrl + click model         soften mask
+                                    ctrl + alt click model     sharpen mask
+                                    ctrl + click canvas        invert mask
+
+extract mask to new subtool         subtool menu\extract    extract by mask or visibility
+
+move mode: (w key)   
+click + drag to move manipulator
+ctrl + click drag to mask and move (click drag again without shift to move & retain mask)
+outer middle ring    move manipulator (all three rings)
+outer end rings      move manipulator end position
+(hold shift          constrain movement)
+
+center red ring      move object
+outer red rings        skew\stretch object
+
+scale: (e key)
+outer red rings      scale constrained by opposite end point
+center red ring      scale constrained by both end points
+
+rotate:  (r key)
+outer red rings      rotate
+center red ring      twist 
+
 
 
 
@@ -281,19 +335,21 @@ Pivot:
 DUPLICATE & MIRROR GEOMETRY:   -------------------------------------------------------
 
 
-: duplicate
->	in Move mode hold Ctrl to duplicate the mesh. 
+: Duplicate
+using transpose tool:
+(does not work with subdivision levels. freeze transforms first)
+>	in transpose mode hold ctrl key to extrude unmasked area.
 
 
 
-: mirror
+: Mirror
 >	geometry> modify topology> copy
 >	deformation> mirror
 >	geometry> modify topology> paste append
 
 
 
-: re-sym
+: Re-Sym
 >	mask side to protect from change.
 >	deformation> smart re-sym (to mirror one side to the next) averages both sides by default.
 
@@ -416,7 +472,8 @@ You want your joints in a specific place, so you create guide loops with ZRemesh
 
 
 : Extrude
-basic extrude using transpose: (does not work with subdivision levels. freeze transforms first)
+using transpose tool:
+(does not work with subdivision levels. freeze transforms first)
 >	in transpose mode hold alt key to extrude unmasked area.
 
 extrude clean edges using transpose:
@@ -429,6 +486,8 @@ extrude clean edges using transpose:
 >	hold ctrl to extrude withought new edgeloop and polygroup	
 >	hold shift to extrude along normal without adding geometry
 >	tap alt after starting a qmesh extrude to change polygrouping
+
+
 
 
 
@@ -519,6 +578,16 @@ method 2 (storing a morph target)
 
 
 
+
+
+
+
+
+
+
+
+
+
 SCULPTING:    ------------------------------------------------------------------------
 
 
@@ -536,6 +605,14 @@ wrinkles:
 : Erase
 >	tool> morph target> store morph target
 >	use morph target brush to remove any details that were sculpted after the target was stored.
+
+
+
+
+
+
+
+
 
 
 
@@ -644,6 +721,22 @@ http://docs.pixologic.com/user-guide/3d-modeling/nanomesh/
 
 
 
+UV:		------------------------------------------------------------------------------
+
+
+
+Flip or Rotate UV:
+>	Tool> Texture Map> Clone Texture
+>	Texture> Flip, Rotate, or Inverse.
+
+
+
+
+
+
+
+
+
 
 
 
@@ -663,26 +756,6 @@ TEXTURES:    -------------------------------------------------------------------
 >	re-enter edit mode and scale
 >	exit edit mode, hold tilda key, and position geometry.
 >	use layers to add more instances of geometry to tile.
-
-
-
-
-
-
-
-
-
-
-
-
-
-UV:		------------------------------------------------------------------------------
-
-
-
-
-
-
 
 
 
@@ -728,29 +801,26 @@ Quicksketch:
 
 
 
-Convert Polypaint to Texture Map: (model must have UVs)
+
+
+
+Polypaint to Texture Map: (model must have UVs)
 >	Tool> UV Map> Width to xxxx
 >	Tool> UV Map> Height to xxxx
 >	Tool> Texture Map> New From Polypaint
 (to continue PolyPainting simply press Tool> Texture: Map> Texture Off and continue painting)
 
 
+Texture Map to Polypaint:
+>	Tool> Polypaint> New From Texture
 
-Transfer color data: (from non-uv mesh to uv)
+
+
+Transfer Color Data between models: (from non-uv mesh to uv)
 >	Select the mesh with UV's, and subD it to the same level as the painted one.
 >	Switch to RGB
 >	With the UVed model selected, and the painted model visable, Press Project All.
 (If project all gives errors, turn on RGB, backface masking, and the zproject brush can fix them)
-
-
-
-
-
-
-
-
-TEXTURES:	--------------------------------------------------------------------------
-
 
 
 

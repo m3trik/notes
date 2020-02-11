@@ -1046,6 +1046,11 @@ shapeNodes = pm.listRelatives(components, parent=1)
 ls -type geometryShape -showType;
 
 
+//get transforms
+//from shape
+transforms = pm.listRelatives(shapeNodes, parent=1)
+
+
 //get only visible dag nodes. -dagObjects for all in scene.
 ls -visible;
 

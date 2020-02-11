@@ -1129,10 +1129,13 @@ eg. cmp(list1, list2) #Compare the two objects x and y and return an integer
 #or using any/all
 eg. all(i in a for i in b)
 eg. any(i in a for i in b)
+eg. any((True for i in a if i in b))
 #using 'any' with a generator:
 if any(x in d for x in [a, b, c]):
 #using zip
 [str_ for int_,str_ in zip([1,2,3], ['1','2','3']) if int_>1] #returns ['2','3']
+#list comprehension
+[i for i in a if i in b]
 
 
 
@@ -1213,8 +1216,8 @@ eg. [i for i, bit in enumerate(bitArray) if bit==1] #returns a list of indices t
 
 #remove an element
 #by value
-#remove first occurance
-eg. list_.remove(element) #if not found raises ValueError
+#remove first occurance (raises ValueError if element not in list)
+eg. list_.remove(element)
 #all occurances using linear function
 eg. list_ = list(filter(lambda x: x!= 2, list_))
 #all occurances using list comprehension
@@ -1223,9 +1226,11 @@ eg. list_ = [x for x in list_ if x != 20]
 eg. del list_[-1] #deletes the last element
 #to delete an item x.pop(index)
 eg. x.pop(0) del(n[1]) #delete index 1 in list n
+#
+eg. s.pop(list_.index(x))
 
 
-#Remove duplicates in a list: 
+#remove duplicates in a list: 
 #If list order is not important, then convert to a set.
 eg. set_ = set(list_) 
 #convert back to list using list()
@@ -1276,75 +1281,8 @@ eg. del list_[:]
 eg. list_[:]=[]
 #by assigning an empty list to the list variable (clear list)
 eg. list_=[]
-									
-
-
-
-
-
-
-
-
-
-
-'Sets_______________________________________________________________________________________'
-#Sets share several list operations such as len.  They are unordered and therefore cannot
-# be indexed. They cannot contain duplicate elements. Because of the way they are stored
-# they are faster in retrieving results than lists, but are slower to iterate over.
-
-# creating a set:
-eg. numSet = set() #Creates an empty set
-eg. numSet = set([1,2,3,4,'5']) #creates a set 1,2,3,4,'5'
-
-
-x in s                            #test x for membership in s
-x not in s                        #test x for non-membership in s
-
-
-# add element
-eg. numSet.add(-6) #appends integer -6 to the set
-
-
-# remove element. raises KeyError if not present
-eg. numSet.remove(1)
-
-# remove element if present
-s.discard(x)                      
-
-# remove and return an arbitrary element; raises KeyError if empty
-s.pop()
-
-# remove all elements
-s.clear()
-
-
-#combine lists as sets sorted by index
-#using zip (zip can take more than two arguments)
-zip([1,2,3], [1,2,3]) #returns [(1, 1), (2, 2), (3, 3)]
-
-
-# combining sets with other iterable objects:
-eg. print (s|=t)
-eg. print s.update(t)
-s.update(t)               s |= t  #return set s with elements added from t
-s.intersection_update(t)  s &= t  #return set s keeping only elements also found in t
-s.difference_update(t)    s -= t  #return set s after removing elements found in t
-s.symmetric_difference_update(t)  s ^= t #return set s with elements from s or t but not both
-s.union(t)                s | t   #new set with elements from both s and t
-s.intersection(t)         s & t   #new set with elements common to s and t
-s.difference(t)           s - t   #new set with elements in s but not in t
-s.symmetric_difference(t) s ^ t   #new set with elements in either s or t but not both
-s.copy()                          #new set with a shallow copy of s
-
-# query set elements between two sets
-s.issubset(t)             s <= t  #test whether every element in s is in t
-s.issuperset(t)           s >= t  #test whether every element in t is in s
-
-
-# subtract the elements of one set from another
-set([1,2,6,8]) - set([2,3,5,8])
-#returns set([1, 6])
-
+#
+eg. list_.clear()						
 
 
 
@@ -1369,6 +1307,83 @@ print 'Tuple elements : ', aTuple
 
 #Convert a tuple into a list
 list(seq)
+
+
+
+
+
+
+
+
+
+
+
+'Sets_______________________________________________________________________________________'
+#Sets share several list operations such as len. They are unordered and therefore cannot
+# be indexed. They cannot contain duplicate elements. Because of the way they are stored
+# they are faster in retrieving results than lists, but are slower to iterate over.
+
+# creating a set:
+eg. set() #Creates an empty set
+eg. set([1,2,3,4,'5']) #creates a set 1,2,3,4,'5'
+
+
+# add element
+eg. s.add(-6) #appends integer -6 to the set
+
+# get element (random as sets are not ordered)
+eg. e = next(iter(s))
+
+
+#check membership
+x in s
+x not in s
+
+
+# query set elements between two sets
+s.issubset(t)             s <= t  #test whether every element in s is in t
+s.issuperset(t)           s >= t  #test whether every element in t is in s
+
+
+
+
+#combine lists as sets sorted by index
+#using zip (zip can take more than two arguments)
+zip([1,2,3], [1,2,3]) #returns [(1, 1), (2, 2), (3, 3)]
+
+
+# combining sets with other iterable objects:
+eg. print (s|=t)
+eg. print s.update(t)
+s.update(t)               s |= t  #return set s with elements added from t
+s.intersection_update(t)  s &= t  #return set s keeping only elements also found in t
+s.difference_update(t)    s -= t  #return set s after removing elements found in t
+s.symmetric_difference_update(t)  s ^= t #return set s with elements from s or t but not both
+s.union(t)                s | t   #new set with elements from both s and t
+s.intersection(t)         s & t   #new set with elements common to s and t
+s.difference(t)           s - t   #new set with elements in s but not in t
+s.symmetric_difference(t) s ^ t   #new set with elements in either s or t but not both
+s.copy()                          #new set with a shallow copy of s
+
+
+
+#remove element
+# raises KeyError if not present.
+eg. s.remove(1)
+# does not throw error if key doesn't exist.
+eg. s.discard(x)
+
+# remove and return an arbitrary element; raises KeyError if empty
+eg. s.pop()
+
+
+# remove all elements
+s.clear()
+
+
+# subtract the elements of one set from another
+set([1,2,6,8]) - set([2,3,5,8])
+#returns set([1, 6])
 
 
 
@@ -3217,6 +3232,12 @@ exec 'try: some_problematic_thing()\nexcept: problem=sys.exc_info()'
 #or:
 parse_float = lambda x, y=exec('def f(s):\n try:\n  return float(s)\n except:  return None'): f(x)
 
+
+
+# supress error: (python 3)
+from contextlib import suppress
+with suppress(ValueError):
+    a.remove('b')
 
 
 # print to console

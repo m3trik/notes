@@ -6,15 +6,157 @@ ____Substance_Painter_notes_____________________________________________________
 
 
 
-Shortcut Menu heads up _ _ _____
+
+
+
+
+
+PROCEDURES: -------------------------------------------------------------------------
+
+
+non-destructive workflow:
+This approach allows you to modify the properties of the Fill layer, such as base colour, roughness, metallic, height and so on any time, without having to repeat your drawings, since all the painted data is stored in the mask.
+>	create a Fill layer. 
+>	then add a black mask on it.
+>	append a Paint layer under the mask to manually paint on.
+
+
+
+
+Create smart material from layer group:
+>	Create a single top-level group and move all the existing layers into this group (or select all layers and press Ctrl-G).
+>	Right-click that group> select Create Smart Material.
+>	Find the .spsm file in your Default shelf (see your settings). You can then archive/share this as required.
+
+
+
+
+oil leaks\stains:
+>	Start by creating a new Fill layer and try to match the colour and the Roughness value with some references. 
+>	Then apply a black mask with a Paint layer and start to roughly paint some leaking marks – don’t bother if they are too clear. 
+>	Now create a new Paint layer in the mask and set the blending mode to Pass Through. Now it’s time for the Smudge tool. 
+>	With the second Paint layer selected, start to move your Smudge brush in the direction of your leak, moving it up and down until you get what you want. 
+>	Adding a new oil layer and new leaks with slightly different properties will improve the result, giving it more variety. 
+>	Don’t forget to slightly tweak the layer opacity.
+
+
+
+Weld seams:
+>	create a new Fill layer, or just using a default Rust material.
+>	Increase the Height map, 
+>	create a black mask and a Paint layer under it.
+>	Select the Artistic 2 brush preset.
+>	adjust the brush’s properties, such as Spacing and Hardness, in order to get a nicer result. 
+>	Start painting on the edges where you want your weld marks to be. 
+>	If the Height information is too strong, just tweak down the value on the layer’s properties.
+
+
+
+
+
+
+
+
+	
+MASKING: ----------------------------------------------------------------------------
+Quick Masking:
+works in a similar way as the masking in ZBrush.
+>	Hit T to switch to quick mask edit mode, this will allow you to paint a temporary mask.
+>	Hit T again to switch back to your previous tool and paint across that mask.
+>	Hit Y to reset/disable the mask.
+>	Hit I to invert the mask while in quick mask edit mode.
+
+
+Black = transparency
+White = Opaque
+
+show mask in viewport	alt + left click mask icon
+
+mask by geometry:
+>	't' toggles editing and using quick mask
+>	select polygon fill icon
+>	paint in the mask then invert (ctrl+i)
+>	'y' clears quick mask
+
+
+
+
+
+
+
+
+UV: ---------------------------------------------------------------------------------
+
+
+fix UV seams:	blend together the information on all the channels simultaneously, making seams fade away.
+>	create a layer (not a Fill).
+>	set the blending mode of every channel to Pass Through.
+>	then select the Smudge tool and lightly draw on the edges where the seams are visible.
+
+
+
+
+
+
+
+NORMALS: ----------------------------------------------------------------------------
+
+
+Paint Normal Map Details:
+>	Add a normal channel in the current current Texture Set (if not already present)
+>	Enable the normal channel in the current painting tool
+>	Load a Normal resource in the Normal slot of the Material section of the current painting tool.
+(optional: set blending mode in the layer stack: Detail, Inverse, Combine)
+
+
+
+Painting Over A Baked Normal Map:
+>	Create a new fill layer and in the properties panel, put the baked normal map inside the "normal" slot.
+	(not a fill layer as a sub-layer)
+	(UV scale of the fill layer should be set to 1.)
+>	Texture Set settings tab> Change the Texture Set blending mode to replace.
+>	Change the fill layer blending mode from NMdt (Normal map details) to Normal.
+>	Create a new layer (regular or fill) and change its blending mode to "normal" for the normal channel.
+
+
+
+
+
+
+
+
+
+
+IMPORT/EXPORT: ---------------------------------------------------------------------
+
+Importing a sbsar file:
+>	drag into subsance shelf or file> import resources
+>	import as procedural
+>	give a prefix (ie. proj_) so files are better organized and easily found
+
+
+
+
+
+
+
+
+
+
+
+
+KEYBOARD SHORTCUTS: ----------------------------------------------------------------
+
+								default_________________________custom
+
+
+Shortcuts pop-up list
 Stencil shortcuts				S
 Misc							shft
 Misc							ctrl
 Misc							RM
 
 
-
-KEYBOARD SHORTCUTS___ _ _ ______default_____ _ _ _ _ _ _ _____mod (will need to double check defaults sometime)
 
 Hide UI							TAB								TAB
 
@@ -28,9 +170,7 @@ lazy mouse						L
 
 Camera Projection:Persp			F5								
 				 :Ortho			F6								
-
-toggle through channels			C								
-toggle Material					M									
+								
 
 Toggle Animation				Space							
 
@@ -56,7 +196,7 @@ Clone Tool						6
 Texture Set Isolate				T								
 
 
-Mouse Shortcuts___ _ _ _ __________________ _ _ _ _ _ ________
+Mouse Shortcuts:
 
 Draw Straight Lines				shft + Left						""
      Snapped Straight Lines 	ctrl + shift + left				
@@ -83,107 +223,17 @@ Lighting Zoom					Shift + RMB + Move Up/Down
          Rotate	              
 
 
-Viewport__________ _ _ _ _________________ _ _ _ _ _ ________		 
+Viewport:		 
 
 select material/geometry		ctrl + alt RM
 		 
-solo layer						alt + LM on icon in layer stack	
+solo layer						alt + LM on icon in layer stack
+toggle channels (solo view)		C								
+toggle Material	(solo view)		M
 
 enable disable layer			shft + LM on icon in layer stack				 
 
 translate projection/ alpha		S + LM, RM, MM (scale,rotate,pan)
-
-
-
-
-
-
-
-
-PROCEDURES________ _ _ _
-
-
-non-destructive workflow:
-This approach allows you to modify the properties of the Fill layer, such as base colour, roughness, metallic, height and so on any time, without having to repeat your drawings, since all the painted data is stored in the mask.
->	create a Fill layer. 
->	then add a black mask on it.
->	append a Paint layer under the mask to manually paint on.
-
-
-
-
-
-Create smart material from layer group:
->	Create a single top-level group and move all the existing layers into this group (or select all layers and press Ctrl-G).
->	Right-click that group> select Create Smart Material.
->	Find the .spsm file in your Default shelf (see your settings). You can then archive/share this as required.
-
-
-
-
-
-
-oil leaks\stains:
->	Start by creating a new Fill layer and try to match the colour and the Roughness value with some references. 
->	Then apply a black mask with a Paint layer and start to roughly paint some leaking marks – don’t bother if they are too clear. 
->	Now create a new Paint layer in the mask and set the blending mode to Pass Through. Now it’s time for the Smudge tool. 
->	With the second Paint layer selected, start to move your Smudge brush in the direction of your leak, moving it up and down until you get what you want. 
->	Adding a new oil layer and new leaks with slightly different properties will improve the result, giving it more variety. 
->	Don’t forget to slightly tweak the layer opacity.
-
-Weld seams:
->	create a new Fill layer, or just using a default Rust material.
->	Increase the Height map, 
->	create a black mask and a Paint layer under it.
->	Select the Artistic 2 brush preset.
->	adjust the brush’s properties, such as Spacing and Hardness, in order to get a nicer result. 
->	Start painting on the edges where you want your weld marks to be. 
->	If the Height information is too strong, just tweak down the value on the layer’s properties.
-
-	
-	
-MASKING--
-Quick Masking:
-works in a similar way as the masking in ZBrush.
->	Hit T to switch to quick mask edit mode, this will allow you to paint a temporary mask.
->	Hit T again to switch back to your previous tool and paint across that mask.
->	Hit Y to reset/disable the mask.
->	Hit I to invert the mask while in quick mask edit mode.
-
-
-Black = transparency
-White = Opaque
-
-show mask in viewport	alt + left click mask icon
-
-mask by geometry:
->	't' toggles editing and using quick mask
->	select polygon fill icon
->	paint in the mask then invert (ctrl+i)
->	'y' clears quick mask
-
-
-
-UV--
-fix UV seams:	blend together the information on all the channels simultaneously, making seams fade away.
->	create a layer (not a Fill).
->	set the blending mode of every channel to Pass Through.
->	then select the Smudge tool and lightly draw on the edges where the seams are visible.
-
-
-
-
-
-
-
-
-
-IMPORT / EXPORT
-
-Importing a sbsar file:
->	drag into subsance shelf or file> import resources
->	import as procedural
->	give a prefix (ie. proj_) so files are better organized and easily found
 
 
 
