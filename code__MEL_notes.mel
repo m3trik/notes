@@ -1850,6 +1850,13 @@ eg. pm.lsUI(panels=1, editors=1)
 currentPanel = pm.getPanel(withFocus=1)
 
 
+//#get maya viewport widget
+// import maya.OpenMayaUI as apiUI; import sip
+view = apiUI.M3dView()
+apiUI.M3dView.getM3dViewFromModelPanel('modelPanel4', view)
+viewWidget = sip.wrapinstance(long(view.widget()), QtCore.QObject)
+
+
 
 //#Use the -typ/type flag to list all controls and control layouts.
 //#Alternatively, you could use the -ctl/controls and -cl/controlLayouts flags.

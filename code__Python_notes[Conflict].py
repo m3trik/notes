@@ -1,4 +1,4 @@
-'PYTHON_notes_______________________________________________________________________________'
+'PYTHON2_notes______________________________________________________________________________'
 
 
 
@@ -120,10 +120,6 @@ p2 = [6, 6]
 distance = math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
 
-
-#get decimal place:
-decimals = str(float_)[::-1].find('.') #get decimal places
-
 #move decimal place
 a = 0.01
 a * 10. #shifts decimal place right
@@ -148,9 +144,12 @@ is      #object identity (ie. listA==listB, but not is ListB)
 
 is not  #negated object identity
 
+isinstance()
 
-eg. isinstance(var, (str, unicode))
-eg. type(var)
+type()
+
+#compare multiple
+#is/is not
 eg. type(x) in [str, float]
 
 
@@ -439,9 +438,9 @@ eg. [index for index, element in enumerate(list_)]
 #'num' is redefined each sequence. if you need to modify it during loop. 
 eg. [num for num in xrange(10)] #returns [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 #between two values: (start, stop)
-eg. range(140, 151) #140-150 ie. [140, 141, 142,..]
-#(start, stop, step)
-eg. range(3, 8, 2) #creates list with a 2 unit interval. in this case [3, 5, 7]
+eg. range(140, 151)) #140-150 ie. [140, 141, 142,..]
+#set range: (start, stop, step)
+eg. range(3,8,2)) #creates list with a 2 unit interval. in this case [3, 5, 7]
 #random integer values.  
 
 
@@ -503,8 +502,7 @@ eg. vars_={}
 	vars_['key']=value
 	#print vars_['key']
 #adding to globals() or locals():
-eg. locals()[key]=value
-eg. globals()['var'] = "an object"
+		locals()[key]=value
 #assign variables from **kwargs
 eg. for key,value in kwargs.iteritems(): #create variables for any kwargs passed in
 		exec('%s=%s' % (key,value))
@@ -680,11 +678,11 @@ eg. 'string'[1:-1] #'trin'
 
 
 #check for character:
-eg. '$' in 'string':
-eg. '$' not in 'string':
-eg. '.vtx' or '.f' in 'string':
-
-if any(char in set('0123456789$,') for char in 'string'):
+eg. if '$' in string:
+eg. if '$' not in string:
+eg. if '.vtx' or '.f' in str(vertex):
+chars = set('0123456789$,')
+if any((c in chars) for c in s):
 #using re
 pattern = re.compile(r'\d\$,')
 if pattern.findall(string):
@@ -932,7 +930,7 @@ isinstance(obj, list):
 eg. 3 in [1, 2, 3] #results in True
 
 #check if index exists:
-eg. index < len(List_)
+eg. if index < len(List_)
 #using try/except
 eg. try:
 		list_[1]
@@ -940,13 +938,18 @@ eg. try:
 		print e #'Index doesn't exist'
 
 
-#get element from index
-eg. e = list_[i] if len(list_) > i else None
-
 
 #check if list contains type of element:
 #contains list:
 eg. any(isinstance(i, list) for i in list_)
+
+
+
+#remove None values from list:
+#using list comprehension:
+[i for i in list_ if i]
+#using filter:
+list(filter(None, list_))
 
 
 
@@ -986,10 +989,6 @@ eg. list.index('x') #returns index of element
 
 #get the Total number of occurrences
 (x, mylist.count(x)) for x in set(mylist)
-
-#get the most occuring element
-#using statistics (import statistics)
-eg. statistics.mode(list_)
 
 
 #get every nth element from a list
@@ -1101,9 +1100,9 @@ eg. list_[list_.index(item)] = replaceWiththis
 
 # replace elements in a list as rounded values
 eg. for pos in point:
-		roundedPos = round(pos, 2)
-		index = point.index(pos)
-		point[index] = roundedPos
+			roundedPos = round(pos, 2)
+			index = point.index(pos)
+			point[index] = roundedPos
 
 
 #reverse a list
@@ -1125,11 +1124,6 @@ eg. list1 = [[0, 4, 1, 5], [3, 1, 5], [4, 0, 1, 5]]
 		sorted(list1, key=lambda l: (len(l), l)) #returns [[3, 1, 5], [0, 4, 1, 5], [4, 0, 1, 5]]
 
 
-#re-order by length.
-a.sort(key=len)
-sorted(a, key=len)
-#decending order:
-a.sort(key=len, reverse=True)
 
 
 
@@ -1138,7 +1132,7 @@ a.sort(key=len, reverse=True)
 #without duplicates:
 set(x) == set(y) #returns bool. set removes duplicates so will not check for that
 #with duplicates:
-#import collections
+import collections
 compare = lambda x, y: collections.Counter(x) == collections.Counter(y) #returns bool.
 
 
@@ -1208,34 +1202,27 @@ eg. ','.join(map( lambda x: str(x), list_))
 eg. ', '.join(map(str, list_of_ints)) #returns 80, 443, 8080, 8081
 
 
-#flatten list (combine a list of lists)
-#nested list comprehension (third fastest)
+
+#combine a list of lists
+#flatten list
 eg. flattened = [i for sublist in list_ for i in sublist]
-#list addition with the += operator (fastest)
-flattened=[]
-for sublist in list_:
-    flattened += sublist
-#List.extend (second fastest)
-flattened=[]
-for sublist in list_:
-    flattened.extend(sublist)
-#List.append (fourth fastest)
-flattened=[]
-for sublist in list_:
-    for val in sublist:
-        flattened.append(val)
+#is equivalent to: (the list comp evaluates MUCH faster than the unraveled loop)
+flattened = []
+for sublist in list_of_lists:
+	for val in sublist:
+		flattened.append(val)
 #using itertools (from itertools import chain.)
 eg. list(chain(*list_of_lists))
 eg. list(chain.from_iterable(list_of_lists))
-
 
 
 #combine sequential numbers into separate lists eg. [1,4,5,6] becomes [[1],[4,5,6]] #sequence
 eg. split = [0]+[i for i in range(1,len(list_)) if list_[i]-list_[i-1]>1]+[None]
 		list_=[list_[b:e] for (b, e) in [(split[i-1],split[i]) for i in range(1,len(split))]]
 eg. [list(map(itemgetter(1), g)) for k, g in groupby(enumerate(list_), lambda x: x[0]-x[1])]
-eg.	#from operator import itemgetter #from itertools import *
-	for k, g in groupby(enumerate(list_), lambda (i,x):i-x):
+eg. from operator import itemgetter
+		from itertools import *
+		for k, g in groupby(enumerate(list_), lambda (i,x):i-x):
 		NewList.append(map(itemgetter(1), g))
 
 
@@ -1274,13 +1261,13 @@ eg.	l=[set(x) for x in l] #inner lists to sets (to list of sets)
 	list(l for l,_ in groupby(l)) #remove duplicates
 
 #alt using itertools: (import itertools)
-eg.	l2 = set(itertools.chain.from_iterable(l1)) #ll is {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'k', 'o', 'p'}
+eg.	ll = set(itertools.chain.from_iterable(l)) #ll is {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'k', 'o', 'p'}
 
-	for each in l2:
-	  components = [x for x in l1 if each in x]
+	for each in ll:
+	  components = [x for x in l if each in x]
 	  for i in components:
-	    l1.remove(i)
-	  l1 += [list(set(itertools.chain.from_iterable(components)))]
+	    l.remove(i)
+	  l += [list(set(itertools.chain.from_iterable(components)))]
 
 
 
@@ -1331,14 +1318,8 @@ eg. from collections import OrderedDict
 
 
 
-#remove specific elements:
-#using list comprehension:
+#remove elements containg specific characters:
 eg. [ x for x in list_ if '2' not in x ] #returns ['1', '336'] from ['1', '32', '523', '336']
-eg. [i for i in list_ if i] #remove None values from list:
-#using filter:
-eg. list(filter(None, list_))
-
-
 
 
 #remove all elements of one list from another:
@@ -1532,11 +1513,9 @@ dict_['key'] = temp
 
 
 #get all keys:
-eg. dict_.keys() #dict_.iterkeys() (python 2.x)
+eg. dict_.keys()
 #get all values:
-eg. dict_.values() #eg. dict_.itervalues() (python 2.x)
-#get key and values:
-eg. dict_.items() #eg.	dict_.iteritems() (python 2.x)
+eg. dict_.values()
 
 
 # Get Value using Key.
@@ -1547,13 +1526,11 @@ dictionary.get('key', default_value)
 
 
 # Get Key using value
-eg. [i for i in dict_ if dict_[i]=='something']
 #returns the first key assigned to value 'something'
-eg. next(key for key, value in dict_.items() if value=='something')
-#return first key with value something and key not somethingElse
-eg. next(key for key, value in dict_.items() if value=='something' and key not 'somethingElse')
-#key from value as a element in a list:
-eg. [i for i in dict_ if dict_[i][0]=='something']
+eg. var = next(key for key, value in dict_.items() if value=='something')
+#return firt key with value something and key not somethingElse
+eg. var = next(key for key, value in dict_.items() if value=='something' and key not 'somethingElse')
+
 
 
 # Get min/max
@@ -1580,13 +1557,13 @@ dict_.has_key('1')
 
 # looping
 #keys
-eg. key in dict_
+eg. for key in dict_:
 #values:
-eg. value in dict_.itervalues()
+eg. for value in dict_.itervalues():
 #keys and values:
-eg.	key, value in dict_.iteritems()
+eg.	for key, value in dict_.iteritems():
 #keys, values, and indices:
-eg. index, (key, value) in enumerate(dict_.items())
+eg. for index, (key, value) in enumerate(dict_.items()):
 
 
 
@@ -1667,12 +1644,12 @@ eg. sorted = sorted(dict_.items(), key=operator.itemgetter(1))
 #when you pass an argument to the switch_demo function, it is looked up against the switcher dictionary mapping. 
 #If a match is found, the associated value is returned, else a default string (‘Invalid Month’) is printed.
 def switch_demo(argument):
-	switcher = {
-			1: 'January',
-			2: 'February',
-			3: 'March',
-			4: 'April'
-	return switcher.get(argument, 'Invalid month')
+		switcher = {
+				1: 'January',
+				2: 'February',
+				3: 'March',
+				4: 'April'
+		return switcher.get(argument, 'Invalid month')
 
 superClassDict = {
 			GeometryClass: 'GeometryClass',
@@ -1777,7 +1754,8 @@ dict_.clear()
 #, and used as arguments, just like any other value 
 
 
-#lambda
+#lambda fuctions
+i = lambda x: x #equivalent to: def i(x): return x
 ex.
 widgetType = lambda n='i021': n[0] if [c for c in n[1:] if c.isdigit()] else n
 
@@ -1914,42 +1892,54 @@ variable = list(filter(lambda x: x < 5, myList))
 'Generators_(coroutines)____________________________________________________________________'
 
 generators  #are iterators, but you can only iterate over them once. Its because they do
-			#not store all the values in memory. As they iterate through a list they 
-			#preform one funtion, drop it from memory and move on to the next. 
+						#not store all the values in memory. As they iterate through a list they 
+						#preform one funtion, drop it from memory and move on to the next. 
 
-			eg. myGenerator = (x*x for x in range(3)) #define the generator function
-				for i in myGenerator: #iterate through the range of 3 (0,1,2) and 
-					print(i) #prints 0 1 4
-					
+						eg. myGenerator = (x*x for x in range(3)) #define the generator function
+								for i in myGenerator: #iterate through the range of 3 (0,1,2) and 
+																			# preforms the function.
+									print(i) #prints 0 1 4
 
 
 
 yield       #instead of a return statement the yield statement returns a generator.
-			#When you call the function, the code you have writted in the function body
-			# does not run. The function only returns the generator object.
-			#Then, your code will be run each time the for uses the generator.
-			#Meaning the function does not neccissarily re-start at line one but to
-			# where the yield statement sends it after evaluating. 
-			#The body of a generator can also contain a return statement if needed.
+						#When you call the function, the code you have writted in the function body
+						# does not run. The function only returns the generator object.
+						#Then, your code will be run each time the for uses the generator.
+						#Meaning the function does not neccissarily re-start at line one but to
+						# where the yield statement sends it after evaluating. 
+						#The body of a generator can also contain a return statement if needed.
 
-			eg. def f():
-					while True:
-						yield 7 #generate 7's
+									i = 5 #assign i a value of 5
+									while i >= 0: #while loop 
+										yield i #generate i
+										i -= 1 #decriment by 1
 
-			eg. def f(x):
-					for i in range(x):
-						if i<11:
-							yield i #re-define i
+								for i in function():
+									print(i) #prints 54321
 
+						eg. def function(): #define function
+									while True: #while loop with boolean condition
+										yield 7 #generate 7's
+							 for i in function():
+									print(i) #prints 7 indefinately    
 
+						eg. def function(x): #define function
+									for i in range(x): #range takes x as an argument
+										if i <11: #if statement 
+											yield i #re-define i
 
-next()      eg. gen = generator #assuming already have a generator defined
-				next(gen) #iterates to generators next value.
-				next(gen) #and the value after that. When the end is reached and next is
-									# called an error will occur. Unless working with a while
-									# loop and an infinate condition. 
-									#if not called again the state when last called is 
-									# (eventually) discarded.
+							 print(list(function(2))) #list argument converts the result to a 
+																				# printable list.     
+																				#function is called with x defined as 2
+
+next()      eg. gen = generatorFunc(): #assuming already have a generatorFunc defined
+								next(gen) #iterates to generators next value.
+								next(gen) #and the value after that. When the end is reached and next is
+													# called an error will occur. Unless working with a while
+													# loop and an infinate condition. 
+													#if not called again the state when last called is 
+													# (eventually) discarded.
 
 
 
@@ -1960,38 +1950,117 @@ next()      eg. gen = generator #assuming already have a generator defined
 
 
 'Decorators_________________________________________________________________________________'
-# * Decorators allow to modify a function while leaving the origional function intact.
-# * A decorated function is wrapped by a function which calls the decorated function and returns 
-# 	what it returns.
-# * A single function can have multiple decorators to extend functionality.
+#Decorators allow to modify a function while leaving the origional function intact.
+#a single function can have multiple decorators to extend functionality.
+def identity(ob):
+	return ob
 
-ex.
-@classmethod
-def message(cls, fn):
-	def wrapper(self, *args, **kwargs):
-		self.messageBox(self, *args, **kwargs)
-		return fn(self, *args, **kwargs)
-	return wrapper
+@identity
+def myfunc():
+	print 'my function'
 
+myfunc()
 
-
-#using functools wraps
+#decorated function is wrapped by a function which calls the decorated function and returns 
+#what it returns.
+#using wraps
 from functools import wraps
 
 def mydecorator(f):
 	@wraps(f)
-	def wrapped(*args, **kwargs):
-		print 'Before decorated function'
-		r = f(*args, **kwargs)
-		print 'After decorated function'
-		return r
+		def wrapped(*args, **kwargs):
+			print 'Before decorated function'
+			r = f(*args, **kwargs)
+			print 'After decorated function'
+			return r
 
 @mydecorator
 def myfunc(myarg):
-	print 'my function', myarg
-	return 'return value'
+		print 'my function', myarg
+		return 'return value'
 
 r = myfunc('asdf')
+
+
+#python doc: https://docs.python.org/3/reference/compound_stmts.html#function
+#http://stackoverflow.com/a/1594484/464744
+def decorator(function): # implicitly takes some_function as an argument.
+	def wrapper(): #essentially becomes the new some_function. called when some_function is called
+		print('action before some_function() is called.')
+		function() # original some_function executes
+		print('action after some_function() is called.')
+
+def some_function(): #original function
+	print('some_function')
+
+decorator(some_function) #call original function w/decorator
+
+
+eg. #decorator chain
+def makebold(fn):
+				return '<b>' + fn() + '</b>'
+
+def makeitalic(fn):
+		def wrapped():
+				return '<i>' + fn() + '</i>'
+		return wrapped
+
+@makebold
+@makeitalic
+def hello():
+		return 'hello world'
+
+print hello() ## returns '<b><i>hello world</i></b>'
+
+
+eg. #another example
+def decorator(decorated):#passes origFunc as arg
+	def wrapper():       
+		return decorated() +2
+	return wrapper               
+
+@decorator                    
+def origFunc():               
+	return 2                      
+
+print origFunc()              
+
+
+eg. #same example passing '*, **' arguments
+def decorator(decorated):
+	def wrapper(*args,**kwargs):
+		return decorated(*args,**kwargs) +2
+	return wrapper
+
+@decorator
+def origFunc(var=100):#argument can be left empty
+	return 2           
+
+print origFunc()
+
+
+eg. #should be right but need to double check and clarify this example
+def decorator(orig_func): #
+	def function_1(): #decorator function
+		orig_func() #original function
+		print('decorated functionality')
+	return function_1 #function_1 now returns the combined result
+
+def orig_func(): #origional function
+	print('original function')
+
+#like this...
+insert_this = decorator(orig_func) #assign new variable to function
+insert_this() #evaluate function now defined as insert_this
+
+#or in a cleaner way by prepending the origional function with the
+# decorator's variable name and the @ symbol.
+@decorator #tells python to wrap this function in the predefined decorator
+def orig_func(): #
+	print('origional function')
+function_2() #evaluate function_2
+
+
 
 
 
@@ -2004,18 +2073,17 @@ r = myfunc('asdf')
 
 'Recursion__________________________________________________________________________________'
 #Recursion
-eg. 
-def removeDups(word):
-	if len(word) <= 1:
-		return word
-	elif word[0] == [1]:
-		return removeDups(word[1:])
-	else:                         
-		return word[0] + removeDups(word[1:])#recursion is a function within a
-																				 # function, calling that functions
-word = 'aabbccdd'                        # value & preforming any needed
-print (removeDups(word))                 # changes to it. In this case it's
-																				 # iterating over a list.
+						eg. def removeDups(word):
+									if len(word) <= 1:
+										return word
+									elif word[0] == [1]:
+										return removeDups(word[1:])
+									else:                         
+										return word[0] + removeDups(word[1:])#recursion is a function within a
+																												 # function, calling that functions
+								word = 'aabbccdd'                        # value & preforming any needed
+								print (removeDups(word))                 # changes to it. In this case it's
+																												 # iterating over a list.
 
 
 
@@ -2066,8 +2134,7 @@ help(Class) # Class information
 
 #using inspect (import inspect):
 inspect.getmembers(Class, predicate=inspect.ismethod)
-#alt (same output as inspect method)
-methods = [(m, getattr(c, m)) for m in dir(c) if callable(getattr(c, m)) and not all([m.startswith('__'), m.endswith('__')])] #c = class
+
 
 
 
@@ -2376,8 +2443,8 @@ class Polygon: #define super class
 
 
 
-dir(__builtins__)   #command lists all python built-in methods.
-help(method_name)   #lists information on that module.
+dir(__builtins__)   command lists all python built-in methods.
+help(method_name)   lists information on that module.
 
 #basic:             initialization, new & delete
 __init__  
@@ -2578,8 +2645,8 @@ eg. var = raw_imput('y')
 # using sys module:
 # import sys
 eg.	print('user input prompt') 
-	userInput = sys.stdin.readline()
-	print('You have entered', userInput)
+		userInput = sys.stdin.readline()
+		print('You have entered', userInput)
 
 
 
@@ -2650,10 +2717,10 @@ SetCursorPos = ctypes.windll.user32.SetCursorPos
 mouse_event = ctypes.windll.user32.mouse_event
 
 def left_click(x, y, clicks=1):
-	SetCursorPos(x, y)
-	for i in xrange(clicks):
-		mouse_event(2, 0, 0, 0, 0)
-		mouse_event(4, 0, 0, 0, 0)
+  SetCursorPos(x, y)
+  for i in xrange(clicks):
+   mouse_event(2, 0, 0, 0, 0)
+   mouse_event(4, 0, 0, 0, 0)
 
 left_click(200, 200) #left clicks at 200, 200 on your screen. Was able to send 10k clicks instantly.
 
@@ -2680,7 +2747,9 @@ ctypes.windll.user32.mouse_event(20, 0, 0, 0,0) #left down
 #using keyboard module (import keyboard)
 shortcut = 'alt+x' #define hot-key
 
-
+def event():
+	if 'tk' not in locals() or 'tk' not in globals(): import tk_main; tk = tk_main.createInstance()
+	if not tk.isVisible(): tk.show()
 
 keyboard.add_hotkey(shortcut, event) #attach the function to hot-key
 
@@ -2799,18 +2868,18 @@ sys.argv	#list of python command line arguments. ie. python myscript.py -a -b --
 
 # search directory
 eg. for (dir,_,files) in os.walk('.'): #('./') 
-		for f in files: #indent twice
-			path = os.path.join(dir, f) 
-			if os.path.exists(path)#: 
-				print path #prints file, subfolder/file format
+			for f in files: #indent twice
+				path = os.path.join(dir, f) 
+				if os.path.exists(path)#: 
+					print path #prints file, subfolder/file format
 
 
 
 # using glob.glob to list all the files in the current working directory whose filename ends with .mod:
 #import fileinput, glob, sys
 eg. for line in fileinput.input(glob.glob('*.mod'), inplace=True):
-		if fileinput.filelineno() == 32:     
-			sys.stdout.write('TextToInsertIntoLine32' '\n') #adds new line and text to line 32 
+			if fileinput.filelineno() == 32:     
+				sys.stdout.write('TextToInsertIntoLine32' '\n') #adds new line and text to line 32 
 
 #get all files in a directory
 files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
@@ -2820,9 +2889,9 @@ files = [f for f in os.listdir(directory) if f.endswith('.mod')]
 # enumerate, as fileinput numbers the lines in each file
 #import sys, fileinput
 eg. for line in fileinput.input(inplace=True)#:
-		sys.stdout.write(line.replace('sit', 'SIT'))
-		if fileinput.filelineno() == 30#:
-			sys.stdout.write('TextToInsertIntoLine32' '\n')
+			sys.stdout.write(line.replace('sit', 'SIT'))
+			if fileinput.filelineno() == 30#:
+				sys.stdout.write('TextToInsertIntoLine32' '\n')
 
 
 
@@ -2876,7 +2945,7 @@ eg.	with open(file_) as f: #reassign opened file with a simplified variable
 
 
 #open last modified file of a given extension (import glob, os)
-eg. path = r'C:\Users\m3\AppData\Roaming\Autodesk\MAYA\Autosave'
+eg. path = 'C:\Users\m3\AppData\Roaming\Autodesk\MAYA\Autosave'
 		extentions = '*.[mb][ma]*' #* for all, *.mb for single
 
 		list_of_files = glob.glob(path+'/'+extentions)
@@ -2959,7 +3028,7 @@ eg. file.seek(-3,2) #returns 3rd byte before the end of the file.
 # WRITING TO A FILE
 #write
 eg. with open('filename.txt') as f: #creates a variable 'f' that is only accessible within the block statement)
-		f.write('write something to the file') #only write as a string
+			f.write('write something to the file') #only write as a string
 
 
 
@@ -2983,22 +3052,22 @@ eg. f.close() #the file is automatically closed at the end of 'with' statements.
 # DELETING FILES AND/OR DIRECTORIES
 #delete a file.
 eg. file_ = '/tmp/<file_name>.txt'
-	if os.path.exists(file_): #check if file exists:
+		if os.path.exists(file_): #check if file exists:
 #alt check 'isFile'
 eg.	file_='/tmp/foo.txt'
-	# If file exists, delete it
-	if os.path.isfile(file_):
-	else: # Show an error
-		print ('Error: %s file not found' % file_)
+		# If file exists, delete it
+		if os.path.isfile(file_):
+		else: # Show an error
+			print ('Error: %s file not found' % file_)
 
 #alt delete syntax
 eg. os.unlink('/tmp/<file_name>.txt')
 
 #using Exception Handling (import os)
 eg.	file_= raw_input('Enter file name to delete: ') #Get input
-	try: #Try to delete the file
-		os.remove(file_)
-	except OSError, e:  # if failed, report it back to the user
+		try: #Try to delete the file
+			os.remove(file_)
+		except OSError, e:  # if failed, report it back to the user
 
 
 #remove an empty directory.
@@ -3008,9 +3077,9 @@ eg. os.rmdir()
 #delete a directory and all its contents.
 #import os, sys, shutil
 eg. try: #Try to remove tree; if failed show an error using try...except on screen
-		shutil.rmtree(dir_)
-	except OSError, e:
-		print ('Error: %s - %s.' % (e.filename, e.strerror))
+			shutil.rmtree(dir_)
+		except OSError, e:
+			print ('Error: %s - %s.' % (e.filename, e.strerror))
 
 
 
@@ -3028,23 +3097,7 @@ eg. from datetime import datetime
 
 
 
-
-
-
-
 'Modules_____________________________________________________________________________________'
-
-
-# relative import
-from .. import module
-import ..module as m
-#system paths
-#append path (import sys)
-#up one directory
-'..'
-#up two directory levels etc
-'../..'
-sys.path.append('..')  #add parent directory to python modules path.
 
 
 # implicitly import a module 
@@ -3056,13 +3109,6 @@ eg. max_customTools_main = imp.load_source('max_customTools_main', os.path.expan
 
 # importing a module. kw: import module
 eg. moduleName.variable  #to access that variable`s functions and values
-
-
-import package.a           #Absolute import
-import package.a as a_mod  #Absolute import bound to different name
-from package import a      #Alternate absolute import
-import a                   #Implicit relative import (deprecated, python 2 only, generally avoid)
-from . import a            #Explicit relative import
 
 
 #single
@@ -3077,8 +3123,6 @@ eg. from module import method1 as var1#, method2 as var2
 #all
 eg. from module import * #import all
 eg. from module.classid import *
-
-
 
 
 # from string
@@ -3151,8 +3195,6 @@ eg. del sys.modules['tk_slots_maya_edit']
 
 
 
-
-
 'Packages___________________________________________________________________________________'
 
 
@@ -3197,11 +3239,8 @@ eg. pip show PySide2
 'Encoding___________________________________________________________________________________'
 
 
-#!/usr/bin/python3
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 
 
 
@@ -3448,18 +3487,5 @@ self.ui.button.buttonId(self.ui,'m',10)
 self.ui.button.buttonId('m',10)
 
 
-# ValueError: 'Attempted relative import in non-package'
-#assure __init__.py in dir
-from max.max_materials import selectByMaterialID #ex. import standalone function in max_materials module one level above current module from 'max' folder.
-# single . if you want to import from folder in same directory . for each step back add one more.
-
-# mod1.py
-# some_dir/
-#   mod2.py
-
-# from .some_dir import mod2 #mod1.py
-# from .. import mod1 #import mod1 from mod2.py
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

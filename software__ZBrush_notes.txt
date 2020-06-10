@@ -958,4 +958,15 @@ PLUG-INS:    -------------------------------------------------------------------
 
 
 : GoZ
-maya shelf: shelf_GoZBrush();
+Maya ----------------------------
+	maya shelf: shelf_GoZBrush();
+
+paths:
+	gozMaya.mll (version-specific) to C:\Program Files\Autodesk\Maya20xx\bin\plug-ins
+
+	GoZScript.mel to C:\Program Files\Autodesk\Maya20xx\scripts\startup
+
+prevent GoZ from opening a new version of Maya every time:
+	copy "userSetup.mel" from C:\Users\Public\Pixologic\GoZApps\Maya and paste to C:\Users\user_name\Documents\maya\version\scripts
+
+

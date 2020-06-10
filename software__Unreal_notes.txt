@@ -1,6 +1,4 @@
-Unreal Engine notes
-
-General hotkeys
+Unreal Engine notes.
 
 
 
@@ -10,15 +8,176 @@ General hotkeys
 
 
 
+GEOMETRY: -------------------------------------------------------------
+
+
+
+geometry brushes: ---------------
+
+
+insert edgeloop:
+>	geometry edit mode
+>	select edgeloop
+>	modes> Edit (last tab)> Split
+
+
+boolean operation:
+>	geometry edit mode
+>	modes tab> geometry> select geometry brush with subtract radio button selected.
+or alt click transform to duplicate existing geometry, and set details tab> brush settings> brush type> subtractive
+
+
+combine / convert to static mesh:
+>	geometry edit mode
+>	select mesh object(s)
+>	details tab> Create Static Mesh
+>	select save location
+
+
+
+splines: -------------------------
+create spline:
+>	New blueprint class> actor
+>	components tab> add component> spline
+>	connect spline output to get number of spline points (node)
+>	
+
+
+deform mesh along spline:
+>	create mesh object with enough subdivisions to deform appropriately.
 
 
 
 
 
-MATERIAL EDITOR:
 
 
-node hotkeys
+
+
+
+LIGHTING: -------------------------------------------------------------
+
+
+
+create sun:
+>	create directional light
+>	details tab> (expand advanced tab) check Atmosphere
+
+
+emissive light:
+>	
+
+
+Environment Directional Light w/Fog
+- exponential height fog settings:
+>	details tab> Fog inscattering color> choose fog tint
+>	""		   > Fog Density> ~0.01
+>	""		   > Volumetric fog> checked on
+>	""		   > Scattering Distribution> ~0.5
+>	""		   > Extintion Scale> ~2.5-10
+- directional light settings:
+>	details tab> indirect lighting intensity> ~2.0
+>	""		   > volumetric scattering intensity> ~0.1
+>	""		   > atmosphere/Fog Sun light> checked on
+>	""		   > specular scale> ~0.1
+>	""		   > light shaft occlusion> checked on
+>	""		   > light shaft bloom>	checked on
+
+
+
+
+
+
+
+
+BLUEPRINTS: -----------------------------------------------------------
+
+Add blueprint to:
+:asset:
+>	with asset selected:
+>	details tab> (add) blueprint
+
+
+Variables: -----------------------
+
+
+
+Events: --------------------------
+
+addCustomEvent	- (after addCustomEvent creation, a trigger function can be found of the event name specified in addCustomEvent (call fuction> name))
+
+
+
+
+Mathmatical Operations: ----------
+
+:value types
+	integer, integer64
+	float
+	vector, vector2d, vector4
+	matrix
+	byte
+	quat
+	timespan
+	framenumber
+	
+:operators:
+	+
+	-
+	*
+	/
+
+:syntax:
+	<type><operator><type>	ie. float+int
+
+
+
+
+
+
+Coordinates: --------------------
+
+setActorLocationAndRotation -
+setWorldLocationAndRotation	-
+setLocalOriginLocation		-
+setWorldOffset				-
+
+
+
+
+Conditionals: -------------------
+
+:boolean	
+branch		-can be used to expose a toggle parameter
+
+
+
+
+Loop: ---------------------------
+
+for loop (for loop w/break)
+
+event tick	-increments every frame
+
+
+
+
+Order of Operations: ------------
+
+sequence	-execute sequentially
+
+
+
+
+
+
+
+
+
+MATERIALS: -----------------------------------------------------------
+
+Node hotkeys: ------------------
+
 1234	- 1-4 vector constant node
 u		- TexCoord (uv coorinates) node
 t 		- Texture sampler node
@@ -26,32 +185,176 @@ s/v		-scalar or vector parameter
 a/d/m 	-Create an Add, Divide, Multiply node
 
 
-Nodes:
+
+
+Nodes: -------------------------
+
+Numberical values:
 vector1		- 0-1 greyscale
 vector3		- full rgb
 
+
+
+Blend:
 Lerp 	-mix a/b/ alpha
 
 
 
+
+Reflections:
 Fresnel 	-the lower the angle, the stronger the reflection becomes
 
 
 
-uv:
+
+Procedures: --------------------
+
+Texture Maps:
+Increase Texture RGB intensity:
+>	add multiply node and input from texture RGB out.
+>	add integer to B slot and adjust intensity as needed.
+>	multiply node output to material base color.
+
+
+Decals:
+>	Set material node> details tab>
+		material domain=deferred decal
+		blend mode=translucent
+		decal blend mode=dbuffer translucent color (or other dbuffer option)
+>	Create texture sample node (mask) and plug it into the opacity material slot (greyscale controls opacity, black=transparent)
+>	Create the decal map or color node, and plug it and the mask into a multiply node.
+
+-	Turn on/off decal projection for specific objects.
+>	Details tab> Rendering> Receives decals on/off (advanced option expandable submenu, eye icon> expand all catagories)
+
+
+
+Substance Materials:
+Occlusion/roughness/metallic Node connections:
+	r	-ambient occlusion
+	g	-roughness
+	b	-metallic
+	
+
+
+Expose Parameters (make variable public/private):
+>	Node> right click context menu> Convert to Parameter
 
 
 
 
 
-BLUEPRINTS:
+Create a Particle (volume) Material:
+>	Create new Material.
+>	Details tab> Material Domain> Volume
+>	""		   > Blend Mode> Additive
 
 
-conditionals:
 
 
 
-branch	-boolean
 
-event tick	-increments every frame
 
+
+
+
+ANIMATION: -----------------------------------------------------------
+
+spawnable camera (lightning bolt icon): exists only within a sequence.	
+possessable camera (): scene actor
+
+
+Animate camera:
+:In the sequence editor:
+>	sequence editor toolbar> create new camera
+>	position camera while on the starting keyframe.
+>	camera transform track> <-+-> icon to add a new keyframe
+>	move to ending keyframe, and reposition camera in viewport (with smart keyframe toolbar icon checked(diamond shape with key inside), or manually keyframe as before)
+
+:Along rail:
+>	cinematic> add camera and camera rig rail to scene
+>	parent the cine camera actor to the camera rig (drag camera into rig in outliner)
+>	camera> details tab> zero out location. (to center on rail)
+>	modify rail by transforming spline points. (right click context menu> add points)
+- rail> details tab> Current Position on Rail controls the camera position on the rail 0-1.
+- rail> details tab> Lock Orientation to Rail keeps the camera aligned to the rail.
+>	drag both the rig and the camera to the sequencer tracks.
+>	at the top of the sequencer tracks section (left)> +camera> select the camera created earlier.
+>	rail> details tab> Current Position on Rail> add keyframe (small '+' icon left side of spinbox)
+>	drag playhead to end of sequence, and add keyframe (left side in track 'Current Pos on Rail'> <-+-> icon)
+>	On that same track, set rail position to 1.0 (directly left of the <-+-> button just used)
+
+
+Create Cimematic Sequence:
+>	Add New> Animation> level Sequence (or scene toolbar> Cinematics> add level sequence)
+>	In the level sequence editor; drag Cimematic (top left)> Cine Camera Actor into the scene.
+>	Drag the newly created Cine Camera from the world outliner to the sequencer track.
+>	In the sequencer create new camera (camera icon in sequencer toolbar)
+
+
+
+Record Sequence:
+>	main toolbar> window> Sequence Recorder
+>	drag the top-level parent geometry object into the recorder.
+>	sequence recorder toolbar> record
+>	scene toolbar> play
+>	click into the scene and animate the object with it's blueprint shorcuts. (esc or 'stop all' to stop recording)
+>	click the pop up dialog to navigate to the recorded sequence. (cinematics\sequences\recorded sequences)
+
+
+Hide Sequence actors(geometry):
+>	Drag geometry to hide into the sequence editor.
+>	(add) +track> Actor Hidden In Game
+>	visibility track is now visible. Uncheck to hide on all frames.
+
+
+
+
+
+
+IMPORT / EXPORT: -----------------------------------------------------
+
+
+
+
+
+
+
+
+
+PERFORMANCE: ---------------------------------------------------------
+
+General:
+- use viewport toolbar> lit> optimization viewmodes to visualize potential issues.
+- on completion; migrate to a new empty project without starter content, or other unused assets.
+>	level right click context menu> asset actions> migrate..
+
+
+
+Lighting:
+- main menu> window> World Settings (Lightmass section)
+>	adjust lighting quality and bounces.
+-Scene toolbar> Project Settings> Rendering
+>	Allow Static Lighting, Bloom, Ambient Occlusion, Antialiasing
+
+
+
+
+Textures:
+- use material instances when possible.
+- lower resolution when able
+- simple built in materials when able
+- transparent or masked materials cost more
+- keep functions simple
+
+
+
+Minimize draw calls:
+- combine geometry when able
+
+
+
+
+
+
+ERRORS: --------------------------------------------------------------

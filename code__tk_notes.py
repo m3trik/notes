@@ -9,14 +9,34 @@ time: 0.0816165578988
 
 
 
+# GENERAL:
+# -----------------------------------------------
+
+use package heirarchy to determine uiLevel and submenu checks instead of naming convention.
+
+
+tk_> flag/signal to override right/left mouseclick menu switching.
+
+
+move polygon_mesh_submenu> bevel to polygon_component_submenu
+find or create interactive bevel script
 
 
 # BUGS:
-# -----------------------------------------------
+# ---------
 
 
 
-3ds max - symmetry module freezes with no error. (likely due to no checking for compatible objects before execution)
+bug: transform negative '-' sets spinbox value to 0.  
+
+
+scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
+
+
+
+assign scene material cmb does nothing. ui list doesnt expand to fit contents.
+
+
 
 
 #error (if its when entering the file ui, then the ui doesn't contain the button, and it shouldn't be looking for it under that key):
@@ -34,34 +54,54 @@ KeyError: u'i003'
 
 
 
-fix maya's delete shortcut.  reg delete button works.
+# 3DS MAX:
+# -----------------------------------------------
+
+# BUGS:
+# ---------
+
+
+3ds max - symmetry module freezes with no error. (likely due to no checking for compatible objects before execution)
 
 
 
 
 
-init heads up display contents not current. require refresh
-
-
-fix create> circle>  attributes
-
-
-scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
-
-
-set normal by angle not working with no error.
-
-
-assign scene material cmb does nothing. ui list doesnt expand to fit contents.
-
-
-fix repeat last command
-
-
-bug: transform negative '-' sets spinbox value to 0.  
 
 
 
+
+
+# MAYA:
+# -----------------------------------------------
+
+
+
+makeLive - convert from toggle to checkable.  check for selection. if none re-check/uncheck, and output error.
+
+symmetry submenu not working (main menu does work)
+
+
+# BUGS:
+# ---------
+
+maya -  fix create> circle>  attributes
+
+
+tk_slots_maya_init.py", line 61, in info
+#     selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(selectionMask=32)] #pm.polyEvaluate(edgeComponent=1);
+# TypeError: 'NoneType' object is not iterable
+
+
+(-old: set normal by angle not working with no error.)
+tk_slots_maya_normals.py", line 87, in b004
+#     normalAngle = str(self.tk.ui.s000.value())
+# AttributeError: 'PySide2.QtWidgets.QMainWindow' object has no attribute 's000'
+
+
+fix maya extrude:
+	(add options)
+	polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 0 -pvx 1.004961016 -pvy 2.957140207 -pvz -1.501686156 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0.03 -smoothingAngle 30 pPlane13.f[0:23];
 
 
 
@@ -101,9 +141,6 @@ polygons> boolean options>
 	polyPerformBooleanAction 3 o 1;
 
 
-fix maya extrude:
-	(add options)
-	polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 0 -pvx 1.004961016 -pvy 2.957140207 -pvz -1.501686156 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0.03 -smoothingAngle 30 pPlane13.f[0:23];
 
 
 

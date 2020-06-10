@@ -88,6 +88,9 @@ ex. re.findall('11', '110110') #returns ['11','11']
 #substitute:
 ex. re.sub('11', '00', '011001', max=0) #returns '000001' (optional arg max: number of occurances to replace)
 
+#delete between two chars (using substitute)
+ex. ''+sub('<.*?>', '', string)+''
+
 
 
 #extract email from string example:

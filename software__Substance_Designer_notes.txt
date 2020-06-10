@@ -25,8 +25,10 @@ drag inputs to another node		[shft+ left mouse drag]
 
 
 
-autosave		if setup; files are located in the project folder.
-				remember to resave to the original file after opening the backup
+autosave		The backup files will be located in three possible locations :
+				>	If the current project has been saved the backups will be next to it.
+				>	If the project has never been saved (untitled) the backups will be in the autosave folder in the user's Documents folder. (Documents/Allegorithmic/Substance Painter/autosave)
+				>	If the override setting has been enabled the backups will be located in the path given in the settings.
 
 
 
@@ -73,11 +75,31 @@ Splatter Circular
 
 
 
+crop ----------------------------------------------------------------------
+
+multi-crop node		- crop multiple
+
+
+
+
+
+
+tile ----------------------------------------------------------------------
+
+
+smart-auto-tile node - alt-drag crop border to align image.
+
+
+
+
+
 transform -----------------------------------------------------------------
 
 transform node		-
 
 distance node		-
+
+
 
 
 
@@ -152,15 +174,20 @@ Fiber Glass Edge Wear
 	could perhaps be used for cloth
 
 	
+
+diffuse ----------------------------------------------------------------
+
+color equalizer		- correct non-uniform color across brimap or scan data
+
+color match			- adjust (change) color. (click the node's mask output to preview the mask)
+
+
+
+
 	
-	
-	
-	
-		
 height -----------------------------------------------------------------
 
 Normal to Height node	-never be able to provide a 100% correct result, as information is lost. good for simple details.
-
 
 
 
@@ -197,6 +224,33 @@ Repair:
 	
 	
 	
+
+
+	
+	
+ambient occlusion -------------------------------------------------------
+
+Ambient Occlusion (HBAO) -height to AO conversion
+
+
+
+
+
+	
+roughness --------------------------------------------------------------
+
+curvature to roughness:
+>	curvature node to histogram scan
+>	histogram range> 1
+>	adjust position to desired roughness.
+>	expose position parameter. (name: Roughness)
+
+
+
+
+
+
+	
 	
 
 channels -----------------------------------------------------------------
@@ -204,8 +258,6 @@ channels -----------------------------------------------------------------
 channels shuffle	-mix rgba values between inputs 1 and 2
 
 channels mixer		-adjust rgb values of 1 input
-
-
 
 
 
@@ -295,7 +347,7 @@ Perlin Noise
 
 
 
-dynamic functions -----------------------------------------------------------------
+functions -----------------------------------------------------------------
 
 create new function:
 >	in the main graph (root) options create an input parameter
@@ -304,9 +356,24 @@ create new function:
 >	after defining the function, right click output last node in graph and 'set as output node'
 
 
-system variables:
+
+
+variables:
 
 '$' denotes system variables
+
+Set: 
+set node
+(will not appear in a Get node list, you must manually write the name in the list)
+You can just call a variable created with a Set node, if:
+	The Get and Set nodes are in function graphs controlling parameters of the same node.
+	The parameter controlled by the Get node graph is either the same, or located below the parameter of the Set node graph, in the parameters stack.
+
+Get:
+get node
+
+
+
 
 
 
@@ -363,7 +430,6 @@ ambient occlustion:
 
 curvature:
 >	curvature smooth or curvature sorbel taking input from normal map
-
 
 
 

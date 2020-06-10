@@ -42,33 +42,31 @@ print rt.texture_path
 
 
 
-"Conversion To
+"Conversion To: //----------------------------------------------------------"
 
+-- int__________float___________string__________vector__________matrix
+int ($i)		perfect 		perfect 		perfect 		<<$i, $i, $i>> 			none
 
-								int 					float 				string 				vector 				  matrix
+float ($f)		without			perfect			perfect			<<$f, $f, $f>>			none
 
-int ($i)				perfect 			perfect 			perfect 	 <<$i, $i, $i>>		  none
+string 			without 		perfect if 		perfect			perfect if 				none
+				fraction		starts with 					starts with
+				if starts		number,							vector or floats	
+				with number,	else 0							with remaining
+ 				else 0																	elements 0
 
-float ($f)			without				perfect				perfect		 <<$f, $f, $f>>		  none
-
-string 					without 			perfect if 		perfect		  perfect if 				none
-								fraction			starts with 						  starts with
-								if starts			number,									  vector or floats	
-								with number,	else 0									  with remaining
- 								else 0																  elements 0
-
-vector 					length of 		length of 		3 floats    perfect						perfect for
-								vector 				vector 				separated											[1][3] matrix,
-								without											by a space 										else none
-								fraction
+vector 			length of 		length of 		3 floats		perfect					perfect for
+				vector 			vector 			separated								[1][3] matrix,
+				without											by a space 				else none
+				fraction
 ------------------------------------------------------------------
 
-matrix					for [1][3] 		for [1][3]		none 				for [1][3] 				perfect
-								matrix or 		matrix or 								matrix or 
-								smaller, 			smaller,length 						smaller, perfect
-								length of 		of matrix 								with remaining
-								matrix without 													elements 0
-								fraction"
+matrix			for [1][3] 		for [1][3]		none 			for [1][3] 				perfect
+				matrix or 		matrix or 						matrix or 
+				smaller, 			smaller,length 				smaller, perfect
+				length of 		of matrix 						with remaining
+				matrix without 									elements 0
+				fraction
 
   
 
@@ -953,7 +951,7 @@ canConvertTo <node> <class>
 if canConvertTo $foo NURBSSurface then...
 
 --general form of the existing specific conversion functions such as convertToMesh()
-ex. rt.convertTo(obj, <class>) -- mapped
+ex. rt.convertTo(obj, rt.<class>) -- mapped
 ex. convertTo $circle01 SplineShape --If the conversion is not supported, returns undefined.
 
 --Convert an object to an editable mesh
@@ -1377,6 +1375,8 @@ showProperties ( VRayLight() )
 --Retrieves the node's user property with the given key as a string. 
 --<key_string> is either a String or a Name value.
 getUserProp <node> <key_string>
+--get property
+eg. obj.getmxsprop('SelectByAngle')
 
 --Sets the node's user property with the given key to the given value.
 setUserProp <node> <key_string> <value>
@@ -1387,6 +1387,8 @@ $.<property> = value
 ex. $.renderable = false
 -- toggle
 ex. $renderable = not $.renderable
+--
+obj.setmxsprop('SelectByAngle', True)
 
 
 --This is effectively the contents of the User Defined Properties box in 
@@ -1657,7 +1659,7 @@ setShadeCVerts <node> <boolean>
 i=rt.instancemgr
 for obj in rt.selection:
 	if i.CanMakeObjectsUnique(obj):
-		i.MakeObjectsUnique(obj, 'prompt') #uninstance obj
+		i.MakeObjectsUnique(obj, 'prompt') --#uninstance obj
 
 
 
@@ -2154,23 +2156,16 @@ uv = rt.selection[0].modifiers['Unwrap_UVW']
 m = MaxPlus.Factory.CreateDefaultStdMat()
 
 
---get material
---currently selected
+--get currently selected material
 ex. rt.medit.getCurMtl()
---by name
+--get material by name
 ex. rt.sceneMaterials['name']
---scene Materials
-ex. [mat for mat in rt.sceneMaterials]
-
---get subMaterials
-ex. mat.materialList
---subMaterial from face
-ex. id = obj.GetFaceMaterial(face) --#Returns the material ID of the specified face.
-	subMaterial = rt.getSubMtl(mat, id) --#get the submaterial using the matID index
---all subMaterials from material
-ex. subMaterials = [rt.getSubMtl(mat, id) for id in range(1, rt.getNumSubMtls(mat)+1)] --#get the material using the matID index. modify index range for index starting at 1.
-	subMatNames = [s.name for s in subMaterials if s is not None]
---all materials including submaterials
+--get all scene materials
+ex. rt.sceneMaterials
+ex. [m for m in rt.sceneMaterials]
+--get material from face
+ex. obj.GetFaceMaterial(face) --#Returns the material of the specified face.
+--get all materials including submaterials
 mats=[]
 for mat in rt.sceneMaterials:
 	if rt.getNumSubMtls(mat): --#if material is a submaterial; search submaterials
@@ -2179,41 +2174,48 @@ for mat in rt.sceneMaterials:
 			mats.append(subMat)
 	elif:
 		mats.append(mat)
-
---number of subMaterials
+--get subMaterials
+ex. [m for m in mat[0]]
+ex. mat.materialList
+--get subMaterial from face
+ex. subMaterial = rt.getSubMtl(mat, rt.GetFaceMatID(obj, face)) --#get the submaterial using the matID index
+--get all subMaterials from material
+ex. subMaterials = [rt.getSubMtl(mat, id) for id in range(1, rt.getNumSubMtls(mat)+1)] --#get the material using the matID index. modify index range for index starting at 1.
+	subMatNames = [s.name for s in subMaterials if s is not None]
+--get number of subMaterials
+ex. len([mat[0])
 ex. rt.getNumSubMtls(mat)
 ex. mat.materialList.count
 ex. mat.numsubs --#total number of indices. includes undefined material slots. ie. material at ID index 1 and another at index 20, returns 20 with 18 undefined indices.
 
 --get subMaterial ID's
 ex. mat.materialIDList
---subMaterial ID from face
-ex. id = obj.GetFaceMaterial(face)
-ex. id = rt.polyop.getFaceMatID(obj, face) --Returns the material ID assigned to the face
---face from subMaterial ID
+--get subMaterial ID from face
+ex. id = rt.polyop.getFaceMatID(obj, face) --Returns the material ID assigned to the face #ex. rt.GetFaceMatID(obj, f)
+--get face from subMaterial ID
 ex. [i for i in range(1, obj.numFaces+1) if rt.getFaceMatID(obj, i)==id]
 
 
 
-
---set material
---material id to face
-ex. rt.polyop.setFaceMatID(obj, <facelist>, <int MatID>) --Assigns the material ID to the face
---to object
+--set material to object
 ex. obj.material = mat
-mat.materialList.count = mat.numsubs+1 --#add slot to multimaterial
-mat.mapEnabled[3] = True
-mat.materialIDList[3] = 2
-mat.names[3] = ''
-mat.materialList[-1] = material --#assign material to the newly created slot 
+	mat.materialList.count = mat.numsubs+1 --#add slot to multimaterial
+	mat.mapEnabled[3] = True
+	mat.materialIDList[3] = 2
+	mat.names[3] = ''
+	mat.materialList[-1] = material --#assign material to the newly created slot 
+--set subMaterial
+ex. rt.setSubMtl(mat, id, newMat) --#sets the indexed sub material to the specified material.
+--set material id to face
+ex. rt.polyop.setFaceMatID(obj, face, <int MatID>) --Assigns the material ID to the face
+--set material id to a list of faces
+ex. [rt.setFaceMatID(obj, f, <int MatID>) for f in faces] --#Assigns the material ID to a list of faces
 
 
 
-
---create:
---standard material
+--create standard material
 material = rt.StandardMaterial(name='')
---multimaterial
+--create multimaterial
 material = multiMaterial()
 material = rt.VRayMtl()
 
@@ -2329,7 +2331,7 @@ lights/Key*.enabled = on
 
 --set attributes
 --for all lights
-pm.lights.value *= 0.5 --set the intensity of all lights
+rt.lights.value *= 0.5 --set the intensity of all lights
 
 --for each light that has the property intensity
 for eachLight in lights where isProperty eachLight #intensity do eachLight.intensity = 1000 --make that property value 1000
@@ -2878,10 +2880,7 @@ GetWindowHandle ()
 --Assign FPValue
 --execute a MAXScript expression using Core.EvalMAXScript() and obtain a return value via FPValue 
 --using either:
-commandString1 = 
-"import MaxPlus
-MaxPlus.Core.EvalMAXScript(\"print #aaa\")
-"
+commandString1 = "MaxPlus.Core.EvalMAXScript(\"print #aaa\")"
 --RETURNS FPValue which is held in the commandString1 variable
 --python.execute commandString1
 
@@ -3055,7 +3054,7 @@ pymxs.print_()
 
 
 
-"EXTERNAL_FILES: //--------------------------------------------------------"
+"DIRECTORIES: //--------------------------------------------------------"
 
 -- Returns the filename path of the source file the function has been called from.
 <filename>getSourceFileName() 
@@ -3078,7 +3077,10 @@ Include
 
 
 
-
+-- Set 3rd Party Plug-Ins paths
+baseDir = pathConfig.removePathLeaf (getDir #temp)
+iniFile = baseDir + "\\Plugin.UserSettings.ini"
+setIniSetting iniFile "Directories" "Your Plugin Name" "Your Plugin Directory"
 
 
 
@@ -3105,6 +3107,182 @@ ex. ((dotnetclass "System.IO.File").exists "D:\	emp\\Wow.ms")
 GetDir <filetype_name> --Returns as a string the directory specified in the Customize > Configure Paths dialog for the specified file type.
 --set directory
 SetDir <filetype_name> <string> --Returns true if successful, false if not. 
+
+
+
+-- Project Folder: ---------------------------------------------------------------------
+pathConfig.doProjectSetupSteps()
+-- Performs all steps necessary to set up a new Project, including browsing for project folder and creating all sub-folders. Returns true on success, false if cancelled.
+
+pathConfig.doProjectSetupStepsUsingDirectory <ProjectPath> 	 
+-- Performs all steps necessary to set up a new Project using the supplied Project Path as the Root. Returns true on success, false if cancelled.
+
+pathConfig.getCurrentProjectFolder() 
+-- Returns the current Project Folder.
+
+pathConfig.getCurrentProjectFolderPath() 
+-- Returns the current Project Folder definition file (*.MXP).
+
+pathConfig.getProjectFolderPath <ProjectPath> 
+-- Returns the Project Definition filename (<ProjectPath>\<ProjectName>.mxp) for the specified Project Folder.
+
+pathConfig.getProjectSubDirectory <subdir_index> 
+-- Returns the indexed Project sub-directory.
+ex. for i = 1 to pathConfig.getProjectSubDirectoryCount() do
+		format "%: %\n" i (pathConfig.getProjectSubDirectoryi) --Print all Project Sub-Directories:
+
+pathConfig.getProjectSubDirectoryCount() 
+-- Returns the number of Project sub-directories. See above example.
+
+pathConfig.addProjectDirectoryCreateFilter <#directory_type> 
+-- Adds Project Directory Filter where <directory_type> is one of the following:
+-- #font | #Scene | #export | #import | #help | #expression | #preview | #image | #Sound | #plugcfg | #maxstart | #vpost | #drivers | #autoback | #matlib | #scripts | #startupScripts | #defaults | #renderPresets | #ui | #maxroot | #renderoutput | #animations | #archives | #Photometric | #renderassets | #userScripts | #userMacros | #userStartupScripts | #temp | #userIcons | #maxData | #downloads | #proxies 
+
+pathConfig.removeAllProjectDirectoryCreateFilters() 
+-- Removes all filters added using pathConfig.addProjectDirectoryCreateFilter()
+
+pathConfig.setCurrentProjectFolder <ProjectPath> 
+-- Sets the current project folder to the given path. The Project Folder is displayed in the title bar of 3ds Max and will be updated instantly.
+
+
+
+
+-- Path Manipulation, Conversion and Resolving: -----------------------------------------
+pathConfig.appendPath <path1> <path2> -- Appends the second argument filename to the first argument path, adding backslash if necessary.
+ex. pathConfig.appendPath "c:\\temp" "test.txt"
+	"c:\temp\test.txt"
+	pathConfig.appendPath "c:\\temp\\" "test"
+	"c:\temp\test"
+
+pathConfig.convertPathToAbsolute <relative_path> -- Converts the relative path argument to absolute project path using the Project Directory.
+ex.	pathConfig.convertPathToAbsolute "meshes"
+	"C:\Documents and Settings\username\My Documents\3dsmax\meshes"
+
+pathConfig.convertPathToLowerCase <path> -- Converts the path argument to lower case and unifies the backslashes.
+ex.	pathConfig.convertPathToLowerCase "C:\\Temp\Test/pATH"
+	"c:\temp\test\path"
+
+pathConfig.convertPathToRelativeTo <path1> <path2> -- Converts the first path argument to a relative path with respect to the second path argument.
+ex.	pathConfig.convertPathToRelativeTo "C:\\Temp\\Test" "c:\\Program Files\\"
+	"..\Temp\Test"
+
+pathConfig.convertPathToUnc <path> -- Returns the UNC path from a mapped drive path.
+ex. pathConfig.convertPathToUnc "t:\\project" --If drive letter T: is mapped to a server called MyServer, then
+	"\\MyServer\projects"
+
+mapPaths.getFullFilePath <filename> -- Resolves the filename using map paths, returns fully qualified filename if the file is found.
+
+pathConfig.normalizePath <path> -- Returns a normalized path name.
+ex. pathConfig.normalizePath "scenes/test.txt"
+	".\scenes\test.txt"
+
+pathConfig.pathsResolveEquivalent <path1> <path2> -- Returns true if the two paths resolve to the same location (in other words the two paths are equivalent), false if they are not equivalent.
+ex. pathConfig.pathsResolveEquivalent "scenes\\test.txt" "./scenes/test.txt"
+	true
+
+pathConfig.resolvePathSymbols <path> -- Resolves the path symbols.
+
+pathConfig.resolveUNC SystemGlobal:resolveUNC false -- This is the property toggle found in Preferences>Files which controls whether max automatically converts absolute paths to their UNC equivalents. (i.e. M:\file.txt to server1\\file.txt if M: is mapped to server1\\)
+
+pathConfig.removePathLeaf <path> -- Removes a leaf from the given path.
+ex.	pathConfig.removePathLeaf "c:\\temp\\test"
+	"c:\temp"
+
+pathConfig.removePathTopParent <path> -- Removes the top parent from the given path.
+ex. pathConfig.removePathTopParent "c:\\temp\\test"
+	"temp\test"
+
+pathConfig.stripPathToLeaf <path_or_filename> -- Returns the last sub-directory name from the given path. If the path is a full file name, returns the file name. Equivalent to filename from path.
+ex.	pathConfig.stripPathToLeaf "C:\\temp\\test"
+	"test"
+	pathConfig.stripPathToLeaf "C:\\temp\\test\\"
+	""
+	pathConfig.stripPathToLeaf "C:\\temp\\test\\somefile.tga"
+	"somefile.tga"
+	--COMPARE:
+	filenamefrompath "C:\\temp\\test"
+	"test"
+	filenamefrompath "C:\\temp\\test\\"
+	""
+	filenamefrompath "C:\\temp\\test\\somefile.tga"
+	"somefile.tga"
+   
+pathConfig.stripPathToTopParent -- Returns the root of the given path.
+ex.	pathConfig.stripPathToTopParent "C:\\temp\\test\\test.tga"
+	"C:\\"
+	pathConfig.stripPathToTopParent "\\\\SomeServer\\Projects\\Test"
+	"\\SomeServer"
+	pathConfig.isAbsolutePath <path_string> --Is... Query Methods --Returns true if the argument is an absolute path, false if it is a relative path. The path does not have to exist for this method to operate on it.
+
+pathConfig.isLegalPath <path_string> -- Returns true if the argument is a legal path definition, false if it is an illegal path. The path does not have to exist for this method to operate on it, it is only being parsed for correctness.
+ex. pathConfig.isLegalPath "c:\\" --legal path, existing
+	true
+	pathConfig.isLegalPath "z:\\path" --legal path, not existing
+	true
+	pathConfig.isLegalPath "zz:\\path" --illegal double drive letter!
+	false
+
+pathConfig.isPathRootedAtBackslash <path> -- Returns true if the argument starts with a backslash, false if it does not.
+ex. pathConfig.isPathRootedAtBackslash "\\machine\\c$" --starts with backslash:
+	true
+	pathConfig.isPathRootedAtBackslash "c:\\temp" --does not start with backslash:
+	false
+
+pathConfig.isPathRootedAtDriveLetter <path> -- Returns false if the argument starts with a backslash, true if it starts with a drive letter. The inverse of pathConfig.isPathRootedAtBackslash()
+
+pathConfig.isProjectFolder<path> -- Returns true if the argument path is a valid Project Folder root, false otherwise.
+
+pathConfig.isRootPath <path> -- Returns true if the argument path is a Root path, false otherwise
+ex.	pathConfig.isRootPath "C:\\"
+	true
+	pathConfig.isRootPath "C:\\temp"
+	false
+
+pathConfig.isUncPath <path> -- Returns true if the argument path is a UNC path, false otherwise
+ex. pathConfig.isUncPath "T:\\Projects" --mapped drive, not UNC
+	false
+	pathConfig.isUncPath "\\\\MyServer\\Projects" --UNC path
+	true
+
+pathConfig.isUncSharePath <path> -- Returns true if the argument path is a UNC share path, false otherwise.
+
+pathConfig.isUsingProfileDirectories() -- Returns true if the system is using Profile directories, false otherwise.
+
+pathConfig.isUsingRoamingProfiles() -- Returns true if the system is using Roaming Profiles, false otherwise. When using roaming profiles on somebody else's machine, your profile is being accessed over the network from your own machine. This mode is not officially supported.
+
+
+
+
+
+-- Other Path-Related Methods and Structs: ----------------------------------------------
+pathConfig.GetDir <#directory_type> -- Points at the GetDir() method documented here. -- Returns the system directory where directory_type is one of the following: -- #font | #Scene | #export | #import | #help | #expression | #preview | #image | #Sound | #plugcfg | #maxstart | #vpost | #drivers | #autoback | #matlib | #scripts | #startupScripts | #defaults | #renderPresets | #ui | #maxroot | #renderoutput | #animations | #archives | #Photometric | #renderassets | #userScripts | #userMacros | #userStartupScripts | #temp | #userIcons | #maxData | #downloads | #proxies | #pageFile 
+
+pathConfig.SetDir -- Points at the SetDir() method documented here.
+
+pathConfig.mapPaths #Struct:mapPaths -- Points at the mapPaths struct definition.
+ex. --the two method calls are equivalent:
+	mapPaths.getFullFilePath "fir.tga"
+	pathConfig.mapPaths.getFullFilePath "fir.tga"
+
+pathConfig.pluginPaths #Struct:pluginPaths -- Points at the pluginPaths struct.
+ex. count = pathConfig.pluginPaths.count()
+	for j = 1 to count do
+		format " % : %\n" j (pathConfig.pluginPaths.get j)
+
+pathConfig.sessionPaths #Struct:sessionPaths -- Points at the sessionPaths struct.
+
+pathConfig.xrefPaths #Struct:xrefPaths -- Points at theXRefPath struct
+ex. --the two method calls are equivalent:
+	xrefPaths.getFullFilePath "delme.max"
+	pathConfig.xrefPaths.getFullFilePath "delme.max"
+	Configurate User Paths Dialog - Path Settings Loading, Saving and Merging
+	pathConfig.SaveTo <filename> 
+	Saves the path configuration to the given filename.Returns true on success, false otherwise.Corresponds to the Save To... button in the Customize>Configure User Paths dialog.
+
+pathConfig.load <filename> -- Loads the path configuration from the specified path configuration file. Returns true on success, false otherwise.Corresponds to the Load button in the Customize>Configure User Paths dialog.
+
+pathConfig.merge <filename> -- Merges the settings from the given path configuration file. Returns true on success, false otherwise. Loads the path configuration from the specified path configuration file. Returns true on success, false otherwise. Corresponds to the Merge button in the Customize>Configure User Paths dialog.
+
 
 
 
@@ -3144,6 +3322,16 @@ SetDir <filetype_name> <string> --Returns true if successful, false if not.
 #userStartupScripts	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\scripts\startup"
 #userIcons	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\usericons"
 #vpost	--
+
+
+
+-- get WINDOWS env variable
+fn getEnvVar var = (
+	var = var as string
+	dotNet.loadAssembly "System"   
+	local env = dotNetClass "system.Environment"
+	env.GetEnvironmentVariable var
+)
 
 
 

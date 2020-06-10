@@ -35,18 +35,16 @@ QObject							# basic non-visual building block. signals, events,
 
 #QApplication:
 #The difference between QtWidgets.QApplication.instance() and QtWidgets.qApp is that the latter is a static module variable that must be created when the module is first imported. 
-#This results in the following initially baffling behaviour:
 inst = QtWidgets.QApplication.instance()
 qapp = QtWidgets.qApp #qApp is initially just an empty wrapper. #Once the QApplication is created, though, they will both point to the same thing:
->>> (inst, qapp)
-(None, <PyQt5.QtWidgets.QApplication object at 0x7ff3c8bd3948>)
-#So even though no QApplication object has been created yet, the qApp variable still points to a QApplication instance. 
-#If modules were more like classes, so that they could have dynamic properties, it would be possible for qApp to work exactly like QApplication.instance() does and initially return None. 
-#But because it is static, it must always return an object of the correct type, so that it can later refer to the same underlying C++ object as QApplication.instance().
+#So even though no QApplication object has been created yet, the qApp variable still points to a QApplication instance.
 
+#current application instance
+QtCore.QCoreApplication.instance()
 
 
 # Find item in QApplication by only the objectname:
+QtWidgets.QApplication.topLevelWindows()
 #top level widgets
 widgets = {w.objectName():w for w in QtWidgets.QApplication.topLevelWidgets()}
 #windows
@@ -60,22 +58,22 @@ widget = widgets['MainAttributeEditorLayout']
 #get a list of all QObject instances either by class-name or object-name:
 #This is only really a debugging tool, as for a large application, there could easily be several hundred thousand objects to check.
 def getObjects(name, cls=True):
-    objects = []
-    for obj in gc.get_objects():
-        if(isinstance(obj, QtCore.QObject) and
-            ((cls and obj.inherits(name)) or
-             (not cls and obj.objectName() == name))):
-            objects.append(obj)
-    return objects
+	objects = []
+	for obj in gc.get_objects():
+		if(isinstance(obj, QtCore.QObject) and
+			((cls and obj.inherits(name)) or
+			 (not cls and obj.objectName() == name))):
+			objects.append(obj)
+	return objects
 
 #If you only need objects which are subclasses of QWidget, use this function:
 def getWidgets(name, cls=True):
-    widgets = []
-    for widget in QtGui.QApplication.allWidgets():
-        if ((cls and w.inherits(name)) or
-            (not cls and w.objectName() == name)):
-            widgets.append(widget)
-    return widgets
+	widgets = []
+	for widget in QtGui.QApplication.allWidgets():
+		if ((cls and w.inherits(name)) or
+			(not cls and w.objectName() == name)):
+			widgets.append(widget)
+	return widgets
 
 
 
@@ -174,7 +172,8 @@ w.activateWindow() 				#Sets the top-level widget containing this widget to be a
 w.update()
 
 
-
+#Active Window
+isActiveWindow ()
 
 
 
@@ -236,7 +235,7 @@ w.setAttribute(QtCore.Qt.WA_WState_Visible)
 w.setAttribute(QtCore.Qt.WA_WState_ExplicitShowHide)
 
 #disable/close events
-w.setAttribute(QtCore.Qt.WA_DeleteOnClose) #Makes Qt delete this widget when the widget has accepted the close event
+w.setAttribute(QtCore.Qt.WA_DeleteOnClose) #Makes Qt delete this widget when the widget has accepted the close event #w.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
 w.setAttribute(QtCore.Qt.WA_Disabled) #Indicates that the widget is disabled
 w.setAttribute(QtCore.Qt.WA_ForceDisabled) #Indicates that the widget is explicitly disabled
 w.setAttribute(QtCore.Qt.WA_QuitOnClose) #Makes Qt quit the application when the last widget with the attribute set has accepted closeEvent().
@@ -278,12 +277,12 @@ window.setCentralWidget(stackedWidget)
 
 
 
-#QPushButton
+#QPushButton (QAbstractButton, QRadiobutton, QCheckBox)
 b = QtWidgets.QPushButton()
 
 #signals. (signal in)
 #Qt signals:
-b.clicked() 					#bool checked=False #QPushButton.clicked()
+b.clicked()
 b.pressed()
 b.released()
 b.toggled()
@@ -407,14 +406,14 @@ cmb.editTextChanged.connect(method)
 
 
 
-#get list contents:
-#set contents
+#set items:
 cmb.addItem(string, userData=None) #string/data
 cmb.addItems(list_) 			#string/data
 cmb.insertItem(index, string, userData=None) #at index
 cmb.insertItems(index, list_)
-cmb.setItemData(index, value) 	#data
-#get contents
+#get all items:
+items = [cmb.itemText(i) for i in range(cmb.count())]
+#get items:
 cmb.findText(text) 				#get index using string
 cmb.itemText(index) 			#get string using index
 cmb.itemData(index) 			#data
@@ -423,7 +422,12 @@ cmb.findData(data) 				#data
 cmb.setCurrentIndex(0)
 cmb.setCurrentIndex(cmb.findText('')) #using string
 #get index
+cmb.currentIndex()
+#get text
 cmb.currentText() 				#get current text
+#set text
+cmb.setItemText(cmb.currentIndex(), text) #set current text
+
 
 
 # remove
@@ -436,25 +440,17 @@ cmb.removeItem(index)
 cmb.insertSeparator(index)
 
 
+#get combobox contents:
+list_ = [cmb.itemText(i) for i in range(cmb.count())]
 
 #remove contents
 cmb.clear()
 
-#get combobox contents:
-list_ = [cmb.itemText(i) for i in range(cmb.count())]
-
-
-# add string
-cmb.addItem(component)
-cmb.addItems(components)
-
-
 
 #get/set data
 cmb.addItem('string', data) 	#set string, set data
-cmb.currentText() 				#get current index string
 cmb.itemData(cmb.currentIndex()) #get current data
-
+cmb.setItemData(index, value) 	#data
 
 #expand/collapse
 cmb.hidePopup()
@@ -520,15 +516,50 @@ print item.data( QtCore.Qt.UserRole ) # get data
 
 # QTreeWidget
 #get/set data
-tree_widget = QtGui.QTreeWidget()
-item = QtGui.QTreeWidgetItem( tree_widget, ['description'] ) # set description
+tree_widget = QtWidgets.QTreeWidget()
+item = QtWidgets.QTreeWidgetItem(tree_widget, ['description']) # set description
 item.setData(1, QtCore.Qt.EditRole, my_data) #set data
-item.setData(2, QtCore.Qt.EditRole, my_data) #set data
-item.setData(3, QtCore.Qt.EditRole, my_data) #set data
 print item.text(0) 				#get description
 print item.text(1) 				#get data
-print item.text(2) 				#get data
-print item.text(3)				#get data
+
+#item widget
+#get
+self.itemWidget(wItem, column): #(bool) query: widget in column
+wItem = self.itemBelow(wItem) 	#return the wItem below
+#set
+wItem = QtWidgets.QTreeWidgetItem(self) #create a new widgetItem row
+
+#set widgetItem child
+self.setItemWidget(wItem, column, widget)
+
+#columns
+self.setColumnCount(int)
+
+#remove widgetItem
+[self.takeTopLevelItem(self.indexOfTopLevelItem(i)) for i in items]
+
+#remove widgetItem Child
+wItem.takeChild(column) #indexOfTopLevelItem #indexOfChild
+self.removeItemWidget(wItem, column)
+
+
+
+def get_subtree_nodes(tree_widget_item):
+	"""Returns all QTreeWidgetItems in the subtree rooted at the given node."""
+	nodes = []
+	nodes.append(tree_widget_item)
+	for i in range(tree_widget_item.childCount()):
+		nodes.extend(get_subtree_nodes(tree_widget_item.child(i)))
+	return nodes
+
+def get_all_items(tree_widget):
+	"""Returns all QTreeWidgetItems in the given QTreeWidget."""
+	all_items = []
+	for i in range(tree_widget.topLevelItemCount()):
+		top_item = tree_widget.topLevelItem(i)
+		all_items.extend(get_subtree_nodes(top_item))
+	return all_items #return [self.getSubtreeNodes(self.topLevelItem(i)) for i in range(self.topLevelItemCount())]
+
 
 
 
@@ -568,8 +599,8 @@ for f in files:
 box = QtGui.QMessageBox()
 ex.
 msgBox = QtWidgets.QMessageBox()
-        msgBox.setText('message')
-        msgBox.exec_()
+		msgBox.setText('message')
+		msgBox.exec_()
 
 ex.
 box = QtGui.QMessageBox()
@@ -584,9 +615,24 @@ buttonN.setText('Iptal')
 box.exec_()
 
 if box.clickedButton() == buttonY:
-    # YES pressed
+	# YES pressed
 elif box.clickedButton() == buttonN:
-    # NO pressed
+	# NO pressed
+
+
+
+
+
+
+
+
+# QLabel
+lbl = QtWidgets.QLabel()
+
+#connect on mousePress
+lbl.mousePressEvent = method #method must take event as an arg.
+
+
 
 
 
@@ -770,6 +816,22 @@ QtGui.QSizePolicy				#The size policy of a widget is an expression of its willin
 w.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding) #policyX, policyY
 
 
+#screen size
+geometry = QtWidgets.QApplication.instance().desktop().screenGeometry() #availableGeometry()
+geometry.width()
+geometry.height()
+self.setGeometry(geometry)
+
+#get
+isFullScreen()
+isMaximized()
+isMinimized()
+
+#set
+showFullScreen()
+showMaximized()
+showMinimized()
+
 
 #get size:
 #.width / .height can be derived from anything that returns a QSize
@@ -784,7 +846,7 @@ w.frameGeometry()				#Returns QtCore.QSize - geometry of the widget relative to 
 #get recommended widget size
 w.sizeHint()
 w.sizeHint().width()
-w.sizeHint().height()
+w.sizeHint()
 
 #set size:
 w.resize(width, height) 		#int, int or QSize
@@ -794,7 +856,7 @@ w.setFixedSize(width, height)	#int, int or QSize
 
 #set in one direction
 w.setFixedWidth(width)			#int or QSize
-w.setFixedHeight(height)		#int or QSize
+w.setFixedHeight(height)		#int or QSize 		w.setFixedHeight(w.sizeHint().height())
 w.resize(w.width(), w.minimumSizeHint().height())
 
 #resize to fit content
@@ -906,23 +968,27 @@ point.toTuple()
 
 #QRect rect()
 #get
+#x & y
 rect.getRect() 					#Extracts the position of the rectangle’s top-left corner to *``x`` and *``y`` , and its dimensions to *``width`` and *``height`` .
-rect.x() 						#Returns int - the x-coordinate of the rectangle’s left edge. Equivalent to left()
-rect.y() 						#Returns int - the y-coordinate of the rectangle’s top edge. Equivalent to top()
-rect.top() 						#Returns int - the y-coordinate of the rectangle’s top edge.
 rect.topLeft()#.x()				#Returns QPoint - the position of the rectangle’s top-left corner.
 rect.topRight()#.y()			#Returns QPoint - the position of the rectangle’s top-right corner.
-rect.bottom() 					#Returns int - the y-coordinate of the rectangle’s bottom edge.
 rect.bottomLeft()#.x()			#Returns QPoint - the position of the rectangle’s bottom-left corner.
 rect.bottomRight()#.y()			#Returns QPoint - the position of the rectangle’s bottom-right corner.
-rect.left() 					#Returns int - the x-coordinate of the rectangle’s left edge. Equivalent to x().
-rect.right() 					#Returns int - the x-coordinate of the rectangle’s right edge.
 rect.center()#.x()				#Returns QPoint - the center point of the rectangle.
 rect.getCoords() 				#Extracts the position of the rectangle’s top-left corner to *``x1`` and *``y1`` , and the position of the bottom-right corner to *``x2`` and *``y2`` .
-rect.contains(x, y) #or QPoint	#Returns Bool - True if the point(x , y ) is inside or on the edge of the rectangle
-rect.united(r)					#Returns QRect - bounding rectangle of this rectangle and the given rectangle .
-rect.intersects() 				#Returns Bool - True if this rectangle intersects with the given rectangle.
+rect.united(r)					#Returns QRect - bounding rectangle of this rectangle and the given rectangle.
 rect.intersected() 				#Returns QRect - the intersection of this rectangle and the given rectangle. rect1.intersected(rect2) is equivalent to rect1 & rect2.
+#x
+rect.x() 						#Returns int - the x-coordinate of the rectangle’s left edge. Equivalent to left()
+rect.left() 					#Returns int - the x-coordinate of the rectangle’s left edge. Equivalent to x().
+rect.right() 					#Returns int - the x-coordinate of the rectangle’s right edge.
+#y
+rect.y() 						#Returns int - the y-coordinate of the rectangle’s top edge. Equivalent to top()
+rect.top() 						#Returns int - the y-coordinate of the rectangle’s top edge.
+rect.bottom() 					#Returns int - the y-coordinate of the rectangle’s bottom edge.
+#query
+rect.contains(x, y) #or QPoint	#Returns Bool - True if the point(x , y ) is inside or on the edge of the rectangle
+rect.intersects() 				#Returns Bool - True if this rectangle intersects with the given rectangle.
 rect.isEmpty()					#Returns Bool - True if the rectangle is empty.
 #set
 rect.setRect(x, y, w, h) 		#Sets the coordinates of the rectangle’s top-left corner to(x , y ), and its size to the given width and height .
@@ -964,7 +1030,10 @@ w.hitButton(pos)				#Returns: bool. Returns true if pos is inside the clickable 
 
 
 
-
+#screen
+screenGeometry = QtWidgets.QApplication.desktop().availableGeometry().adjusted(0,0,0,-100)
+screenRect = QtWidgets.QDesktopWidget().screen().rect()
+screenRect = QtWidgets.QApplication.desktop().rect()
 
 
 
@@ -1004,11 +1073,15 @@ QtWidgets.QApplication.sendEvent(widget, event)
 
 
 
+#from an event
+w.exec_(event.globalPos())
+
+
 event.__class__
 event.__class__.__name__
 
 event.type()
-QtCore.QEvent.show 				#QtCore.QEvent.Type.Show
+QtCore.QEvent.Show 				#QtCore.QEvent.Type.Show
 QtCore.QEvent.Hide
 QtCore.QEvent.Enter 			#event = QtGui.QEnterEvent(pos, pos, pos)
 QtCore.QEvent.Leave
@@ -1032,6 +1105,40 @@ QtGui.QExposeEvent 				#contains event parameters for expose events.
 QtGui.QFileOpenEvent 			#provides an event that will be sent when there is a request to open a file or a URL. 
 QtGui.QResizeEvent 				#adds size(), oldSize() to enable widgets to discover how their dimensions have been changed.
 QtGui.QFocusEvent 				#PySide.QtGui.QFocusEvent.gotFocus() #Return type: PySide.QtCore.bool
+
+
+
+
+QtCore.QEvent.HoverEnter	#The mouse cursor enters a hover widget(QHoverEvent).
+QtCore.QEvent.HoverLeave	#The mouse cursor leaves a hover widget(QHoverEvent).
+#setMouseTracking(True) for mouse event
+w.enterEvent #An event is sent to the widget when the mouse cursor enters the widget.
+w.leaveEvent	#A leave event is sent to the widget when the mouse cursor leaves the widget.
+w.onEnter
+w.onLeave
+
+QtCore.QEvent.MouseButtonDblClick 	#Mouse press again(QMouseEvent).
+w.mouseDoubleClickEvent
+ex.
+def mouseDoubleClickEvent(self, event): ""
+
+QtCore.QEvent.MouseMove 	#Mouse move(QMouseEvent).
+w.mouseMoveEvent
+
+QtCore.QEvent.MouseButtonPress 	#Mouse press(QMouseEvent).
+w.mousePressEvent
+
+QtCore.QEvent.MouseButtonRelease 	#Mouse release(QMouseEvent).
+w.mouseReleaseEvent = QtGui.QMouseEvent(
+							QtCore.QEvent.MouseButtonRelease,
+							self.cursor().pos(),
+							QtCore.Qt.LeftButton,
+							QtCore.Qt.LeftButton,
+							QtCore.Qt.NoModifier)
+
+QtCore.QEvent.wheel 	#Mouse wheel rolled(QWheelEvent).
+
+
 
 
 event.button()
@@ -1156,9 +1263,7 @@ QtCore.Qt.DropAction
 
 contextMenuEvent(event)
 
-
 paintEvent(event)
-
 
 tabletEvent(event)
 
@@ -1167,12 +1272,10 @@ tabletEvent(event)
 
 
 # install event filter
-QtGui.qApp.installEventFilter(self)
 w.installEventFilter(self)
 #install filter for widget sub object
-w.view().installEventFilter(self)
-w.viewport().installEventFilter(self)
-w.frame().installEventFilter(self)
+w.view().installEventFilter(self) #viewport(), frame()
+
 
 
 
@@ -1186,8 +1289,11 @@ def eventFilter(self, widget, event):
 	return Class.eventFilter(self, widget, event) #class itself.
 	return QtCore.QObject.eventFilter(self, widget, event) #inherited class.  Class(QtCore.QObject):
 	return QtWidgets.QComboBox.mouseMoveEvent(self, event) #inherited class.  Class(QtWidgets.QComboBox):
+	return QtWidgets.QToolButton.showMenu(self)
 	return super(Class, self).eventFilter(widget, event) #class or inherited class.
 	super().showPopup()
+	super(QMenu_, self).hide()
+	super(QtWidgets.QToolButton).showMenu()
 
 
 
@@ -1220,19 +1326,19 @@ self.blockSignals(False)
 
 # Re-implementation of QApplication.notify in Python which would propagate custom events.
 class MyApp(QApplication):
-    def notify(self, widget, event):
-        if event.type() > QtCore.QEvent.User:
-            while(widget):
-                # Note that this calls `event` method directly thus bypassing
-                # calling qApplications and receivers event filters
-                res = widget.event(event);
-                if res and event.isAccepted():
-                    return res
-                widget = widget.parent()
-        return super(MyApp, self).notify(receiver, event)
+	def notify(self, widget, event):
+		if event.type() > QtCore.QEvent.User:
+			while(widget):
+				# Note that this calls `event` method directly thus bypassing
+				# calling qApplications and receivers event filters
+				res = widget.event(event);
+				if res and event.isAccepted():
+					return res
+				widget = widget.parent()
+		return super(MyApp, self).notify(receiver, event)
 # And instead of using instance of QApplication we use instance of our subclass.
 if __name__=='__main__':
-    app = MyApp(sys.argv)
+	app = MyApp(sys.argv)
 
 
 
@@ -1245,7 +1351,7 @@ if __name__=='__main__':
 'Mouse Event'#--------------------------------------------------------------
 
 #mouse/keyboard
-w.setWindowFlags(QtCore.Qt.flag1|QtCore.Qt.flag2)
+w.setWindowFlags(QtCore.Qt.<flag1>|QtCore.Qt.<flag2>)
 
 w.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
 w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
@@ -1304,43 +1410,6 @@ def setMouseTracking(self, flag):
 	QtWidgets.w.setMouseTracking(self, flag)
 	recursive_set(self)
 
-			
-	
-
-
-
-QtCore.QEvent.HoverEnter	#The mouse cursor enters a hover widget(QHoverEvent).
-QtCore.QEvent.HoverLeave	#The mouse cursor leaves a hover widget(QHoverEvent).
-#setMouseTracking(True) for mouse event
-w.enterEvent #An event is sent to the widget when the mouse cursor enters the widget.
-w.leaveEvent	#A leave event is sent to the widget when the mouse cursor leaves the widget.
-w.onEnter
-w.onLeave
-
-QtCore.QEvent.MouseButtonDblClick 	#Mouse press again(QMouseEvent).
-
-.mouseDoubleClickEvent
-ex.
-def mouseDoubleClickEvent(self, event):
-	print "mouseDoubleClickEvent"
-
-QtCore.QEvent.MouseMove 	#Mouse move(QMouseEvent).
-w.mouseMoveEvent
-
-QtCore.QEvent.MouseButtonPress 	#Mouse press(QMouseEvent).
-w.mousePressEvent
-
-QtCore.QEvent.MouseButtonRelease 	#Mouse release(QMouseEvent).
-w.mouseReleaseEvent = QtGui.QMouseEvent(
-								QtCore.QEvent.MouseButtonRelease,
-								self.cursor().pos(),
-								QtCore.Qt.LeftButton,
-								QtCore.Qt.LeftButton,
-								QtCore.Qt.NoModifier)
-
-QtCore.QEvent.wheel 	#Mouse wheel rolled(QWheelEvent).
-
-
 
 
 # Call grabMouse on a widget and only that widget will receive mouse events(mouseMoves etc.), 
@@ -1391,15 +1460,10 @@ QtTest.QTest.mouseRelease(widget, button[, stateKey=0[, pos=QPoint()[, delay=-1]
 
 #mask mouse events
 def settingMask(self):
-    region = qg.QRegion(self._mainWidget.frameGeometry())
-    region -= qg.QRegion(self._mainWidget.geometry())
-    region += self._mainWidget.childrenRegion()
-    self._mainWidget.setMask(region)
-# Also, on my system(Linux), I found I had to call this after the window is shown:
-    ...
-    myWinPos.show()
-    myWinPos.settingMask()
-    sys.exit(qtApp.exec_())
+	region = qg.QRegion(self._mainWidget.frameGeometry())
+	region -= qg.QRegion(self._mainWidget.geometry())
+	region += self._mainWidget.childrenRegion()
+	self._mainWidget.setMask(region)
 
 
 
@@ -1462,13 +1526,14 @@ self.s000.activated.connect(self.xkeyisdown)
 def xkeyisdown:
 	print "x key is down"
 
-ex.#old syntax
-QtCore.QObject.connect(QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Escape), self.Dialog), QtCore.SIGNAL('activated()'), self.Dialog.close)
-ex.#or
+ex.
 self.connect(QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Escape), self), QtCore.SIGNAL('activated()'), self.down)
+
 
 def down(self): 
 	print 'escape key down'
+
+
 
 
 
@@ -1593,20 +1658,21 @@ painter.fillRect(self.rect(), QtGui.QColor(80, 80, 255, 128))
 'Signals'#------------------------------------------------------------------
 
 
-
-#The Signal class provides a way to declare and connect Qt signals in a pythonic way.
-signal = QtCore.Signal(bool)
-#
-signal.connect(widget)			#Create a connection between this signal and a receiver, the receiver can be a Python callable, a Slot or a Signal.
-signal.disconnect(widget)		#Disconnect this signal from a receiver, the receiver can be a Python callable, a Slot or a Signal.
-signal.emit(*args)				#args is the arguments to pass to any connected slots, if any.
-
-
-
-# assign signal a value. must be defined as class variable(before class init)
+# *Class Must inherit QObject for signals
+signal = QtCore.Signal(bool) #create a signal. #The Signal class provides a way to declare and connect Qt signals in a pythonic way.
+signal = QtCore.Signal((int,), (str,))
+#assign signal a value. must be defined as class variable(before class init)
 updated = Signal(int)
 updated = Signal(str)
 updated = Signal(object)
+#
+signal.connect(method)			#Create a connection between this signal and a receiver, the receiver can be a Python callable, a Slot or a Signal.
+signal[str].connect(method)		#if ex. 'int' is the default, specify str when connecting the second signal.
+signal.disconnect(method)		#Disconnect this signal from a receiver, the receiver can be a Python callable, a Slot or a Signal.
+signal.emit(*args)				#args is the arguments to pass to any connected slots.
+
+
+
 
 
 
@@ -1640,56 +1706,24 @@ w.clicked.connect(partial(self.function, arg=arg['name']))
 
 
 
-# emit a simple signal
-#from PySide.QtCore import QObject, Signal, Slot
-
-class PunchingBag(QObject):
-    ''' Represents a punching bag; when you punch it, it
-        emits a signal that indicates that it was punched. '''
-    punched = Signal()
- 
-        # Initialize the PunchingBag as a QObject
-        QObject.__init__(self)
- 
-    def punch(self):
-        ''' Punch the bag '''
-        self.punched.emit()
-
 
 #emit a signal
-#from PySide import QtGui, QtCore
-
-class Communicate(QtCore.QObject):
-    
-    closeApp = QtCore.Signal()
-
-class Example(QtGui.QMainWindow):
-    
-        super(Example, self).__init__()
-        
-        self.initUI()
-        
-    def initUI(self):      
-
-        self.c = Communicate()
-        self.c.closeApp.connect(self.close)       
-        
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Emit signal')
-        self.show()
-        
-    def mousePressEvent(self, event):
-        
-        self.c.closeApp.emit()
-        
-def main():
-    
-    app = QtGui.QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
+signal = QtCore.Signal()
+signal.connect(<method>)
+signal.emit()
 
 
-    main()
+#from PySide.QtCore import QObject, Signal, Slot
+class PunchingBag(QObject):
+	punched = QtCore.Signal()
+
+	QObject.__init__(self) #Initialize the PunchingBag as a QObject
+
+	def punch(self):
+		self.punched.emit()
+
+
+
 
 
 
@@ -1719,29 +1753,29 @@ w.blockSignals(False)
 ex.
 class FileEdit(QLineEdit):
 def __init__( self, parent ):
-    super(FileEdit, self).__init__(parent)
+	super(FileEdit, self).__init__(parent)
 
-    self.setDragEnabled(True)
+	self.setDragEnabled(True)
 
 def dragEnterEvent( self, event ):
-    data = event.mimeData()
-    urls = data.urls()
-    if ( urls and urls[0].scheme() == 'file' ):
-        event.acceptProposedAction()
+	data = event.mimeData()
+	urls = data.urls()
+	if ( urls and urls[0].scheme() == 'file' ):
+		event.acceptProposedAction()
 
 def dragMoveEvent( self, event ):
-    data = event.mimeData()
-    urls = data.urls()
-    if ( urls and urls[0].scheme() == 'file' ):
-        event.acceptProposedAction()
+	data = event.mimeData()
+	urls = data.urls()
+	if ( urls and urls[0].scheme() == 'file' ):
+		event.acceptProposedAction()
 
 def dropEvent( self, event ):
-    data = event.mimeData()
-    urls = data.urls()
-    if ( urls and urls[0].scheme() == 'file' ):
-        # for some reason, this doubles up the intro slash
-        filepath = str(urls[0].path())[1:]
-        self.setText(filepath)
+	data = event.mimeData()
+	urls = data.urls()
+	if ( urls and urls[0].scheme() == 'file' ):
+		# for some reason, this doubles up the intro slash
+		filepath = str(urls[0].path())[1:]
+		self.setText(filepath)
 
 
 
@@ -1764,43 +1798,43 @@ def dropEvent( self, event ):
 #the main window.
 ex.
 class MainWindow(QMainWindow):
-    def __init__(self):
-        QMainWindow.__init__(self)
-        self._rcwin = None
+	def __init__(self):
+		QMainWindow.__init__(self)
+		self._rcwin = None
 
-        if self._rcwin is None:
-        self._rcwin.show()
+		if self._rcwin is None:
+			self._rcwin.show()
 
 #or use a property:
 ex.
 class MainWindow(QMainWindow):
-    def __init__(self):
-        QMainWindow.__init__(self)
-        self._rcwin = None
+	def __init__(self):
+		QMainWindow.__init__(self)
+		self._rcwin = None
 
-    @property    
-    def rcwin(self):
-        if self._rcwin is None:
-            self._rcwin = RigControlWindow()
-        return self._rcwin
+	@property
+	def rcwin(self):
+		if self._rcwin is None:
+			self._rcwin = RigControlWindow()
+		return self._rcwin
 
-    def showRigControlWindow(self):
-        self.rcwin.show()
+	def showRigControlWindow(self):
+		self.rcwin.show()
 
 # or use a function in a module:
 ex.
 def startGui():
-    if 'myWindows' in globals():
-        global myWindows
-        myWindows.show()
-    else:
-        global myWindows
-        myWindows = init_gui.MainWindow(parent=init_gui.MyMainWindow())
-        myWindows.show()
+	if 'myWindows' in globals():
+		global myWindows
+		myWindows.show()
+	else:
+		global myWindows
+		myWindows = init_gui.MainWindow(parent=init_gui.MyMainWindow())
+		myWindows.show()
 And then call startGui from a shelf script like this:
 
 if __name__ == '__main__':
-    startGui()
+	startGui()
 
 
 
@@ -1825,6 +1859,21 @@ if __name__ == '__main__':
 child.setParent(parent)
 #
 button = QtWidgets.QPushButton('ButtonName', parent=widget)
+
+
+#get parent:
+child.parent()
+#
+child.parentWidget()
+#parent window
+child.window()
+#
+[w for w in QApplication.topLevelWidgets()]
+#
+customClassInst = self.parent()
+while customClassInst is not None and not isinstance(customClassInst, CustomClass):
+	customClassInst = customClassInst.parent()
+
 
 
 #get child objects:
@@ -1921,7 +1970,8 @@ items = (layout.itemAt(i) for i in range(layout.count()))
 #get widgets from dynamic ui:
 #from a dict
 for widgetName, widgetObject in ui.__dict__.iteritems(): #for each object in the ui:
-
+#
+ui.__dict__.items()
 #from a list
 for widget in ui.children():
 
@@ -2031,13 +2081,16 @@ directory = fileDialog.getExistingDirectory()
 
 
 
+'Exit'#----------------------------------------------------------------------
 
 
+#terminate the event-loop (if it's running)
+QCoreApplication.quit()
+QCoreApplication.exit(0)
 
 
-
-
-
+#terminate the program
+sys.exit()
 
 
 
@@ -2175,6 +2228,7 @@ w.setAttribute(QtCore.Qt.WA_TintedBackground)
 w.setAttribute(QtCore.Qt.WA_StyledBackground) #Indicates the widget should be drawn using a styled background.
 w.setAttribute(QtCore.Qt.WA_StyleSheet) #Indicates that the widget is styled using a style sheet.
 w.setAttribute(QtCore.Qt.WA_WindowPropagation) #Makes a toplevel window inherit font and palette from its parent.
+w.setAttribute(QtCore.Qt.AA_UseStyleSheetPropagationInWidgetStyles, True) #font and palette propagate to child widgets.
 w.setAttribute(QtCore.Qt.WA_SetPalette) #Indicates that the widget has a palette of its own.
 w.setAttribute(QtCore.Qt.WA_SetStyle) #Indicates that the widget has a style of its own.
 w.setAttribute(QtCore.Qt.WA_SetFont) #Indicates that the widget has a font of its own.
@@ -2186,6 +2240,16 @@ w.setWindowOpacity(0.5)
 ex.
 w.setAutoFillBackground(False)
 w.autoFillBackground(True)
+
+
+
+#get color:
+w.palette().color(QtGui.QPalette.Background).name() #returns '#edecec' which is obviously not white. So Background is the wrong color role to query for this widget. Instead, it looks like Base might be more appropriate:
+w.palette().color(QtGui.QPalette.Base).name() #returns '#ffffff'
+
+color = widget.palette().color(widget.backgroundRole())
+color = widget.palette().color(QtGui.QPalette.Background) #alt method
+rgba = color.red(), color.green(), color.blue(), color.alpha()
 
 
 
@@ -2205,8 +2269,7 @@ w.styleSheet() #query the widgets style sheet.
 print w.styleSheet() #print the stylesheet if there is one:
 
 
-#If you would prefer that the font and palette propagate to child widgets, you can set the Qt::AA_UseStyleSheetPropagationInWidgetStyles flag, like this:
-QCoreApplication::setAttribute(Qt::AA_UseStyleSheetPropagationInWidgetStyles, true);
+
 
 
 ex.

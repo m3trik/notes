@@ -1,11 +1,13 @@
-____Substance_Painter_notes___________________________________________________________________________________
-
-
-
-
-
-
-
++---Substance-Painter-notes----------------------------------------------------------+
+¦
+¦	-Procedures
+¦	-Masking
+¦	-Uv
+¦	-Normals
+¦	-Import/Export
+¦	-Keyboard Shortcuts
+¦
++-----------------------------------+
 
 
 
@@ -73,6 +75,8 @@ White = Opaque
 show mask in viewport	alt + left click mask icon
 
 mask by geometry:
+-	Selection / Fill tool allows you to draw masks quickly by selecting polygons, mesh elements or UV chunks. wireframe opacity can be tweaked through the Viewer Settings.
+-	When you are not in Quick Mask mode (shortcut: T), using this tool will fill the current layer with the color currently selected in the Properties panel. It is mostly useful for creating layer masks. When in Quick Mask mode, the tool will only modify the quick mask.
 >	't' toggles editing and using quick mask
 >	select polygon fill icon
 >	paint in the mask then invert (ctrl+i)
@@ -137,6 +141,52 @@ Importing a sbsar file:
 
 
 
+Export textures:
+>	File menu> Export Textures
+>	Set path
+
+Configuration:
+-	A higher bit depth will provide a better quality of texture.
+-	PSD file: each texture set from a project is exported as a single file containing the exported textures associated to the texture set.
+
+Creating export presets:
+>	'+' icon (create) (can also modify an existing preset using right click context menu)
+>	add a new output map by selecting between: 'grey', 'rgb', etc
+>	name and then drag-drop an input map into one of the available channel slots.
+
+Types of maps:
+	Input maps: direct channels that can be added in a texture set. Via the TextureSet settings panel.
+	
+	Mesh maps: Textures present in the additional map slots of a Texture Set (baked textures).
+	
+	Converted maps: virtual textures, those textures are generated during the export based on the channels present in the document.
+
+-	Normal OpenGL/DirectX: Outputs a normal in the dedicated space by combining the normal from the additional maps, the height and the normal channel.
+-	Mixel AO: Combine the Ambient Occlusion addiitonal map with the Ambient Occlusion channel.
+-	Diffuse: Diffuse color generated from the BaseColor and Metallic channels (metallic parts will be replaced with a black color).
+-	Specular: Specular color generated from the BaseColor and Metallic channels.
+-	Glossiness: Inverse of the roughness channel.
+-	Unity4 Diffuse: Diffuse color generated from the BaseColor to match Unity4 shaders.
+-	Unity4 Gloss: Glossiness generated from the Roughness and Metallic channel to match Unity4 shaders.
+-	Reflection: Export a map where white indicate a dielectric materials and other colors for metallic materials
+-	1/ior: 1 divided by the ior value, ior is generated from the metallic map : 1.4 for dielectrics, 100 for metals (black color)
+-	Glossiness²: Square version of the glossiness channel (Glossiness * Glossiness)
+-	f0: Reflectance value at fresnel 0 (0.04 for dielectrics, 1.0 for metallic)
+
+
+
+
+
+
+ERRORS: ----------------------------------------------------------------------------
+
+Import Texture: Cannot import texture.
+As of version 2020, substance does not support importing over a network drive
+
+
+
+
+
 
 
 
@@ -147,9 +197,7 @@ Importing a sbsar file:
 
 KEYBOARD SHORTCUTS: ----------------------------------------------------------------
 
-								default_________________________custom
-
-
+________________________________default_________________________custom______________
 Shortcuts pop-up list
 Stencil shortcuts				S
 Misc							shft
@@ -212,7 +260,7 @@ Stencil Rotate					shft + S + Left
 Tool Size						ctrl + Right + Horizontal		
      Hardness					ctrl + Right + Vertical		 	  
 
-	 
+
 Environment Rotate				shft + Right					
 
 Auto Focus						Ctrl + Middle					

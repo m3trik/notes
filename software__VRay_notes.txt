@@ -1,10 +1,21 @@
-- VRay notes ---
++---VRay-notes----------------------------------------------------+
+¦
+¦	-Material properties
+¦	-Nodes
+¦	-Modifiers
+¦	-Import/Export
+¦
++-----------------------------------+
 
 
 
 
 
-MATERIALS:____________________________________________________
+
+
+
+
+MATERIAL_PROPERTIES:____________________________________________________
 //VRay:
 
 general:
@@ -421,3 +432,82 @@ Edge thresh:
 
 
 --------------------------------------------------------------
+
+
+
+
+
+
+IMPORT/EXPORT:
+FBX export
+//from substance designer:
+
+
+setting up color management preferences:
+in maya:
+>	preferences> color management.  enable
+>	default to sRGB, click add to set up more rules
+>	ex. name=Normal to Raw.  image ext=png or *.  image file pattern=*Diffuse* (*anything leading or trailing).  color space=RAW
+>	vray supports sRGB, RAW and gamma formats
+
+in 3ds Max:
+>	Customize> Preferences> Gamma and LUT - Check 'Enable Gamma/LUT Correction' /set Gamma to 2.2.
+
+
+
+setting up the maps:
+in maya:
+>	create a substance node
+>	in properties>workflow select custom workflow (last index in combobox without text)
+>	load the sbsar file using the load file dialog (top section)
+>	enable auto connections: expand the automatic baking menu> automatic connections
+>	click each node type to create connections (may have to try and import maps to refresh)
+>	for textures beyond 2k; switch to gpu (hardware) renderer. engine settings> engine
+select normal type
+>	expand the bump mapping menu> tangent space normal map
+---------------
+pbr material to vray:
+in Maya:
+>	create a 'basecolor_metallic_roughness_converter' node (set to correct resolution)
+>	add additional outputs as needed. 
+	to add an output node:
+		Right-click in an empty area; Add Node --> Output
+		attributes pane: click "Add item" plus sign
+		Specify a Usage.  (ie. "AmbientOcclusion")
+		change the label and indentifier
+>	add 'switch' and expose parameter to toggle directX and openGL
+>	add 'greyscale switch' and expose parameter to toggle roughness outputs
+
+
+
+
+
+
+vrayMtl node properties:
+	DIFFUSE COLOR -> COLOR (sRGB) (greyscale version to the Reflect map if a material like metal, with an diffuse of pure black)
+	
+	NORMAL -> BUMP map (tangent space normal, openGL, RAW) (in the normal map properties; click on the “Bitmap” input. This will open a file browser window. In this window, with the same texture selected, go to “Gamma”, select “Override”, and set it to 1.0)
+	
+	ROUGHNESS ALPHA --> ROUGHNESS amount (sRGB)(Invert: In Substance, black=smooth surface (sharp reflections), and white=rough (diffuse reflections). In V-Ray, it is the opposite.)
+	
+	REFLECTION COLOR -> REFLECTION COLOR (sRGB, or composite(color) spec map and diffuse) 
+	REFLECTION GLOSSINESS -> HILIGHT GLOSSINESS - 
+	
+	GLOSSINESS ALPHA -> REFLECTION GLOSSINESS (RAW)
+	GLOSSINESS COLOR -> REFRACTION COLOR (RAW)
+	
+	SPECULAR ALPHA -> REFRACTION GLOSSINESS (sRGB) (or uncheck 'Lock highlight and 
+	
+	OPACITY COLOR -> OPACITY map (sRGB)
+	
+	AMBIENT OCCLUSION ->  (sRGB)
+	
+	HEIGHT -> DISPLACEMENT map (greyscale)
+	
+	METALNESS -> IOR (greyscale, increase output amount to ~40)
+	
+	IOR ALPHA -> FRESNEL IOR (Uncheck Lock Fresnel IOR to Refraction IOR(reflection menu, RAW) 
+	
+
+
+

@@ -1,11 +1,60 @@
 +---normals----------------------------------------------------------+
 ¦
-¦	-
+¦	-Cage
+¦	-Baking
+¦	-Resolving baking errors
 ¦
 +-----------------------------------+
 
 
 
+
+
+
+
+
+
+
+CAGE:
+//maya:
+>Make sure the High Poly Mesh and the Low Poly Mesh are aligned, sized, and centered in the scene.
+
+>	Optional: Make sure that all of the sub meshes are separated. 				You can obtain closer fitting cages by doing each piece separate.
+
+>	Select only the Low Poly Mesh 
+
+>	Lighting/shading> 'Transfer Maps'
+
+>	choose to show "Both" which makes the cage appear in red. Adjust the slider to expand and collapse the cage so that it hugs as close as possible. 
+
+>When the right size is found, click on the cage in the viewport, duplicate it, and unparent it. Cancel the Transfer Map operation. 
+
+>	Repeat the operation for each SubMesh
+
+>	(Cage points are editable)
+
+>	Export the Cage Mesh sub-meshes in the same order as the low poly so that the vertex ordering is the same for the baking process
+
+
+//3ds Max
+>Make sure the High Poly Mesh and the Low Poly Mesh are aligned, sized, and centered in the scene.
+
+>	Optional: Make sure that all of the sub meshes are separated. 				You can obtain closer fitting cages by doing each piece separate.
+
+>	Select only the Low Poly Mesh
+
+>	shell modifier
+
+
+
+
+
+
+
+
+
+
+//BAKING
 //general:
 >	On a low res mesh, either use a single smoothing group with more geometry to avoid unsightly gradients in your normal maps at lower texture resolutions, Or Multiple smoothing groups, but only on hard edges.
 
@@ -21,6 +70,12 @@
 
 
 
+//xNormal
+>	drag high and low poly meshes into their respective windows.
+>	Baking options> set map size and file output location.
+
+
+
 //Zbrush
 >	Set subD to lowest division
 
@@ -33,3 +88,51 @@
 
 
 //Maya:
+
+
+
+
+
+
+//averaged bake vs. non-averaged bake
+
+averaged bake:
+-	low poly edge=hard (split normals) and the high poly mesh edge=rounded
+
+non-averaged bake:
+-	high poly and low poly mesh have hard edges everywhere
+-	high poly mesh has things sticking out of the surface but your low poly is flat at that location, and both the high and low poly have hard edges everywhere else
+
+
+blending an averaged and non-averaged bake:
+-	high poly has rounded edges and also things sticking out of the surface. This is when you need to combine two different bakes with a mask. Have a look at NormalFix at Substance Share to help you with that. Otherwise, you need to add support geometry near the edges. (non-averaged bake at the location where something sticks out averaged bake at the edges.) 
+
+
+
+
+
+
+
+//resolving baking errors:
+-Cut UV's on hard edges.
+
+-Change the cage max front and/or and max rear distance.
+
+-Check that the low res and high res model both have a zero transform.
+
+-Check that the low res and high res models are aligned.
+
+-Check if the low res model normals make sense, especially when using explicit (custom) normals.
+
+-Try baking with name matching on or off. Or explode your mesh before baking, if your mesh names don't match up.
+
+-Increase the resolution of the bake.
+
+-Check that the low res model vertices are welded (add a cage in 3ds Max, Maya, etc. and push it away to check).
+
+Wavy lines where high res and low res have a hard edge on a sharp curved cliff (such a a cylindrical shape or cutout):
+-	Give the high poly a large enough curved edge. If this is not an option, manually paint out the baking errors. Do this in SP though, not in PhotoShop as brush strokes are saved on a separate layer and will be preserved when a re-bake is done. Either way, using normal maps to simulate edge detail is a crude approximation and you will always have rendering errors from certain angles.
+
+
+
+
