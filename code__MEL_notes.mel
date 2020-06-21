@@ -1090,9 +1090,18 @@ ex. pm.ls(sl=1, objectsOnly=1) //#returns list ie. [nt.PolyCone(u'polyCone1'), n
 //using string formatting	ie.pPlane1 from pPlaneShape1
 ex. transforms = [node.replace('Shape','') for node in nodes]
 //transform from shape:
+shapes = pm.ls(sl=1, dag=1, leaf=1)
+transforms = pm.listRelatives(shapes, p=True)
+//alt
 ex. transforms = pm.listRelatives(shapes, parent=1, fullPath=1) //#returns list ie. [nt.Transform(u'pCone1')]
 //transform from selection
-ex. transforms = pm.listRelatives(pm.ls(type='mesh'),type='transform',p=True)
+ex. transforms = pm.listRelatives(pm.ls(type='mesh'), type='transform', p=True)
+//check if transform is a group
+//mel
+ex. ((`objectType -isType transform $object`) && (!size(`listRelatives -shapes $object`)))
+//python
+ex. (pm.objectType(node, isType='transform')) and (not len(pm.listRelatives(node, shapes=1)))
+
 
 //shape
 //ie.	pPlaneShape1
@@ -1109,7 +1118,8 @@ ex. shapes = pm.ls(selection=1, objectsOnly=1)
 historyNode = pm.listConnections(shapes, source=1, destination=0)
 //from selected objects
 ex. historyNodes = [n[1] for n in pm.ls(sl=1, objectsOnly=1)]
-
+//alt
+ex. node.history()[-1]
 
 
 //relatives
@@ -1124,12 +1134,16 @@ childNodes = pm.listRelatives(obj, allDescendents=1)
 
 
 //connections
+//all connections
+ex. connections = pm.listConnections(node)
 //incoming connections:
 ex. nodes = pm.listConnections(shapes, source=1, destination=0) //#returns list ie. [nt.PolyCone(u'polyCone1')]
 //outgoing connections:
 ex. nodes = pm.listConnections(shapes, source=0, destination=1) //#returns list ie. [nt.ShadingEngine(u'initialShadingGroup')]
-
-
+//connections to nodes of type 'transform'
+ex. pm.listConnections(t='transform')
+//List connections ignoring unit conversion nodes
+ex. pm.listConnections(node, scn=True )
 
 
 //get the shape node name from component
@@ -1197,8 +1211,7 @@ connectAttr;
 optionVar			set & query variables which are persistent between different invocations of Maya.
 
 
-modelEditor			//edit geometry attributes such as 
-					activeComponentsXray, activeOnly, activeView, addObjects, addSelected, allObjects, backfaceCulling, bufferMode, bumpResolution, camera, cameraName, cameraSetup, cameras, colorMap, colorResolution, control, controlVertices, cullingOverride, default, defineTemplate, deformers, dimensions, displayAppearance, displayLights, displayTextures, docTag, dynamicConstraints, dynamics, editorChanged, exists, filter, fluids, fogColor, fogDensity, fogEnd, fogMode, fogSource, fogStart, fogging, follicles, forceMainConnection, grid, hairSystems, handles, headsUpDisplay, highlightConnection, hulls, ikHandles, interactive, jointXray, joints, lights, lineWidth, locators, lockMainConnection, lowQualityLighting, mainListConnection, manipulators, maxConstantTransparency, nCloths, nParticles, nRigids, noUndo, nurbsCurves, nurbsSurfaces, occlusionCulling, panel, parent, pivots, planes, polymeshes, removeSelected, rendererList, rendererListUI, rendererName, selectionConnection, selectionHiliteDisplay, setSelected, shadows, smoothWireframe, sortTransparent, stateString, strokes, subdivSurfaces, textureAnisotropic, textureDisplay, textureHilight, textureMaxSize, textureMemoryUsed, textureSampling, textures, transpInShadows, transparencyAlgorithm, twoSidedLighting, unParent, unlockMainConnection, updateColorMode, updateMainConnection, useBaseRenderer, useColorIndex, useDefaultMaterial, useInteractiveMode, useRGBImagePlane, useTemplate, userNode, viewObjects, viewSelected, wireframeBackingStore, wireframeOnShaded, xray
+modelEditor			//edit geometry attributes such as // activeComponentsXray, activeOnly, activeView, addObjects, addSelected, allObjects, backfaceCulling, bufferMode, bumpResolution, camera, cameraName, cameraSetup, cameras, colorMap, colorResolution, control, controlVertices, cullingOverride, default, defineTemplate, deformers, dimensions, displayAppearance, displayLights, displayTextures, docTag, dynamicConstraints, dynamics, editorChanged, exists, filter, fluids, fogColor, fogDensity, fogEnd, fogMode, fogSource, fogStart, fogging, follicles, forceMainConnection, grid, hairSystems, handles, headsUpDisplay, highlightConnection, hulls, ikHandles, interactive, jointXray, joints, lights, lineWidth, locators, lockMainConnection, lowQualityLighting, mainListConnection, manipulators, maxConstantTransparency, nCloths, nParticles, nRigids, noUndo, nurbsCurves, nurbsSurfaces, occlusionCulling, panel, parent, pivots, planes, polymeshes, removeSelected, rendererList, rendererListUI, rendererName, selectionConnection, selectionHiliteDisplay, setSelected, shadows, smoothWireframe, sortTransparent, stateString, strokes, subdivSurfaces, textureAnisotropic, textureDisplay, textureHilight, textureMaxSize, textureMemoryUsed, textureSampling, textures, transpInShadows, transparencyAlgorithm, twoSidedLighting, unParent, unlockMainConnection, updateColorMode, updateMainConnection, useBaseRenderer, useColorIndex, useDefaultMaterial, useInteractiveMode, useRGBImagePlane, useTemplate, userNode, viewObjects, viewSelected, wireframeBackingStore, wireframeOnShaded, xray
 
 
 repeatLast	//add command to recent commands list
@@ -1704,8 +1717,6 @@ float $colors[] = getAttr ($connections[0] + ".color");
 
 
 
-
-
 //get/set attributes
 //using getAttr(), setAttr()
 //mat ID
@@ -1744,6 +1755,66 @@ pm.hyperShade(resetGraph=True, dependGraphArea=True)
 
 
 
+//get the classification string a material node.
+getClassification lambert; //Result: shader/surface. Therefore, in this case the '-asShader' flag is specified when creating the material.
+
+// Create a Material
+string $material = `shadingNode -asShader lambert -name "mayaLogo"`; //The Shading Group manages membership to the material. It is created as a renderable set using the "sets" command.
+
+// Create a Shading Group
+string $SG = `sets -renderable true -noSurfaceShader true -empty -name "mayaLogoSG"`;
+
+// Connect the material to the Shading Group.
+connectAttr -f ( $material + ".outColor" ) ( $SG + ".surfaceShader" ); //The file node provides a texture image for any color attribute. In this case, it is connected to the Lambert's '.color' input. Again, the "shadingNode" command is used to create renderable texture nodes. A "file" node is classified as a texture, so the '-asTexture' flag is specified in this case.
+
+
+//get the classification string for the texture "file" node.
+getClassification file; // Result: texture/2d //
+// Create a file texture node
+string $fileNode = `shadingNode -asTexture file -name "mayaLogo_bmp"`;
+// Connect it to the material color
+connectAttr -f ( $fileNode + ".outColor" ) ( $material + ".color" ); //The image loaded by a file texture node is referenced by its filepath, which is assigned to the '.fileTextureName' string attribute.
+
+// Assign filepath to '.fileTextureName' attribute.
+string $filepath = "C:/AW/ewertb/projects/default/sourceimages/mayaLogo.bmp";
+setAttr -type "string" ( $fileNode + ".fileTextureName" ) $filepath; //The place2dTexture node is optional. It is not required for the shading network to function properly. As above, the "shadingNode" command is used to create a placement node, this time specifying the '-asUtility' flag.
+
+//get the classification string for the "place2dTexture" node.
+getClassification place2dTexture; // Result: utility/general/placement/2d
+
+
+
+
+// connecting common attributes between two nodes
+connectAttr -f ( $place + "." + $attr ) ( $file + "." + $attr );
+// with different names:
+place2d = ("place_" + str(fileNode))
+place2d = str(pm.shadingNode('place2dTexture', asUtility=1, name=place2d))
+
+
+
+// Placement nodes add unnecessary clutter to the Hypershade if they're not actually used, so apply them sparingly. If you're creating a network from a script or your own UI, provide an option for the user as to whether to create the placement node. Alternately, you can query Maya's own preference for this, which is stored in the optionVar "createTexturesWithPlacement":
+// Determine if user prefers a placement node connected to a new texture node.
+int $createPlacement = `optionVar -q createTexturesWithPlacement`;
+
+
+
+
+//get texture file path
+allFileNodes = cmds.ls(et="file")
+for eachFile in allFileNodes:
+	currentFile = cmds.getAttr("%s.fileTextureName" % eachFile)
+//get texture file path from selection or specific mesh
+shapesInSel = cmds.ls(dag=1,o=1,s=1,sl=1)
+shadingGrps = cmds.listConnections(shapesInSel,type='shadingEngine')
+shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
+fileNode = cmds.listConnections('%s.color' % (shaders[0]), type='file')
+currentFile = cmds.getAttr("%s.fileTextureName" % fileNode[0])
+
+
+
+
+
 
 
 
@@ -1777,7 +1848,14 @@ non_startup_cameras = map(str, non_startup_cameras_pynodes)
 non_startup_cameras_transforms = map(str, non_startup_cameras_transform_pynodes)
 
 
+//get camera from viewport panel
+modelPanel(panel_, query=1, cam=1)
 
+//get current camera without needing the current panel to be in focus. // import maya.OpenMaya as OpenMaya ,maya.OpenMayaUI as OpenMayaUI
+view = OpenMayaUI.M3dView.active3dView()
+cam = OpenMaya.MDagPath()
+view.getCamera(cam)
+camPath = cam.fullPathName()
 
 
 
@@ -1846,8 +1924,9 @@ eg. pm.lsUI(windows=1)
 eg. pm.lsUI(panels=1, editors=1)
 
 
-//#get current window (panel)
+//#get current viewport panel
 currentPanel = pm.getPanel(withFocus=1)
+currentPanel = pm.getPanel(underPointer=1)
 
 
 //#get maya viewport widget
@@ -1907,11 +1986,11 @@ pm.setAttr("{}.displayType".format(layer), 2)
 
 //
 undoInfo -openChunk;
-pm.undoInfo (openChunk=1)
+pm.undoInfo(openChunk=1)
 
 // operation
 undoInfo -closeChunk;
-pm.undoInfo (closeChunk=1)
+pm.undoInfo(closeChunk=1)
 
 
 

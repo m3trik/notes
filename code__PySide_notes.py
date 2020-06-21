@@ -173,7 +173,7 @@ w.update()
 
 
 #Active Window
-isActiveWindow ()
+isActiveWindow()
 
 
 

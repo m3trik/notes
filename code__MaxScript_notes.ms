@@ -2320,6 +2320,50 @@ ex. rt.rootScene[rt.name('SME')][rt.name('View1')][rt.name('door_handle____VRayM
 
 
 
+
+"Cameras: //---------------------------------------------------------------"
+
+
+-- create camera
+cam = freecamera()
+
+-- get camera
+--current camera
+activeCam = rt.getActiveCamera()
+
+--get camera name
+activeCamName = activeCam.name
+
+-- get camera type
+cam.type Name default: #free --#free- Free Camera (Target view can be set in any direction) --#target- Target Camera (Camera will always align view with target object)
+
+
+--set FOV (field of view)
+cam.fov = 0 --set the camera's fov to the new fov value
+cam.fovType = 1 --int (default: 1) --sets the current Field Of View type. valid values: 1 -Horizontal, 2 -Vertical, 3 -Diagonal
+--get FOV
+cam.curFOV --float (default: 45.0)
+
+-- orthographic camera
+cam.orthoProjection --boolean (default: false) 
+
+-- cone
+cam.showCone --boolean (default: false) --Displays the cone (actually a pyramid) defined by a camera's field of view. The cone appears in the other viewports, but does not appear in a camera viewport.
+
+-- horizon line
+cam.showHorizon --boolean (default: false) --Displays the horizon line. A dark gray line appears at the level of the horizon in the camera's viewport.
+
+-- atmospheric effects
+cam.nearrange = 0.0 --float (default: 0.0) -- animatable; alias: Near_Env_Range. The near range for atmospheric effects.
+cam.farrange = 1000.0 --Float (default: 1000.0) -- animatable; alias: Far_Env_Range. The far range for atmospheric effects.
+
+
+
+
+
+
+
+
 "Lighting: //--------------------------------------------------------------"
 
 

@@ -301,6 +301,11 @@ eg. x = 'a < b' if (a < b) else 'a >= b'
 eg. force=True; force if sceneName else not force
 
 
+# if/else conditionals in list comprehension:
+eg. [(i if True else None) for i in []]
+
+
+
 #when comparing types use is instead of ==
 #all
 eg. if all( [cond1=='val1', cond2=='val2', cond3=='val3', cond4=='val4'] ):
@@ -1965,6 +1970,7 @@ next()      eg. gen = generator #assuming already have a generator defined
 # 	what it returns.
 # * A single function can have multiple decorators to extend functionality.
 
+#basic decorator
 ex.
 @classmethod
 def message(cls, fn):
@@ -1972,7 +1978,6 @@ def message(cls, fn):
 		self.messageBox(self, *args, **kwargs)
 		return fn(self, *args, **kwargs)
 	return wrapper
-
 
 
 #using functools wraps
@@ -1994,7 +1999,24 @@ def myfunc(myarg):
 r = myfunc('asdf')
 
 
+# decorator usage in an inherited class:
+class X(object):
+    @classmethod
+    def foo(cls, fun):
+        def wrapper(self, *args, **kwargs):
+            self.write(*args, **kwargs)
+            return fun(self, *args, **kwargs)
+        return wrapper
 
+    def write(self, *args, **kwargs):
+        print(args, kwargs)
+
+class Y(X):
+    @X.foo
+    def bar(self, x):
+        print("x:", x)
+
+Y().bar(3)
 
 
 
