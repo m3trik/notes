@@ -1659,20 +1659,23 @@ painter.fillRect(self.rect(), QtGui.QColor(80, 80, 255, 128))
 
 
 # *Class Must inherit QObject for signals
-signal = QtCore.Signal(bool) #create a signal. #The Signal class provides a way to declare and connect Qt signals in a pythonic way.
+signal = QtCore.Signal(bool) 	#create a signal. #The Signal class provides a way to declare and connect Qt signals in a pythonic way.
 signal = QtCore.Signal((int,), (str,))
 #assign signal a value. must be defined as class variable(before class init)
 updated = Signal(int)
 updated = Signal(str)
 updated = Signal(object)
-#
+#emit signal
+signal.emit(*args) 				#args is the arguments to pass to any connected slots.
+
+#connect
 signal.connect(method)			#Create a connection between this signal and a receiver, the receiver can be a Python callable, a Slot or a Signal.
 signal[str].connect(method)		#if ex. 'int' is the default, specify str when connecting the second signal.
+#disconnect
 signal.disconnect(method)		#Disconnect this signal from a receiver, the receiver can be a Python callable, a Slot or a Signal.
-signal.emit(*args)				#args is the arguments to pass to any connected slots.
-
-
-
+#all
+eg. disconnect(w,0,0,0)			#supported args: (QtCore.QMetaObject.Connection)(QtCore.QObject, str, Callable)(str, Callable)(QtCore.QObject, str=None)(QtCore.QObject, QtCore.QMetaMethod, QtCore.QObject, QtCore.QMetaMethod)(QtCore.QObject, str, QtCore.QObject, str)(str, QtCore.QObject, str)
+eg. w.disconnect()				#throws a TypeError exception if no signals are present.
 
 
 

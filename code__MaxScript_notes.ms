@@ -712,22 +712,6 @@ ex. MaxPlus.Core.EvalMAXScript("fn bitArrayToArray b = (return b as Array)")
 
 
 
-"VECTORS: //---------------------------------------------------------------"
-
-
-
-
-
-
-
-"MATRICES: //--------------------------------------------------------------"
-
-
-
-
-
-
-
 
 
 "TRANSFORM: //-------------------------------------------------------------"
@@ -739,27 +723,37 @@ INode.Position
 ex. $.position
 
 
-
 --move
-move $ [10,0,0]		--xyz
-
---move all selected objects
-selection.pos.z = 0
-
---move absolute
-$.position = [10,10,0]
-
-
---move relative
-$.position.z = $.position.z + 10
-
+--absolute
+$.position = [10,10,0] --same as $.pos
 --adds x,y,z to the positions of all objects whose names contain "_left"
 $*_left*.position += [50,20,10]
+--relative
+move $ [10,0,0]	--xyz
+rt.move(obj, rt.point3(0,0,0))
+rt.selection.move(rt.point3(0,0,0)) -- mapped
+rt.selection.pos.z = 0
+rt.selection.position.z = rt.selection.position.z + 10 --move relative
 
 
+--scale
+scale <node> <point3> -- mapped
+--absolute
+INode.Scaling
+scale $ [2,2,1]		--scale 2x in xy.  z is 1:1 unchanged
+$.scale = [1,1,2] --scale 2x in z
+
+--
+MaxPlus.Point3(ScaleAmount, ScaleAmount, ScaleAmount)
+
+box = MaxPlus.Factory.CreateGeomObject(MaxPlus.ClassIds.Box)
+box.ParameterBlock.Length.Value = 10.0
+box.ParameterBlock.Height.Value = 10.0
+box.ParameterBlock.Width.Value = 10.0
 
 
---rotate absolute
+--rotate
+--absolute
 obj.Rotation
 rt.rotate(node, rt.angleaxis(90, [0,1,0])) --rotate 90 on Y axis
 --using transform matrix
@@ -772,34 +766,27 @@ obj.rotation = rt.eulerangles(0, 0, 90)
 euler = rt.eulerangles(0, 0, 90)
 rt.rotate(self.node, euler)
 
-
 $*_left*.position += [50,20,10] -- adds 50,20,10 units (x,y,z order) to the positions
                                   -- of all objects whose names contain "_left"
-
-
-
---scale
---absolute
-INode.Scaling
-scale $ [2,2,1]		--scale 2x in xy.  z is 1:1 unchanged
-$.scale = [1,1,2] --scale 2x in z
-
-
+--
+rotate <node> <angle> <axis_point3> -- mapped -- angle in degrees 
+rotate <node> <quat> -- mapped 
+rotate <node> <eulerangles> -- mapped 
 
 --
-MaxPlus.Point3(ScaleAmount, ScaleAmount, ScaleAmount)
+--queries the transform axis of the indexed axis system of the node 
+getTransformAxis (<node>|undefined) <index> --returns as a matrix3 value
 
-box = MaxPlus.Factory.CreateGeomObject(MaxPlus.ClassIds.Box)
-box.ParameterBlock.Length.Value = 10.0
-box.ParameterBlock.Height.Value = 10.0
-box.ParameterBlock.Width.Value = 10.0
+--queries the transformation matrix of the givennode or rootnode
+getNodeTM {<node> | <rootnode>} --returnsas a matrix3 value
+
+--Returns the transform controller for the node
+getTMController <node>
+
+--Computes the distance between the pivot points of the two specified nodes.
+distance <node> <node>
 
 
-
-
---gets or sets the position of the selected element in the mesh
---<vertexselection>.pos : Point3 
-$foo.verts[i].pos = $bar.verts[j].pos + [10,0,0]
 
 
 --Snap
@@ -895,11 +882,59 @@ snapMode.getOSnapItemName <int osnap_index> <int osnap_item_index>
 
 
 
---pivot
+
+-- pivot
+--mapped functions
+rt.ResetXForm(rt.selection) --#Same as the Reset XForm utility in the Utilities tab - applies XForm modifier to node, stores the current transformations in the gizmo and resets the object transformations.
+rt.ResetPivot(rt.selection) --#Same as Hierarchy/Pivot/Reset Pivot.
+rt.ResetScale(rt.selection) --#Same as Hierarchy/Pivot/Reset Scale.
+rt.ResetTransform(rt.selection) --#Same as Hierarchy/Pivot/Reset Transform.
+
+rt.CenterObject(rt.selection) --#Same as Hierarchy/Pivot/Affect Object Only - Center to Pivot.
+rt.CenterPivot(rt.selection) --#Same as Hierarchy/Pivot/Affect Pivot Only - Center to Object.
+
+rt.AlignToParent(rt.selection) --#Aligns the pivot to the node's parent's pivot, or to world if no parent.
+rt.AlignObject(rt.selection) --#Same as Hierarchy/Pivot/Affect Object Only - Align to Pivot.
+rt.AlignPivot(rt.selection) --#Same as Hierarchy/Pivot/Affect Pivot Only - Align to Object.
+rt.WorldAlignObject(rt.selection) --#Same as Hierarchy/Pivot/Affect Object Only - Align to World.
+rt.WorldAlignPivot(rt.selection) --#Same as Hierarchy/Pivot/Affect Pivot Only - Align to World.
+
+
+
 
 
 --place instances of object at pivots of selected objects
 for obj in selection do instance $Downlight001 pos:obj.pos
+
+
+
+
+
+
+
+
+
+
+
+"VECTORS: //---------------------------------------------------------------"
+
+
+
+
+
+
+
+
+
+
+
+"MATRICES: //--------------------------------------------------------------"
+
+
+
+
+
+
 
 
 
@@ -1471,26 +1506,6 @@ for i in 1 to 100 do sphere prefix:"baz"
 
 
 
-
---transform
-move <node> <point3> -- mapped 
-scale <node> <point3> -- mapped 
-rotate <node> <angle> <axis_point3> -- mapped -- angle in degrees 
-rotate <node> <quat> -- mapped 
-rotate <node> <eulerangles> -- mapped 
-
---queries the transform axis of the indexed axis system of the node 
-getTransformAxis (<node>|undefined) <index> --returns as a matrix3 value
-
---queries the transformation matrix of the givennode or rootnode
-getNodeTM {<node> | <rootnode>} --returnsas a matrix3 value
-
---Returns the transform controller for the node
-getTMController <node>
-
---Computes the distance between the pivot points of the two specified nodes.
-distance <node> <node>
-
 --Computes the closest intersection of the ray and the surface of the given node. 
 --Returns another Ray which defines the position of intersection in 3D space and the 
 --surface normal direction vector at that point. The intersection test respects the 
@@ -1844,7 +1859,9 @@ ex. target = rt.polyOp.getFace(obj, index[-1])
 --move 
 --vertex
 ex. rt.polyop.moveVert(obj, <vertlist>, {<point3 offset>|<point3 offset_array>})
-
+--gets or sets the position of the selected element in the mesh
+--<vertexselection>.pos : Point3 
+$foo.verts[i].pos = $bar.verts[j].pos + [10,0,0]
 
 
 --get length/area
@@ -1923,7 +1940,15 @@ ex. rt.polyop.deleteEdges(obj, faces, delIsoVerts=1) --Deletes the specified fac
 
 
 
-"TRANSFORM: //-------------------------------------------------------------"
+
+
+
+
+
+
+
+
+
 
 
 

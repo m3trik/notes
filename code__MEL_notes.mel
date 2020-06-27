@@ -1038,6 +1038,7 @@ geometry = pm.ls(type='mesh')
 transforms = pm.listRelatives(geometry, p=1, path=1)
 
 // get shape node
+shapes = pm.ls(sl=1, type='shape')
 //from transform
 shapeNodes = pm.listRelatives(transforms, shapes=1)
 //
@@ -1047,6 +1048,7 @@ ls -type geometryShape -showType;
 
 
 //get transforms
+transforms = pm.ls(sl=1, type='transform')
 //from shape
 transforms = pm.listRelatives(shapeNodes, parent=1)
 
