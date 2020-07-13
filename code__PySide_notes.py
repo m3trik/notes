@@ -160,11 +160,11 @@ w.lower()
 #Focus
 w.setFocusPolicy() Keyboard Focus #w.setFocusPolicy(QtCore.Qt.StrongFocus)
 
-w.clearFocus()
 w.hasFocus()
 w.setFocus()
 w.clearFocus()
 
+isActiveWindow()
 w.activateWindow() 				#Sets the top-level widget containing this widget to be a top-level window that has keyboard input focus.
 
 
@@ -172,8 +172,7 @@ w.activateWindow() 				#Sets the top-level widget containing this widget to be a
 w.update()
 
 
-#Active Window
-isActiveWindow()
+
 
 
 
@@ -1364,11 +1363,13 @@ w.testAttribute(QtCore.Qt.WA_MouseTracking) #returns bool #Indicates if the widg
 
 
 
-#mouse move
+# Mouse move
 event.type() == QtCore.QEvent.MouseMove
 
 
 # Mouse button
+mouseButtons = QApplication.mouseButtons() #ex. if bool(mouseButtons == QtCore.Qt.LeftButton):
+
 class PySide.QtGui.QMouseEvent(type, pos, globalPos, button, buttons, modifiers)
 # Parameters:
 # type – PySide.QtCore.QEvent.Type
@@ -1390,8 +1391,10 @@ ex.
 if event.buttons() & QtCore.Qt.LeftButton and event.modifiers() & QtCore.Qt.ControlModifier:
 
 
+QApplication.setDoubleClickInterval(int) #the time limit that distinguishes a double click from two consecutive mouse clicks. default: 400 milliseconds.
 
 
+# Mouse tracking
 w.mouseTracking #bool, default: distabled,
 # Access functions:
 w.hasMouseTracking
@@ -1493,15 +1496,55 @@ w.setAttribute(QtCore.Qt.WindowTransparentForInput) #
 w.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard(tab, backtab, or shortcut).
 
 
-
-
 setFocusPolicy( Qt::NoFocus );
 
 
 # keyboard Codes:
 # https://doc.qt.io/archives/qtjambi-4.5.2_01/com/trolltech/qt/core/Qt.Key.html
-ex.
-QtCore.Qt.Key_Z
+ex. QtCore.Qt.Key_Z
+
+
+#repainting(key auto repeating)
+event.isAutoRepeat()
+QApplication.setKeyboardInputInterval(int) #the time limit that distinguishes a key press from two consecutive key presses. default: 400 milliseconds.
+
+
+Qt::Key
+#key names used by Qt
+#http://doc.qt.io/archives/qt-4.8/qt.html#Key-enum
+
+
+QtGui.QKeyEvent
+#Return type:	PySide.QtCore.int
+#query keyboard event.  Returns the code of the key that was pressed or released.
+# Returns the code of the key that was pressed or released.
+ex. QtGui.QKeyEvent.key == QtCore.Qt.Key_Z
+
+# Parameters:	key – PySide.QtGui.QKeySequence.StandardKey
+# Return type:	PySide.QtCore.bool
+ex. QtGui.QKeyEvent.matches(key)
+
+
+
+QtGui.QKeySequence()
+
+
+
+w.keyPressEvent() #key press event under a window class
+event.key() == QtCore.Qt.Key_X
+
+
+
+w.keyReleaseEvent()
+event.key() == QtCore.Qt.Key_X
+
+
+
+
+
+#modifiers:
+modifiers = QApplication.keyboardModifiers() #ex. (bool(modifiers == QtCore.Qt.ControlModifier)):
+
 
 
 
@@ -1522,78 +1565,6 @@ def initShortcut():
 ex.#new syntax
 self.s000 = QtWidgets.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_L), self)
 self.s000.activated.connect(self.xkeyisdown)
-
-def xkeyisdown:
-	print "x key is down"
-
-ex.
-self.connect(QtGui.QShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Escape), self), QtCore.SIGNAL('activated()'), self.down)
-
-
-def down(self): 
-	print 'escape key down'
-
-
-
-
-
-#repainting(key auto repeating)
-event.isAutoRepeat()
-
-
-
-Qt::Key
-#key names used by Qt
-#http://doc.qt.io/archives/qt-4.8/qt.html#Key-enum
-
-
-QtGui.QKeyEvent
-#Return type:	PySide.QtCore.int
-#query keyboard event.  Returns the code of the key that was pressed or released.
-# Returns the code of the key that was pressed or released.
-ex.
-if QtGui.QKeyEvent.key == QtCore.Qt.Key_Z:
-
-# Parameters:	key – PySide.QtGui.QKeySequence.StandardKey
-# Return type:	PySide.QtCore.bool
-ex.
-QtGui.QKeyEvent.matches(key)
-
-
-
-QtGui.QKeySequence()
-
-
-
-w.keyPressEvent() #key press event under a window class
-ex.
-def keyPressEvent(self, event):
-	if event.key() == QtCore.Qt.Key_X:
-		self.X_dn()
-	if event.key() == QtCore.Qt.Key_Y:
-		self.Y_dn()
-
-def X_dn(self):
-	print "x Down"
-#or possibly:
-self.keyPressEvent(self.X_dn, QtCore.Qt.Key_X) #(command/function, event)
-
-
-
-w.keyReleaseEvent()
-ex.
-def keyReleaseEvent(self, event):
-	if event.key() == QtCore.Qt.Key_X:
-		self.X_up()
-	if event.key() == QtCore.Qt.Key_Y:
-		self.Y_up()
-
-def X_up(self):
-	print "x Up"
-
-
-
-
 
 
 

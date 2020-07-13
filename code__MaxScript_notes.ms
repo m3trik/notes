@@ -1220,15 +1220,6 @@ format "% objects selected." selection.count
 
 
 
-
-
-
-
-
-
-
-
-
 --get component level
 rt.getSelectionLevel(obj)
 
@@ -1302,9 +1293,52 @@ ex. rt.deselectNode(node)
 deselect $Dummy??
 
 
---selection sets
---make a selection set from objects starting with 'Box'
+
+
+
+
+-- selection sets
+--object level
+--get set by name
+set_[name] --name can be either a String or Name value.
+--get set by index
+set_[int] --Indexes start at 1.
+--
+set_.count --returns the number of named selection sets as an int.
+--create\replace a set
+rt.selectionSets[name] = sel --creates or replaces a set by the given name
+--create a set from objects starting with 'Box'
 selectionSets["Boxes"] = $Box*
+--
+getNumNamedSelSets() --Returns the number of named selection sets as an integer.
+--
+getNamedSelSetName(int) --<set_index > Returns the name of the indexed named selection set as a string. <set_index> is 1 based.
+--
+getNamedSelSetItemCount(int) --<set_index > Returns the number of nodes in the indexed named selection set as an integer. <set_index > is 1 based.
+--
+getNamedSelSetItem(int, int) --<set_index> <node_index> Returns the indexed node in the indexed named selection set as a node. <set_index> and <node_index> are 1 based.
+--get set by object
+sets = {s.name:s for n,s in enumerate(rt.selectionSets, 1) for i in range(1, rt.getNamedSelSetItemCount(n)+1) if rt.getNamedSelSetItem(n, i)==obj}
+--delete
+rt.deleteItem(obj.faces, set) --the second argument can be the set name or set object.
+--get empty sets
+[s for s in rt.selectionSets if len(s)==0]
+
+
+
+--component level
+obj.faces[name] = rt.getFaceSelection(obj)
+--get component level set from an object
+sets = {s:set_array[s] for s in obj.faces.selSetNames}
+[rt.bitarray(obj.edges[n]) for n in obj.edges.selSetNames] --for n in selection[1].edges.selSetNames do print (selection[1].edges[n] as bitarray)
+--copy set
+namedSelCopy()
+--paste set
+namedSelPaste()
+
+
+
+
 
 
 
@@ -1330,7 +1364,7 @@ ex. rt.matchPattern(obj.name, pattern='', ignoreCase=0)
 --list containing Box001 and all its children (complete hierarchy)
 $Box001*...* as array
 
---get object by name:
+--get object by name (get object from string):
 ex. rt.getNodeByName('name_', ignoreCase=True, all=True) --Returns: the first node with the specified name. If all is True, an array of nodes with the specified name is returned.
 
 --all objects that start with x
@@ -1709,7 +1743,7 @@ selection --current selection. interchangable with $
 
 --convert objectSet to array
 ex. <objectSet> as array
-
+ex. rt.array(*list_)
 
 
 
@@ -1945,9 +1979,19 @@ ex. rt.polyop.deleteEdges(obj, faces, delIsoVerts=1) --Deletes the specified fac
 
 
 
+--edge crease
+--get
+obj.EditablePoly.getEdgeData(1)
+--set
+obj.EditablePoly.setEdgeData(1, creaseAmount) --#crease edge
 
 
 
+
+--get
+obj.EditablePoly.setVertexData(1) --#Get the vertex data stored in the specified vertexDataChannel. The number of vertices with stored values in this channel will be written to the passed by reference variable numberSelected
+--set
+obj.EditablePoly.setVertexData(1, <int>)
 
 
 
@@ -2980,112 +3024,16 @@ MaxPlus.FPTypeGetName(<FPValue>.GetType())
 --print to listener output a list of FPValue type names and their corresponding constants:
 import MaxPlus
 help(MaxPlus.FPTypeConstants)
---OUTPUT:
-   AngAxis = 48
-   AngAxisTab = 2096
-   Angle = 5
-   AngleTab = 2053
-   BOOL = 4
-   BOOLTab = 2052
-   BezierShape = 71
-   BezierShapeTab = 2119
-   BitArray = 51
-   BitArrayTab = 2099
-   Bitmap = 16
-   BitmapTab = 2064
-   Bool = 66
-   BoolTab = 2114
-   Box3 = 70
-   Box3Tab = 2118
-   ClassDesc = 52
-   ClassDescTab = 2100
-   Color = 62
-   ColorChannel = 11
-   ColorChannelTab = 2059
-   ColorTab = 2110
-   Control = 55
-   ControlTab = 2103
-   DWORD = 65
-   DWORDTab = 2113
-   Double = 69
-   DoubleTab = 2117
-   Enum = 45
-   EnumTab = 2093
-   FPInterface = 59
-   FPInterfaceTab = 2107
-   FPValue = 63
-   FPValueTab = 2111
-   FRgb = 23
-   FRgbTab = 2071
-   FileName = 9
-   FileNameTab = 2057
-   Float = 0
-   FloatTab = 2048
-   HWND = 60
-   HWNDTab = 2108
-   Hsv = 10
-   HsvTab = 2058
-   IObject = 58
-   IObjectTab = 2106
-   Index = 19
-   IndexTab = 2067
-   Int = 1
-   Int64 = 68
-   Int64Tab = 2116
-   IntPtr = 67
-   IntPtrTab = 2115
-   IntTab = 2049
-   Interval = 47
-   IntervalTab = 2095
-   MSFloat = 254
-   Matrix3 = 20
-   Matrix3Tab = 2068
-   Mesh = 53
-   MeshTab = 2101
-   Mtl = 14
-   MtlTab = 2062
-   Name = 61
-   NameTab = 2109
-   Node = 17
-   NodeTab = 2065
-   Object = 54
-   ObjectTab = 2102
-   PBlock2 = 21
-   PBlock2Tab = 2069
-   PercentFraction = 6
-   PercentFractionTab = 2054
-   Point = 56
-   Point2 = 30
-   Point2Tab = 2078
-   Point3 = 3
-   Point3Tab = 2051
-   Point4 = 22
-   Point4Tab = 2070
-   PointTab = 2104
-   Quat = 49
-   QuatTab = 2097
-   RadioButtonIndex = 13
-   RadioButtonIndexTab = 2061
-   Ray = 50
-   RayTab = 2098
-   RefTarg = 18
-   RefTargTab = 2066
-   Rgb = 2
-   RgbTab = 2050
-   Str = 57
-   StrTab = 2105
-   String = 8
-   StringTab = 2056
-   Texmap = 15
-   TexmapTab = 2063
-   TimeValue = 12
-   TimeValueTab = 2060
-   Value = 64
-   ValueTab = 2112
-   Void = 46
-   VoidTab = 2094
-   World = 7
-   WorldTab = 2055
+--
+FPValue_types = {"AngAxis":48, "AngAxisTab":2096, "Angle":5, "AngleTab":2053, "BOOL":4, "BOOLTab":2052, "BezierShape":71, "BezierShapeTab":2119, "BitArray":51, "BitArrayTab":2099, "Bitmap":16, 
+	"BitmapTab":2064, "Bool":66, "BoolTab":2114, "Box3":70, "Box3Tab":2118, "ClassDesc":52, "ClassDescTab":2100, "Color":62, "ColorChannel":11, "ColorChannelTab":2059, "ColorTab":2110, 
+	"Control":55, "ControlTab":2103, "DWORD":65, "DWORDTab":2113, "Double":69, "DoubleTab":2117, "Enum":45, "EnumTab":2093, "FPInterface":59, "FPInterfaceTab":2107, "FPValue":63, "FPValueTab":2111, 
+	"FRgb":23, "FRgbTab":2071, "FileName":9, "FileNameTab":2057, "Float":0, "FloatTab":2048, "HWND":60, "HWNDTab":2108, "Hsv":10, "HsvTab":2058, "IObject":58, "IObjectTab":2106, "Index":19, 
+	"IndexTab":2067, "Int":1, "Int64":68, "Int64Tab":2116, "IntPtr":67, "IntPtrTab":2115, "IntTab":2049, "Interval":47, "IntervalTab":2095, "MSFloat":254, "Matrix3":20, "Matrix3Tab":2068, "Mesh":53, 
+	"MeshTab":2101, "Mtl":14, "MtlTab":2062, "Name":61, "NameTab":2109, "Node":17, "NodeTab":2065, "Object":54, "ObjectTab":2102, "PBlock2":21, "PBlock2Tab":2069, "PercentFraction":6, 
+	"PercentFractionTab":2054, "Point":56, "Point2":30, "Point2Tab":2078, "Point3":3, "Point3Tab":2051, "Point4":22, "Point4Tab":2070, "PointTab":2104, "Quat":49, "QuatTab":2097, 
+	"RadioButtonIndex":13, "RadioButtonIndexTab":2061, "Ray":50, "RayTab":2098, "RefTarg":18, "RefTargTab":2066, "Rgb":2, "RgbTab":2050, "Str":57, "StrTab":2105, "String":8, "StringTab":2056, 
+	"Texmap":15, "TexmapTab":2063, "TimeValue":12, "TimeValueTab":2060, "Value":64, "ValueTab":2112, "Void":46, "VoidTab":2094, "World":7, "WorldTab":2055}
 
 
 

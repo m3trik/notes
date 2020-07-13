@@ -650,11 +650,11 @@ eg. '.'*10
 #using format()
 #'{1} {0}' would reverse the order.
 eg. '{0} {1}\n{2}'.format(hello, world, 'new string') #\n char allows sets a new line for 'new string' after printing 'hello world'
-eg. 'You can insert {} into a string'.format(variable)
-eg. 'Result: {}'.format(str(var))
 eg. '{x}, {y}'.format(x=5, y=12) #results in: 5, 12
-#with elements of a list
-eg. 'string: {0}{1}{2}'.format (list[0], list[1], list[2]) #list_ = [4, 5, 6] results in: string: 456
+#escaping '{' and '}'
+eg. '{0} {{excaped curly braces}}'.format('')
+
+#
 eg. '%s %s' % (hello, world)
 #join strings with other data types
 eg. '%i%f%s' %(x,y,z) #adding .x between % & f (ex %.xf) will give you x dec places (%f=%d)
