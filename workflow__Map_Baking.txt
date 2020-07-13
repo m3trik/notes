@@ -1,0 +1,123 @@
++---map baking----------------------------------------------------+
+¦
+¦	-Naming convention
+¦	-Import/Export
+¦	-Baking maps
+¦	-ID map
+¦	
+¦
++-----------------------------------+
+
+
+
+
+
+NAMING CONVENTION FOR MESH PARTS:
+//substance:
+baking in substance with meshes consisting of multiple overlapping parts;
+
+>	add a suffix in order to enable Painter to recognise them. 
+	eg. GUN_001_low will match with GUN_001_high. 
+
+>	optional: if you need to bake multiple HD meshes on one single LP mesh, you’ll find that GUN_001_LOW matches GUN_001_HIGH_Part1, GUN_001_HIGH_Part2 and so on.	
+
+
+
+
+
+IMPORT/EXPORT:
+//maya to substance painter
+>	export settings:
+	-face weighted vertex normals.
+	-smoothing groups (checked)
+	-smooth mesh
+	-triangulate (Substance Painter triangulation of polygons doesn't match the triangulation used in Unreal. Triangulate before baking & exporting)
+
+	
+
+
+
+BAKING MAPS:
+//maya
+-----	Texture Baking using Turtle plug-in ( Turtle.mll);
+To set up a surface transfer
+>	In your scene, place your low res and high res objects on top of each other in the same position.
+>	Open the Texture Baking View window (Windows > Material/Texture Baking Editors > Texture Baking).
+>	In Texture Baking View toolbar, click  to open the Texture Baking Settings.
+>	In the Texture Baking Settings window, open the Baking tab and expand the Targets section.
+>	In the Outliner (Windows > Outliner), select your low res object.
+>	In the Targets section, click Add Selected to add the low res object to the Target Surfaces list.
+>	In the Outliner, select your high res object.
+>	In the Targets section, click Add Selected to add the high res object to the Source Surfaces list.
+>	In the Baking tab, do the following:
+>	Select Bake To: Texture.
+>	Adjust the Transfer Settings.
+>	Transfer settings determine the way Turtle samples from the low res object to the high res object to determine the detail it needs to create. For more information, see Baking tab.
+
+>	In the Texture Bake Settings, select a directory to store your files. By default, files are stored in turtle/bakedTextures.
+>	Adjust the Shader Outputs to control the type of information that is baked. For more information on specific workflows, see Transfer color textures with Turtle and Bake normal maps with Turtle.
+>	Open the Texture Baking View window (Windows > Materials/Texture Baking Editors > Texture Baking View).
+>	In the toolbar, click  to initiate the texture baking.
+
+
+
+
+
+
+
+ID MAP:
+//ZBrush
+>	assign material+color to your high rez mesh in 3d app. optionaly, can use low res mesh and bake seperatly, selecting that mesh in baking> common> 'high definition meshes'
+
+>	baking> ID; select material color, hue shift and apply to all.
+
+>	baking> 'bake all texture sets' (deselect maps you don't want to bake.)
+
+
+
+----- Polypaint Identity Map (substance material id)
+>	color:polypaint from polygroups (Tool:Polypaint:Polypaint from Polygroups).  
+
+>	texture map from polypaint (Tool:Textue Map:New from Polypaint)
+
+
+
+//Substance:
+import ID:
+>	Import bmp ID map to textures by drag and drop then select this map in the 'texture set' menu.
+
+>	Add 'Mask with Color Selection' to layer and choose mask ID color. (copy/paste mask to any additional layer)
+
+baking ID:
+>	Material ID maps bake in from HI-poly object's shader map
+>	TextureSet Settings> Bake textures> ID map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+	
+
+
+
+
