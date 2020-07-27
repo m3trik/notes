@@ -541,6 +541,7 @@ bool
 eg. type(obj) #Returns: <type 'str'>
 #
 eg. isinstance(obj, (str,unicode)) #Returns: bool
+eg. isinstance(obj, type(None)) #check for nonetype
 #using types (import types)
 # types.LambdaType
 # types.MethodType
@@ -650,7 +651,7 @@ eg. '.'*10
 #using format()
 #'{1} {0}' would reverse the order.
 eg. '{0} {1}\n{2}'.format(hello, world, 'new string') #\n char allows sets a new line for 'new string' after printing 'hello world'
-eg. '{x}, {y}'.format(x=5, y=12) #results in: 5, 12
+eg. '{x} {y}'.format(x='Hello', y='World') #returns: 'Hello World'
 #escaping '{' and '}'
 eg. '{0} {{excaped curly braces}}'.format('')
 
@@ -2157,11 +2158,14 @@ buttonObject = getattr(obj, attribute)(*args, **kwargs)
 
 #get object attributes:
 #using dict:
-obj.__dict__
+vars(obj)		#returns __dict__
+obj.__dict__	#ex. {'multi': 4, 'str': '2'}
 #using dir:
-dir(obj)
-#using vars:
-vars(obj)
+dir(obj)		#returns __dir__
+obj.__dir__()	#ex. ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'multi', 'str']
+
+
+
 
 
 

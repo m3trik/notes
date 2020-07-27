@@ -12,57 +12,70 @@ time: 0.0816165578988
 # GENERAL:
 # -----------------------------------------------
 
-use package heirarchy to determine uiLevel and submenu checks instead of naming convention.
+
+modify self.ui to work with sub sub-menus.. currently defalting to parent.
 
 
-tk_> flag/signal to override right/left mouseclick menu switching.
-
-
-move polygon_mesh_submenu> bevel to polygon_component_submenu
-find or create interactive bevel script
-
-
-# BUGS:
-# ---------
+maya_cameras.py", line 33, in clippingMenu
+#     elif pm.viewClipPlane(activeCamera, query=1, autoClipPlane=1): #if autoClipPlane is active:
+#   File "C:\Program Files\Autodesk\Maya2020\Python\lib\site-packages\pymel\internal\pmcmds.py", line 130, in viewClipPlane_wrapped
+#     res = new_cmd(*new_args, **new_kwargs)
+# RuntimeError: viewClipPlane: Invalid argument '-farClipPlane' for flag 'Invalid argument '^1s' for flag '^2s'.'.
 
 
 
-bug: transform negative '-' sets spinbox value to 0.  
+# Traceback (most recent call last):
+#   File "O:/Cloud/__portable/_scripts/maya/slots\tk_slots_maya_main.py", line 42, in <lambda>
+#     lambda value, widget=w, obj=node: self.setAttributesMEL(node, {widget.prefix().rstrip(': '):value})) 
+#   File "O:/Cloud/__portable/_scripts/maya/slots\tk_slots_maya_init.py", line 745, in setAttributesMEL
+#     if attr and value] #ie. pm.setAttr('polyCube1.subdivisionsDepth', 5)
+#   File "C:\Program Files\Autodesk\Maya2020\Python\lib\site-packages\pymel\core\general.py", line 611, in setAttr
+#     raise _objectError(attr)
+# pymel.core.general.MayaAttributeError: Maya Attribute does not exist (or is not unique):: u'polyCube1.fraction'
+
+#     raise _objectError(attr)
+# pymel.core.general.MayaAttributeError: Maya Attribute does not exist (or is not unique):: u'polyCube1.smoothingAngle'
 
 
-scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
+
+transform: snaps: not working with 'ctx'
+uv snaps:
+pm.texMoveContext('texMoveContext', edit=1, snap=0)
+pm.texScaleContext('texScaleContext', edit=1, snap=0)
+pm.texRotateContext('texRotateContext', edit=1, snap=0)
 
 
 
-assign scene material cmb does nothing. ui list doesnt expand to fit contents.
+
+Macros: Selection: invert selection object Only
+
+
+uv: set select mode: uv shells for operations that depend on it.
+changeSelectMode -component; setComponentPickMask "Facet" true; selectType -ocm -alc false; selectType -msh true; selectType -sf false -se false -suv false -cv false;
+
+
+loading bar on first start
+
+
+new output window, output class
 
 
 
 
-#error (if its when entering the file ui, then the ui doesn't contain the button, and it shouldn't be looking for it under that key):
-#works sometimes, on others it raises the following:
-#i003 is the dynamically constructed 'scene' button.
-#check childEvents.createPushButton addWidget and see what name its adding under.
-#print statement there gives: file_submenu i003 (at a time when its not throwing the error), which is the intended behavior.
-Traceback (most recent call last):
-  File "O:\Cloud\__portable\_scripts\tk_childEvents.py", line 206, in eventFilter
-    self.derivedType = self.sb.getDerivedType(self.widget, self.name)
-  File "O:\Cloud\__portable\_scripts\tk_switchboard.py", line 595, in getDerivedType
-    return self._sbDict[name]['widgetDict'][widget]['derivedType']
-KeyError: u'i003'
+polygons: comboboxes: items being set multiple times.
+
+
+
+
+
+slots: info:  strip chars that share the same char and index from second int and break when a match is found
+
 
 
 
 
 # 3DS MAX:
 # -----------------------------------------------
-
-# BUGS:
-# ---------
-
-
-3ds max - symmetry module freezes with no error. (likely due to no checking for compatible objects before execution)
-
 
 
 
@@ -76,32 +89,23 @@ KeyError: u'i003'
 # -----------------------------------------------
 
 
-
-makeLive - convert from toggle to checkable.  check for selection. if none re-check/uncheck, and output error.
-
-symmetry submenu not working (main menu does work)
+polygons: merge vertices: when not in componet mode; merge all vertices for any selected objects.
 
 
-# BUGS:
-# ---------
 
-maya -  fix create> circle>  attributes
+create _high / _low layers with wireframe colors
 
 
-tk_slots_maya_init.py", line 61, in info
-#     selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(selectionMask=32)] #pm.polyEvaluate(edgeComponent=1);
-# TypeError: 'NoneType' object is not iterable
 
 
-(-old: set normal by angle not working with no error.)
-tk_slots_maya_normals.py", line 87, in b004
-#     normalAngle = str(self.tk.ui.s000.value())
-# AttributeError: 'PySide2.QtWidgets.QMainWindow' object has no attribute 's000'
+
+fix create> circle>  attributes
 
 
-fix maya extrude:
-	(add options)
-	polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 0 -pvx 1.004961016 -pvy 2.957140207 -pvz -1.501686156 -divisions 1 -twist 0 -taper 1 -off 0 -thickness 0.03 -smoothingAngle 30 pPlane13.f[0:23];
+
+
+
+scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 
 
 
 
@@ -112,7 +116,9 @@ fix maya extrude:
 
 
 
-# THINGS TO DO NOW:
+
+
+
 # -----------------------------------------------
 
 

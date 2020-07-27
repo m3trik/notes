@@ -40,7 +40,7 @@ views -----------------------------------------------------------------
 view outputs in 3d view		-rt click empty graph area (context menu)
 
 
-load 3d mesh		-drag-drop it into explorer resource folder
+load custom mesh in 3d view	-drag-drop it into explorer resource folder
 
 
 

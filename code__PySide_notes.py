@@ -863,6 +863,8 @@ w.adjustSize()
 
 #set minimum size to recommended
 w.setMinimumSize(w.layout.sizeHint())
+w.setMinimumWidth(w.minimumSizeHint().width())
+w.setMinimumHeight(w.minimumSizeHint().height())
 
 #set to minimum size.
 w.resize(w.minimumSizeHint())
@@ -1861,6 +1863,11 @@ lineEdits = form.findChildren(QtGui.QLineEdit) #pass a type (or tuple of types) 
 
 
 
+#get an attribute from a parent object anywhere in the hierarchy.
+p = <widget>.parent()
+while not hasattr(p.window(), 'attr'): #p or p.window() depending on the circumstances.
+	p = p.parent()
+attr = p.window().attr
 
 
 

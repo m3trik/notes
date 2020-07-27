@@ -1041,7 +1041,7 @@ transforms = pm.listRelatives(geometry, p=1, path=1)
 shapes = pm.ls(sl=1, type='shape')
 //from transform
 shapeNodes = pm.listRelatives(transforms, shapes=1)
-//
+//from sub-object
 shapeNodes = pm.listRelatives(components, parent=1)
 //
 ls -type geometryShape -showType;
@@ -1192,6 +1192,8 @@ ex. pm.setAttr(obj+'.keepFacesTogether'=1)
 ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
 
 
+//
+ex. pm.attributeQuery('attr', node=obj, exists=True)
 
 
 
@@ -1298,6 +1300,7 @@ select -r ($myObj + ".vtx ");
 // component selection mask
 faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1)
 edges = pm.filterExpand(selection, selectionMask=32, expand=1)
+vertices = pm.filterExpand (obj1, selectionMask=31, expand=1)
 
 
 //get:
@@ -1366,15 +1369,18 @@ faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))]
 
 //get currently selected components
 components = pm.ls(selection=True, flatten=True)
-//selected vertices as int
-selectedVerts = [v.split('[')[-1].rstrip(']') for v in pm.filterExpand(sm=31)]
-polyEvaluate -vertexComponent $obj //selected vertices as int
-selectedEdges = [e.split('[')[-1].rstrip(']') for e in pm.filterExpand(sm=32)]
-polyEvaluate -edgeComponent $obj //
-selectedFaces = [f.split('[')[-1].rstrip(']') for f in pm.filterExpand(sm=34)]
-polyEvaluate -faceComponent $obj //
 //
-selFaces = pm.filterExpand(sm=34)
+selFaces = pm.filterExpand(sm=34) //verts=31, edges=32
+//selected vertices as int
+selectedVerts = [int(v.split('[')[-1].rstrip(']')) for v in pm.filterExpand(sm=31)]
+polyEvaluate -vertexComponent $obj //selected vertices as int
+selectedEdges = [int(e.split('[')[-1].rstrip(']')) for e in pm.filterExpand(sm=32)]
+polyEvaluate -edgeComponent $obj //
+selectedFaces = [int(f.split('[')[-1].rstrip(']')) for f in pm.filterExpand(sm=34)]
+polyEvaluate -faceComponent $obj //
+//using regex (import re)
+intValues = [int(re.findall(r'(?<=\[)[0-9]+(?=:?])', str(s))[0]) for s in pm.ls(sl=1)] //ie. [818, 1380] from [u'obj.vtx[818]', u'obj.vtx[1380]']
+
 
 
 //get all faces from object
@@ -1918,6 +1924,9 @@ dumpWidgets=True	//#[bool, create]  Dump all QT widgets used by Maya.
 )
 
 
+//get panel using name
+cmds.getPanel(containing='button0')
+
 //#get all windows.
 eg. lsUI -windows;
 eg. pm.lsUI(windows=1)
@@ -1925,10 +1934,16 @@ eg. pm.lsUI(windows=1)
 //#get all panels and editors.
 eg. pm.lsUI(panels=1, editors=1)
 
+//get all panels
+pm.getPanel(all=True)
 
 //#get current viewport panel
 currentPanel = pm.getPanel(withFocus=1)
 currentPanel = pm.getPanel(underPointer=1)
+
+//get panel by type
+pm.getPanel(type='modelPanel')
+
 
 
 //#get maya viewport widget
@@ -2109,20 +2124,18 @@ python("import os\nprint os.environ ['MAYA_LOCATION']");
 
 
 // Creating new variables requires the use of the initVar function to specify the type:
-pm.melGlobals.initVar('string', 'gMyStrVar')
-// returns '$gMyStrVar'
-pm.melGlobals['gMyStrVar'] = 'fooey'
-// The variable will now be accessible within MEL as a global string.
-pm.melGlobals.initVar('string[]', '$tk_selection2')
 //MelGlobals.VALID_TYPES = ['string', 'string[]', 'int', 'int[]', 'float', 'float[]', 'vector', 'vector[]']
+pm.melGlobals.initVar('string', 'gMyStrVar') // returns '$gMyStrVar'
+pm.melGlobals.initVar('string[]', '$tk_selection2')
+pm.melGlobals['gMyStrVar'] = 'fooey' // The variable will now be accessible within MEL as a global string.
 
 
 
 //Python variable in MEL
-$myMELvariable = python ("myPythonVariable");
+$myMELvariable = python("myPythonVariable");
 
 //MEL global variable in Python //import maya.mel as mel
-myPythonVariable = mel.eval ('global $myMELvariable; $temp=$myMELvariable;')
+myPythonVariable = mel.eval('global $myMELvariable; $temp=$myMELvariable;')
 
 
 
