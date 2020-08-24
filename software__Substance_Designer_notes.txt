@@ -58,16 +58,43 @@ Shape node
 Shape Mapper		-add segments, add inner radius, width, rotation
 
 
+
+Shape Extrude		-Extrude a 2d mask into a 2.5d shape.
+
+
+Star				-Generates a five pointed star.
+Starburst			-Generates a simple starburst effect, with adjustment parameters available.
+
+
+
+
+
+
+
+
+patterns ------------------------------------------------------------------
+
+
 Tile Generator
 	Don’t’ take the name of this Node too literally. Its good at making Tiles, but it’s
 	really good at taking the Shape Node and making it Tile. This Node is a good
 	building block for anything that needs some repetition.
 
+	
+Tile Sampler		-
+
+	
+smart-auto-tile node - alt-drag crop border to align image.
+	
+
+Shape Splatter		-
 
 
+Splatter			-
 
-Splatter Circular
-	circular pattern, concentric circles
+Splatter Circular	-generates a radial pattern. It can use pre-defined shapes or custom inputs.
+
+
 
 
 
@@ -84,18 +111,15 @@ multi-crop node		- crop multiple
 
 
 
-tile ----------------------------------------------------------------------
-
-
-smart-auto-tile node - alt-drag crop border to align image.
-
-
-
 
 
 transform -----------------------------------------------------------------
 
 transform node		-
+
+quad transform		-transform by adjusting 4 points.
+
+safe transform		-pixel snap offset. tile safe rotation.
 
 distance node		-
 
@@ -187,6 +211,15 @@ color match			- adjust (change) color. (click the node's mask output to preview 
 	
 height -----------------------------------------------------------------
 
+
+Render height map in 3d View.
+>	3D Viewport> Materials menu> enable Tessellation.
+>	Materials menu> Default> Definitions> physically_metallic_roughness> Tessellation
+>	Materials menu> Edit menu> turn up “Tessellation Factor” and “Scale”.
+
+
+
+
 Normal to Height node	-never be able to provide a 100% correct result, as information is lost. good for simple details.
 
 
@@ -270,7 +303,7 @@ convert -----------------------------------------------------------------
 
 color to greyscale	-Grayscale conversion node (right click 'add node' menu)
 
-greyscale to color	-gradient node
+greyscale to color	-gradient map node.
 
 vector to bitmap	-SVG node. use pen tool in 2d graph view to draw mask input image.
 
@@ -355,6 +388,10 @@ create new function:
 >	in the fuction graph, map this button to an input node (ex. variables\get boolean)
 >	after defining the function, right click output last node in graph and 'set as output node'
 
+
+save current function:
+>	select nodes
+>	right click context menu: "Create graph from selection".
 
 
 
@@ -442,6 +479,7 @@ creating a preset graph template
 >	save the new graph template to the template directory.
 to see or change the directory location:
 >	add new (+ icon)
+
 
 
 

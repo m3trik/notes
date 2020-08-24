@@ -809,7 +809,7 @@ self.buttonGroup = groupButtons("main_buttonGroup", self.ui, "m", 10)
 'Size'#---------------------------------------------------------------------
 
 
-QtGui.QSizePolicy				#The size policy of a widget is an expression of its willingness to be resized in various ways, and affects how the widget is treated by the layout engine.
+QtWidgets.QSizePolicy				#The size policy of a widget is an expression of its willingness to be resized in various ways, and affects how the widget is treated by the layout engine.
 #set
 #Fixed, Minimum, Maximum, Preferred, Expanding, MinimumExpanding, Ignored
 w.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding) #policyX, policyY
@@ -1292,7 +1292,8 @@ def eventFilter(self, widget, event):
 	return QtWidgets.QComboBox.mouseMoveEvent(self, event) #inherited class.  Class(QtWidgets.QComboBox):
 	return QtWidgets.QToolButton.showMenu(self)
 	return super(Class, self).eventFilter(widget, event) #class or inherited class.
-	super().showPopup()
+	return self.__class__.__base__.setText(self, text)
+	super().showPopup() #from builtins import super (python 3's super behavior)
 	super(QMenu_, self).hide()
 	super(QtWidgets.QToolButton).showMenu()
 
@@ -1357,12 +1358,31 @@ w.setWindowFlags(QtCore.Qt.<flag1>|QtCore.Qt.<flag2>)
 w.setAttribute(QtCore.Qt.WA_Hover) #Forces Qt to generate paint events when the mouse enters or leaves the widget.
 w.setAttribute(QtCore.Qt.WA_UnderMouse) #Indicates that the widget is under the mouse cursor.
 w.setAttribute(QtCore.Qt.WA_NoMouseReplay) #Used for pop-up widgets. Indicates that the most recent mouse press event should not be replayed when the pop-up widget closes.
-w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children
+w.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents) #disables the delivery of mouse events to the widget and its children.
 w.setAttribute(QtCore.Qt.WA_NoMousePropagation) #mouse events will not be propagated further up the parent widget chain.
 
 #get state of attribute:
 w.testAttribute(QtCore.Qt.WA_MouseTracking) #returns bool #Indicates if the widget has mouse tracking enabled.
 
+
+# Mouse tracking
+w.mouseTracking() 				#bool, default: disabled,
+w.hasMouseTracking()
+w.setMouseTracking(True) 		#triggers the mouseMove event for all mouse movements rather then only when button is pressed.
+
+#set mouse tracking for child widgets:
+def setMouseTracking(self, flag):
+	def recursive_set(parent):
+		for child in parent.findChildren(QtCore.QObject):
+			try:
+				child.setMouseTracking(flag)
+			except:
+				pass
+			recursive_set(child)
+
+	QtWidgets.w.setMouseTracking(self, flag)
+	recursive_set(self)
+w.setMouseTracking(True) 		#enables the delivery of mouse events to the widget's children. default: False.
 
 
 # Mouse move
@@ -1396,24 +1416,7 @@ if event.buttons() & QtCore.Qt.LeftButton and event.modifiers() & QtCore.Qt.Cont
 QApplication.setDoubleClickInterval(int) #the time limit that distinguishes a double click from two consecutive mouse clicks. default: 400 milliseconds.
 
 
-# Mouse tracking
-w.mouseTracking #bool, default: distabled,
-# Access functions:
-w.hasMouseTracking
-w.setMouseTracking(True) #triggers the mouseMove event for all mouse movements rather then only when button is pressed.
 
-#set mouse tracking for child widgets:
-def setMouseTracking(self, flag):
-	def recursive_set(parent):
-		for child in parent.findChildren(QtCore.QObject):
-			try:
-				child.setMouseTracking(flag)
-			except:
-				pass
-			recursive_set(child)
-
-	QtWidgets.w.setMouseTracking(self, flag)
-	recursive_set(self)
 
 
 
@@ -1818,8 +1821,13 @@ if __name__ == '__main__':
 
 
 
+'Properties'#----------------------------------------------------------------
 
 
+#set property
+color = QtCore.Property(QtGui.QColor, self.getColor, self.setColor) #gettr /settr
+#python equivalent
+mainAppWindow = property(getMainAppWindow, setMainAppWindow)
 
 
 
@@ -2228,10 +2236,11 @@ w.autoFillBackground(True)
 w.palette().color(QtGui.QPalette.Background).name() #returns '#edecec' which is obviously not white. So Background is the wrong color role to query for this widget. Instead, it looks like Base might be more appropriate:
 w.palette().color(QtGui.QPalette.Base).name() #returns '#ffffff'
 
-color = widget.palette().color(widget.backgroundRole())
-color = widget.palette().color(QtGui.QPalette.Background) #alt method
+color = w.palette().color(w.backgroundRole())
+color = w.palette().color(QtGui.QPalette.Background) #alt method
 rgba = color.red(), color.green(), color.blue(), color.alpha()
 
+w.palette().setColor(QtGui.QPalette.Active, QtGui.QPalette.Text, background)
 
 
 
@@ -2261,7 +2270,7 @@ w.setStyleSheet("background: transparent;") #doesn't need the style sheet itself
 
 # setting property:
 	qApp.setStyleSheet("QLineEdit#name[prop=true] {background-color:transparent;}") #does't effect the lineEdit with objectName 'name' if that buttons property 'styleSheet' is false (c++ lowercase). 
-	self.setProperty('prop', True) #set the widget property.
+	w.setProperty('prop', True) #set the widget property.
 
 # gradient:
 	'background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #E0E0E0, stop: 1 #FFFFFF);'

@@ -49,10 +49,15 @@ Select >Save Selection
 ___MASKING
 
 quick mask:
-You need to click on the icon at the bottom of the toolbar to enter Quick Mask mode or press Q
+	click on the icon at the bottom of the toolbar to enter Quick Mask mode or press Q
 
 
 
+transparency mask:
+	Add Layer Mask
+	Open the "Channels" tab.
+	Show the bottom channel (mask) & hide the top one.
+	Paste a grayscale opacity map image into the mask.
 
 
 
@@ -74,6 +79,14 @@ shft + up/down arrow    rotate by 1 degree segments
 healing brush tool uses same reference source as clone stamp. 
 
 
+
+
+
+
+__CONVERT
+
+Path to a Shape Layer:
+>	top main menu bar> Layer> New Fill Layer
 
 
 
@@ -167,4 +180,11 @@ as vector:
 	right click on selection> Export as> svg
 	
 
+as layers:
+	File> Scripts> Load Files into Stack
 
+	
+as GIF
+	Window> Timeline to open the Timeline panel.
+	Click Make Frames From Layers (menu icon upper right corner of the Timeline panel).
+	File > Export > Save for Web (Legacy)... Select GIF 128 Dithered from the Preset menu. Select 256 from the Colors menu.

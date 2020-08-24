@@ -48,6 +48,21 @@ First: work out the difference (increase) between the two numbers you are compar
 
 
 
+# CENTER OBJECT___________________________________________________
+
+2D:
+x: (parent.width-width)/2
+y: (parent.height-height)/2 
+
+3D:
+x: (parent.width-width)/2
+y: (parent.height-height)/2 
+z: (parent.depth-depth)/2 
+
+
+
+
+
 # SQUARE ROOT____________________________________________________
 
 sqrt = x**(1/2.0)
@@ -111,6 +126,24 @@ e.g. For a 1280x720 image (16:9), 1280/720= 1.777777…, so set Repeat UV: 1.000
 
 
 
+
+
+
+
+# FLOAT TO DEGREE_______________________________________________
+
+(angle + value)%360
+
+
+
+
+# DEGREE TO FLOAT_______________________________________________
+
+#start..end to 0..1:
+(value-start)/(end-start)
+
+ex. 0..360 to 0..1
+value/360
 
 
 

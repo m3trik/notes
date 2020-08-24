@@ -487,8 +487,8 @@ int $a = 1; int $b = 2; int $c = 10;
 
 do {
 	if (($a + $b) < $c)
-    print ($a + $b);
-    $a++;
+	print ($a + $b);
+	$a++;
 }
 while ($a < $c);
 
@@ -974,6 +974,13 @@ eg.
 "OBJECTS & ATTRIBUTES: //--------------------------------------------------------------------------------------------------------------------------------"
 
 
+//get node by name
+cpmNode = pm.ls(pm.createNode('closestPointOnMesh'))[0] //#get the closestPointOnMesh node.
+//list current selection and filter by name
+pm.ls('*endsWith', selection=1)
+//To list all instances of sphere1, use the -ap/allPaths flag.
+pm.ls('sphere1', allPaths=True)
+
 
 // Selection: ---------------------------------------------
 
@@ -1020,9 +1027,10 @@ ls -dag -ap -sl;
 
 
 
-
-//object types
-pm.ls(nodeTypes=1) //#list all node types
+// get type
+//object type can be found by tooltip description in outliner
+//all node types
+pm.ls(nodeTypes=1)
 
 //query object type: ('nurbsSurface', 'shape', transform', 'mesh', 'objectSet')
 pm.objectType('sphere1Shape')
@@ -1060,12 +1068,40 @@ ls -visible;
 
 
 
+//node attributes
+
+// query
+ex. pm.attributeQuery('attr', node=obj, exists=True)
+//
+ex. attributeExists("visibility", "mySphere");
+
+// list attributes (listAttr(<node>))
+eg. listAttr $objectName;
+eg. $bBox = `listAttr ($objectName + ".boundingBox")`; //return all possible attributes associated with an object.
+
+// get
+eg. pm.getAttr ("vraySettings.renderMaskMode")
+
+// set
+eg. setAttr ("persp.translateY", 23.2);
+eg.	setAttr "vraySettings.renderMaskMode" 4;
+// pymel
+eg.	pm.setAttr ("vraySettings.renderMaskMode", 4)
+ex. pm.setAttr(obj+'.keepFacesTogether'=1)
+// set a compound attribute
+ex. pm.setAttr(cpmNode.inPosition, v1Pos[0], v1Pos[1], v1Pos[2], type="double3")
+//using a dictionary. attributes={'attribute':value}
+ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
+
+
+// connect atributes:
+ex. connectAttr -f "pSphere1.worldMesh" "cpom1.inMesh";	// Result: Connected pSphereShape1.worldMesh to cpom1.inMesh. // 
+
+ex. pm.connectAttr(<node1>.outMesh, <node2>.inMesh)
+
 
 
 // Naming: -------------------------------------------------
-
-
-
 
 //rename object
 pm.rename(obj, 'newName') //#optional arg: ignoreShape=Indicates that renaming of shape nodes below transform nodes should be prevented.
@@ -1074,17 +1110,8 @@ pm.modelPanel('name#', cam='persp')
 
 
 
-//get node by name
-//list current selection and filter by name
-pm.ls('*endsWith', selection=1)
-
-//To list all instances of sphere1, use the -ap/allPaths flag.
-pm.ls('sphere1', allPaths=True)
-
-
-//object type can be found by tooltip description in outliner
 //name
-ex. node.name()
+ex. obj.name()
 //history and transform nodes
 ex. pm.ls(sl=1, objectsOnly=1) //#returns list ie. [nt.PolyCone(u'polyCone1'), nt.Transform(u'pCone1')]
 // transform
@@ -1175,43 +1202,6 @@ string $meshes[] = `ls -typ mesh`;
 
 
 
-//node attributes
-//list
-ex. pm.listAttr(node)
-//get
-ex. pm.getAttr()
-//get attributes:values as dictionary
-//MEL (using ie. nt.PolyCone(u'polyCone1') as node)
-ex. {attr:pm.getAttr(node+'.'+attr) for attr in pm.listAttr(node)}
-//pure python
-ex. {n:getattr(node, n) for n in dir(node)} //returns: {'upper': <built-in method upper of unicode object at 0x000001C7873982A0>, 'isnumeric': <built-in method isnumeric of unicode object at 0x000001C7873982A0>, ect..
-//set
-ex. pm.setAttr()
-ex. pm.setAttr(obj+'.keepFacesTogether'=1)
-//using a dictionary. attributes={'attribute':value}
-ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
-
-
-//
-ex. pm.attributeQuery('attr', node=obj, exists=True)
-
-
-
-
-
-
-listAttr	eg. listAttr $objectName;  eg. $bBox = `listAttr ($objectName + ".boundingBox")`; print $bBox; 
-					//return all possible attributes associated with an object.
-
-getAttr   eg.	pm.getAttr ("vraySettings.renderMaskMode")
-
-setAttr   eg. setAttr ("persp.translateY", 23.2);
-					eg.	setAttr "vraySettings.renderMaskMode" 4;
-					// pymel
-					eg.	pm.setAttr ("vraySettings.renderMaskMode", 4)
-
-connectAttr;
-
 optionVar			set & query variables which are persistent between different invocations of Maya.
 
 
@@ -1232,7 +1222,7 @@ repeatLast	//add command to recent commands list
 
 
 
-// INSTANCES
+// INSTANCES -------------------------------------------------------
 //get instance
 obj.getInstances()
 //create an instance
@@ -1242,18 +1232,15 @@ pm.instance()
 
 
 
-// GROUPING AND PARENTING
-
-//#group /ungroup
-groupName = "_group"
-if pm.objExists (groupName): //#if group exists; add object to group by parenting
-	pm.parent (obj, groupName)
-else: //#else create group with object
-	pm.group (obj, name=groupName)
 
 
-// get parent
-obj.getParent()
+// run a script whenever a node is referenced:
+nodeName = cmds.scriptNode( st=2, bs='cmds.sphere()', n='script', stp='python') //Create a scriptNode named script that creates a sphere when a file containing this node is loaded.
+pm.scriptNode(nodeName, executeBefore=True) //Test the before script.
+pm.scriptNode(nodeName, e=True, as='cmds.cone()', stp='python') //Add a script to create a cone when the script node is deleted.
+pm.scriptNode(nodeName, executeAfter=True) //Test the after script
+
+
 
 
 
@@ -1261,6 +1248,14 @@ obj.getParent()
 
 
 "Components: //------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+// object name extensions:
+objectName.map 	UV
+""				.e 		edge
+""				.f 		face
+""				.v    vert
 
 
 
@@ -1332,7 +1327,8 @@ pm.selectType(allObjects=1)
 pm.selectType(vertex=1)
 pm.selectType(edge=1)
 pm.selectType(facet=1)
-
+pm.selectType(polymeshUV=1)
+pm.selectType(meshUVShell=1)
 
 
 
@@ -1349,16 +1345,9 @@ numFaces = pm.polyEvaluate(obj, face=1)
 pm.xform (vertices, query=1, t=1, ws=1)
 
 
-// object name extensions:
-objectName.map 	UV
-""				.e 		edge
-""				.f 		face
-""				.v    vert
+
 //all components
 polySphereShape.f[*]
-
-
-
 
 // get components
 //get all [.vtx, .f, .e]
@@ -1405,13 +1394,13 @@ ex. obj.vtx[0:1135];
 numFaces = pm.polyEvaluate(duplicatedObject, face=1)
 
 polyEvaluate -vertex $obj;
-			 -vertexComponent //selected vertices as int
+			 -vertexComponent //total selected vertices as an int
 			 -edge
-			 -edgeComponent //selected edges as int
+			 -edgeComponent //total selected edges as an int
 			 -face
-			 -faceComponent //selected faces as int
+			 -faceComponent //total selected faces as an int
 			 -area //returns surface area of of selected object as float
-			 -uvComponent //selected UV faces as int
+			 -uvComponent //total selected UV faces as an int
 
 
 
@@ -1542,11 +1531,26 @@ ex. pm.xform(object_, rotation=origRotationValue)
 
 
 
-// get vertex point position
-ex. pm.xform(vertices, query=1, t=1, ws=1)
+// get vertex position (get point position)
+ex. pm.xform(vertices, query=1, t=1, ws=1) //ie. result: [2, 1, 1]
+ex. pm.pointPosition(vertex, world=True) //ie. result: [2, 1, 1]
 
 
 
+//get closest point on mesh:
+cpmNode = pm.ls(pm.createNode('closestPointOnMesh'))[0] //#get the closestPointOnMesh node.
+pm.connectAttr(<obj2Shape>.outMesh, cpmNode.inMesh)
+v1Pos = pm.pointPosition(<obj1Vertex>, world=True)
+pm.setAttr(cpmNode.inPosition, v1Pos[0], v1Pos[1], v1Pos[2], type="double3") //#set a compound attribute
+index = pm.getAttr(cpmNode.closestVertexIndex) //#vertex Index. | ie. result: [34]
+closestPoint = obj2Shape.vtx[index]
+
+//get nearest point on curve:
+npcNode = pm.ls(pm.createNode("nearestPointOnCurve"))[0] //#get the nearestPointOnCurve node.
+pm.connectAttr(<curveShape>.worldSpace, npcNode.inputCurve)
+pm.setAttr(npcNode.inPosition, 1, 2, 3, type="double3")
+wsPos = pm.getAttr(npcNode.position)
+uParam = pm.getAttr(npcNode.parameter)
 
 
 // pivots
@@ -1594,13 +1598,13 @@ noise($x);
 matrix $m1[4][4];
 // declare a matrix with values
 matrix $m2[4][4] = <<1,0,0,0;
-                     0,1,0,0;
-                     0,0,1,0;
-                     1,2,3,1>>;
+					 0,1,0,0;
+					 0,0,1,0;
+					 1,2,3,1>>;
 matrix $m3[4][4] = <<1,0,0,0;
-                     0,1,0,0;
-                     0,0,1,0;
-                     0,0,0,1>>;				 
+					 0,1,0,0;
+					 0,0,1,0;
+					 0,0,0,1>>;				 
 // assign a value to a matrix element
 $m3[3][0] = 0.3;
 $m3[3][1] = 0.4;
@@ -1902,6 +1906,50 @@ normal = [round(i-min(xyz)/(max(xyz)-min(xyz)),6) for i in xyz] #normalize and r
 
 
 
+"HIERARCHY: //------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+
+
+// GROUPING AND PARENTING
+
+//#group /ungroup
+groupName = "_group"
+if pm.objExists (groupName): //#if group exists; add object to group by parenting
+	pm.parent (obj, groupName)
+else: //#else create group with object
+	pm.group (obj, name=groupName)
+
+
+// get parent
+obj.getParent()
+
+
+
+
+
+
+"LAYERS: //---------------------------------------------------------------------------------------------------------------------------------------------"
+
+// # Create a layer.
+layer = pm.createDisplayLayer()
+// # Change layer visibility to reference. '2'
+pm.setAttr("{}.displayType".format(layer), 2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 "DEPENDENCY GRAPH: //------------------------------------------------------------------------------------------------------------------------------------"
 
 
@@ -1976,20 +2024,6 @@ print [str(i.keyword1()) for i in pm.lsUI(editors=1,panels=1,windows=1,menus=0,c
 
 
 
-"LAYER EDITOR: //----------------------------------------------------------------------------------------------------------------------------------------"
-
-// # Create a layer.
-layer = pm.createDisplayLayer()
-// # Change layer visibility to reference. '2'
-pm.setAttr("{}.displayType".format(layer), 2)
-
-
-
-
-
-
-
-
 
 
 
@@ -1997,9 +2031,6 @@ pm.setAttr("{}.displayType".format(layer), 2)
 
 
 "UNDO: //------------------------------------------------------------------------------------------------------------------------------------------------"
-
-
-
 
 //
 undoInfo -openChunk;
@@ -2009,6 +2040,54 @@ pm.undoInfo(openChunk=1)
 undoInfo -closeChunk;
 pm.undoInfo(closeChunk=1)
 
+
+
+
+
+
+
+
+
+
+"TOOL CONTEXT: //----------------------------------------------------------------------------------------------------------------------------------------"
+
+
+pm.setToolTo('Move')
+
+curCtx = pm.currentCtx()
+
+
+if pm.superCtx(currentCtx, ex=1):
+	ctx = pm.superCtx(currentCtx, q=1)
+	typ = pm.contextInfo(ctx, q=1, c=1)
+	print (ctx, typ)
+
+
+
+
+pm.texMoveContext('texMoveContext', edit=1, snap=0)
+pm.texScaleContext('texScaleContext', edit=1, snap=0)
+pm.texRotateContext('texRotateContext', edit=1, snap=0)
+
+state = pm.manipMoveContext('Move', query=1, snapRelative=1)
+pm.manipMoveContext('Move', edit=1, snap=False if state is 0 else True, snapRelative=False if state>1 else True)
+
+
+
+
+
+
+
+"PLUG-INS: //--------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+pluginInfo				ex. pm.pluginInfo ('vrayformaya.mll', query=1, loaded=1)
+								
+isPluginDisabled	ex. isPluginDisabled ("vrayformaya"); //only available in mel. ex. mel.eval ('isPluginDisabled ("vrayformaya")')
+
+loadPlugin				ex. pm.loadPlugin ('newNode.py') //will except an array as an argument
+unloadPlugin			ex. pm.unloadPlugin ('newNode.py')
 
 
 
@@ -2083,23 +2162,20 @@ file -open "file.ma";
 
 
 
-"Plug-ins:-----------------------------------------------------------------------------------------------------------------------------------------------"
-
-
-
-pluginInfo				ex. pm.pluginInfo ('vrayformaya.mll', query=1, loaded=1)
-								
-isPluginDisabled	ex. isPluginDisabled ("vrayformaya"); //only available in mel. ex. mel.eval ('isPluginDisabled ("vrayformaya")')
-
-loadPlugin				ex. pm.loadPlugin ('newNode.py') //will except an array as an argument
-unloadPlugin			ex. pm.unloadPlugin ('newNode.py')
 
 
 
 
 
+"PYTHON: //----------------------------------------------------------------------------------------------------------------------------------------------"
 
-"PYTHON:	//run a snippit of python code in a mel script-------------------------------------------------------------------------------------------------"
+
+//install pip
+//Download get-py.py from https://pip.pypa.io/en/stable/installing/ 
+//Open a commandline to mayapy.exe (Generally in AutoDesk\Maya\20XX\bin) and run the file:
+ex. ...Maya\2017\bin mayapy.exe get-pip.py
+//it will have added Autodesk\Maya\20xx\Python\Scripts\pip.exe
+
 
 
 //http://help.autodesk.com/view/MAYAUL/2016/ENU/?guid=GUID-55B63946-CDC9-42E5-9B6E-45EE45CFC7FC
@@ -2193,11 +2269,11 @@ pm.hotkey(key='1', altModifier=True, name='name')
 //via script:
 //MEL
 if (!`runTimeCommand -exists Name`) {
-    runTimeCommand
-        -annotation "Print the word \"Hello\""
-        -category "Custom Scripts"
-        -command ("print \"Hello\\n\"")
-        Name;
+	runTimeCommand
+		-annotation "Print the word \"Hello\""
+		-category "Custom Scripts"
+		-command ("print \"Hello\\n\"")
+		Name;
 }
 //python (import pymel.core as pm)
 if not pm.runtimeCommand('Name', exists=1):
@@ -2213,8 +2289,7 @@ pm.hotkeyCtx(insertTypeAt=('Global', 'CustomEditor'))
 pm.hotkeyCtx(ita=('CustomEditor', 'CustomTool'))
 
 //Query all existing context types
-ctxTypes = pm.hotkeyCtx(typeArray=True, query=True)
-print str(ctxTypes)
+hotkeyCtxTypes = pm.hotkeyCtx(typeArray=True, query=True)
 
 //Remove an existing context type
 pm.hotkeyCtx(removeType='CustomTool')
@@ -2233,7 +2308,6 @@ pm.hotkeyCtx(t='CustomEditor', rc='outlinerPanel')
 
 //Query all associated clients for the given context type.
 cl = pm.hotkeyCtx(t='CustomEditor', ca=True, query=True)
-print str(cl)
 
 //Remove all associated clients
 pm.hotkeyCtx(t='CustomEditor', rac=True)
@@ -2275,20 +2349,20 @@ scriptEditorInfo	        http://help.autodesk.com/cloudhelp/2016/ENU/Maya-Tech-D
 							ex. scriptEditorInfo -clearHistory //Clears the read-only text in the upper field of the script editor.
 
 Show Stack Trace             Opens another window which lists errors and their line numbers in external script files.
-                             This is very useful for debugging scripts in external files. 
+							 This is very useful for debugging scripts in external files. 
 
 Suppress Command Results     When turned on, the Script editor does not show the result of 
-                             commands. Result messages start with // Result:
+							 commands. Result messages start with // Result:
 
 Suppress Info Messages       When turned on, the Script editor does not show informational 
-                             messages. Informational messages are of many different types and do 
-                             not have a set prefix (except for //). 
+							 messages. Informational messages are of many different types and do 
+							 not have a set prefix (except for //). 
 
 Suppress Warning Messages    When turned on, the Script editor does not show warning messages. 
-                             Warning messages start with // Warning:. 
+							 Warning messages start with // Warning:. 
 
 Suppress Error Messages      When turned on, the Script editor does not show error messages. 
-                             Error messages start with // Error:. 
+							 Error messages start with // Error:. 
 								ex. scriptEditorInfo -e -suppressWarnings true;
 
 
@@ -2346,7 +2420,7 @@ atand //total depth divided by total hight   \\output in degrees
 
 //pythagorean theorum:
 ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squared  
-             
+			 
 
 
 
@@ -2407,9 +2481,9 @@ pm.inViewMessage(statusMessage="Normals Display <hl>Off</hl>.", pos='topCenter',
 "ERROR HANDLING: //--------------------------------------------------------------------------------------------------------------------------------------"
 
 objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas because you are expectin a return value
-    						select surface1;
+							select surface1;
 							} else {
-    						warning("No surface exists");
+							warning("No surface exists");
 							}
 
 break	 				//break out of current loop but continue statements within the current function

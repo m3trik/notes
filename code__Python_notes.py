@@ -307,15 +307,16 @@ eg. [(i if True else None) for i in []]
 
 
 #when comparing types use is instead of ==
-#all
-eg. if all( [cond1=='val1', cond2=='val2', cond3=='val3', cond4=='val4'] ):
-#generator expression for all or any
-eg. if all(i=='1' for i in ['1','0']):
-eg. if any([filename==name+f for f in ('.ma','.ma.swatches','.mb','.mb.swatches')]):
-#any
-eg. if any( [cond1=='val1', cond2=='val2', cond3=='val3', cond4=='val4'] ):
+# any / all
+eg. all((cond1, cond2, cond3))
+#
+eg. all(i in 'QPushButton <b>Rich Text</b>' for i in ('<','>'))
+#generator expression
+eg. all(i is '1' for i in ('1','0'))
+eg. any((filename is f for f in ('.ma','.ma.swatches','.mb','.mb.swatches')))
+
 #any using list comprehension
-eg. if [x for x in ['0','2','1'] if x=='1']:
+eg. [x for x in ['0','2','1'] if x=='1']
 
 
 
@@ -828,7 +829,7 @@ eg. for char in '!@#$': string=string.replace(char,'')
 
 #remove trailing characters in a string
 	# \d: a digit (0-9)
-	# +: one or more of the previous item (i.e. \d)
+	# +: one or more of the previous item (ie. \d)
 	# $: the end of the input string
 eg. n = re.search(r'\d+$', 'string08')
 	num = int(n.group()) if n else None
@@ -2243,12 +2244,13 @@ Derived (a='aaa',b='bbb') ##calls baseClass first, then subClass
 
 #get base class from derived
 #with single inheritance, __mro__ is just the tuple of: the class, its base, its base's base, and so on up to object.
+__class__.__base__
 #with multiple inheritance, __mro__ no class is duplicated, and no class comes after its ancestors, classes that first enter at the same level of multiple inheritance are in the __mro__ left to right.
-class().__class__.__mro__[1] #mro() (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <type 'object'>)
-class().__class__.__bases__[0]
+__class__.__mro__[1] #mro() (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <type 'object'>)
+__class__.__bases__[0]
 #get base class name from derived
-class().__class__.__mro__[1].__name__
-class().__class__.__bases__[0].__name__
+__class__.__mro__[1].__name__
+__class__.__bases__[0].__name__
 
 
 
@@ -2773,11 +2775,17 @@ eg. os.path.join('c:\\', 'temp', 'new folder')
 
 
 
-# from relative path
-eg. script_dir = os.path.dirname(__file__)
+# get absolute path (including file).
+path = os.path.abspath(__file__) #ie. /path/to/dir/foobar.py
 #alt
-script_path = os.path.abspath(__file__) # i.e. /path/to/dir/foobar.py
-script_dir = os.path.split(script_path)[0] #i.e. /path/to/dir/
+eg. script_dir = os.path.dirname(__file__)
+
+# get absolute path (excluding file).
+dir_ = os.path.dirname(os.path.abspath(__file__)) #ie. /path/to/dir/
+#alt
+dir_ = os.path.split(script_path)[0] #ie. /path/to/dir/
+
+# relative path
 rel_path = 'subfolder/file.txt'
 abs_file_path = os.path.join(script_dir, rel_path)
 #combine both approaches

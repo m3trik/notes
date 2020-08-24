@@ -1,0 +1,250 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Calibri;}}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 Rich Text Notes --------------------------------------------------------------------------------------------\par
+\par
+\par
+Character Formatting:\par
+The last group controls character formatting properties. A control word preceding plain text turns on the specified attribute. Some control words (indicated by an asterisk following the description) can be turned off by the control word followed by a zero (0). For example, \\b turns bold on, while \\b0 turns bold off.\par
+\\plain\tab\tab Resets application's default character formatting properties\par
+\\b \tab\tab Bold*\par
+\\i \tab\tab Italic*\par
+\\strike\tab\tab Strikethrough*\par
+\\outl\tab\tab Outline*\par
+\\shad\tab\tab Shadow*\par
+\\scaps\tab\tab Small capitals*\par
+\\caps\tab\tab All capitals*\par
+\\v\tab\tab Hidden text*\par
+\\fn\tab\tab Font number\par
+\\fsn\tab\tab Font size in half-points (default is 24)\par
+\\expndn\tab Expansion or compression of leading between characters in quarter-points; a negative value compresses (0)\par
+\\ul \tab\tab Continuous underline*\par
+\\ulw \tab\tab Word underline*\par
+\\uld \tab\tab Dotted underline*\par
+\\uldb \tab\tab Double underline*\par
+\\ulnone \tab Stops all underlining\par
+\\upn \tab\tab Superscript position in half-points (default is 6)\par
+\\dnn \tab\tab Subscript position in half-points (default is 6)\par
+\\revised \tab Text has been added since revision marking was turned on\par
+\par
+\par
+The Font Table\par
+This group contains descriptions of fonts and begins with the control word \\fonttbl. All fonts available to the\par
+RTF writer can be included in the font table, even if the document doesn't use all the fonts.\par
+A font is defined by its name, a font number, and a font family, as shown in the following example. Semicolons\par
+are used as delimiters between fonts.\par
+\{\\fonttbl\\f0\\froman Tms Rmn;\}\'85\par
+ A B C D\par
+A Control word\par
+B Font number\par
+C Font family\par
+D Font name\par
+The font numbers represent the full font definitions in the group, and vary with each document. The font families\par
+are listed below:\par
+Control word Font family\par
+\\fnil Unknown or default fonts (default)\par
+\\froman Roman, proportionally spaced serif fonts (TmsRmn, Palatino, etc.)\par
+\\fswiss Swiss, proportionally spaced sans serif fonts (Swiss, etc.)\par
+\\fmodern Fixed-pitch serif and sans serif fonts (Courier, Elite, Pica, etc.)\par
+\\fscript Script fonts (Cursive, etc.)\par
+\\fdecor Decorative fonts (Old English Zapf Chancery, etc.)\par
+\\ftech Technical, symbol, and mathematical fonts (Symbol, etc.)\par
+If an RTF file uses a default font, the default font number is specified with the \\deffn control word which must\par
+precede the font table group. The RTF writer supplies the default font number used in the creation of the\par
+document as the numeric argument. The RTF reader then translates this number through the font table into the\par
+most similar font available on the reader's system.\par
+Rich Text Format 4\par
+The Style Sheet\par
+The style sheet group begins with the control word \\stylesheet. This group contains definitions and\par
+descriptions of the various styles used in the document. The style sheet is declared only once, in the RTF file\par
+header. All styles in the document's style sheet can be included, even if not all the styles are used.\par
+In some applications, styles are based on, or are the basis for, other styles. In these cases, two other control words\par
+can be used:\par
+Control word Meaning\par
+\\sbasedonn Defines the number of the style on which current style is based\par
+\\snextn Defines next style associated with current style; if omitted, next style is the current\par
+style\par
+An example of an RTF style sheet and styles is shown in the following example. In this example, Postscript is\par
+declared but not used. Some of the control words in this example are discussed in the following sections.\par
+\'85\par
+\{\\stylesheet\{\\fs20 \\sbasedon222\\snext0 Normal;\}\{\\s1\\qr\\fs20\par
+A\f1\emdash\\sbasedon0\\snext1 FLUSHRlGHT;\}\{\\s2\\fi-720\\li720\\fs20\\ri2880\\fs20\par
+\\sbasedon0\\snext2 IND;\}\}\par
+\'85\par
+\\widowctrl\\ftnbj\\ftnrestart\\sectd\\linex0\\endnhere\par
+\\pard\\plain\\fs20 This is Normal style.\par
+\\par\\pard\\plain\\s1\par
+B\emdash This is right justified. I call this style FLUSHRIGHT.\par
+\\par\\pard\\plain\\s2\par
+This is an indented paragraph. I call this style IND. It produces a hanging\par
+indent.\par
+\\par\}\par
+This is Normal Style.\par
+This is right justified. I call this style FLUSHRIGHT.\par
+This is an indented paragraph. I call this style IND.\par
+It produces a hanging indent.\par
+A Style sheet\par
+B Styles applied to text\par
+Rich Text Format 5\par
+The Color Table\par
+Screen colors, character colors, and other color information are contained in the color table group. The control\par
+word \\colortbl begins this group. Values for red, green, blue, and the foreground and background colors are\par
+shown in the following list. These parameter values correspond to the color indexes used by Microsoft Windows\par
+(0-255). Each color table entry is defined by the amount of red, green, and blue it has. For more information on\par
+color setup, see your Windows documentation.\par
+The following are valid control words for this group:\par
+Control word Meaning\par
+\\redn Red index\par
+\\greenn Green index\par
+\\bluen Blue index\par
+\\cfn Foreground color (default is 0)\par
+\\cbn Background color (default is 0)\par
+Each definition must be delimited by a semicolon, even if the definition is omitted. If a color definition is omitted,\par
+the RTF reader uses its default color. In the example below, three colors are defined. The first color is omitted, as\par
+shown by the semicolon following the \\colortbl control word.\par
+\{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\}\par
+The following example defines a block of text in color (where supported). Note that the cf/cb index is the index of\par
+an entry in the color table, which represents a red/green/blue color combination.\par
+\'85\par
+\{\\f1\\cb1\\cf2 This is colored text. The background is color 1 and the\par
+foreground is color 2.\}\par
+If the file is translated by software that does not display color, this group is ignored.\par
+Pictures\par
+An RTF file can include picture files composed with other applications. These files are in hexadecimal (default)\par
+or binary format. The control word \\pict begins this group. Control words that define and describe the picture\par
+parameters follow the \\pict control word.\par
+Rich Text Format 6\par
+These control words are listed in the table that follows. Some measurements in this table are in twips; a twip is\par
+one-twentieth of a printer's point. The control words for picture border patterns (\\brdrs, \\brdrdb, \\brdrth,\par
+\\brdrsh, \\brdrdot, and \\brdrhair) are ignored when translated into Microsoft Word for the Macintosh,\par
+which uses character properties to make borders.\par
+Control word Meaning\par
+\\brdrs Single border for picture\par
+\\brdrdb Double border for picture\par
+\\brdrth Thick border for picture\par
+\\brdrsh Shadow border for picture\par
+\\brdrdot Dotted border for picture\par
+\\brdrhair Hairline border for picture\par
+\\macpict Source of picture is Macintosh Quick Draw\par
+\\wmetafilen Source of picture is Windows metafile; argument identifies the metafile type;\par
+default is 1 (MM_TEXT)\par
+\\wbitmapn Source of picture is a bitmap; argument identifies the bitmap type; default is\par
+0 (logical bitmap)\par
+\\picwn xExt field if picture is metafile; picture width in pixels if picture is bitmap or\par
+from Macintosh Quick Draw\par
+\\pichn yExt field if picture is metafile; picture height in pixels if picture is bitmap\par
+or from Macintosh Quick Draw\par
+\\picwGoaln Desired width of picture in twips\par
+\\pichGoaln Desired height of picture in twips\par
+\\picscalexn Horizontal scaling value; argument is a value between 1 and 100 (default is\par
+10)\par
+\\picscaleyn Vertical scaling value; argument is a value between 1 and 100 (default is 10)\par
+\\picscaled Scales picture to fit within specified frame; used only with \\macpict pictures\par
+\\piccroptn Top cropping value in twips; positive value crops toward center of picture;\par
+negative value crops away from center, adding space border around picture\par
+(default is 0)\par
+\\piccropbn Bottom cropping value in twips; positive value crops toward center of\par
+picture; negative value crops away from center, adding space border around\par
+picture (default is 0)\par
+\\piccropln Left cropping value in twips; positive value crops toward center of picture;\par
+negative value crops away from center, adding space border around picture\par
+(default is 0)\par
+\\piccroprn Right cropping value in twips; positive value crops toward center of picture;\par
+negative value crops away from center, adding space border around picture\par
+(default is 0)\par
+\\wbmbitspixeln Bitmap bits/pixel (default is 1)\par
+\\wbmplanesn Number of bitmap planes (default is 1)\par
+\\wbmwidthbytesn Bitmap width in bytes\par
+\\binn Picture is in binary format; numeric parameter is number of bytes to follow\par
+Rich Text Format 7\par
+The \\wbitmap control word is optional; if neither \\wmetafile nor \\macpict is specified, the picture is\par
+assumed to be a Windows bitmap.\par
+Be careful with spaces following control words when dealing with pictures in binary format. When reading files,\par
+RTF considers the first space the delimiter and subsequent spaces part of the document text. Therefore, any extra\par
+white space is attached to the picture, with unpredictable results.\par
+RTF writers should not use the carriage-return-line-feed (CRLF) combination to break up pictures in binary\par
+format. In this case, the CRLF will be treated as literal text and considered part of the picture data.\par
+The picture in hexadecimal or binary format follows the picture group control words. The following example\par
+illustrates the group format and the result.\par
+\{\\pict\\wbitmap0\\picw170\\pich77\\wbmbitspixel1\\wbmplanes1\par
+\\wbmwidthbytes22\\picwgoal505\par
+\\pichgoal221\par
+\\picscalex172\par
+\\picscaley172\par
+4912000000000273023d1101a030\par
+3901000a000000000273023d98\par
+0048000200000275\par
+0240000200010275023e000000000\par
+273023dO00002b90002b90002\par
+b90002b90002b9\par
+0002b90002b90002b90002b90002b90002\par
+b92222b90002b90002b90\par
+002b90002b9\par
+D002b90002b90002b90002b9000\par
+A Source\par
+B Width\par
+C Height\par
+D Bits per pixel\par
+E Bitmap planes\par
+F Width of picture in bytes\par
+G Desired picture width\par
+H Desired picture height\par
+I Horizontal scaling value\par
+J Vertical scaling value\par
+K Hexadecimal data\par
+Footnotes\par
+The group containing footnote text begins with the control word \\footnote. Footnotes are anchored to the\par
+character that immediately precedes the footnote group. If automatic footnoting is defined, the group can be\par
+preceded by a footnote reference character, identified by the control word \\chftn.\par
+Rich Text Format 8\par
+The following is an example of a group containing footnotes:\par
+\\ftnbj\\ftnrestart\\sectd \\linemod0\\linex0\\endnhere \\pard\\plain \\ri1170 \\fs20\par
+\{\\up6 Mead's landmark study has been amply annotated.\\chftn\par
+(footnote \\pard\\plain \\s246 \\fs20 \{\\up6\\chftn \}See Sahlins, Bateson, and\par
+Geertz for a complete bibliography.\}\par
+It was her work in America during the Second World War, however, that forms\par
+the basis for this paper. As others have noted, \\chftn\par
+\{\\footnote \\pard\\plain \\s246 \\fs20 \{\\up6\\chftn\}\par
+A complete bibliography will be found at the end of this chapter.\} this period\par
+was a turning point for Margaret Mead.\par
+\\par\par
+Mead's landmark study has been amply annotated.1 It was her work in America during the Second World War.\par
+however. that forms the basis for this paper. As others have noted2 this period was a turning point for Margaret\par
+Mead.\par
+1See Sahlins, Bateson, and Geertz for a complete bibliography.\par
+2A complete bibliography will be found at the end of this chapter.\par
+A Footnotes\par
+See "Section Formatting Properties," "Document Formatting Properties," and "Special Characters" later in this\par
+document for other control words relating to footnotes.\par
+Annotations\par
+The group containing annotation text begins with the control word \\*\\annotation. Annotations are anchored\par
+to the character that immediately precedes the annotation group. The group must be preceded by an annotation\par
+reference character, identified by the control word \\chatn, which itself must be preceded by a group that begins\par
+with the control word \\*\\atnid, and contains the identification text for the author of the annotation.\par
+An example of annotation text follows:\par
+\'85\par
+An example of a paradigm might be Newtonian physics or Darwinian\par
+biology.\{\\v\\fs16\{\\atnid bz\}\\chatn\{\\annotation\par
+\\pard\\plain \\s224 \\fs20 \{\\field\{\\fldinst page \\\\#"'Page:\par
+'#'\\line"'\}\{\\fldrslt\}\}\{\\fs16 \\chatn \}\par
+How about some examples that deal with social science? That's what this paper\par
+is about.\}\}\par
+\'85\par
+Rich Text Format 9\par
+Headers and Footers\par
+Headers and footers are treated as separate groups in RTF. These groups must precede the first plain text character\par
+in the given document section. The control words \\header and \\footer begin these groups.\par
+Headers and footers can be defined for each section. If none is defined for a given section, the headers and footers\par
+from the previous section (if any) are used.\par
+The control words \\header and \\footer can be replaced by the following control words, as appropriate:\par
+Control word Meaning\par
+\\headerl Header on left pages only\par
+\\headerr Header on right pages only\par
+\\headerf Header on first page only\par
+\\footerl Footer on left pages only\par
+\\footerr Footer on right pages only\par
+\\footerf Footer on first page only\f0\par
+\par
+\par
+\par
+}
+ 

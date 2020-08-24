@@ -13,14 +13,12 @@ time: 0.0816165578988
 # -----------------------------------------------
 
 
-modify self.ui to work with sub sub-menus.. currently defalting to parent.
+maya macros> subdivision preview> show full (subdivided) wireframe on preview.
 
 
-maya_cameras.py", line 33, in clippingMenu
-#     elif pm.viewClipPlane(activeCamera, query=1, autoClipPlane=1): #if autoClipPlane is active:
-#   File "C:\Program Files\Autodesk\Maya2020\Python\lib\site-packages\pymel\internal\pmcmds.py", line 130, in viewClipPlane_wrapped
-#     res = new_cmd(*new_args, **new_kwargs)
-# RuntimeError: viewClipPlane: Invalid argument '-farClipPlane' for flag 'Invalid argument '^1s' for flag '^2s'.'.
+uv: set select mode: uv shells for operations that depend on it.
+
+
 
 
 
@@ -38,20 +36,9 @@ maya_cameras.py", line 33, in clippingMenu
 
 
 
-transform: snaps: not working with 'ctx'
-uv snaps:
-pm.texMoveContext('texMoveContext', edit=1, snap=0)
-pm.texScaleContext('texScaleContext', edit=1, snap=0)
-pm.texRotateContext('texRotateContext', edit=1, snap=0)
 
 
 
-
-Macros: Selection: invert selection object Only
-
-
-uv: set select mode: uv shells for operations that depend on it.
-changeSelectMode -component; setComponentPickMask "Facet" true; selectType -ocm -alc false; selectType -msh true; selectType -sf false -se false -suv false -cv false;
 
 
 loading bar on first start
@@ -59,10 +46,6 @@ loading bar on first start
 
 new output window, output class
 
-
-
-
-polygons: comboboxes: items being set multiple times.
 
 
 
