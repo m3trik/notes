@@ -496,8 +496,8 @@ __variable
 
 # Assignment
 #assign multiple variables the same value
-eg. var1=var2=var3 = None
-#if 'x=y=z=[]' were used, operations on all three variables would be performed on the same list.
+eg. var1=var2=var3 = None #if 'x=y=z=[]' were used, operations on all three variables would be assigned to the same list.
+eg. a, b, *c = [1,2,3,4,5] #returns: 1 2 [3, 4, 5]
 #if separate lists are desired, use: 
 eg. x=[];y=[];z=[]
 eg. a,b,c = (1,2,3)
@@ -517,6 +517,8 @@ eg. for key,value in kwargs.iteritems(): #create variables for any kwargs passed
 
 
 
+#swap variables
+eg. a, b = b, a
 
 
 
@@ -1002,9 +1004,10 @@ eg. statistics.mode(list_)
 #get every nth element from a list
 #list_ [starting index, step amount]
 list_ = [1,2,3,1,2,3]
-print list_[0::3] # 1,1
-print list_[1::3] # 2,2
-print list_[2::3] # 3,3
+list_[0::3] # 1,1
+list_[1::3] # 2,2
+
+
 
 #get next item
 #using iter()
@@ -1062,23 +1065,22 @@ normalizedList = [float(i)-min(list_)/(max(list_)-min(list_)) for i in list_]
 
 
 #convert data type
-list_ = [map(int, x) for x in list_] #ie. from str to int/float   python3: [list(map(int, x)) for x in T1]
-list_ = [[int(column) for column in row] for row in list_]
-list_ = [[int(y) for y in x] for x in T1]
+eg. list(map(int, list_)) # [1, 2, 3]
+eg. [map(int, x) for x in list_] #ie. from str to int/float   python3: [list(map(int, x)) for x in T1]
+eg. [[int(column) for column in row] for row in list_]
+eg. [[int(y) for y in x] for x in T1]
 #exclued non-integer string values: (may fail on neg values. also: try/except)
-list_ = list(list(int(a) for a in b) for b in list_ if a.isdigit())
+eg. list(list(int(a) for a in b) for b in list_ if a.isdigit())
 
 
 
 #Remove capitalization #dot notation only works with strings
 eg. list_.lower()          
-map(str.lower,['A','B','C'])
-['a', 'b', 'c']
+eg. map(str.lower,['A','B','C']) #['a', 'b', 'c']
 
 # Convert to ALL caps
 eg. list_.upper()
-map(str.upper,['a','b','c'])
-['A', 'B', 'C']
+eg. map(str.upper,['a','b','c']) #['A', 'B', 'C']
 
 
 
@@ -1375,6 +1377,11 @@ eg. list_=[]
 eg. list_.clear()						
 
 
+#delete multiple elements
+list_ = [1,2,3,4,5]
+del list_[::2] # [2, 4]
+#delete every nth
+del list_[1::2] #[1, 2, 5]
 
 
 
@@ -2766,7 +2773,7 @@ for s in  sys.path: print s
 
 # get current working directory 
 #using os.getcwd
-eg. os.getcwd()
+eg. os.getcwd() #ie. /Users/mbp/Documents/my-project/python-snippets/notebook
 #using os.listdir
 eg. os.listdir(os.curdir)
 
@@ -2774,27 +2781,18 @@ eg. os.listdir(os.curdir)
 eg. os.path.join('c:\\', 'temp', 'new folder')
 
 
+# get filename with extension
+eg. os.path.basename(__file__)
+# get directory name
+eg. os.path.dirname(__file__) #ie. data/src
 
 # get absolute path (including file).
-path = os.path.abspath(__file__) #ie. /path/to/dir/foobar.py
-#alt
-eg. script_dir = os.path.dirname(__file__)
-
+eg. os.path.abspath(__file__) #ie. /path/to/dir/foobar.py
 # get absolute path (excluding file).
-dir_ = os.path.dirname(os.path.abspath(__file__)) #ie. /path/to/dir/
-#alt
-dir_ = os.path.split(script_path)[0] #ie. /path/to/dir/
-
-# relative path
-rel_path = 'subfolder/file.txt'
-abs_file_path = os.path.join(script_dir, rel_path)
-#combine both approaches
-eg. os.path.dirname(os.path.abspath(__file__))
-
-
-#get path above current file path:
-'/'.join(os.path.dirname(os.path.abspath(__file__)).split('\\')[:-1]) #adjust the [:int] for each dir above.
-
+eg. os.path.dirname(os.path.abspath(__file__)) #ie. /path/to/dir/
+eg. os.path.split(script_path)[0] #ie. /path/to/dir/
+# from relative path
+eg. os.path.join(script_dir, 'subfolder/file.txt')
 
 
 # dir navigation
@@ -2804,6 +2802,9 @@ eg. os.path.dirname(os.path.abspath(__file__))
 '../..'
 #using os.path (import os.path)
 eg. two_up =  os.path.abspath(os.path.join(__file__ ,'../..')) #__file__=current file. can substitute this for another dir
+
+#get path above current file path:
+'/'.join(os.path.dirname(os.path.abspath(__file__)).split('\\')[:-1]) #adjust the [:int] for each dir above.
 
 
 
@@ -2815,8 +2816,7 @@ sys.path.append(path)
 
 #Append multiple directories to the system path
 paths = r'%CLOUD%/____Graphics/Maya/scripts/__path;%CLOUD%/____Graphics/Maya/scripts/__path/tk_ui;%CLOUD%/____Graphics/Maya/scripts/__path/tk_slots'''
-for path in paths.split(';'):
-	sys.path.append(os.path.expandvars(path))
+(sys.path.append(os.path.expandvars(path)) for path in paths.split(';'))
 
 
 #append relative directories:
@@ -2907,6 +2907,8 @@ eg.	f = open(file_)
 eg.	with open(file_) as f: #reassign opened file with a simplified variable
 		fileContents = f.read()
 
+#open and convert to a list:
+list(open('file.txt') #[line.strip() for line in open('file.txt')]
 
 
 #open last modified file of a given extension (import glob, os)
@@ -2926,11 +2928,6 @@ eg. execfile
 
 
 
-
-
-
-
-
 # READING A FILE:
 #if read argument is left empty then it will read the entire file.
 eg. contents = file_.read() #can be followed by a print(content) statement
@@ -2939,7 +2936,11 @@ eg. contents = file_.read() #can be followed by a print(content) statement
 eg. file_.readline()[2] #returns the third line
 
 #read the contents of a file into a list.
-eg. list(file_)
+eg. list(file_) #list(open('file.txt')
+#removing whitespace
+eg. [line.strip() for line in open('file.txt')] #['test1', 'test2', 'test3', 'test4']
+
+
 #returns a list where each element is a line in the file.
 #you can use a for loop to iterate through those lines.          
 eg. file_.readline() #places newline at the end.
@@ -2991,10 +2992,12 @@ eg. file.seek(-3,2) #returns 3rd byte before the end of the file.
 
 
 # WRITING TO A FILE
-#write
+#Write string to file
 eg. with open('filename.txt') as f: #creates a variable 'f' that is only accessible within the block statement)
 		f.write('write something to the file') #only write as a string
-
+#
+eg. with open('file.txt', 'a') as f:
+		f.write('hello world') #['test1\n', 'test2\n', 'test3\n', 'test4\n', 'hello world']
 
 
 

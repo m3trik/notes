@@ -1963,42 +1963,31 @@ pm.setAttr("{}.displayType".format(layer), 2)
 
 
 
+
 "UI: //--------------------------------------------------------------------------------------------------------------------------------------------------" 
 
-// get ui objects
+
+//get ui objects
 pm.lsUI (
 numWidgets=True,	//#[bool, create]  Reports the number of QT widgets used by Maya.
 dumpWidgets=True	//#[bool, create]  Dump all QT widgets used by Maya.
 )
 
-
-//get panel using name
-cmds.getPanel(containing='button0')
-
-//#get all windows.
+//get all windows.
 eg. lsUI -windows;
 eg. pm.lsUI(windows=1)
 
-//#get all panels and editors.
+//get all panels and editors.
 eg. pm.lsUI(panels=1, editors=1)
 
 //get all panels
 pm.getPanel(all=True)
 
-//#get current viewport panel
-currentPanel = pm.getPanel(withFocus=1)
-currentPanel = pm.getPanel(underPointer=1)
+//get panel by name
+cmds.getPanel(containing='button0')
 
 //get panel by type
 pm.getPanel(type='modelPanel')
-
-
-
-//#get maya viewport widget
-// import maya.OpenMayaUI as apiUI; import sip
-view = apiUI.M3dView()
-apiUI.M3dView.getM3dViewFromModelPanel('modelPanel4', view)
-viewWidget = sip.wrapinstance(long(view.widget()), QtCore.QObject)
 
 
 
@@ -2021,6 +2010,31 @@ print [str(i.keyword1()) for i in pm.lsUI(editors=1,panels=1,windows=1,menus=0,c
 
 
 
+
+
+//VIEWPORT: ------------------------------------------------------
+
+
+
+//get current viewport panel
+currentPanel = pm.getPanel(withFocus=1)
+currentPanel = pm.getPanel(underPointer=1)
+
+//get maya viewport widget (import maya.OpenMayaUI as apiUI; import sip)
+view = apiUI.M3dView()
+apiUI.M3dView.getM3dViewFromModelPanel('modelPanel4', view)
+viewWidget = sip.wrapinstance(long(view.widget()), QtCore.QObject)
+
+
+
+
+// wireframe color:
+colorIndex 6 1 0 0; //sets the sixth color of the Index palette to red.
+//to have the object with a different color you must enable drawing overrides
+setAttr ".overrideEnabled" 1;
+setAttr ".overrideColor" 6;
+// wireframe color ui
+pm.mel.objectColorPalette()
 
 
 
