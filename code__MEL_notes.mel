@@ -1075,8 +1075,23 @@ ex. pm.attributeQuery('attr', node=obj, exists=True)
 //
 ex. attributeExists("visibility", "mySphere");
 
-// list attributes (listAttr(<node>))
-eg. listAttr $objectName;
+// list attributes:
+eg. pm.listAttr(obj, read=1, hasData=1) //list only attributes which are readable, that have data (all except for message attributes).
+// string (str)				List only the attributes that match the other criteria AND match the string(s) passed from this flag. (String can be a regular expression)
+// category (str)			only show attributes belonging to the given category. (String can be a regular expression)
+// scalar (bool)			only list scalar numerical attributes
+// scalarAndArray (bool)	only list scalar and array attributes
+// array (bool)				only list array (not multi) attributes
+// output (bool)			List only the attributes which are numeric or which are compounds of numeric attributes.
+// leaf (bool)				Only list the leaf-level name of the attribute. controlPoints[44].xValue would be listed as "xValue".
+// write (bool)				list only attributes which are writable
+// settable (bool)			list attribute which are settable
+// connectable (bool)		only show connectable attributes
+// keyable (bool)			only show attributes that can be keyframed
+// channelbox (bool)		only show non-keyable attributes that appear in the channelbox
+// visible (bool) 			only show visible or non-hidden attributes
+// locked (bool)			list only attributes which are locked
+// unlocked (bool)			list only attributes which are unlocked
 eg. $bBox = `listAttr ($objectName + ".boundingBox")`; //return all possible attributes associated with an object.
 
 // get
@@ -1085,6 +1100,8 @@ eg. pm.getAttr ("vraySettings.renderMaskMode")
 // set
 eg. setAttr ("persp.translateY", 23.2);
 eg.	setAttr "vraySettings.renderMaskMode" 4;
+eg. att = pm.PyNode("someNode.someAttribute")
+	att.setMin(.5)
 // pymel
 eg.	pm.setAttr ("vraySettings.renderMaskMode", 4)
 ex. pm.setAttr(obj+'.keepFacesTogether'=1)
@@ -2026,7 +2043,7 @@ apiUI.M3dView.getM3dViewFromModelPanel('modelPanel4', view)
 viewWidget = sip.wrapinstance(long(view.widget()), QtCore.QObject)
 
 
-
+//display
 
 // wireframe color:
 colorIndex 6 1 0 0; //sets the sixth color of the Index palette to red.
@@ -2035,6 +2052,13 @@ setAttr ".overrideEnabled" 1;
 setAttr ".overrideColor" 6;
 // wireframe color ui
 pm.mel.objectColorPalette()
+
+
+//wireframe on shaded
+pm.displayPref(wireframeOnShadedActive='full') //'full', 'reduced', 'none'
+//
+modeIsShaded = pm.modelEditor(editor, query=True, displayAppearance=True) //(bool) True if "smoothShaded", "flatShaded".
+pm.modelEditor(pm.getPanel(withFocus=True), edit=True, displayAppearance=True, activeOnly=True, wireframeOnShaded=True, smoothWireframe=True) //#displayAppearance: Possible values: "wireframe", "points", "boundingBox", "smoothShaded", "flatShaded"
 
 
 
