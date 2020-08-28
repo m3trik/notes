@@ -682,8 +682,6 @@ eg. ''.join(my_string.splitlines())
 
 #access characters in a string. 
 eg.	'string'[0] #'s'
-eg.'string'[0] #'s'
-
 #slicing. take a subsection.
 eg. 'string'[1:-1] #'trin'
 

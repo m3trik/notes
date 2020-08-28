@@ -982,6 +982,17 @@ pm.ls('*endsWith', selection=1)
 pm.ls('sphere1', allPaths=True)
 
 
+
+// get object from component(s)
+//from component selection
+ex. pm.ls(sl=1, objectsOnly=1)
+//from component objects
+ex. set(pm.ls(components, objectsOnly=1))
+//using string formatting
+ex. objects = set([i.split('.')[0] for i in selection]) //#get u'pSphereShape1' from u'pSphereShape1.vtx[105]' if in component mode.
+
+
+
 // Selection: ---------------------------------------------
 
 //object selection: // eg. select -replace polySurface1.map;
@@ -1306,6 +1317,10 @@ select -r ($myObj + ".vtx ");
 
 
 
+// component selection
+pm.selectPref(trackSelectionOrder=1) //after this is set on, any selection made afterwards can be read as ordered. (multiple selections made at once are read as a single selection)
+sel = pm.ls(orderedSelection=1)
+
 
 
 
@@ -1539,7 +1554,7 @@ xform
 // scale (float, float, float)
 // scaleTranslation (linear, linear, linear) 
 
-// get objects current rotation value:
+// get an objects current rotation value:
 ex. origRotationValue = pm.xform(query=1, rotation=1)
 // set the rotation
 ex. pm.xform(rotation=[x,y,z])
