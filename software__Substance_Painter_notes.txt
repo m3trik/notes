@@ -127,8 +127,20 @@ Painting Over A Baked Normal Map:
 
 
 
+PROJECT: ---------------------------------------------------------------------------
+
+Templates:
+.spt files are created from an existing project via the File menu and saved inside the Shelf folder.
+they contain:
+	Texture Set settings
+	Display settings
+	Baking settings
+	Shader resources (including attached textures)
+	Environment Map file
 
 
+
+	
 
 
 IMPORT/EXPORT: ---------------------------------------------------------------------

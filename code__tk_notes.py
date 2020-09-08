@@ -13,10 +13,14 @@ time: 0.0816165578988
 # -----------------------------------------------
 
 
-maya macros> subdivision preview> show full (subdivided) wireframe on preview.
+# Traceback (most recent call last):
+#   File "O:/Cloud/__portable/_scripts/ui\widgets\qPushButton_Draggable.py", line 96, in mouseMoveEvent
+#     diff = globalPos - self.__mouseMovePos
+# AttributeError: 'QPushButton_Draggable' object has no attribute '_QPushButton_Draggable__mouseMovePos'
 
 
-uv: set select mode: uv shells for operations that depend on it.
+
+
 
 
 
@@ -61,7 +65,27 @@ slots: info:  strip chars that share the same char and index from second int and
 # -----------------------------------------------
 
 
+tk_slots_max_transform
+global name 'pm' is not defined
 
+
+
+max_edit.py", line 66, in tb000
+    self.meshCleanup(isolatedVerts=isolatedVerts, edgeAngle=edgeAngle, nGons=nGons, repair=repair)
+  File "O:\Cloud\__portable\_scripts/max/slots\tk_slots_max_edit.py", line 268, in meshCleanup
+    _nGons = Edit.findNGons(obj)
+  File "O:\Cloud\__portable\_scripts/max/slots\tk_slots_max_edit.py", line 184, in findNGons
+    nGons = [f for f in faces if rt.polyop.getFaceDeg(obj, f)>4]
+RuntimeError: MAXScript exception raised.
+-- Runtime error: EPoly operation on non-Editable Poly: Editable Mesh
+Error: default isn't an editable poly or nothing is selected.
+Found 0 isolated vertices.
+
+max_edit.py", line 66, in tb000
+    self.meshCleanup(isolatedVerts=isolatedVerts, edgeAngle=edgeAngle, nGons=nGons, repair=repair)
+  File "O:\Cloud\__portable\_scripts/max/slots\tk_slots_max_edit.py", line 290, in meshCleanup
+    obj.EditablePoly.remove(selLevel='Vertex', flag=1)
+AttributeError: 'pymxs.MXSWrapperBase' object has no attribute 'EditablePoly'
 
 
 

@@ -253,13 +253,25 @@ echo escape char(^)
 :: create juction to directory
 mklink /J "%JUNC%" "%DIR%"
 
+:: create a junction to a network drive
+mklink /D "C:\share" "\\network\share" rem first creation a directory /D symbolic link.
+mklink /J "C:\junctionLink" "C:\share" rem then create a junction using the link.
+:: or enable local to remote links by running this command with elevated rights:
+fsutil behavior set SymlinkEvaluation L2R:1 
+:: Also you can enable this with your local or group policy: Computer\System\Filesystem\Selectively allow the evaluation of a symbolic link --> allow local to remote
+
 :: create symbolic link to a file
 mklink "%SYM%" "%DIR%\file.ini"
 
 
 
 
+:: network ----------------------------------
 
+::share a network drive. (set CATAGORY, DIR, USER)
+net share <CATAGORY>="<DIR>" /GRANT:"<USER>",READ
+:: ex.
+net share uncategorized_folder="C:\Users\fre_filer03\Desktop\20034\Uncategorized\" /GRANT:"fre_filer03",READ
 
 
 
