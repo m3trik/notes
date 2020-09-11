@@ -1,0 +1,204 @@
+--Windows Registry notes ---------------------------------
+
+;The Windows Registry is a hierarchical database that contains all of the configurations and settings used by ;components, services, applications
+
+
+
+
+--GENERAL ------------------------------------------------
+
+-- GUI:
+REGEDIT.EXE
+
+
+-- Activate changes
+To activate registry changes in HKEY_CURRENT_USER without logging off:
+RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters ,1 ,True
+
+
+
+
+
+--HIERARCHY ----------------------------------------------
+
+
+HKEY_CLASSES_ROOT	;Windows uses this section to manage file type associations, and it is usually abbreviated HKCR when being referenced in documentation. This key is actually just a link to HKLM\Software\Classes.
+HKCR = HKey_classes_root
+
+
+HKEY_CURRENT_USER	;Holds the user settings for the currently logged in user, and is usually abbreviated HKCU This is actually just a link to HKEY_USERS\<SID-FOR-CURRENT-USER>. The most important sub-key in here is HKCU\Software, which contains user-level settings for most of your software. writable by the currently logged in user.
+HKCU = HKey_current_user
+
+
+HKEY_LOCAL_MACHINE	;All of the system-wide settings are stored here, and it is usually abbreviated as HKLM. You’ll mostly use the HKLM\Software key to check machine-wide settings. writable only by administrators.
+HKLM = HKey_Local_machine (default)
+
+
+HKEY_USERS			;Stores all of the settings for all users on the system. You’ll typically use HKCU instead, but if you need to check settings for another user on your computer, you can use this one.
+HKU  = HKey_users
+
+
+HKEY_CURRENT_CONFIG	;Stores all of the information about the current hardware configuration. This one isn’t used very often, and it just a link to HKLM\SYSTEM\CurrentControlSet\Hardware Profiles\Current.
+
+
+
+
+
+
+
+--SYNTAX -------------------------------------------------
+
+;single line comment
+
+;To save a directory path with a trailing backslash (\) requires adding a second backslash to 'escape' the escape
+C:\My Docs\\"
+
+;example reg file header:
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\LocalSettings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell]
+"FolderType"="NotSpecified"
+
+
+ValueName 	--The value, under the selected RegKey, to edit. (default is all keys and values)
+
+/C 			--Case sensitive search.
+
+/D Data 	--The actual data to store as a "String", integer etc
+
+/E 			--Return only exact matches, by refault all are returned.
+
+/F 			--Add/Delete - Force an update without prompting "Value exists, overwrite Y/N"
+
+Query 		--Specify the data/pattern to search for, default = "*" (Use double quotes if the string contains spaces)
+
+/K 			--Search in Key names only.
+
+\\Machine 	--Name of remote machine - omitting defaults to current machine.
+           Only HKLM and HKU are available on remote machines.
+
+FileName 	--The filename to save or restore a registry hive.
+
+KeyName 	--A key name to load a hive file into. (Creating a new key)
+
+RegKey 		--A Registry key. String name. (These are case sensitive when creating and case-insensitive when reading)
+
+/S 			--Query all subkeys and values.
+/S Separator --Character to use as the separator in REG_MULTI_SZ values, the default is "\0"
+/SE Separator --Character to use as the separator in REG_MULTI_SZ values, the default is "\0"
+
+/T DataType --REG_SZ (default) | REG_DWORD | REG_EXPAND_SZ | REG_MULTI_SZ (Click for full list, default = all types)
+
+/reg:32 	--Force REG.exe to read/write to the 32-bit registry location.
+/reg:64 	--Force REG.exe to read/write to the 64-bit registry location.
+(By default a 32-bit process on a 64 bit machine, will use a 32-bit view of the registry: HKLM\SOFTWARE\Wow6432Node Use the /REG switch to over-ride this. See Q305097 for more details)
+
+Output 		--/od (only differences) /os (only matches) /oa (all) /on (no output)
+
+/V 			--Query for a specific registry key value, if omitted all values for the key are queried.
+
+/VE 		--Compare or SET the empty value name (default)
+
+/Y 			--Force overwriting the existing file without prompt.
+
+/Z 			--Verbose - shows the numeric equivalent for the type of the valuename.
+
+
+
+
+
+
+
+KEYS ---------------------------------------------------
+
+-- query:
+REG QUERY [ROOT\]RegKey /V ValueName [/s] [/F Data [/K] [/D] [/C] [/E]]
+	[/T DataType] [/Z] [/SE Separator] [/reg:32 | /reg:64]
+-- /VE returns the (default) value
+REG QUERY [ROOT\]RegKey /VE  [/f Data [/K] [/D] [/C] [/E]]    
+	[/T DataType] [/Z] [/SE Separator] [/reg:32 | /reg:64]   
+
+
+-- add:
+REG ADD [ROOT\]RegKey /V ValueName [/T DataType] [/S Separator] [/D Data] [/F] [/reg:32] [/reg:64]
+--
+REG ADD [ROOT\]RegKey /VE [/d Data] [/F] [/reg:32 | /reg:64]
+--
+REG ADD HKLM\Software\SS64 /v Path /t REG_EXPAND_SZ /d ^%systemroot^%
+
+-- copy:
+REG COPY  [\\SourceMachine\][ROOT\]RegKey [\\DestMachine\][ROOT\]RegKey
+--
+REG COPY HKCU\Software\SS64 HKCU\Software\SS64Copy
+--
+REG COPY \\Computer64\HKCU\Software\SS64 HKCU\Software\SS64
+
+-- export:
+REG EXPORT [ROOT\]RegKey FileName.reg [/Y] [/reg:32 | /reg:64]
+--
+REG EXPORT HKCU\Software\SS64 C:\MyReg.REG
+-- import:
+REG IMPORT FileName.reg  [/reg:32 | /reg:64]
+--
+REG IMPORT C:\MyReg.REG
+
+-- save:
+REG SAVE [ROOT\]RegKey FileName.hiv [/Y] [/reg:32 | /reg:64]
+---
+REG SAVE HKCU\Software\SS64 C:\MyRegHive.hiv
+-- restore:
+REG RESTORE \\MachineName\[ROOT]\KeyName FileName.hiv [/reg:32 | /reg:64]
+---
+REG RESTORE \\Wks580\HKCU\Software\SS64 C:\MyRegHive.hiv
+
+-- load:
+REG LOAD KeyName FileName [/reg:32 | /reg:64]
+-- unload:
+REG UNLOAD KeyName
+
+-- compare:
+REG COMPARE [ROOT\]RegKey [ROOT\]RegKey [/V ValueName] [Output] [/s] [/reg:32 | /reg:64]
+REG COMPARE [ROOT\]RegKey [ROOT\]RegKey [/VE] [Output] [/s] [/reg:32 | /reg:64]
+
+
+-- delete:
+﻿[-HKEY_LOCAL_MACHINE\SOFTWARE\Test]
+--
+REG DELETE [ROOT\]RegKey /V ValueName [/F]
+-- Remove the (default) value
+REG DELETE [ROOT\]RegKey /VE [/F]
+-- Delete all values under this key
+REG DELETE [ROOT\]RegKey /VA [/F]
+
+
+
+
+
+
+
+VALUES -------------------------------------------------
+
+String Value (REG_SZ) ;This contains anything that will fit into a regular string. The vast majority of the time, you can edit human-readable strings without breaking everything.
+
+Binary Value (REG_BINARY) ;This value contains arbitrary binary data, and you will almost never want to attempt to edit one of these keys.
+
+DWORD (32-bit) Value (REG_DWORD) ;These are almost always used for a regular integer value, whether just 0 or 1, or a number from 0 to 4,294,967,295.
+
+QWORD (64-bit) Value (REG_QWORD) ;These are not used very often for registry hacking purposes, but it’s basically a 64-bit integer value.
+
+Multi-String Value (REG_MULTI_SZ) ;These values are fairly uncommon, but it works basically like a notepad window. You can type multi-line textual information into a field like this.
+
+Expandable String Value (REG_EXPAND_SZ) ;These variables have a string that can contain environment variables and is often used for system paths.
+
+
+
+
+
+delete value:
+HKEY_LOCAL_MACHINE\Software\Test
+"TestValue"=-
+
+
+
+
+

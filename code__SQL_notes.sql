@@ -84,3 +84,46 @@ CREATE TABLE IF NOT EXISTS tasks (
 # query data:
 
 
+
+
+# COMMAND LINE -----------------------------------------------
+
+#Connection
+#launch sql:
+
+
+#show all available commands:
+
+
+#connect to a database:
+
+
+#show the currently connected database
+
+
+#add an additional database in the current connection
+
+
+
+#Tables
+#display all the tables in the current database:
+
+#format the output:
+
+#display the structure of a table
+
+#show all indexes
+
+
+#query data from a table
+
+
+#save the result of a query into a file
+
+
+#execute SQL statements from a file
+
+
+
+
+#exit the sqlite3 program
