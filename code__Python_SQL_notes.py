@@ -10,6 +10,23 @@ conn = sqlite3.connect(<file>) #<file> can be an absolute path, a filename (use 
 cur = conn.cursor()
 
 
+#tables _______________________________________________________
+
+#SQLITE_MASTER: (table that defines the schema for the database)
+CREATE TABLE sqlite_master (
+  type TEXT,
+  name TEXT,
+  tbl_name TEXT,
+  rootpage INTEGER,
+  sql TEXT
+);
+
+# Get table names:
+tableNames = '''
+	SELECT name FROM sqlite_master
+	WHERE type='table'
+	ORDER BY name;
+	'''
 
 # Create table:
 table = '''
@@ -68,7 +85,7 @@ task = (2, '2015-01-04', '2015-01-06', 2)
 
 
 #join
-<cur>.execute("SELECT <column> FROM <table1> JOIN <table2> ON <table1>.<column> <comparator> <table2>.<column>")
+<cur>.execute("SELECT <column> FROM <table1> JOIN <table2> ON <table1>.<column> <comparator> <table2>.<column>") #sql comparators: =, >, <, >=, <=, <>
 
 
 #union
@@ -110,7 +127,7 @@ sql = 'DELETE FROM <table> WHERE id=?'
 
 
 
-# COMMAND LINE -----------------------------------------------
+# COMMAND LINE ________________________________________________
 
 
 #Connection
@@ -123,8 +140,8 @@ sqlite3
 #connect to a database:
 .open #O:\Cloud\_Code\SQL\_editor\database\pythonsqlite.db #if the database does not exist, a new one will be created.
 
-#show the currently connected database
-.database
+#query the currently connected database
+.database 
 
 #add an additional database in the current connection
 ATTACH DATABASE "c:\sqlite\db\chinook.db" AS chinook;
@@ -132,22 +149,27 @@ ATTACH DATABASE "c:\sqlite\db\chinook.db" AS chinook;
 
 #Tables
 #display all the tables in the current database:
-.tables
+SELECT * FROM sqlite_master; #the SQLITE_MASTER table defines the schema for the database.
+SELECT <table> FROM sqlite_master WHERE type='table'; #
+.tables #show the name of every table inside the database.
+#only those matching a conditon:
 .table '%es' #returns the table that ends with the string 'es'.
 #format the output:
 .header on
 .mode column
+
 #display the structure of a table
 .schema #show the structures of all the tables.
 .schema <table> #show the structure of a given table.
 .schema %es #show indexes of the tables whose names end with 'es'.
 .fullschema #show the schema and the content of the sqlite_stat tables.
+
 #show all indexes
 .indexes
 .indexes <table> #show the indexes of a specific table.
 .indexes %es #show indexes of the tables whose names end with 'es'.
 
-#query data from a table
+#display data from a table
 SELECT * FROM <table>;
 
 #save the result of a query into a file
