@@ -30,6 +30,12 @@ tableNames = '''
 
 # Create table:
 table = '''
+	CREATE TABLE <table> (
+		<column1> <datatype>,
+		<column2> <datatype>,
+	);'''
+#
+table = '''
 	CREATE TABLE IF NOT EXISTS projects (
 		id integer PRIMARY KEY,
 		name text NOT NULL,
@@ -128,63 +134,107 @@ sql = 'DELETE FROM <table> WHERE id=?'
 
 
 # COMMAND LINE ________________________________________________
+#sqlite3 tool is a terminal based frontend to the SQLite library
+
+#hotkeys
+Ctrl+D 		#quit
+Ctrl+L 		#clear
+Ctrl+U 		#clear current line
 
 
-#Connection
 #launch sqlite:
 sqlite3
 
 #show all available commands:
 .help
 
-#connect to a database:
-.open #O:\Cloud\_Code\SQL\_editor\database\pythonsqlite.db #if the database does not exist, a new one will be created.
+#history
+#.sqlite_history file. archived commands. (located in the home directory)
+$ tail -5 ~/.sqlite_history #Using the tail command, we show the last five entries.
+
+#resource file
+#.sqliterc. The resouce file can contain meta commands, or regular SQL statements. However, we should avoid using SQL in the file. (located in the home directory. If it doesnt exist, simply create it)
+$ cat .sqliterc 
+.mode column
+.headers on
+.nullvalue NULL 
+
+
+#prompt
+#set the prompt style:
+.prompt "> " ". " 
+#line continuation:
+#the default continuation prompt is ...>
+#close line continuation with a semi-colon ";".
+
+
+#connect
+<absolute path>/<database>.db #creates a database if it does not already exist.
+#
+.open <absolute path>/<database>.db #if the database does not exist, a new one will be created.
+
+
+#format the output:
+#
+.show			#lists current settings.
+#set the output formatting style
+.mode column
+
+.separator :	#the default separator is |
+.header on
+.width 15 18	#<first column> <second>. (column mode only)
+
 
 #query the currently connected database
 .database 
 
-#add an additional database in the current connection
-ATTACH DATABASE "c:\sqlite\db\chinook.db" AS chinook;
-
 
 #Tables
-#display all the tables in the current database:
-SELECT * FROM sqlite_master; #the SQLITE_MASTER table defines the schema for the database.
-SELECT <table> FROM sqlite_master WHERE type='table'; #
-.tables #show the name of every table inside the database.
+#show the name of every table inside the database.
+.tables #shows the available tables.
 #only those matching a conditon:
 .table '%es' #returns the table that ends with the string 'es'.
-#format the output:
-.header on
-.mode column
+#display all the tables in the current database:
+SELECT * FROM sqlite_master; #the SQLITE_MASTER table defines the schema for the database.
+#all tables with the given column
+SELECT <column> FROM sqlite_master WHERE type='table';
 
 #display the structure of a table
-.schema #show the structures of all the tables.
+.schema #show the structures of all tables.
 .schema <table> #show the structure of a given table.
 .schema %es #show indexes of the tables whose names end with 'es'.
 .fullschema #show the schema and the content of the sqlite_stat tables.
+
+#display data from a table
+SELECT * FROM <table>;
 
 #show all indexes
 .indexes
 .indexes <table> #show the indexes of a specific table.
 .indexes %es #show indexes of the tables whose names end with 'es'.
 
-#display data from a table
-SELECT * FROM <table>;
 
-#save the result of a query into a file
+#save the result of a query into a file:
 .output file.txt #all the results of the subsequent queries will be saved to the file.
 SELECT title FROM <table>; #select the title from the albums table and write the result to the albums.txt file.
 .once file.txt #save the result of the next single query only to the file
 SELECT title FROM <table>; #select the title from the albums table and write the result to the albums.txt file.
+#dump tables in SQL format to the disk:
+.output <filename>.sql
+.dump <table>
+#redirect to an existing file.
+$ cat <filename>.sql #We show the contents of the cars2.sql file with the cat command.
+
+#read from a file:
+.read <filename>.sql
 
 #execute SQL statements from a file
 .mode column
 .header on
 .read c:/sqlite/commands.txt #To execute the SQL statements in the commands.txt file, you use the .read <FILENAME> command (with optional formatting)
 
-
-
+#
+.quit
 
 #exit the sqlite3 program
 .exit

@@ -131,6 +131,7 @@ ALTER TABLE <table> DROP COLUMN <column>
 
 
 #add an additional database in the current connection
+ATTACH DATABASE "c:\sqlite\db\chinook.db" AS chinook;
 
 
 

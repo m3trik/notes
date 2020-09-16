@@ -815,23 +815,6 @@ QtWidgets.QSizePolicy				#The size policy of a widget is an expression of its wi
 w.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding) #policyX, policyY
 
 
-#screen size
-geometry = QtWidgets.QApplication.instance().desktop().screenGeometry() #availableGeometry()
-geometry.width()
-geometry.height()
-self.setGeometry(geometry)
-
-#get
-isFullScreen()
-isMaximized()
-isMinimized()
-
-#set
-showFullScreen()
-showMaximized()
-showMinimized()
-
-
 #get size:
 #.width / .height can be derived from anything that returns a QSize
 w.size()						#Returns QtCore.QSize
@@ -912,7 +895,19 @@ w.rect()unite(rect)				#Use united(rectangle) instead. rect1.unite(rect2)
 
 
 
-
+#screen size
+geometry = QtWidgets.QApplication.instance().desktop().screenGeometry() #availableGeometry()
+geometry.width()
+geometry.height()
+self.setGeometry(geometry)
+#get
+isFullScreen()
+isMaximized()
+isMinimized()
+#set
+showFullScreen()
+showMaximized()
+showMinimized()
 
 
 

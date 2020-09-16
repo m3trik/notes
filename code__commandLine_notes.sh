@@ -243,6 +243,51 @@ less		#scroll through text file using arrow keys. or search for keywords.
 
 
 
+
+
+# ---------------------------------------------------------
+'heredoc' # combine languages in a single shell file using heredoc import.sh
+
+
+#!/bin/bash --
+sqlite3 -batch $1 <<"EOF"
+CREATE TABLE log_entry ( <snip> );
+.separator "\t"
+.import logfile.log log_entry
+EOF
+#run it:
+import.sh database.db
+
+
+#using bash variables:
+#!/bin/bash --
+table_name=log_entry
+
+sqlite3 -batch $1 <<EOF
+CREATE TABLE ${table_name} ( <snip> );
+.separator "\t"
+.import logfile.log ${table_name}
+EOF
+
+
+#Or even do a trick like this:
+#!/bin/bash --
+table_name=$2
+
+sqlite3 -batch $1 <<EOF
+CREATE TABLE ${table_name} ( <snip> );
+.separator "\t"
+.import logfile.log ${table_name}
+EOF
+#run it: 
+import.sh database.db log_entry
+
+
+
+
+
+
+
 # ---------------------------------------------------------
 
 'terminal'
