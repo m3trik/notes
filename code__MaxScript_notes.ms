@@ -1358,34 +1358,41 @@ obj.name = rt.uniqueName('')
 rt.sphere(prefix="baz")
 
 --get
+obj.name
 --using wildcards:
 ex. rt.matchPattern(obj.name, pattern='', ignoreCase=0)
 
 --list containing Box001 and all its children (complete hierarchy)
 $Box001*...* as array
 
+
 --get object by name (get object from string):
+next(i for i in rt.objects if i.name=="name")
+--If exact is false(default), the normal MAXScript node name comparisons are performed.
+--If all is true, an array of nodes with the specified name is returned. Else, the first node with the specified name is returned.
+--getNodeByName <string> exact:<bool> ignoreCase:<bool> all:<bool> --(Defaults: exact:false, ignoreCase:true, all:false)
+ex. getnodebyname "AA" all:true --($Teapot:aa @ [...], $Box:AA @ [...]) --returns all nodes named aa
 ex. rt.getNodeByName('name_', ignoreCase=True, all=True) --Returns: the first node with the specified name. If all is True, an array of nodes with the specified name is returned.
+--using execute:
+-- Using the execute method, it is possible to convert any string into a MAXScript expression. 
+-- This includes evaluating a string containing an object path into the object path itself. 
+-- If an object name is stored in a string variable, you have to add the "$" character as string to the name to convert it into object path. 
+-- Since certain special characters like "." (period) or " " (space) cannot be evaluated when being part of the name string, it is advisable to add "'" (single quote) characters around the object's name to prevent an evaluation error. Any characters enclosed between the single quote characters will be recognized as part of the string.
+objName = "Box001" --if an object is called Box001:
+objPath = execute("$'"+objName + "'")
+
 
 --all objects that start with x
 $Tile*
 
---If exact is false(default), the normal MAXScript node name comparisons are performed.
---If all is true, an array of nodes with the specified name is returned.
-getNodeByName <string> exact:<bool> ignoreCase:<bool> all:<bool> --Returns first node with the specified name.
---[   Defaults:				 exact:false	ignoreCase:true 	all:false]
-getnodebyname "AA" all:true
---($Teapot:aa @ [...], $Box:AA @ [...]) --returns all nodes named aa
 
 --Access the base object in a scene node. This has relevance in nodes that have modifiers
 --present that change the node type as it is processed up the stack. For example, a line 
 --with an extrude modifier starts out as a Shape and turns into an Editable Mesh at the 
 --top of the stack, its so-called world state. The baseObject property gives you access 
 --to the base object in the modifier stack.
-<node>.baseObject  A subclass of Node  default: varies
+-- <node>.baseObject  A subclass of Node  default: varies
 baseClass = classOf(obj.baseObject)
-
-
 --store information about the geometry
 INode.BaseObject.ParameterBlock
 
