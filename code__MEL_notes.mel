@@ -1464,7 +1464,7 @@ adjFaces.remove(face)
 
 // comvert component from one type to another
 eg.
-vertices = pm.ls (pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
+vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
 //convert selection to vertices
 ConvertSelectionToVertices;
 //or
