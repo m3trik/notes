@@ -96,6 +96,17 @@ AttributeError: 'pymxs.MXSWrapperBase' object has no attribute 'EditablePoly'
 # -----------------------------------------------
 
 
+#maya extract command: polygons> component> detach
+pm.mel.ExtractFace() #returns None
+extract = pm.polyChipOff(sel, ch=1, kft=1, dup=0, off=0) #returns [nt.PolyChipOff(u'polyChipOffx')]
+
+
+#mirror geometry not always working as needed.  possibly replace with the built-in method and use history popup to set.
+MirrorPolygonGeometry;
+performPolyMirror 0;
+polyMirrorFace  -cutMesh 1 -axis 0 -axisDirection 1 -mergeMode 1 -mergeThresholdType 0 -mergeThreshold 0.001 -mirrorAxis 2 -mirrorPosition 0 -smoothingAngle 30 -flipUVs 0 -ch 1 door_lock_geom;
+
+
 polygons: merge vertices: when not in componet mode; merge all vertices for any selected objects.
 
 

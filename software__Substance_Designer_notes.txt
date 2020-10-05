@@ -68,10 +68,6 @@ Starburst			-Generates a simple starburst effect, with adjustment parameters ava
 
 
 
-
-
-
-
 patterns ------------------------------------------------------------------
 
 
@@ -79,9 +75,6 @@ Tile Generator
 	Don’t’ take the name of this Node too literally. Its good at making Tiles, but it’s
 	really good at taking the Shape Node and making it Tile. This Node is a good
 	building block for anything that needs some repetition.
-
-	
-Tile Sampler		-
 
 	
 smart-auto-tile node - alt-drag crop border to align image.
@@ -95,6 +88,21 @@ Splatter			-
 Splatter Circular	-generates a radial pattern. It can use pre-defined shapes or custom inputs.
 
 
+Tile Sampler Node	- Pattern Input: The shape you want to tile.
+
+					- Scale Map Input: grayscale input. light:high scale, dark: low scale.
+
+					- Displacement Map Input: moves the patterns using grayscale values. (similar to Scale Map Input, but doesn’t scale)
+
+					- Rotation Map Input: it rotates the pattern using grayscale values in the same direction (dark:0-degree rotation, white:x-degree rotation based on the multiplier).
+
+					- Color Input Map: gives every pattern a grayscale color based on the color parametrization multiplier.
+
+					- Mask Map Input: masks the patterns where there are darker grayscale values
+
+					- Pattern Distribution Map: distributes the patterns based on grayscale value. (Enable it via : Pattern> Pattern Input Distribution> Distribution Map)
+
+					- Vector Map Input: gives you more control. Rotates, moves, scales based on RGB Values. (Rotates in one direction only)
 
 
 
@@ -128,28 +136,20 @@ distance node		-
 
 
 
+deformation --------------------------------------------------------------
 
 
-blur -----------------------------------------------------------------
-
-Slope Blur Greyscale	
-	Directional blur driven by greyscale slope map
-	general usage: 	increase samples
-	decrease intensity
-	mode: min
-	
-	
-Blur IQ greyscale
-	Performs a High-Quality gaussian blur on the result. Much better quality than the standard atomic box blur.
+Directional Warp	- deformation depends on the warping value and direction.
 
 
 
-edge blur
-	This mask highlights edges based on a baked curvature map
-	
 
-	
-	
+
+
+
+
+
+
 
 
 edges -----------------------------------------------------------------
@@ -197,6 +197,48 @@ Fiber Glass Edge Wear
 	Represents a mask specifically intended for a fibreglass-type of wear, 
 	could perhaps be used for cloth
 
+
+	
+	
+gradient -----------------------------------------------------------------
+
+radial gradient		-Shape node (Cone shape) plugged into a levels (or histogram, curve) to adjust the falloff.
+					-levels plugged into a gradient map.
+					-2 uniform color nodes plugged into a blend with the cone shape as a mask.
+					-color blend plugged into a second blend; gradient top and color blend as base.
+	"" greyscale	
+					-Shape node (Cone shape) plugged into a levels to adjust the falloff.
+
+
+
+
+
+
+
+
+
+blur -----------------------------------------------------------------
+
+Slope Blur Greyscale	
+	Directional blur driven by greyscale slope map
+	general usage: 	increase samples
+	decrease intensity
+	mode: min
+	
+	
+Blur IQ greyscale
+	Performs a High-Quality gaussian blur on the result. Much better quality than the standard atomic box blur.
+
+
+
+edge blur
+	This mask highlights edges based on a baked curvature map
+	
+
+	
+	
+	
+	
 	
 
 diffuse ----------------------------------------------------------------
@@ -213,9 +255,8 @@ height -----------------------------------------------------------------
 
 
 Render height map in 3d View.
->	3D Viewport> Materials menu> enable Tessellation.
->	Materials menu> Default> Definitions> physically_metallic_roughness> Tessellation
->	Materials menu> Edit menu> turn up “Tessellation Factor” and “Scale”.
+>	3D Viewport> Materials menu> Default> Definitions> physically_metallic_roughness> Enable Tessellation
+>	Materials menu> Edit> Height> turn up “Tessellation Factor” and “Scale”.
 
 
 
@@ -304,6 +345,8 @@ convert -----------------------------------------------------------------
 color to greyscale	-Grayscale conversion node (right click 'add node' menu)
 
 greyscale to color	-gradient map node.
+
+greyscale gradient to color -gradient dynamic node.  with gradient linear, or gradient 2 points.
 
 vector to bitmap	-SVG node. use pen tool in 2d graph view to draw mask input image.
 
@@ -483,6 +526,27 @@ to see or change the directory location:
 
 
 
+
+
+
+user data ---------------------------------------------------------------
+
+The user data field in Substance files is a place for expressions that will be preserved after the cooking. Substance Painter is able to read some specific user data in order to execute specific behaviors. The field is parsed as a list of pair key=value separated by semicolons. Multiple information are separated by a semicolon (;).
+
+
+defaultcolor=(1.0,0.5,0.0) --int or float. The default color of an image input is black with its alpha set to 0.
+
+ColorSpace=sRGB			--I/O color space. sRGB, Linear, Passthru (equivalent to Linear), SNorm (-1...1), NormalXYZLeft (DirectX Normal map), NormalXYZRight (OpenGL Normal map)
+Alpha=Premultiplied		--I/O alpha or opacity channel interpretation. Straight(default), Premultiplied, None(passthrough)
+
+disable=(true)			--disable the output by default. --specific output node (like a material).
+disable=(height,diffuse,specular)	--generic output node (like a filter)
+
+IsChannelsAlpha=true	--Use an output of the Substance graph as an alpha channel/mask on the other outputs. Set this on the output you want to use default to as a mask.
+
+blendingmode=normal		--normal, passthrough, disable, replace, multiply, divide, inversedivide, darken, lighten, lineardodge, subtract, inversesubtract, difference, exclusion, signedaddition, overlay, screen, linearburn, colorburn, colordodge, softlight, hardlight, vividlight, pinlight, tint, saturation, color, value, normalcombine, normaldetail, normalinversedetail
+
+Padding=Extend			--provide an input that has padding/dilation instead outside the UV islands.
 
 
 

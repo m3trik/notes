@@ -140,7 +140,14 @@ they contain:
 
 
 
-	
+shader:
+show material transparency by enabling alpha blending.
+>	shader settings window> set material to pbr-metal-rough-with-alpha-blending (very top under 'undo' 'redo' buttons)
+
+
+
+
+
 
 
 IMPORT/EXPORT: ---------------------------------------------------------------------

@@ -434,9 +434,9 @@ also: alternative brush; smooth Directional
 
 
 : Bridge Geometry
-Using the curve brush:
+Using a curve brush:
 >	Turn off symmetry.
->	Using the curve brush, draw perpendicular to the first edge, press shift before releasing.
+>	Using a curve brush, draw perpendicular to the first edge, press shift before releasing.
 >	Repeat for the second edge.
 
 

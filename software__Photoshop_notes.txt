@@ -128,9 +128,9 @@ you can select color and mouse drag to change values on the fly
 ___COLOR CORRECTION____________________________________
 
 adjust white balance ----------------------------------
-Adjustments>Curves
-use the highlights eyedropper to set the white, grey, and black points.
-
+>	Add curves adustment layer. (Adjustments> Curves)
+>	use the highlights eyedropper to set the white, grey, and black points.
+>	Finally, click and hold on to the small box in the bottom left corner of the curve box, and drag up. This way, we add a little more light to the scene. By moving it up vertically, we increase the exposure.
 
 
 
