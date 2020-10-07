@@ -1509,6 +1509,20 @@ print sum(edgeLengths)
 
 
 
+//uv shells
+//number of UV shells
+num_shells = pm.polyEvaluate(obj, uvShell=True) //ex. 6
+//active UV Shells
+active_shells = pm.polyEvaluate(obj, activeUVShells=True) //ex. [1, 4, 5]
+//UV shell IDs for selected faces
+shell_Ids = pm.polyEvaluate(faces, uvShellIds=True) //ex. [1, 1, 1, 4, 5]
+//normalize
+polyNormalizeUV -normalizeType 0 -preserveAspectRatio on ;
+//layout
+polyMultiLayoutUV -lm 1 -sc 0 -rbf 0 -fr 1 -ps 0.2 -l 1 -psc 0 -su 1 -sv 1 -ou 0 -ov 0;
+
+
+
 
 
 "TRANSFORM: //-------------------------------------------------------------------------------------------------------------------------------------------"

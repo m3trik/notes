@@ -78,18 +78,6 @@ def getWidgets(name, cls=True):
 
 
 
-
-#get main window instance
-#3ds max:
-#mainWindow = GetQMaxWindow() --old
-GetQmaxMainWindow()
-
-#mayaDockableMixin
-
-
-
-
-
 #get object name
 name = w.objectName()
 
@@ -1875,26 +1863,6 @@ attr = p.window().attr
 
 
 
-# Parenting to maya main window:
-from maya import OpenMayaUI as omui
-from shiboken2 import wrapInstance
-applicationWindow = omui.MQtUtil.mainWindow()
-if applicationWindow is not None:
-	applicationWindow = wrapInstance(long(applicationWindow), QtGui.QWidget) #requires wrapertype as a second argument, so you can pass QWidget as a second argument
-#or
-for obj in QtWidgets.qApp.topLevelWidgets(): #qApp or QApplication
-	if obj.objectName() == 'MayaWindow'
-		applicationWindow = obj
-
-# Parenting to max main window:
-applicationWindow = QtGui.QWidget(MaxPlus.GetQMaxWindow())
-_GCProtector.widgets.append(applicationWindow) #append to garbage collector
-
-# docking to maya main window
-#http://help.autodesk.com/view/MAYAUL/2015/ENU/?guid=__files_GUID_66ADA1FF_3E0F_469C_84C7_74CEB36D42EC_htm
-
-
-
 
 
 
@@ -2064,88 +2032,36 @@ directory = fileDialog.getExistingDirectory()
 
 
 
-
-'Exit'#----------------------------------------------------------------------
-
-
-#terminate the event-loop (if it's running)
-QCoreApplication.quit()
-QCoreApplication.exit(0)
+'Parent Applications'#-------------------------------------------------------
 
 
-#terminate the program
-sys.exit()
+#get main window instance
+#3ds max:
+#mainWindow = GetQMaxWindow() --old
+GetQmaxMainWindow()
+
+#mayaDockableMixin
 
 
+#maya
+maya.OpenMayaUI.MQtUtil.findControl()
+# Parenting to maya main window:
+from maya import OpenMayaUI as omui
+from shiboken2 import wrapInstance
+applicationWindow = omui.MQtUtil.mainWindow()
+if applicationWindow is not None:
+	applicationWindow = wrapInstance(long(applicationWindow), QtGui.QWidget) #requires wrapertype as a second argument, so you can pass QWidget as a second argument
+#or
+for obj in QtWidgets.qApp.topLevelWidgets(): #qApp or QApplication
+	if obj.objectName() == 'MayaWindow'
+		applicationWindow = obj
 
+# Parenting to max main window:
+applicationWindow = QtGui.QWidget(MaxPlus.GetQMaxWindow())
+_GCProtector.widgets.append(applicationWindow) #append to garbage collector
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'Errors'#--------------------------------------------------------------------
-
-
-QtCore.QDebug('')
-
-
-
-#DEBUG
-class MainWindow(QtWidgets.QMainWindow):
-	testSignal = QtCore.Signal()
-
-def __init__(self, parent=None, **kwargs):
-	super(MainWindow, self).__init__(parent, **kwargs)
-	self.testSignal.connect(self.debug)
-
-def debug(self, *args, **kwargs):
-	print("got", args, "and", kwargs)
-
-
-
-
-
-
-# RuntimeError: A QApplication instance already exists.
-#there is already a PySide application running, so get a handle for that object like this:
-app = QtGui.QApplication.instance()
-
-
-## AttributeError: 'PySide2.QtCore.Signal' object has no attribute 'emit'
-#define signal as a class variable before init
-ex.
-class Button(QtCore.QObject):
-	mouseHover = QtCore.Signal(bool)
-#now in can be referenced in later methods as self.mousHover.emit(True/False)
-
-
-
-
-
-# install
-#python wheels: (download and install locally to make sure the correct wheel gets installed)
-http://download.qt.io/snapshots/ci/pyside/
-
-
-
-
-
-
-
-
-
-
+# docking to maya main window
+#http://help.autodesk.com/view/MAYAUL/2015/ENU/?guid=__files_GUID_66ADA1FF_3E0F_469C_84C7_74CEB36D42EC_htm
 
 
 
@@ -2315,6 +2231,82 @@ QtCore.Qt.BitmapCursor		24
 
 
 
+
+
+
+
+
+'Exit'#----------------------------------------------------------------------
+
+
+#terminate the event-loop (if it's running)
+QCoreApplication.quit()
+QCoreApplication.exit(0)
+
+
+#terminate the program
+sys.exit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'Errors'#--------------------------------------------------------------------
+
+
+QtCore.QDebug('')
+
+
+
+#DEBUG
+class MainWindow(QtWidgets.QMainWindow):
+	testSignal = QtCore.Signal()
+
+def __init__(self, parent=None, **kwargs):
+	super(MainWindow, self).__init__(parent, **kwargs)
+	self.testSignal.connect(self.debug)
+
+def debug(self, *args, **kwargs):
+	print("got", args, "and", kwargs)
+
+
+
+
+
+
+# RuntimeError: A QApplication instance already exists.
+#there is already a PySide application running, so get a handle for that object like this:
+app = QtGui.QApplication.instance()
+
+
+## AttributeError: 'PySide2.QtCore.Signal' object has no attribute 'emit'
+#define signal as a class variable before init
+ex.
+class Button(QtCore.QObject):
+	mouseHover = QtCore.Signal(bool)
+#now in can be referenced in later methods as self.mousHover.emit(True/False)
+
+
+
+
+
+# install
+#python wheels: (download and install locally to make sure the correct wheel gets installed)
+http://download.qt.io/snapshots/ci/pyside/
 
 
 
