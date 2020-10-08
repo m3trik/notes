@@ -267,18 +267,21 @@ window.setCentralWidget(stackedWidget)
 #QPushButton (QAbstractButton, QRadiobutton, QCheckBox)
 b = QtWidgets.QPushButton()
 
-#signals. (signal in)
-#Qt signals:
-b.clicked()
-b.pressed()
-b.released()
-b.toggled()
 b.setText()
 b.setIcon()
 
+
+#signals. (signal in)
 b.click() 						#emits clicked signal
+#Qt signals:
+b.clicked()
+b.pressed() 					#bool #QPushButton.pressed()
+b.released() 					#bool #QPushButton.released()
 
+b.toggled() 					#bool. query pushbutton toggle state.
+b.stateChanged(arg__1)			#QCheckBox.stateChanged(), b.stateChanged.connect(method) #calls method with state arg as an int 0, 1, 2
 
+#connect signal to slot:
 b.clicked.connect(method)
 #or with arguments
 b.clicked.connect(lambda x=arg: method(x))
@@ -299,28 +302,25 @@ b.setDisabled(True)
 
 b.setDefault() 					#QPushButton.setDefault() #Sets the button as default
 
-b.pressed() 					#bool #QPushButton.pressed()
-b.released() 					#bool #QPushButton.released()
-
-b.toggled() 					#bool. query pushbutton toggle state.
-b.toggle() 						#Toggles the state of a checkable button.
-
-
-
 
 #check state
 #		QtUi checkable button signal input
 #		self.ui.connect(HandleSelection, SIGNAL(toggled(bool)),MEL_HandleSelection,SLOT(setVisible(bool)));
 #		QObject::connect(moreButton, SIGNAL(toggled(bool)), tertiarypb7Box, SLOT(setVisible(bool)));
-
-b.stateChanged() 				#QCheckBox.stateChanged()
-b.stateChanged.connect(method)
+b.toggle() 						#Toggles the state of a checkable button.
 #
 b.setCheckable(True) 			#Recognizes pressed and released states of button if set to true
 b.isChecked()					#Returns Bool - state of button
 #setChecked
 b.setChecked(True)				#Bool
 b.setChecked(not b.isChecked())	#toggle
+
+#tri-state
+b.setCheckState(QtCore.Qt.CheckState) #Qt.CheckState.Checked, Qt.CheckState.PartiallyChecked, Qt.CheckState.Unchecked
+b.setTristate(bool) 			#This property holds whether the checkbox is a tri-state checkbox. (default is false)
+b.checkState(QtCore.Qt.CheckState) #Returns the QtCore.Qt.CheckState. If you do not need tristate support, use .isChecked() which returns a bool.
+
+
 
 
 #button text
