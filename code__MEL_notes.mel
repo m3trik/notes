@@ -1385,6 +1385,9 @@ polySphereShape.f[*]
 //get all [.vtx, .f, .e]
 //alt using ls
 vtx = pm.ls(obj+'.vtx[*]', flatten=True)
+//alt
+fCount = pm.polyEvaluate(obj, f=True)
+faces = pm.ls(obj+'.f[0:'+str(fCount)+']')
 //alt using polyevaluate
 faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
 
@@ -1510,6 +1513,11 @@ print sum(edgeLengths)
 
 
 //uv shells
+//uv shell selection mask
+meshUVShell = pm.selectType(q=1, meshUVShell=1)
+//uv selection mask
+polymeshUV = pm.selectType(q=1, polymeshUV=1)
+
 //number of UV shells
 num_shells = pm.polyEvaluate(obj, uvShell=True) //ex. 6
 //active UV Shells
