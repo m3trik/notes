@@ -1279,11 +1279,11 @@ pm.scriptNode(nodeName, executeAfter=True) //Test the after script
 
 
 
-// object name extensions:
-objectName.map 	UV
-""				.e 		edge
-""				.f 		face
-""				.v    vert
+// object type extensions:
+.map 		//UV 	#eg. u'pCubeShape1.map[0]
+.e 			//edge
+.f 			//face
+.v    		//vert
 
 
 
@@ -1296,19 +1296,10 @@ ex. pm.select("myobject.f[*]", tgl=True)
 //Use polyEvaluate -v to get the number of vertices. Then use the select command to select them
 ex. $currentSelection = `ls -selection -showType`;
 
-if (size($currentSelection) < 1) 
-{
-	print "// Warning: No object selected. Must select an object or component";
-}
-
-if (size($currentSelection) >= 1)
-{
-	for ($object in $currentSelection)
-	{
-		int $count[] = `polyEvaluate -vertex $object`;
-		$vertices = $object + ".vtx [0:" + ($count[0] - 1) + "]";
-		select -replace $vertices;
-	}
+for ($object in $currentSelection) {
+	int $count[] = `polyEvaluate -vertex $object`;
+	$vertices = $object + ".vtx [0:" + ($count[0] - 1) + "]";
+	select -replace $vertices;
 }
 
 //alternative method
@@ -1316,12 +1307,9 @@ select -r ($myObj + ".vtx ");
 
 
 
-
 // component selection
 pm.selectPref(trackSelectionOrder=1) //after this is set on, any selection made afterwards can be read as ordered. (multiple selections made at once are read as a single selection)
 sel = pm.ls(orderedSelection=1)
-
-
 
 
 // component selection mask
@@ -1331,39 +1319,30 @@ vertices = pm.filterExpand (obj1, selectionMask=31, expand=1)
 
 
 //get:
-//query object mode.
-$mode = `selectMode -query -object`;
-pm.selectMode(query=1, object=1)
+//query object mode
+pm.selectMode(query=1, object=1)		//$mode = `selectMode -query -object`;
 pm.selectType(query=1, allObjects=1)
-//query component selection mode/type:
-$mode = `selectMode -query -component`;
-pm.selectMode(query=1, component=1)
-//vertex
-$maskVertex = `selectType -query -vertex`;
-pm.selectType(query=1, vertex=1)
-//edge
-$maskEdge = `selectType -query -edge`;
-pm.selectType(query=1, edge=1)
-//face
-$maskFacet = `selectType -query -facet`;
-pm.selectType(query=1, facet=1)
-
+//query component mode
+pm.selectMode(query=1, component=1)		//$mode = `selectMode -query -component`;
+//query component type
+pm.selectType(query=1, vertex=1)		//$maskVertex = `selectType -query -vertex`;
+pm.selectType(query=1, edge=1)			//$maskEdge = `selectType -query -edge`;
+pm.selectType(query=1, facet=1)			//$maskFacet = `selectType -query -facet`;
+pm.selectType(query=1, polymeshUV=1)
+pm.selectType(query=1, meshUVShell=1)
 
 //set:
 //object mode
 pm.selectMode(object=1)
 //component mode
 pm.selectMode(component=1)
-//objects
+//component type
 pm.selectType(allObjects=1)
 pm.selectType(vertex=1)
 pm.selectType(edge=1)
 pm.selectType(facet=1)
 pm.selectType(polymeshUV=1)
 pm.selectType(meshUVShell=1)
-
-
-
 
 
 //surface info
@@ -1385,14 +1364,41 @@ polySphereShape.f[*]
 //get all [.vtx, .f, .e]
 //alt using ls
 vtx = pm.ls(obj+'.vtx[*]', flatten=True)
-//alt
-fCount = pm.polyEvaluate(obj, f=True)
+//
+//get number of faces
+numFaces = pm.polyEvaluate(duplicatedObject, face=1)
+//get vertices of an object within given range
+ex. obj.vtx[0:1135];
+//
 faces = pm.ls(obj+'.f[0:'+str(fCount)+']')
 //alt using polyevaluate
 faces = [obj+".f["+str(num)+"]" for num in range(pm.polyEvaluate (obj, face=1))] //create a list of all faces per shell
+//
+verts = pm.polyEvaluate(vertex=1)
+edges = pm.polyEvaluate(edge=1)
+faces = pm.polyEvaluate(face=1)
+//get all faces from object
+faces = pm.filterExpand(obj+'.f[*]', sm=34)
+//verts
+verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
+//alt:
+int $vertcount = polyEvaluate -vertex $object; 
+string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
+//edges
+edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
+
+//alt (get anything polyEvaluate querys)
+faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
+
+
+
 
 //get currently selected components
-components = pm.ls(selection=True, flatten=True)
+components = pm.ls(selection=True, flatten=True) //use flatten only when required.
+//
+selectedVerts = pm.polyEvaluate(vertexComponent=1)
+selectedEdges = pm.polyEvaluate(edgeComponent=1)
+selectedFaces = pm.polyEvaluate(faceComponent=1)
 //
 selFaces = pm.filterExpand(sm=34) //verts=31, edges=32
 //get component number as int
@@ -1408,40 +1414,6 @@ polyEvaluate -faceComponent $obj //
 [int(re.findall(r'(?<=\[)[0-9]+(?=:?])', str(s))[0]) for s in components] //ie. [818, 1380] from [u'obj.vtx[818]', u'obj.vtx[1380]']
 
 
-
-//get all faces from object
-faces = pm.filterExpand(obj+'.f[*]', sm=34)
-//verts
-verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
-//alt:
-int $vertcount = polyEvaluate -vertex $object; 
-string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
-//edges
-edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
-
-//alt (get anything polyEvaluate querys)
-faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
-
-
-//get vertices of an object within given range
-ex. obj.vtx[0:1135];
-
-
-//get number of faces
-numFaces = pm.polyEvaluate(duplicatedObject, face=1)
-
-polyEvaluate -vertex $obj;
-			 -vertexComponent //total selected vertices as an int
-			 -edge
-			 -edgeComponent //total selected edges as an int
-			 -face
-			 -faceComponent //total selected faces as an int
-			 -area //returns surface area of of selected object as float
-			 -uvComponent //total selected UV faces as an int
-
-
-
-
 // optional components arg (else use selection).
 // optional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
 //vertex
@@ -1450,9 +1422,6 @@ verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
 edges = pm.filterExpand(edges, expand=1, selectionMask=32)
 //face
 faces = pm.filterExpand(faces, expand=1, selectionMask=34)
-
-
-
 
 
 //get adjacent faces
@@ -1874,7 +1843,7 @@ for eachFile in allFileNodes:
 	currentFile = cmds.getAttr("%s.fileTextureName" % eachFile)
 //get texture file path from selection or specific mesh
 shapesInSel = cmds.ls(dag=1,o=1,s=1,sl=1)
-shadingGrps = cmds.listConnections(shapesInSel,type='shadingEngine')
+shadingGrps = cmds.listConnections(shapesInSel, type='shadingEngine')
 shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
 fileNode = cmds.listConnections('%s.color' % (shaders[0]), type='file')
 currentFile = cmds.getAttr("%s.fileTextureName" % fileNode[0])
@@ -1904,7 +1873,7 @@ lights = pm.ls(lights=1) //#List all lights in the DAG.
 
 //get scene cameras and their transforms:
 //# Get all cameras first
-cameras = pm.ls(type=('camera'), l=True) //#List all cameras in the DAG.
+cameras = pm.ls(type='camera', l=True) //#List all cameras in the DAG.
 //# Let's filter all startup / default cameras
 startup_cameras = [c for c in cameras if pm.camera(c.parent(0), q=1, startupCamera=1)]
 //# non-default cameras are easy to find now. Please note that these are all PyNodes
@@ -2044,7 +2013,8 @@ cmds.getPanel(containing='button0')
 
 //get panel by type
 pm.getPanel(type='modelPanel')
-
+//
+pm.getPanel(scriptType='polyTexturePlacementPanel')
 
 
 //#Use the -typ/type flag to list all controls and control layouts.
@@ -2254,48 +2224,42 @@ ex. ...Maya\2017\bin mayapy.exe get-pip.py
 //it will have added Autodesk\Maya\20xx\Python\Scripts\pip.exe
 
 
-
+//import a python module
 //http://help.autodesk.com/view/MAYAUL/2016/ENU/?guid=GUID-55B63946-CDC9-42E5-9B6E-45EE45CFC7FC
-
 python("import sys");
+python("sys.path.append('" + $sourceLocationPath + "')"); 
+python("import YOURMODULE");
+python("YOURMODULE.launchMethod()"); //Using a "launchMethod()" in this way will let all of your Python code live in another file and leaving you to not write an exuberant amount of "python();" lines.
 
-// Call some python that will return a list of values. Note that we are
-// calling the python command with a single python statement. We have to
-// do that if we want to get a result back
-//
-string $version[] = python("sys.version_info");
-
-// The result will be an array of strings because one of the elements will
-// contain a string. Extract the major and minor parts of the version number
-//
-int $major = int($version[0]);
-int $minor = int($version[1]);
-
-// You can do mult-statement Python scripts, but there won't be a return
-// value
-python("import os\nprint os.environ ['MAYA_LOCATION']");
+// execute a python module from a mel script
+python("import os");
+python("path = os.path.expandvars('%CLOUD%/__portable/_scripts/apps/maya/userSetup.py')");
+python("execfile(path)");
 
 
-// Creating new variables requires the use of the initVar function to specify the type:
-//MelGlobals.VALID_TYPES = ['string', 'string[]', 'int', 'int[]', 'float', 'float[]', 'vector', 'vector[]']
-pm.melGlobals.initVar('string', 'gMyStrVar') // returns '$gMyStrVar'
-pm.melGlobals.initVar('string[]', '$tk_selection2')
-pm.melGlobals['gMyStrVar'] = 'fooey' // The variable will now be accessible within MEL as a global string.
+// mult-statement Python commands
+python("import os; print os.environ ['MAYA_LOCATION']"); //no return statement
+python("import os\nprint os.environ ['MAYA_LOCATION']"); //no return statement
 
 
+// Call python that will return a list of values.
+string $version[] = python("sys.version_info"); //call with a single python statement, when expecting a return value.
 
 //Python variable in MEL
 $myMELvariable = python("myPythonVariable");
 
+// create a mel variable 
+//MelGlobals.VALID_TYPES = ['string', 'string[]', 'int', 'int[]', 'float', 'float[]', 'vector', 'vector[]']
+pm.melGlobals.initVar('string', 'gMyStrVar') // use the initVar function to specify the type: // returns '$gMyStrVar'
+pm.melGlobals.initVar('string[]', '$tk_selection2')
+pm.melGlobals['gMyStrVar'] = 'fooey' // The variable will now be accessible within MEL as a global string.
+
+
 //MEL global variable in Python //import maya.mel as mel
 myPythonVariable = mel.eval('global $myMELvariable; $temp=$myMELvariable;')
 
-
-
 // To retrieve existing global variables, just use the name as a key:
-pm.melGlobals['gResourceFileList']
-// returns [u'defaultRunTimeCommands.res.mel', u'localizedPanelLabel.res.mel', ...]
-// works with or without $
+pm.melGlobals['gResourceFileList'] // returns [u'defaultRunTimeCommands.res.mel', u'localizedPanelLabel.res.mel', ...] // works with or without $
 
 
 //Registering a Python function as a MEL procedure:

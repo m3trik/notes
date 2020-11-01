@@ -1513,9 +1513,9 @@ ex. QtGui.QKeyEvent.key == QtCore.Qt.Key_Z
 ex. QtGui.QKeyEvent.matches(key)
 
 
-
-QtGui.QKeySequence()
-
+# multi-key shortcut
+#using QtGui.QKeySequence()
+self.addAction(QtWidgets.QAction("Repeat Last Command", self, shortcut=QtGui.QKeySequence(self.key_show, self.key_repeatLastCommand), triggered=self.repeatLastCommand)) #trigger repeatLastCommand with key_show + R
 
 
 w.keyPressEvent() #key press event under a window class

@@ -1806,20 +1806,20 @@ ex. rt.polyop.setVert(obj, <vertlist>, {<point3 pos>|<point3 pos_array>}) --Sets
 
 
 --get selection
-ex. rt.polyop.getVertSelection(obj) --Returns the current vertex selection as a bitarray.
+ex. rt.getVertSelection(obj)  --Returns the current vertex selection as a bitarray.
 ex. vertices = [i.index for i in obj.selectedVerts] --Returns list
 --alt
 ex. obj.selectedVerts()
-ex. rt.polyop.getEdgeSelection(obj) --Returns BitArray
+ex. rt.getEdgeSelection(obj) --Returns BitArray
 ex. edges = [i.index for i in obj.selectedEdges] --Returns list
-ex. rt.polyop.getFaceSelection(obj) --Returns BitArray
+ex. rt.getFaceSelection(obj) --Returns BitArray
 ex. faces = [i.index for i in obj.selectedFaces] --Returns list
 
 
 --set selection
-ex. rt.polyop.setVertSelection(obj, <vertlist>) --Sets the current vertex selection based on <vertlist>.
-ex. rt.polyop.setEdgeSelection(obj, <edgelist>)
-ex. rt.polyop.setFaceSelection(obj, <facelist>)
+ex. rt.setVertSelection(obj, <vertlist>) --rt.polyop.setVertSelection(obj) --Sets the current vertex selection based on <vertlist>.
+ex. rt.setEdgeSelection(obj, <edgelist>)
+ex. rt.setFaceSelection(obj, <facelist>)
 
 
 --hidden
@@ -1922,6 +1922,8 @@ ex. rt.polyop.getSafeFaceCenter(obj, <int face>) --Returns the "safe" center of 
 
 
 --divide
+--split vertex
+ex. rt.polyop.breakVerts(obj, <vertlist>) --For each vertex in <vertlist>, N-1 new vertices are created at the same location, where N is the number of faces using that vertex. Each of these faces will use one of these vertices.
 --edge middle:
 ex. rt.polyop.splitEdges(obj, <edgelist>)
 --fraction
@@ -1929,6 +1931,7 @@ ex. obj.EditablePoly.divideEdge(edge, position) --position is a float value betw
 ex. rt.polyop.divideEdge(obj, <int edge>, <float fraction>) --Divides the specified edge at the specified fractional distance along the edge. The return value is the index of the new vertex or undefined if no vertex was created.
 --divide face
 ex. rt.polyop.divideFace(obj, <int face>, <point3 pos>) --Divides the specified face, with the new vertex being created at the closest point on the face to the specified position. If the specified position is outside the face, the vertex will be created at the center of the face.
+
 
 
 
