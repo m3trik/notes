@@ -3134,16 +3134,13 @@ eg. module = __import__('module') #returns module
 eg. module = __import__(module, globals(), locals(), [module[module.rfind('_')+1:]]) #ie. import tk_buttons_maya_init as init. use module[strip at char] to get module variable from module name
 #using relative path
 eg. module = __import__('path.to.module.Module', fromlist=[''])
-#if module name is not a string
-eg. module = __import__(str(module))
 #import all
 eg. module = __import__(module, globals(), locals(), ['*'])
 
 
 
-# pass variable on import
-eg.
-	module.method(variablesPassedAsArguments)
+# pass arguments on import
+eg. module.method(args)
 	x = module.Class(range(1, 5))
 
 

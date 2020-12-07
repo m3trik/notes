@@ -39,8 +39,18 @@ int $var1, var2;
 $var1 = $var2 = 0; //same as $var1 = 0, $var2 = $var1
 
 
-
-whatIs	//query the type of variable   eg. whatIs "$tmp"; // Result: int variable
+// Check variable type:
+pm.mel.whatIs('$var') //query the type of variable   eg. whatIs "$var"; // Result: int variable
+eg.
+whatIs "$var1"; //result: string variable
+whatIs "$var2"; //result: float variable
+whatIs "$var3"; //result: int variable
+// Check node type:
+pm.nodeType(<curve>) //returns: 'transform'
+pm.nodeType(<curveShape>) //returns: 'nurbsCurve'
+pm.objectType(<curve>) //returns: 'nurbsCurve'
+//
+pm.ls(<curve>, showType=1) //returns: [nt.Transform(u'polyToCurve35'), u'transform']
 
 
 //variable's type CANNOT be redefined once it is created, until the maya session is ended.
@@ -69,10 +79,7 @@ int $var3 	 = $var; //repeated to an int
 //convert from array to string
 eg. string $newStringVar = ($floatArray[0] + "_" + $floatArray[1] + "_" + $floatArray[2]);
 
-eg. //check variable type:
-whatIs "$var1"; //result: string variable
-whatIs "$var2"; //result: float variable
-whatIs "$var3"; //result: int variable
+
 
 
 implicit    $variable = 1234;           //maya will determine the value as integers
@@ -125,7 +132,7 @@ print pm.selected()[0].namespace()
 
 filterExpand	//avoid Maya's component compression
 // #change [u'bodyShell.vtx[4:5]'] to [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
-edgeVertices = pm.filterExpand (edgeVertices, expand=1, selectionMask=31)
+edgeVertices = pm.filterExpand(edgeVertices, expand=1, selectionMask=31)
 
 
 
@@ -171,6 +178,12 @@ $roundTruncatedValue = trunc($floatValue*`pow 10 $n`+0.5)/`pow 10 $n`;
 //if however you want a literal truncation, remove the "+0.5" bit
 eg.
 $truncatedValue = trunc($floatValue*`pow 10 $n`)/`pow 10 $n`;
+
+
+
+
+
+
 
 
 "STRINGS:	//-------------------------------------------------------------------------------------------------------------------------------------------"
@@ -1123,9 +1136,13 @@ ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
 
 
 // connect atributes:
-ex. connectAttr -f "pSphere1.worldMesh" "cpom1.inMesh";	// Result: Connected pSphereShape1.worldMesh to cpom1.inMesh. // 
+connectAttr -f "pSphere1.worldMesh" "cpom1.inMesh";	// Result: Connected pSphereShape1.worldMesh to cpom1.inMesh. // 
+//
+pm.connectAttr(<node1>.outMesh, <node2>.inMesh)
+//using strings
+pm.connectAttr("SpineCurveInfo.arcLength", 'Spine_MDN'+'.input1X')
 
-ex. pm.connectAttr(<node1>.outMesh, <node2>.inMesh)
+
 
 
 
@@ -1464,6 +1481,10 @@ for vertex in vertices.split():
 vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //'.vtx','.e','.f'
 
 
+//get connected faces
+sel = pm.ls(sl=1)[0]
+sel.connectedFaces()
+
 
 
 //get selected edge length:
@@ -1562,7 +1583,7 @@ ex. pm.pointPosition(vertex, world=True) //ie. result: [2, 1, 1]
 
 
 
-//get closest point on mesh:
+// get closest point on mesh:
 cpmNode = pm.ls(pm.createNode('closestPointOnMesh'))[0] //#get the closestPointOnMesh node.
 pm.connectAttr(<obj2Shape>.outMesh, cpmNode.inMesh)
 v1Pos = pm.pointPosition(<obj1Vertex>, world=True)
@@ -1570,12 +1591,21 @@ pm.setAttr(cpmNode.inPosition, v1Pos[0], v1Pos[1], v1Pos[2], type="double3") //#
 index = pm.getAttr(cpmNode.closestVertexIndex) //#vertex Index. | ie. result: [34]
 closestPoint = obj2Shape.vtx[index]
 
-//get nearest point on curve:
-npcNode = pm.ls(pm.createNode("nearestPointOnCurve"))[0] //#get the nearestPointOnCurve node.
-pm.connectAttr(<curveShape>.worldSpace, npcNode.inputCurve)
-pm.setAttr(npcNode.inPosition, 1, 2, 3, type="double3")
-wsPos = pm.getAttr(npcNode.position)
-uParam = pm.getAttr(npcNode.parameter)
+
+
+//get center point
+//object center
+x2, y2, z2 = pm.objectCenter(obj) //#centerPoint = pm.objectCenter(object)
+//alt using property
+obj.translate
+
+// get bounding box
+xmin, ymin, zmin, xmax, ymax, zmax = pm.xform(obj, boundingBox=1)
+//on polygon objects
+xmin, xmax, ymin, ymax, zmin, zmax = pm.polyEvaluate(obj, boundingBox=1)
+//on multiple objects:
+xmin, ymin, zmin, xmax, ymax, zmax = pm.exactWorldBoundingBox(objects)
+
 
 
 // pivots
@@ -1641,6 +1671,128 @@ $m1 = $m2 * $m3;
 
 // freeze transformations
 pm.makeIdentity (obj, apply=1, t=1, r=1, s=1, n=0, pn=1)
+
+
+
+
+
+
+
+
+
+
+
+
+"DEFORMATION: //-----------------------------------------------------------------------------------------------------------------------------------------"
+
+
+// Deform to curve
+pm.deformer(obj, <curve>, type='curveWarp', name='curveWarp#')
+
+
+
+
+
+
+
+
+
+
+
+"CURVES: //----------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+// Create a curve
+pm.curve(p=[(0, 0, 0), (3, 5, 6), (5, 6, 7), (9, 9, 9)])
+// with weighting
+pm.curve(pw=[(0, 0, 0, 1), (3, 5, 6, 1), (5, 6, 7, 1), (9, 9, 9, 1)]) //x,y,z and w values of a point, where the w is a weight value. [linear, linear, linear, float]
+
+
+// Get control vertices
+cvs = pm.getAttr(<curve1>.cp)
+// Get number of CVs
+numCVs = len(<curve1>.cv)
+numCVs = pm.getAttr(<curve1>.cp, size=1)
+
+
+// Get cv position
+pm.pointOnCurve('curve1', parameter=0.5, position=True) //(Parameter is the point on along the curve) #Returns the (x,y,z) position of curve1 at parameter 0.5. If no flag is specified, it assumes p/position by default.
+// Get cv tangent
+pm.pointOnCurve('curve1', parameter=0.5, tangent=True)
+pm.pointOnCurve('curve1', parameter=0.5, normalizedTangent=True)
+// Get cv normal
+pm.pointOnCurve('curve1', parameter=0.5, normal=True)
+pm.pointOnCurve('curve1', parameter=0.5, normalizedNormal=True) //#Returns the (x,y,z) normalized normal of curve1 at parameter 0.5.
+// Get cv curvature
+pm.pointOnCurve('curve1', parameter=0.5, curvatureRadius=True) //#Returns the curvature radius of curve1 at parameter 0.5.
+pm.pointOnCurve('curve1', parameter=0.5, curvatureCenter=True)
+//
+infoNode = pm.ls(pm.pointOnCurve('curve1', ch=True, parameter=0.55))
+pm.getAttr(infoNode.position) //# returns the position
+pm.getAttr(infoNode.normal) //# returns the normal
+
+
+
+// Curve Properties:
+// CV
+<curve1>.cv[0]		
+<curve1>.cv[0:2] //slice
+<curve1>.cv[:] //all
+// Get the degree of the curve.
+pm.getAttr(<curve1>.degree) //Note that the number of CVs = degree + spans.
+// Get the number of spans in the curve
+pm.getAttr(<curve1>.spans) //Note that the number of CVs = degree + spans.
+// Get the curve form
+pm.getAttr(<curve1>.form)
+// Get the minimum parameter value on the curve
+pm.getAttr(<curve1>.minValue)
+// Get the maximum parameter value on the curve
+pm.getAttr(<curve1>.maxValue)
+// Get the local x,y,z position of the 1st CV. (Use a curve info node if the curve is a result of a construction history operation)
+pm.getAttr(<curve1>.cv[0]) //cv position at index 0
+
+
+// Get the arc length of the curve. Use “-ch” flag with the arclen command to get a curve info node that constantly updates to the current arc length.
+pm.arclen(<curve1>)
+
+// Curve info node (You can use the curve info node to query other attributes such as world space CV values and arc length)
+cInfoNode = pm.ls(pm.createNode('curveInfo'))[0]
+pm.connectAttr(<curveShape>.worldSpace, cInfoNode.inputCurve) //#connect the info node to the curve.
+pm.getAttr(cInfoNode.knots[li]) //#query the knot vector of the curve.
+
+// Nearest point on curve Node:
+npcNode = pm.ls(pm.createNode("nearestPointOnCurve"))[0] //#get the nearestPointOnCurve node.
+pm.connectAttr(<curveShape>.worldSpace, npcNode.inputCurve)
+pm.setAttr(npcNode.inPosition, 1, 2, 3, type="double3")
+wsPos = pm.getAttr(npcNode.position)
+uParam = pm.getAttr(npcNode.parameter)
+
+
+
+
+// Reverse curve
+pm.reverseCurve(curves, rpo=1)
+
+
+// Rebuild curve
+// set parameter range:
+pm.rebuildCurve(curves, keepRange=0) //keepRange: (0)parameter 0-1, (1)keep original range, (2)parameter 0-number of spans.
+// rebuild curve to 5 uniform spans
+cmds.rebuildCurve(rebuildType=0, spans=5) //rebuildType: (0)uniform, (1)reduce spans, (2)match knots, (3)remove multiple knots, (4)curvature (5)rebuild ends (6)clean)
+// rebuild curve by reducing redundant spans
+cmds.rebuildCurve(rebuildType=1)
+// rebuild curve by matching the parameterization of another curve
+cmds.rebuildCurve('curve1', 'curve2', rebuildType=2) // curve1 is the curve to rebuild, curve2 is the reference curve
+// rebuild curve by removing all multiple interior knots
+cmds.rebuildCurve(rebuildType=3)
+// rebuild curve using the curvature of the curve to create more spans where curvature is higher
+cmds.rebuildCurve(rebuildType=4)
+
+
+// Extract curve from polygon edgeloop
+curveObj, curveNode = pm.polyToCurve(edgeLoop, form=2, degree=3, conformToSmoothMeshPreview=1) //returns Object name / node name ex. [u'polyToCurve12', u'polyEdgeToCurve8']
+
+
 
 
 
