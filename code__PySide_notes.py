@@ -1531,7 +1531,10 @@ event.key() == QtCore.Qt.Key_X
 
 
 #modifiers:
-modifiers = QApplication.keyboardModifiers() #ex. (bool(modifiers == QtCore.Qt.ControlModifier)):
+modifiers = QtGui.QApplication.keyboardModifiers() #ex. (bool(modifiers == QtCore.Qt.ControlModifier)):
+if modifiers==QtCore.Qt.ShiftModifier: #check for Shift key.
+if modifiers==QtCore.Qt.ControlModifier: #check for Control key.
+if modifiers==(QtCore.Qt.ControlModifier|QtCore.Qt.ShiftModifier): #check for Shift+Control keys. 
 
 
 

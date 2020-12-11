@@ -377,7 +377,7 @@ string $buffer[];
 $numTokens = `tokenize "testing=non-default separators" "=" $buffer`;
 
 
-//string manipulation:
+//MEL string manipulation:
 basenameEx 
 capitalizeString 
 containsMultibyte 
@@ -1933,7 +1933,7 @@ convertedRGB = [round(float(v)/255, 3) for v in rgb]
 //Hypershade Editor
 
 //open the hypershade widow
-mel.eval("HypershadeWindow()") //pm.HypershadeWindow()
+pm.mel.HypershadeWindow()
 
 //Get the name of the hypershade panel
 panel = pm.getPanel(withFocus=True)
@@ -2158,15 +2158,15 @@ eg. pm.lsUI(windows=1)
 eg. pm.lsUI(panels=1, editors=1)
 
 //get all panels
-pm.getPanel(all=True)
+eg. pm.getPanel(all=True)
 
 //get panel by name
-cmds.getPanel(containing='button0')
+eg. pm.getPanel(containing='button0')
 
 //get panel by type
-pm.getPanel(type='modelPanel')
+eg. pm.getPanel(type='modelPanel')
 //
-pm.getPanel(scriptType='polyTexturePlacementPanel')
+eg. pm.getPanel(scriptType='polyTexturePlacementPanel')
 
 
 //#Use the -typ/type flag to list all controls and control layouts.
@@ -2190,7 +2190,7 @@ print [str(i.keyword1()) for i in pm.lsUI(editors=1,panels=1,windows=1,menus=0,c
 
 
 
-//VIEWPORT: ------------------------------------------------------
+"//VIEWPORT: -------------------------------------------------------------------------------------------------------------------------------------------"
 
 
 
@@ -2426,19 +2426,27 @@ mel.createMelWrapper(module.method, retType='string[]'); //specify return type i
 
 
 //To associate a MEL script with a hotkey, you must first add the script to the list of available hotkey commands, then assign a hotkey to the command you created.
+'''
 >	Select Window > Settings/Preferences > Hotkey Editor.
+'''
 //Commands are grouped into categories. 
+'''
 >	Click the category name in the Categories list you want to put your script in.
 >	In the command area at the bottom of the hotkey editor, click New.
 >	Type a Name and Description for the new command.
 >	In the Command text box, type the MEL commands you want the hotkey to run.
 >	Click Accept.
 >	Type a key name in the Key text box and turn on any modifiers you want on the hotkey.
+'''
 //For example, type m in the text box and turn on the Alt setting to assign the marking menu to  + m.
 //As you edit these settings, Maya shows the command currently assigned to the hotkey, if any. Only assign the hotkey if you don’t mind overriding this command.
+'''
 >	Set the Direction option. //If you select Press, Maya runs the command when you press the key down. If you select Release, Maya runs the command when you let the key up.
+'''
 //The distinction between Press and Release can be important, for example when you assign a hotkey to a snapping mode. You want to assign the command to turns the snapping mode on to the key press, and the command that turns the snapping mode off to the key release.
+'''
 >	Click Assign.
+'''
 //If the hotkey you set already has a command assigned, Maya asks if you want to override it.
 
 
@@ -2512,12 +2520,8 @@ pm.hotkeyCtx(t='CustomEditor', rac=True)
 
 
 
-"MAYA SCRIPT EDITOR OPTIONS:"
+"MAYA SCRIPT EDITOR OPTIONS: //--------------------------------------------------------------------------------------------------------------------------"
 
-
-HELP:
-// highlight command in script and right click to select command documentation link
-// ctrl + space   -  suggest possible commands based on current input
 
 //tab
 tab		shift+tab //indent /unindent highlighted block
@@ -2525,46 +2529,47 @@ tab		shift+tab //indent /unindent highlighted block
 ctrl+/ //toggle comment highlighted block
 
 
-help<command name>  ex. help move
-
-						help -list "*keyword or fragment*";
-						
-						runTimeCommand -query -command "runtimeCommand";   (to figure out what a runtime commmand does)
-						defaultRunTimeCommands.mel //scripts\startup folder of the Maya installation directory
-						
-						whatIs command;                 (to figure out where a proc is defined and read that MEL script)
-
+// get info on a command
+// highlight command in script and right click to select command documentation link
+// ctrl + space   -  suggest possible commands based on current input
+ex. pm.help(move)
+ex. help -list "*keyword or fragment*";
+//
+runTimeCommand -query -command "runtimeCommand";   (to figure out what a runtime commmand does)
+defaultRunTimeCommands.mel //scripts\startup folder of the Maya installation directory
+//
+whatIs command;                 (to figure out where a proc is defined and read that MEL script)
 
 
 							 
-scriptEditorInfo	        http://help.autodesk.com/cloudhelp/2016/ENU/Maya-Tech-Docs/Commands/scriptEditorInfo.html 
+scriptEditorInfo	        //http://help.autodesk.com/cloudhelp/2016/ENU/Maya-Tech-Docs/Commands/scriptEditorInfo.html 
 							//script editor options mel commands
-							ex. scriptEditorInfo -clearHistory //Clears the read-only text in the upper field of the script editor.
+							//	ex. scriptEditorInfo -clearHistory //Clears the read-only text in the upper field of the script editor.
 
-Show Stack Trace             Opens another window which lists errors and their line numbers in external script files.
-							 This is very useful for debugging scripts in external files. 
+Show Stack Trace            //Opens another window which lists errors and their line numbers in external script files.
+							//This is very useful for debugging scripts in external files. 
 
-Suppress Command Results     When turned on, the Script editor does not show the result of 
-							 commands. Result messages start with // Result:
+Suppress Command Results    //When turned on, the Script editor does not show the result of 
+							//commands. Result messages start with // Result:
 
-Suppress Info Messages       When turned on, the Script editor does not show informational 
-							 messages. Informational messages are of many different types and do 
-							 not have a set prefix (except for //). 
+Suppress Info Messages      //When turned on, the Script editor does not show informational 
+							//messages. Informational messages are of many different types and do 
+							//not have a set prefix (except for //). 
 
-Suppress Warning Messages    When turned on, the Script editor does not show warning messages. 
-							 Warning messages start with // Warning:. 
+Suppress Warning Messages   //When turned on, the Script editor does not show warning messages. 
+							//Warning messages start with // Warning:. 
 
-Suppress Error Messages      When turned on, the Script editor does not show error messages. 
-							 Error messages start with // Error:. 
-								ex. scriptEditorInfo -e -suppressWarnings true;
-
-
+Suppress Error Messages     //When turned on, the Script editor does not show error messages. 
+							//Error messages start with // Error:. 
+							//	ex. scriptEditorInfo -e -suppressWarnings true;
 
 
 
 
 
-"MAYA ENVIRONMENT:"
+
+
+"MAYA ENVIRONMENT: //------------------------------------------------------------------------------------------------------------------------------------"
 
 //execute from batch or command line:
 maya -batch -file someMayaFile.mb -command "file -save"
@@ -2623,33 +2628,33 @@ ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squ
 
 
 inViewMessage 		//Used for displaying in-view messages.
-					ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
+					//	ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
 					//html tags. Dont forget to close your tags like this </tag>
-					<em> – Italics
-					<hl> – Highlight (not HTML, but it works)
-					<small> – Small
-					<i> – Italics
-					<sub> – Subscript
-					<sup> – Superscript
-					<blockquote> – Indented Quote
-					<h1> – Large heading
-					<h2> – Medium heading
-					<h3> – Small heading
-					<br> – Line break
-					<p> – Paragraph
-					<span> – Allows you to set the font colour and size amongst other things.
+					//	<em> – Italics
+					//	<hl> – Highlight (not HTML, but it works)
+					//	<small> – Small
+					//	<i> – Italics
+					//	<sub> – Subscript
+					//	<sup> – Superscript
+					//	<blockquote> – Indented Quote
+					//	<h1> – Large heading
+					//	<h2> – Medium heading
+					//	<h3> – Small heading
+					//	<br> – Line break
+					//	<p> – Paragraph
+					//	<span> – Allows you to set the font colour and size amongst other things.
 
 //flags:
-message(msg) //The message to be displayed, can be html format. General message
-assistMessage(amg) //The user assistance message to be displayed, can be html format.
-statusMessage(smg) //The status info message to be displayed, can be html format.
+message(msg) 		//The message to be displayed, can be html format. General message
+assistMessage(amg) 	//The user assistance message to be displayed, can be html format.
+statusMessage(smg) 	//The status info message to be displayed, can be html format.
 
 
-fontSize(fts)	//Sets the message font size.
+fontSize(fts)		//Sets the message font size.
 
-dragKill(dk) //Use this flag if the message needs to be deleted on mouse drag.
+dragKill(dk) 		//Use this flag if the message needs to be deleted on mouse drag.
 
-position(pos) //The position that the message will appear at relative to the active viewport. The supported positions are:
+position(pos) 		//The position that the message will appear at relative to the active viewport. The supported positions are:
 "topLeft"
 "topCenter"
 "topRight"
@@ -2679,7 +2684,7 @@ objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas 
 							warning("No surface exists");
 							}
 
-break	 				//break out of current loop but continue statements within the current function
+break	 			//break out of current loop but continue statements within the current function
 continue 			//continue outside of the current function
 
 error 	eg. if (size($l) == 0) {
@@ -2687,7 +2692,7 @@ error 	eg. if (size($l) == 0) {
 						} // Error: error display string //
 
 //generally best practice is to use objExists, if ($node != "") or similar rather than catch
-catch			//takes a MEL expression as an argument.
+catch				//takes a MEL expression as an argument.
 					//returns '1' if the expression in parenthesis produces an error and 0 otherwise
 				ex.	if (catch(`createNode -name myTransform transform`)){
 						print "Could not create sphere\n";
@@ -2695,8 +2700,8 @@ catch			//takes a MEL expression as an argument.
 						// continue on as usual...
 					}
 
-catchQuiet 	//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
-						//catchQuiet behaves like catch, except that it supresses warnings and errors.
+catchQuiet			//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
+					//catchQuiet behaves like catch, except that it supresses warnings and errors.
 
  
 MayaNodeError		//
