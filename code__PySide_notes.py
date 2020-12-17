@@ -397,6 +397,7 @@ cmb.editTextChanged.connect(method)
 cmb.addItem(string, userData=None) #string/data
 cmb.addItems(list_) 			#string/data
 cmb.insertItem(index, string, userData=None) #at index
+cmb.insertItem(cmb.currentIndex(), string) #insert item at current index.
 cmb.insertItems(index, list_)
 #get all items:
 items = [cmb.itemText(i) for i in range(cmb.count())]

@@ -775,6 +775,8 @@ eg. 'string'.replace('in', '', 0) #returns 'strg'
 eg. 'string'.replace('in', '', -1) #returns 'strg'
 #first x occurances of substring:
 eg. 'ABBA'.replace('B', '', 2) #returns 'AA'
+#first x occurances from right
+eg. ''.join('pCylinderShape1.f[0]'.rsplit('Shape', 1)) #replaces the first occurance of 'Shape' from the right with ''. #'pCylinder1.f[0]' from 'pCylinderShape1.f[0]'
 
 #strip numberic characters.  also lstrip/ rstrip.
 eg. 'b000'.strip('0123456789') #returns 'b'
@@ -1189,6 +1191,9 @@ ex. inverse = [b for a, b in zip(list1, list2) if a!= b]
 ex. list(set(list2) - set(list1)) #leave out the final list converstion if an end result set is fine
 ex. list(set(list2).difference(list1))
 
+
+#get common elements between two lists
+common_elements = list(set(list1).intersection(list2)) #returns the unique common elements, but not any repeated elements that may exist.
 
 
 #combine lists

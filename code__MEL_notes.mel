@@ -1426,6 +1426,8 @@ polyEvaluate -edgeComponent $obj //
 selectedFaces = [int(f.split('[')[-1].rstrip(']')) for f in pm.filterExpand(sm=34)] //ie. [818, 1380] from [u'obj.f[818]', u'obj.f[1380]']
 polyEvaluate -faceComponent $obj //
 //
+componentNumbers = [int(str(i).split('[')[-1].split(']')[0]) for i in components] //#get the vertex numbers as integer values. ie. [818, 1380]
+//
 [int(str(i).split('[')[-1].split(']')[0]) for i in components] //ie. [818, 1380] from [u'obj.vtx[818]', u'obj.vtx[1380]']
 //using regex (import re)
 [int(re.findall(r'(?<=\[)[0-9]+(?=:?])', str(s))[0]) for s in components] //ie. [818, 1380] from [u'obj.vtx[818]', u'obj.vtx[1380]']
