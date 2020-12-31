@@ -506,15 +506,22 @@ eg. a,b,c = (1,2,3)
 #dynamically assign variables:
 #using a dictionary:
 eg. vars_={}
-	vars_['key']=value
-	#print vars_['key']
+	vars_['var1']=value #vars_['var1'] returns: <value>
+
 #adding to globals() or locals():
 eg. locals()[key]=value
 eg. globals()['var'] = "an object"
 #assign variables from **kwargs
-eg. for key,value in kwargs.iteritems(): #create variables for any kwargs passed in
-		exec('%s=%s' % (key,value))
-
+eg. kwargs_ = (exec('%s=%s' % (k,v)) for k,v in kwargs.items()) #create variables for any kwargs passed in
+#
+eg. kwargs_ = ('{}={}'.format(k,v) for k,v in kwargs.items())
+#
+# unpack an iterables contents to arguments in a function call
+#using * to get list or set as *args
+eg. *list_ #eq to: list_[0], list_[1], ...
+eg. *range(10, 13) #eq to: 10, 11, 12
+#using ** to get dictionary keys/values as **kwargs
+eg. **dict_ #eq to: key1=value1, key2=value2
 
 
 #swap variables
@@ -1314,7 +1321,7 @@ eg. list_ = [x for x in list_ if x != 20]
 #by index or specify a slice [::-1]
 eg. del list_[-1] #deletes the last element
 #to delete an item x.pop(index)
-eg. x.pop(0) del(list_[1]) #delete index 1
+eg. x.pop(0)#delete the first index.
 #
 eg. x.pop(list_.index(x))
 
@@ -1854,24 +1861,11 @@ class ClassWithGlobalFunction:
 				global monty
 				def monty(): return 'python'
 
-#####
 class X:
 	global d
 	def d():
 		print 'I might be defined in a class, but I\'m global'
 
-
-
-
-
-
-
-# unpack an iterables contents to arguments in a function call
-#using * to get list or set as *args
-eg. func(*list_) #eq to: func(list_[0], list_[1], ...)
-eg. func(*range(10, 13)) #eq to: func(10, 11, 12)
-#using ** to get dictionary keys/values as **kwargs
-eg. func(**dict_) #eq to: func(key1=value1, key2=value2)
 
 
 
@@ -2094,6 +2088,9 @@ print [i for i in dir(uv) if kw in i or kw.title() in i or kw.swapcase() in i or
 
 #using __dict__:
 Class.__dict__ #get the attributes defined for the instance. returns: {attribute name:value}
+
+#
+vars(Class)
 
 #using help():
 help(Class) # Class information
@@ -2891,7 +2888,24 @@ print os.path.abspath(os.path.dirname(__file__))
 
 
 
+# RENAME A FILE
+os.rename(old, newname)
 
+
+
+# move a file
+#using shutil (import shutil)
+shutil.move(src, dest)
+#using rename
+os.rename(src, dest) #using forwardslashes, change the dest path
+
+
+
+
+# get last modified time stamp
+fileName = os.path.join(root, sc) #join fileName to include the path.
+mtime = os.path.getmtime(file_name) #returns float value which can be used with comparators.
+last_modified_date = datetime.fromtimestamp(mtime) #convert to readable format
 
 
 

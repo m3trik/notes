@@ -1719,6 +1719,7 @@ numCVs = pm.getAttr(<curve1>.cp, size=1)
 
 // Get cv position
 pm.pointOnCurve('curve1', parameter=0.5, position=True) //(Parameter is the point on along the curve) #Returns the (x,y,z) position of curve1 at parameter 0.5. If no flag is specified, it assumes p/position by default.
+pm.pointPosition(object.cv[1], -w) //Point position works with any of the point attributes ep, cv, uv, pt etc.
 // Get cv tangent
 pm.pointOnCurve('curve1', parameter=0.5, tangent=True)
 pm.pointOnCurve('curve1', parameter=0.5, normalizedTangent=True)

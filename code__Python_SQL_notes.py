@@ -5,13 +5,68 @@
 
 
 
+' OPERATORS ___________________________________________________'
+
+# mathematical
++
+-
+*
+/
+%
+<<
+>>
+&
+|
+
+# comparators
+=
+==
+<
+<=
+>
+>=
+!=
+IN
+NOT IN
+BETWEEN
+IS
+IS NOT
+
+
+
+
+
+
+' DATA TYPES __________________________________________________'
+
+# storage classes:
+NULL 		#The value is a NULL value.
+INTEGER 	#The value is a signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.
+REAL 		#The value is a floating point value, stored as an 8-byte IEEE floating point number.
+TEXT 		#The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
+BLOB 		#The value is a blob of data, stored exactly as it was input.
+
+# boolean:
+#Boolean values are stored as integers 0 (false) and 1 (true).
+
+# date & time
+TEXT 		#as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS").
+REAL 		#as Julian day numbers, the number of days since noon in Greenwich on November 24, 4714 B.C. according to the proleptic Gregorian calendar.
+INTEGER 	#as Unix Time, the number of seconds since 1970-01-01 00:00:00 UTC.
+
+
+
+
+
+
+' SYNTAX ______________________________________________________'
+
 # Creating an SQLite database:
 conn = sqlite3.connect(<file>) #<file> can be an absolute path, a filename (use current working directory), or ':memory:' (database in RAM).
 cur = conn.cursor()
 
 
-#tables _______________________________________________________
-
+#tables
 #SQLITE_MASTER: (table that defines the schema for the database)
 CREATE TABLE sqlite_master (
   type TEXT,
@@ -118,7 +173,10 @@ task = (2, '2015-01-04', '2015-01-06', 2)
 [row for row in <cur>.fetchall()] #returns a list of all the elements remaining in the initial query (all elements if you haven't selected anything).
 
 
-
+# Delete table:
+sql = 'DROP TABLE <table>;' #DROP TABLE database_name.table_name;
+<cur>.execute(sql)
+<conn>.commit()
 # Delete row:
 sql = 'DELETE FROM <table>'
 <cur>.execute(sql)
@@ -133,7 +191,7 @@ sql = 'DELETE FROM <table> WHERE id=?'
 
 
 
-# COMMAND LINE ________________________________________________
+' COMMAND LINE ________________________________________________'
 #sqlite3 tool is a terminal based frontend to the SQLite library
 
 #hotkeys

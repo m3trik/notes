@@ -102,19 +102,19 @@ TIMEOUT			rem ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does pre
 :: variable=value   not varible = value unless a whitespace before the value is intended
 
 :: assign variable:
-set "variable=.proj"
+set "VARIABLE=.proj"
 
 :: assign empty variable:
-set variable=
+set VARIABLE=
 
 :: prompt user assigned
-set /p variable= Printed text prompt string
+set /p VARIABLE="Printed text prompt string"
 
 :: expression result as variable
-set /a variable=expression 
+set /a VARIABLE=expression 
 
 :: call variable:
-%variable%
+%VARIABLE%
 
 
 
@@ -184,7 +184,6 @@ set string=%string:.=,%
 if %choice%==[%1]==[] goto start
 if /i %choice%==one goto one
 if /i %choice%==two goto two
-if /i %choice%==end goto end
 
 
 :: if/else:
@@ -195,7 +194,11 @@ if not exist %object% (
 )
 
 
-
+:: boolean
+set "condition=true"
+if "%condition%" == "true" (
+    %= Do something... =%
+)
 
 
 
