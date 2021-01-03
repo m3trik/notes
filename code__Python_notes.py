@@ -2734,6 +2734,13 @@ keyboard.add_hotkey(shortcut, event) #attach the function to hot-key
 eg. os.path.isfile() #returns a boolean value
 
 
+# get all files of given type
+#using glob (import glob)
+txt_files = glob.glob('/dir/*.txt') #returns a list.
+#using pathlib (from pathlib import Path)
+txt_files = Path('/tmp').glob('*.txt') #matches files only in the top level directory.
+txt_files = Path('/tmp').glob('*.txt') #matches all files in the directory and all subdirectories, recursively.
+
 
 
 # environment variables
@@ -2896,6 +2903,8 @@ os.rename(old, newname)
 # move a file
 #using shutil (import shutil)
 shutil.move(src, dest)
+#move and replace existing: (when specifying the full path to the destination, any existing file will be overwritten.)
+shutil.move(os.path.join(src, filename), os.path.join(dst, filename))
 #using rename
 os.rename(src, dest) #using forwardslashes, change the dest path
 
@@ -3019,52 +3028,9 @@ eg. with open('file.txt', 'a') as f:
 
 
 
-
-
-											 
-
-
-
 #close a file previously opened
 eg. f.close() #the file is automatically closed at the end of 'with' statements. also.'try:' & 'finally:'
 
-
-
-
-
-
-
-# DELETING FILES AND/OR DIRECTORIES
-#delete a file.
-eg. file_ = '/tmp/<file_name>.txt'
-	if os.path.exists(file_): #check if file exists:
-#alt check 'isFile'
-eg.	file_='/tmp/foo.txt'
-	# If file exists, delete it
-	if os.path.isfile(file_):
-	else: # Show an error
-		print ('Error: %s file not found' % file_)
-
-#alt delete syntax
-eg. os.unlink('/tmp/<file_name>.txt')
-
-#using Exception Handling (import os)
-eg.	file_= raw_input('Enter file name to delete: ') #Get input
-	try: #Try to delete the file
-		os.remove(file_)
-	except OSError, e:  # if failed, report it back to the user
-
-
-#remove an empty directory.
-eg. os.rmdir()
-
-
-#delete a directory and all its contents.
-#import os, sys, shutil
-eg. try: #Try to remove tree; if failed show an error using try...except on screen
-		shutil.rmtree(dir_)
-	except OSError, e:
-		print ('Error: %s - %s.' % (e.filename, e.strerror))
 
 
 
@@ -3074,8 +3040,38 @@ eg. try: #Try to remove tree; if failed show an error using try...except on scre
 eg. os.path.getmtime(file)
 
 #convert to readable format
-eg. from datetime import datetime
-	datetime.fromtimestamp(1382189138.4196026).strftime('%Y-%m-%d %H:%M:%S') #returns '2013-10-19 16:25:38'
+# using datetime (from datetime import datetime)
+eg. datetime.fromtimestamp(1382189138.4196026).strftime('%Y-%m-%d %H:%M:%S') #returns '2013-10-19 16:25:38'
+
+
+
+
+# DELETING FILES AND/OR DIRECTORIES
+# delete a file
+os.remove(file_path) #use exception handling to catch OSError.
+os.unlink(file_path)
+#using pathlib (from pathlib import Path)
+file_path = Path('/tmp/file.txt')
+file_path.unlink()
+#check if file exists:
+eg. os.path.exists(file_)
+#check if file 'isFile':
+eg.	os.path.isfile(file_)
+
+
+
+# delete a directory
+#delete an empty directory
+os.rmdir()
+#using pathlib (from pathlib import Path)
+dir_path = Path('/tmp/img')
+dir_path.rmdir()
+#delete a non-empty directory.
+#using shutil (import shutil)
+dir_path = '/tmp/img' #The argument passed to shutil.rmtree() cannot be a symbolic link to a directory.
+shutil.rmtree(dir_path) #except OSError, e: print ('Error: %s - %s.' % (e.filename, e.strerror))
+
+
 
 
 
