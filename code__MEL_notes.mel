@@ -1556,13 +1556,7 @@ scale
 
 nonLinear
 
-xform 
-// centerPivots () 
-// pivots (linear, linear, linear)
-// scalePivot (linear, linear, linear) 
-// rotatePivot (linear, linear, linear)
-// zeroTransformPivots ()
-
+xform
 // translation (linear, linear, linear)
 // rotation (angle, angle, angle)
 // rotateAxis (angle, angle, angle)
@@ -1570,17 +1564,14 @@ xform
 // scale (float, float, float)
 // scaleTranslation (linear, linear, linear) 
 
-// get an objects current rotation value:
-ex. origRotationValue = pm.xform(query=1, rotation=1)
-// set the rotation
+// get rotation
+ex. pm.xform(query=1, rotation=1)
+// set rotation
 ex. pm.xform(rotation=[x,y,z])
-// restore the original rotation value:
-ex. pm.xform(object_, rotation=origRotationValue)
-
 
 
 // get vertex position (get point position)
-ex. pm.xform(vertices, query=1, t=1, ws=1) //ie. result: [2, 1, 1]
+ex. pm.xform(vertices, query=1, translation=1, worldSpace=1) //ie. result: [2, 1, 1]
 ex. pm.pointPosition(vertex, world=True) //ie. result: [2, 1, 1]
 
 
@@ -1602,7 +1593,7 @@ x2, y2, z2 = pm.objectCenter(obj) //#centerPoint = pm.objectCenter(object)
 obj.translate
 
 // get bounding box
-xmin, ymin, zmin, xmax, ymax, zmax = pm.xform(obj, boundingBox=1)
+xmin, ymin, zmin, xmax, ymax, zmax = pm.xform(obj, q=1, boundingBox=1)
 //on polygon objects
 xmin, xmax, ymin, ymax, zmin, zmax = pm.polyEvaluate(obj, boundingBox=1)
 //on multiple objects:
@@ -1611,23 +1602,25 @@ xmin, ymin, zmin, xmax, ymax, zmax = pm.exactWorldBoundingBox(objects)
 
 
 // pivots
-// get/set objects pivot point:
-ex.
-getAttr ball.scalePivot;
-ex.
-setAttr ball.scalePivot;
-//or
-ex.
-xform -query -scalePivot -worldSpace $ObjectName;
+//get pivot point
+ex. pm.getAttr(ball.scalePivot)
+ex. pm.xform(obj, q=1, scalePivot=1, worldSpace=1)
+ex. pm.getAttr(ball.rotatePivot)
+ex. pm.xform(obj, q=1, rotatePivot=1, worldSpace=1)
+//set pivot point
+ex. pm.setAttr(ball.scalePivot)
+ex. pm.xform(obj, scalePivot=[0,0,0], worldSpace=1)
+ex. pm.setAttr(ball.rotatePivot)
+ex. pm.xform(obj, rotatePivot=[0,0,0], worldSpace=1)
+ex. obj.setScalePivot(obj.c.get())
+ex. obj.setRotatePivot(obj.c.get())
+//center pivot
+pm.xform(obj, centerPivots=1)
+//
+pm.xform(obj, pivots=1)
+pm.xform(obj, zeroTransformPivots=1)
 
-// get/set objects rotate pivot position:
-ex.
-getAttr ball.rotatePivot;
-ex.
-setAttr ball.rotatePivot;
-//or
-ex.
-xform -query -rotatePivot -worldSpace $ObjectName;
+
 
 
 
@@ -1877,7 +1870,19 @@ for material in pm.ls(mat=1, flatten=1):
 
 
 //create shader
-mat = pm.shadingNode('lambert', asShader=1, name=name)
+mat = pm.shadingNode('lambert', asShader=1, name='name#')
+//connect shader to sg surface shader
+pm.connectAttr(mat.outColor, shading_group.surfaceShader)
+
+//create file texture node
+file_node = pm.shadingNode('path_to_file', asTexture=1)
+//connect file texture node to shader's color
+pm.connectAttr(file_node.outColor, mat.color)
+
+//create a shading group
+shading_group = pm.sets(renderable=True, noSurfaceShader=True, empty=True)
+
+
 
 
 //assign shader
@@ -1885,14 +1890,12 @@ pm.hyperShade(face, assign=mat) //#without optional first arg specified, shader 
 //using sets:
 shader = pm.shadingNode('lambert', asShader=True)
 shaderGrp = pm.sets(empty=True, renderable=True, noSurfaceShader=True)
-pm.connectAttr(shader+".outColor", shaderGrp+".surfaceShader", f=True)
+pm.connectAttr(shader.outColor, shaderGrp.surfaceShader, f=True)
 pm.sets(faces, e=True, forceElement=shaderGrp)
 
 
-
-//get node type
-pm.nodeType(node) //returns ie. 'VRayMultiSubTex'
 //select by node type
+node_type = pm.nodeType(node) //get node type //returns ie. 'VRayMultiSubTex'
 node = pm.ls(selection=1, type='VRayMultiSubTex') //#List all objects of the specified type. exactType=not objects that are descendents of that type
 
 
@@ -2026,18 +2029,20 @@ lights = pm.ls(lights=1) //#List all lights in the DAG.
 "CAMERAS: //---------------------------------------------------------------------------------------------------------------------------------------------"
 
 
-//get scene cameras and their transforms:
-//# Get all cameras first
+//get all cameras
 cameras = pm.ls(type='camera', l=True) //#List all cameras in the DAG.
-//# Let's filter all startup / default cameras
+//get default cameras
 startup_cameras = [c for c in cameras if pm.camera(c.parent(0), q=1, startupCamera=1)]
-//# non-default cameras are easy to find now. Please note that these are all PyNodes
+//get non-default cameras (note that these are all PyNodes)
 non_startup_cameras_pynodes = list(set(cameras) - set(startup_cameras))
-//# Let's get their respective transform names, just in-case
+//get non-default camera transforms
 non_startup_cameras_transform_pynodes = map(lambda x: x.parent(0), non_startup_cameras_pynodes)
-//# Now we can have a non-PyNode, regular string names list of them
+//get non-PyNode (list of string names)
 non_startup_cameras = map(str, non_startup_cameras_pynodes)
 non_startup_cameras_transforms = map(str, non_startup_cameras_transform_pynodes)
+//set camera attributes
+cmds.setAttr('persp.translate', [0,0,0])
+cmds.setAttr('persp.rotate', [0,0,0])
 
 
 //get camera from viewport panel

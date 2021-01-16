@@ -671,7 +671,7 @@ eg. '%s %s' % (hello, world)
 eg. '%i%f%s' %(x,y,z) #adding .x between % & f (ex %.xf) will give you x dec places (%f=%d)
 
 #using +
-eg.'str'+'ing'
+eg. 'str'+'ing'
 
 #using join()
 eg. '_'.join([hello, world]) #join inserting an underscore
@@ -693,41 +693,47 @@ eg.	'string'[0] #'s'
 eg. 'string'[1:-1] #'trin'
 
 
-#check for character:
-eg. '$' in 'string':
-eg. '$' not in 'string':
-eg. '.vtx' or '.f' in 'string':
-
-if any(char in set('0123456789$,') for char in 'string'):
+#check for single set of chars:
+eg. 'char' in 'chars' #returns: bool
+eg. 'char' not in 'chars' #returns: bool
 #using re
-pattern = re.compile(r'\d\$,')
-if pattern.findall(string):
+eg. pattern = re.compile(r'\d\$,')
+	pattern.findall(string) #returns: bool
+#find case-insensitive
+eg. 'chars'.lower() in 'chars'.lower()
+#using re (import re)
+eg. re.search('chars', string, flags=re.IGNORECASE)
+#check for multiple sets of chars:
+eg. any(char in set('0123456789$,') for char in 'chars') #returns: bool
+eg. any(((True if s in 'chars.' else False for s in ('Char', 'char')))) #returns: bool
+eg. all(((True if s in 'chars.' else False for s in ('Char', 'char')))) #returns: bool
+eg. next((True for s in ('Char', 'char') if s in 'chars.'), False) #returns: bool
 
-#check for a group of characters in a string or find the index 
-eg. string.index('ing') #'3'
 
-
+#find index 
+eg. string.index('chars') #'3'
 #find match anywhere in a string.
-re.search(r'')
+re.search(r'chars', string)
+#using re (import re)
+re.search('chars', string).start() #return starting index.
+re.search(r"\bchars\b", string).start() #return starting index. \b = whole words only.
+re.search('chars', string).end() #return ending index.
 #find all instances.
-re.findall(r'')
-
-
+re.findall(r'chars', string)
 #find first instance
-eg. string.find('g') #returns index ie. '5'
+eg. string.find('chars') #returns index ie. '5'
 #find first instance of char(s) from right
-eg. string.rfind('.mb') #returns '.' index of first instance of '.mb' from right
+eg. string.rfind('chars') #returns index of first instance from right.
+
 
 #matches beginning of a string.
-re.match(r'')
+re.match(r'chars')
 
 
 #startswith/ endswith (boolean)
 #can also supply a tuple of strings to test for or convert list to tuple
-eg. string.startswith('s') #'True'
-eg. 'This is a string'.startswith('This') #'True'
-eg  string.endswith('g') #'True'
-eg. 'This is a string'.endswith('string') #'True'
+eg. string.startswith('chars') #returns bool
+eg  string.endswith('chars') #returns bool
 
 
 #check for numeric characters:
@@ -738,21 +744,25 @@ eg. #import re
 m = re.search(r'\d+$', string) # if the string ends in digits m will be a Match object, or None otherwise.
 if m is not None:
 		print m.group()
+#get trailing integers
+#using re (import re)
+m = re.findall(r"\d+\s*$", W)
+trailing_digits = m[0] if m else None #returns trailing digits as a string.
 
 
 #number of occurrences. 
-eg. print string.count(' ')#count the #of whitespace '0' 
+eg. print string.count(' ') #count the #of whitespace '0' 
 
 
 
 #tokenize string to elements of a list
-eg. list('foobar')        #returns: ['f', 'o', 'o', 'b', 'a', 'r']
+eg. list('chars')        #returns: ['c', 'h', 'a', 'r', 's']
 #without using a list:
-eg. [c for c in 'foobar'] #returns: ['f', 'o', 'o', 'b', 'a', 'r']
+eg. [c for c in 'chars'] #returns: ['c', 'h', 'a', 'r', 's']
 
 #split string.
 eg. string.split()#splits on whitespace by default
-eg. 'This, is, a, string'.split(',') #"['This','is','a','string']"
+eg. 'c, h, a,r,s'.split(',') #returns: ['c','h','a','r','s']
 
 
 
@@ -797,7 +807,10 @@ eg. string = string[string.lfind('[')+1:string.rfind(']')] #'body_mainShape.vtx[
 eg. string[:string.rfind('Shape')] + string[string.rfind('Shape')+5:] #'tire_treadShape.e[1410]' becomes 'tire_tread.e[1410]' (also: string.replace('Shape.', '.', -1))
 #using index:
 eg. string = string[string.index('['):string.index(']')] #'body_mainShape.vtx[176]' becomes 176
-
+#replace case-insensitive:
+#using re (import re)
+eg. pattern = re.compile('char', re.IGNORECASE)
+	pattern.sub('replace', 'char Char CHAR') # 'replace replace replace'
 
 
 #strip using .join
@@ -806,6 +819,7 @@ eg. string = ''.join(string.partition('[')[1:]) #'body_mainShape.vtx[176]' becom
 
 
 #using re to remove specific chars
+eg. re.sub('[^A-Za-z0-9]+', '', 's_t_r_i_n_g') #returns: 'string'
 eg. re.sub('^-', '', '-23') # '^' indicates to remove the first '-' only
 # strip all characters using re
 # many more complex options in the re docs: https://docs.python.org/2/library/re.html
@@ -818,10 +832,10 @@ eg. re.sub('^-', '', '-23') # '^' indicates to remove the first '-' only
 # \A    matches only at the start of the string.
 # \Z    matches only at the end of the string.
 from re import sub
-sub('[\W_]+', '', string)
+sub(r'[\W_]+', '', string)
 #
 import re
-pattern = re.compile('[\W_]+')
+pattern = re.compile(r'[\W_]+')
 pattern.sub('', string)
 
 
@@ -833,7 +847,7 @@ eg. re.sub(pattern,replace,string,max=0)
 eg. string.translate(None, '!@#$')
 eg. string.replace('!@#$','') #optional third argument: integer max num of items to replace
 #or with loop
-eg. for char in '!@#$': string=string.replace(char,'')
+eg. [string.replace(char,'') for char in '!@#$']
 
 
 #remove trailing characters in a string
@@ -859,22 +873,22 @@ eg. string.capitalize() #'1Str ing' from '1str ing'
 #capitalize first alphanumberic char after white space. sets other characters in string as lower
 eg. string.title() #'1Str Ing' from '1str ing'
 #all UPPER
-eg. 'This is a string'.upper() #'THIS IS A STRING'
-eg. 'string'.isupper() #
+eg. 'string'.upper() #'STRING'
+eg. 'string'.isupper() #returns: bool
 #all lower
-eg. 'THIS IS A STRING'.lower() #'this is a string'
-eg. 'string'.islower()
+eg. 'STRING'.lower() #'string'
+eg. 'string'.islower() #returns: bool
 #swap case
-eg. string.swapcase()
+eg. 'String'.swapcase() #'sTRING'
 #specific chars
-eg. string[:4].upper()+string[2:] #effect only certain letters
+eg. string[:4].upper()+string[2:] #convert specific indices.
 
 
 
 
 
 #convert string to type integer
-int('8')
+int('8') #returns: int
 
 
 #insert a comma value every 3 digits

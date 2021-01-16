@@ -264,6 +264,8 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 # -----------------------------------------------
 
 
+
+
 tk_selection.py
 remove current selection comboBox, and replace with function that weeds out accidently welded verts.
 
