@@ -1,0 +1,200 @@
++---Retopology----------------------------------------------------------+
+¦	-manual
+¦	-automatic
+¦	-transferring detail
+¦	-transferring attributes
+¦
++-----------------------------------+
+
+
+
+
+
+-----	Manual Retopology	
+
+When creating topology in ZBrush you do not have to close all of the polygon faces. ZBrush will automatically close many of these polygon faces for you. The setting that determines how many unconnected vertices that ZBrush will close is Max Strip Length. If ZBrush is closing holes that you do not want it to close, set this number to 4.
+You can also use the topology option to create a new mesh such as armor or a helmet or something of that sort. Just create the topology and press Make Adaptive Skin. You can then import this into your model as a subtool. You could also keep it as a ZSphere model if you want to edit the topology later. If you plan on doing this it may be good to delete the mesh from the rigging palette (Press Tool > Rigging > Delete).
+>	First, draw a ZSphere on the canvas go into Edit mode.
+
+>	Go to the rigging tab and press Select. Select the model that you want to retopologize from the popup window. If it is not loaded you can press the Load button at this time.
+
+>	In the Topology sub-palette, press Edit Topology.
+
+>	Turn Symmetry on (if needed) and click on the model to begin creating new geometry. Note, your cursor may not show up until you click on the model. This will addressed in future updates. The orange circle represents the active vertex. When you close a poly face, ZBrush keeps the previous vertices active which allows you to more quickly build up poly faces on your model. If you want to connect another vertex than the one active to a another vertex, press Shift while clicking on the vertex you want to connect and then simple click on the other vertex.
+
+>	Press A on the keyboard or Tool > Adaptive > Preview to see the new mesh.
+
+>	When you are done, press Tool > Adaptive Skin > Make Adaptive Skin.
+If you are creating armor or helmets you may want to use the Skin Thickness slider to give your new mesh some depth.
+>	After you have laid out the topology, press Tool > Projection > Projection.
+>	Set Tool > Adaptive Skin > Density high enough to capture all the detail of your reference mesh.
+>	Press A on your keyboard to preview the transfer.
+>	Press Tool > Adaptive Skin > Make Adaptive Skin when you are ready to convert your topology to a polymesh object for sculpting and exporting.
+If your model explodes when you press A, try setting Tool > Projection > Projection Strength to -1.
+If there are flat spots in your projection increase Tool > Projection > ProjectRange.
+
+-----	Automatic Retopology	
+
+ZRemesher; Hard Surface
+>	Lower Target Poly counts will stress the algorithm more. 
+>	Freeze Border option will increase polycount because edge vertices are preserved.
+>	Keep Groups option alters the topology while keeping the boundry shape. Resulting in better topology flow.
+>	Adaptive Size puts greater emphasis on the overall shape rather than uniform poly density.
+>	Adaptive Density allows the algorithm to add more polys if necessary. 
+>	Work with PolyGroups. If your model doesn’t have PolyGroups, it is benifical to create them to assist ZRemesher. When working with hard surface objects, Tool >> PolyGroups >> Group By Normal will quickly produce PolyGroups based on angles between edges.
+>	Use Curves.  At a value of 100, the Curve Strength setting forces ZRemesher to put partial or complete edge loops at the curve positions.  
+To place curves; 
+>	First create PolyGroups based on the model’s normals by using Tool >> Poly­Groups >> Group By Normal and adjusting its Max Angle Tolerance slider as needed.
+>	Use those PolyGroup borders to create curves via the Stoke >> Curve Func­tions >> Frame Mesh feature. Don’t overlook the usefulness of the Border and Creased edges modes.
+>	Set Tool >> Geometry >> ZRemesher >> Curve Strength to 100, along with any other ZRemesher options that you need. (Like the Keep Groups option.)
+ZReMesher guides; 
+>	curves cannot be edited except to extend them or to connect a new curve to the end point of an existing curve. 
+>   deleted by holding the Alt key and drawing another curve perpendicularly over the one you wish to delete.
+Crease Curve; 
+>	The Crease brush will create a polygon slice along the drawn curve, with a crease assigned to it.
+>	it’s possible to change from the default (Curve) Stroke type to Circle, Lasso, Rectangle and more
+>	This brush will only work on models without multiple subdivision levels.
+Hide Areas of detail; 
+>   ZRemesher will only process visible areas of the mesh. Possible Mask by topology, polygroup and hide. so far not the best results
+PolyPaint;
+>	Use PolyPaint to control poly density
+Morph Target;
+>	Store morph target. Tool:Target:Store Morph Target (custom menu: right menu: morph target tab)
+>	Switch morph target
+>	Morph Brush (BMO)
+Additional info;
+>	While ZRemesher can work with a very large number of polygons, it is recom­mended to reduce your count before using ZRemesher, if possible. For example, if you have 6 levels of subdivision, you might find that level 4 has enough polygons to maintain the overall shape and the medium details. This will improve ZRemesher’s speed without altering the retopology quality — especially if you are targeting a low polygon count.
+>	Dense meshes without much detail (such as imported scan data or a high resolu­tion DynaMesh) can benefit from using Decimation Master to reduce the number of polygons without altering the model’s visual quality. Do this before using ZRemesher.
+>	It can also be helpful to minimize the variations of small details, peaks and valleys. This is easily done by using a Smooth or Polish deformation before using ZRemesher. The result will be a better polygon flow in the retopologized mesh.
+>	You can do a retopology over a previous retopology. The second one will have a better polygon flow even if the polycount remains exactly the same.
+>	A reminder about Symmetry: If you are using symmetry and are unhappy with the resulting topology, Undo and then try ZRemesher’s second symmetry calculation method. Do this simply by holding the ALT key when clicking the ZRemesher button.
+>	Try to avoid small holes in your mesh! Retopology will keep them and can poten­tially increase the polygon count. Wherever possible, it is advised to do retopology on a “watertight” mesh or a surface that is free from imperfections. Since scan data and flat surface DynaMesh models can have small, hard to see holes, using ZBrush’s Close Holes feature before running ZRemesher will improve your results.
+>	When your model is in DynaMesh mode it can also be beneficial to run the Tool >> Geometry >> Mesh Integrity >> Fix Mesh operation before using ZRemesher.
+
+
+-----	Transferring detail to a lower poly model	
+
+//zbrush:
+method 1; Freeze Subdivision Levels
+>	Choose the lowest subdivision level that is able to maintain the desired silhouette and Del Lower. After which you can return to the highest and Freeze Subdivision Levels.
+
+
+>	Once the remesh is complete, click the Freeze Subdivison Level button again. ZBrush will now recalculate your subdivision levels and project the details onto the new mesh topology.
+Note: The projection quality is controlled by the various settings in the Tool >> SubTool >> Project All UI group.
+
+
+method 2; Remesh a Duplicate of your sculpted SubTool
+>	Duplicate your selected SubTool.
+
+>	Use ZRemesher with any desired settings.
+
+>	Set Projection Shell & PA blur.
+
+>	With the remeshed subtool selected and at lowest subD level, turn on visiblity for the original SubTool.
+
+>	Click the Tool>>SubTool>> Project All button. 	The controls in the Project All UI group can be adjusted to refine the projection as you work. 
+													The Dist slider is the one that you will most likely use the most.
+
+>	Keep subdividing/projecting until you have all of your sculpted detail.
+
+
+Merging subtools & deleting inner shell
+option 1
+>	Delete parts of the model that will not be seen, then dynamesh.
+
+option 2
+>	Use Groups by Normals feature in the polygroups panel in zbrush. When using just the default settings I got rid of almost all of my interpenetrating geo and was left with a decent outer shell. You can simply delete everything that's not in that group and then re-dynamesh it
+
+
+
+-----	Manual Retopology using the Quad Draw Tool;
+>	Make reference mesh live.
+
+>	LMB to Drop vertices. (Ctrl + Shift + LMB to delete)
+
+>	Shift + LMB to Create polygons. (Ctrl + Shift + LMB to delete)
+
+>	Ctrl + LMB to insert edgeloop. (Ctrl + Shift + MMB to move)(Ctrl + Shift + LMB to delete)(Ctrl + MMB to insert centered edge loop)
+
+Tip: You can press Y to reactivate the Quad Draw Tool after switching to another tool.
+
+
+-----	Automatic Poly Reduction using Mesh Reduce
+>	Select the faces you want to reduce.
+>	Choose Mesh > Reduce > .
+>	Set the reduction percentage, target number of vertices, or target number of triangles and turn on Keep original, then click Reduce. ...
+>	Choose Mesh Tools > Paint Reduce Weights Tool.
+>	Paint reduction values on the original polygon mesh.
+
+
+-----	Blend Shape;
+To create a blend shape deformer
+Do any of the following to get set up, depending on your method of shape animation:
+- If you're deforming the base object directly, select the base object - see Create blend shapes using only the base object.
+
+- If you're deforming a group of shapes, create the group (select the objects and press Ctrl+G), then select the group transform node.
+
+- If you're using multiple target objects to deform the base object, press Shift and select the target objects, then select the base object you want to deform (you must select the base object last) - see Create blend shapes using multiple target objects for more information.
+
+Do any of the following to create the blend shape deformer:
+>	Open the Shape Editor and click the Create Blend Shape button to use automatic settings.
+>	Choose Create > Blend Shape Deformer in the Shape Editor. Click the Options icon to first set options.
+>	Right-click in an empty area of the Shape Editor and choose Add Blend Shape Deformer to use automatic settings.
+>	In the Animation menu set, select Anim Deform > (Create) Blend Shape > .
+>	In the Rigging or Modeling menu sets, select Deform > (Create) Blend Shape > .
+>	If you selected the  to open the Blend Shape Options, select the creation options you want, including Advanced options that let you choose where the Blend Shape node will be located in the object's history.
+Note: If you're working with multiple target objects, select Check Topology to check that the target objects have the same number of vertices as the base object. Errors occur (such as a "No Deformable Objects Selected" message) when this is not the case.
+>	With the base object selected, the new blend shape deformer appears in the Shape Editor, and the Blend Shape node and Tweak node appear in the INPUTS list in the channel box for the base object.
+If you created the blend shape deformer using multiple target objects, a target shape is added for each target object that you selected.
+
+With a blend shape deformer on the base object, you can now add target shapes to it (see Add target shapes), or add more blend shape deformers.
+The blend shape deformer (Blend Shape node) uses the target shape weight settings to create the blend shape deformation on the base object.
+
+
+
+
+-----	Transferring Attributes;
+
+//maya:
+To transfer attributes between separate meshes:
+
+>	move the source & target meshes so they are positioned in identical locations spatially.
+>	selected the target mesh last. (source mesh in object mode, target mesh can select individual vertices in the region to be modified).
+>	Mesh > Transfer Attributes.
+	Vertex position - transfer the vertex positions on the source mesh and have the vertices on the target mesh modified to match.
+	UV sets - all UVs from the source mesh sampled and transferred to the target mesh. When multiple UV sets exist, the All setting ensures they are all sampled and then transferred to the target mesh. If the source mesh has more than one UV set, you can selectively transfer the currently active UV set by selecting the Current option. The default setting is All.
+	Color sets - all of the CPV data for the source mesh sampled and transferred to the target mesh. When multiple color sets exist, the All setting ensures they are sampled and then transferred to the target mesh. If the source mesh has more than one CPV set you can selectively transfer the currently active color set by selecting the Current setting. The default setting is All.
+	Sample space:
+		World setting - to sample in world space. It should be used for the majority of your attribute transfer operations. This is the default setting.
+		Local setting - when the objects are the same size and shape, but may have been translated, rotated or scaled in the scene (for example, you have two chairs in different locations). The Local setting is used when you want to compare the source and target side by side.
+		UV setting - to sample attributes in UV space when no useful spatial correlation exists between the source and target meshes. For example, when the meshes are of radically different proportions or have been constructed at different scales but the meshes share a common mapping in UV space. For example, models of a giant and a dwarf can correlate based on their UV texture coordinates if the UV mapping for their faces is in the same position in UV texture space.
+			(Note: Using UV setting to determine how the transfer of attributes will occur is very different from physically transferring UV data between models. Transferring of UV attributes is usually done using the World or Local space settings.)
+		Component setting - to transfer attributes directly from one component to another via their component IDs. To use this setting, both objects must have the same number of vertices, faces, and edges, and the relationship between these components must be the same on both objects. For example, use this setting if you want to transfer a UV texture map from one head to a stretched version of the same head.
+		Topology setting - to transfer attributes directly from one component to another when the objects’ topologies are identical, but their component IDs are not. For example, some options in Maya may rearrange the vertex order on a model. This option allows you to transfer a texture map from the original mesh by their matching topologies, rather than their non-matching vertex order.
+		remaining options based on other specific requirements:
+			Mirroring option when you want the attribute transfer to occur across a defined axis (X, Y, Z). Ensure that you have selected the vertices along the mirror border. You must set a mirroring axis when the source sampling and target transfer occurs on the same mesh. The default setting is Off.
+			Flip UVs option when you are sampling UVs and want the transferred UV shells to be flipped along the U or V axes as they appear in the UV Texture Editor. This is useful when you are mirroring UVs on the same surface mesh. The default setting is Off.
+			Color borders to Preserve if you want the hard color edges in the source mesh maintained when the CPV data is transferred to the target mesh. Otherwise, if the surface topologies differ widely, you may set the Color borders option to Ignore. The default setting is Preserve.
+
+To mirror vertex attributes on the same surface mesh: (samples the surface about the specified mirroring axis and assigns new values to the selected components. All unselected components retain their original attribute values.)
+
+>	select the components on the surface mesh that you want to have modified.
+>	Select Mesh > Transfer Attributes.
+options:
+	Specify the attributes you want transferred (Vertex Position, UV Sets, Color Sets)
+	Specify the axis you want the attributes mirrored along.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

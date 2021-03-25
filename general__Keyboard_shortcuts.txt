@@ -1,0 +1,130 @@
+custom hotkeys:.        zbrush                            maya                      	 3ds Max						photoshop	                   substance
+
+
+1.......................isolate		                   	isolate							isolate			
+2.......................smooth prev                     smooth prev						smooth prev
+3.......................polyframe          		        wireframe						wireframe
+4.......................                                viewport shading				material override
+5.......................                                viewport lighting			
+6.......................                                
+7.......................                                
+8.......................                                  
+9.......................                                menus							menus
+0.......................grid		                    grid							grid
+
+
+f1......................backfacecull	                backfacecull					
+f2......................           														backfacecull
+f3......................xray	                        xray							xray
+f4......................                                 
+f5......................                                 
+f6......................                                  
+
+
+
+q.......................draw                            select							select			
+w.......................translate                       translate						translate
+e.......................scale                           scale							scale
+r.......................rotate                          rotate							rotate
+t.......................
+y.......................tablet menu                             
+
+
+
+shft + q................	                            object mode						object mode
+shft + w................	                            vertex mode						vertex mode
+shft + e................								edge mode						edge mode
+shft + r................		                        face mode						face mode
+shft + t................								multi-comp						multi-comp
+                        
+
+
+ctrl + e................edit
+
+
+
+i.......................insert							
+o.......................orthographic					
+p.......................perspective                                         
+
+
+s.......................symmetry                          
+d.......................
+f.......................frame                              
+g.......................								repeat last						repeat last
+
+
+ctrl + s................save                              
+ctrl + d................duplicate                           
+ctrl + f................ 
+ctrl + g................group                      		       
+ctrl + o................open                             
+ctrl + i................invert
+
+
+z.......................
+x.......................tool menu                                                     
+c.......................
+v.......................
+b.......................brush                              
+
+
+
+
+
+
+ctrl + y................redo							redo							redo
+ctrl + z................undo							undo							undo
+ctrl + x................cut								cut								cut
+ctrl + c................copy							copy							copy
+ctrl + v................paste							paste							paste
+
+
+ctrl shft + o...........open most recent
+ctrl shft + s...........save as							save as							save as
+ctrl shft + d...........duplicate special
+
+
+
+ctrl shft + z...........
+ctrl shft + x...........
+ctrl shft + c...........crop
+ctrl shft + v...........
+ctrl shft + b...........brush alt
+
+
+[.......................brush size smaller
+].......................brush size larger
+
+
+<.......................
+>.......................
+
+
+-.......................
++.......................
+
+
+
+tab.....................disp all subtools menu                              		
+alt tab.................insert subtool alt menu                          
+spacebar................quick menu                        							
+
+
+
+page up.................up subdivision level
+page down...............down subdivision level
+ctrl + page up..........subdivide
+ctrl + shft page up.....dynamesh
+
+
+arrow up................coordinate xyz
+arrow left..............coordinate x
+arrow down..............coordinate y
+arrow right.............coordinate z
+
+
+ctrl + arrow up.........move up
+ctrl + arrow down.......move down
+ctrl + shft arrow up....move to top
+ctrl + shft arrow down..move to bottom

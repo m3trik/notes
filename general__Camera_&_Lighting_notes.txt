@@ -1,0 +1,157 @@
+Camera notes:
+
+Aperture
+	Aperture is generally measured byF-Stop. Aperture also has a secondary effect of controlling the depth of field of an image.
+
+Depth of field
+	describes how much of an image is in focus from front to back. Depth of field is controlled by the aperture as well as the lens magnification.
+
+
+
+
+
+
+
+
+
+Lighting notes:
+
+
+
+types and definitions:
+Key		gives depth to your render
+Rim		brings out the silhouette
+Fill	reveal all the details of your textures
+
+
+
+Terms:
+IBL		Image based lighting.
+LUT		Look up tables.
+Depth of field	
+Field of view	
+
+
+Tips:
+Make sure your scene or render is bright enough. Shadows, low-lit areas are still readable to the eye. 
+
+Check your monitor settings for optimal lighting.
+
+Don’t always stick to the first lighting setup. It can be helpful to try a few different scenarios (dawn, day, dusk, night).
+
+Avoid using just HDR lighting and light your model using three main lights: 
+	a rim light, which brings out the silhouette; 
+	a key light, which gives depth to your render;
+	a fill light to reveal all the details of your textures.
+	Now switch back on your HDR, which will improve your reflections.
+	
+	
+BAKED LIGHTING SETUP
+>	deactivate auto exposure
+>	deactivate SSAO and SSR
+>	keep default tone mapper
+>	vignetting = off
+>	bloom = off
+
+
+normalize lighting color values.
+with color picker check to see that the in engine lit material has the same value. in this case .5 sRGB.
+- setup chrome sphere
+	base color =1
+	metallic =1
+	roughness =0
+- setup grey sphere
+	base color =.5 sRGB (linear =.18)
+	roughness =
+- directional light set at 3.14
+	
+
+
+lighting build 	quality
+>	build> lighting quality> preview-med-high-production	(high influence on build time)
+
+world settings
+>	static lighting level scale	  reduce to pick up detail at the cost of more noise	(medium influence on build time)
+>	num indirect lighting bounce  3-5		(low influence on build time)
+>	indirect lighting smoothness  .7-1		(low influence on bulid time)
+>	light sample placement scale  			
+
+static lighting level scale * indirect lighting quality = 1.  ie. .01 x10  or .02 x5  or .5 x2
+
+for windows /doorways,  use portal
+
+
+
+lightmaps:
+>	save all lighting information in a sub-level
+>	convert the sub-level into a lighting scenario
+
+
+
+DYNAMIC LIGHTING SETUP
+>	direction light =moveable
+>	skydome =moveable
+>	distance field ambient occlusion
+>	screen space ambient occlusion
+
+activate 'generate mesh distance fields'
+>	project editor> lighting> generate mesh distance fields
+avoid non uniform scaling
+large objects will have poor distance field resolution
+
+
+
+
+
+IMAGE BASED LIGHTING SETUP
+>	geometry to cast and recieve shadows
+>	back plate
+>	directional light (moveable)
+>	skylight with hrdi (moveable)
+>	fake movement shadows (bluepint image that follows the object) (used due to memory restrictions)
+
+
+
+
+
+AREA OF EFFECT:
+lightmass importance volume		specify area in which to concentrate lighting recources.
+
+
+
+
+
+
+
+SHADOWS:
+-fix artifacts by pushing the map into the geometry.
+-set shadow map bias low for small objects to prevent light leaking.
+
+
+-large scene objects us cascade shadows (shadow lod)
+
+-even larger use raytraced distance field shadows
+
+-overcast scene: increase lighting source angle to soften shadow
+
+
+
+
+
+
+
+REFLECTIONS:
+high resolution reflection capture (memory intensive)
+
+
+
+
+
+
+POST PROCESSING:
+//unreal
+postprocessvolume class.	area effected by user defined post processing.
+
+
+
+

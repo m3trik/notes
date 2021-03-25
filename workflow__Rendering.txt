@@ -1,0 +1,60 @@
++---rendering-----------------------------------------------------+
+¦	-VRay setup
+¦	-VRay settings
+¦	-HDRI setup
+¦	-HDRI settings
+¦	-Test render settings
+¦	-Final render settings
+¦
++-----------------------------------+
+
+
+
+
+------	VRay setup
+
+>	
+
+
+
+------	VRay settings
+//maya: 
+render subdivisions
+>	shape node attributes> attributes drop down menu> vray> subdivisions
+
+Display colors in sRGB space (on by default) #without gamma correction the rendered image will appear washed out
+>	VFB (vray frame buffer render window)> lower middle-right icon
+
+global render settings:
+vray tab> color mapping> type: linear multiply 
+
+
+
+------	HDRI setup
+
+//3ds Max VRay
+------	HDRI settings
+
+>	materials>VRayHDRI node
+>	load hdri bitmap image
+>	change mapping type to spherical
+>	main menu>rendering>'environment' window
+>	drag hdri node output to environment map (replace as instance if necessary)
+>	rotate image to desired position
+>	increase multiplier to adjust intensity value
+
+
+
+------	Test render settings
+
+
+
+
+------	Final render settings
+
+//VRay
+
+
+
+
+

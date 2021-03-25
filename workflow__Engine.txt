@@ -1,0 +1,16 @@
++---engine--------------------------------------------------------+
+¦	-export to engine
+¦	-
+¦
++-----------------------------------+
+
+
+
+
+export to engine
+//unreal
+>	'Compute tangent space per fragment' enabled
+
+
+
+

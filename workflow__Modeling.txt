@@ -1,0 +1,158 @@
+----modeling-------------------------------------------------------------------+
+¦	-concepting					
+¦	-reference image planes
+¦	-initial block-in
+¦	
+¦	modeling techniques:
+¦	-booleans
+¦	-deformers
+¦	-tubes
+¦	-insert mesh brushes
+¦
++---------------------------+
+
+
+
+
+-----	Concepting
+
+kitbashing:
+
+dynamesh:
+
+
+
+-----	Reference Image Planes
+
+//3ds Max:
+-Using plane
+>	create plane and set proper aspect ratio
+>	Rendering>Material Editor>'Slate Material Editor'
+>	drag materials>scanline>'standard' onto graph (if you cant drag, there is no graph open. right click and 'create new view')
+>	double click 'diffuse map'
+>	double click 'bitmap' and select image.
+>	double click on the 'standard' and then in the parameters editor (lower right), set self illumination from 0 to 100.
+>	in the same panel, rename the node.
+>	select the plane geometry and then right click the node and apply.
+**	if necessary in the same right click menu, show 'shaded' AND 'realistic' view in viewport.
+**	to duplicate nodes, hold shift while dragging.
+**	repeat the process for addiitional maps.
+
+-Custom image background
+
+
+
+using a plane
+>	Select Create > Free Image Plane from the main menu bar.
+
+attached to camera
+>	In the perspective view panel, select View > Image Plane > Import Image.
+>	importImagePlane { "perspShape" };	
+
+
+
+
+
+
+
+
+-----	Initial block-in
+
+image reference:
+
+//zbrush:
+-Option 1
+>	Make sure grid is on. Draw Menu or (F1 custom shortcut)
+>	Load Image into the map slot of the correct orthographic view. Viewport> floor grid (custom menu)
+>	toggle project on mesh. (C custom shortcut)
+>	Optional: Set Floor Fill Mode to 3 (next to the Floor XYZ icon in the Draw Menu) or Viewport> floor grid> floor mode (custom menu) 
+>	Optional: Edge Enhance Factor slider(now active because of fill mode 3). change the gradient shading of your subtools inner-out. And they'll become partially of fully transparent (only a thin edge visible).
+		note: If you don't want a reference image, just work on a black background and load front-back and left-right views in draw menu with a black image. 
+		The more opaque your reference (Edge Enhance Opacity) the more transparent your Subtools can be (Edge Enhance Factor).
+
+
+retopology tool (see zbrush retopology workflow)
+
+
+
+
+modeling techniques -----
+
+
+
+-----	Boolean Operations
+
+//ZBrush:
+
+>	Can be Used with Symmetry
+Add(default)-Subtract-intersection with DynaMesh;
+>	subtool to subtract below (add & intersect doesnt matter)
+>	put lower subtool in add/subtraction/or intersect mode (they are listed in that order)
+>	on lower subtool - Tool\PolyGroups\Group As DynaMesh Sub
+>	merge down
+>	run dynamesh remesh to subtract (ctrl + drag canvas)
+
+ZSub
+ZAdd
+>
+
+Create Difference Mesh using Morph Target;
+>	 
+
+
+//Maya:
+
+Union-Difference-Intersection with Mesh > Booleans;
+After performing a boolean operation, the original objects cannot be selected in the scene. When construction history is enabled, you can select the objects in the Channel Box, Hypergraph, Attribute Editor, or Outliner. Any changes you make to the original objects are automatically applied to the new shape
+>	Select the meshes.  Select Mesh > Booleans, and then select a boolean operation.
+>	If the boolean operation uses dense meshes, a progress bar appears to track the state of the operation.
+Maya performs the boolean operation. The faces of the objects are now connected and the original meshes act as one single object. The new object is named after the first selected object and increments by 1. For example, if you select pSphere1 and combine it with pCube1, the combined mesh will be named pSphere2.
+Note: Non-planar faces are automatically triangulated before the operation is performed.
+>	In the In-View Editor that appears, adjust the attributes in the polyCBoolOp node.
+Note: A polyBoolOp node is created when you perform a boolean operation using the legacy boolean algorithm.
+>	(Optional) Edit the original objects to tweak your boolean operation. See Edit the original objects after a boolean operation.
+For example, you can subtract a sphere from a cube using the Difference operation, and then animate the original sphere to create an interesting effect.
+
+For best results using booleans:
+>	all objects should be manifold meshes
+Note: Non-manifold meshes are only supported if the non-manifold components are not at the intersection of the boolean operation.
+>	face normals should be uniform across all surfaces
+Tip: Before performing your boolean operation, view the normals on your mesh (Display > Polygons > Face Normals). If you want to produce predictable boolean results, make the normals uniform using Mesh Display > Conform.
+>	explicitly select objects for consistent results
+>	Performing boolean operations on parent objects may produce undesirable results. If multiple meshes are grouped under a common parent, explicitly select the objects as input to the boolean operation.
+
+
+
+
+
+
+
+
+
+
+-----   insert multi mesh brushes (IMM)
+
+//ZBrush
+To create a Tri Parts brush:
+
+>	You first need a specific mesh, composed of three PolyGroups. As mentioned above, these groups define the end caps and duplicated portions of the curve stroke. Remember: The view of the mesh relative to the camera plane will determine how the origin of the mesh will be drawn onto your model.
+>	In the Brush palette, click the Create InsertMesh button. This creates a new Insert Mesh type of brush based on the current object. (Read the chapter 5 of this section for more information about creating Insert-type brushes)
+>	Enable Curve mode in the Stoke palette and change the Curves settings as desired.
+>	In the Brush >> Modifiers sub-palette, enable the Tri Parts mode. This instructs ZBrush to replicate the middle PolyGroup between the other two PolyGroups.
+>	Depending on your needs, adjust the other options: Soft Curve, Curve resolution and Twist to Turn.
+
+Advice for creating Tri Parts brushes:
+>	Create your object along the Y axis, oriented on the X/Y working plane.
+>	Try to create each part (the end caps and the duplicated portion) with the same height. Failing to do so may not result in clean duplication along the curve.
+>	Use the Tool >> Deformations >> Unify command to create a mesh which will be one ZBrush unit in size, with a centered pivot point.
+
+Usage:
+
+>	Brush Menu> Load Brush> M hotkey to select part
+
+
+
+
+
+
+

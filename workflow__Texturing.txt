@@ -1,0 +1,63 @@
++---texturing----------------------------------------------------+
+¦
+¦	-Material creation
+¦	
+¦	
+¦
++-----------------------------------+
+
+
+
+
+
+	
+
+
+
+
+MATERIAL CREATION:
+world aligned texture:
+//unreal
+>	create a worldAlignedTexture node.
+>	convert the bitmap/normal map to a 'Texture Object' and plug it into the worldAlignedTexture 'TextureObject' input. (right click 'Texture Sample' and Convert to texture object)
+>	create a size node and plug it into the worldAlignedTexture TextureSize input.
+>	connect the XYZ texture output of the worldAlignedTexture node to the base materials 'base color' input.
+
+
+
+
+	
+
+EMISSIVE:
+//unreal:
+>	create material and double click to open the material editor
+>	create a constant(float)(name it emission), a constant3vector(name it color), and a plug those into a multiply node
+>	plug the multiply node into the materiat emmisive color slot
+>	close out the material editor, right click the material and create a new instance.
+>	
+
+
+
+
+PROCEDURAL:
+
+//Procedural tiling of bitmaps: (This will only work for relatively uniform textures, not for those with repetitive patterns, such as bricks, planks or tiles.)
+
+>	make a copy of your bitmap in the Material Editor
+>	offset it in both axes by a random value
+>	plug these two bitmaps in a Composite or Mix map
+>	take a Noise map with fractals on and use the RGB curve to clamp it to just black and white (it will look like a cow hide).
+>	Now you can use this Noise map as a mask to mix your two bitmaps, introducing chaos in the tiling – though you’ll need a high value for the scale of the Noise.
+
+
+
+
+
+
+
+
+	
+
+
+
+

@@ -1,0 +1,26 @@
++---cameras----------------------------------------------------------+
+¦
+¦	-
+¦
++-----------------------------------+
+
+
+
+
+------	render camera
+//3ds max
+>	mod panel>create>'physical' camera
+>	
+
+
+-- create camera from view
+mod panel view tab> create camera from view (default hotkey ctrl+shft+c)
+
+
+
+-- look through camera
+//maya
+mod panel view tab> panels> look through selected.
+
+
+
