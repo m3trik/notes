@@ -258,7 +258,9 @@ Render height map in 3d View.
 >	3D Viewport> Materials menu> Default> Definitions> physically_metallic_roughness> Enable Tessellation
 >	Materials menu> Edit> Height> turn up “Tessellation Factor” and “Scale”.
 
-
+displacement:
+>	blur hq node	-apply smoothing to the greyscale height map
+>	curve node		-use curve points to further define the shape.
 
 
 Normal to Height node	-never be able to provide a 100% correct result, as information is lost. good for simple details.
@@ -474,6 +476,46 @@ sample color	-sample color per pixel
 
 
 
+
+
+
+
+MDL --------------------------------------------------------------------
+
+Graph Color Code:
+Yellow			color type 
+Grey			vector type
+White			boolean type
+Green			material type
+Blue			bsdf (surface) type
+Purple			vdf (volume) type
+turquoise		edf (emission) type
+Orange			texture type
+
+Square shape	varying value
+Round shape		uniform value
+
+
+
+
+Expose value	-right click context> Expose
+				-set gamma type (linear for data types, srgb for color)
+					 sampler usage (none if simple paramater not linked to any type of texture input)
+					 display name
+
+
+blend layers	-weighted layer node
+
+
+
+
+
+
+
+
+
+
+
 switch -----------------------------------------------------------------
 
 switch				Returns either Input 1 or Input 2 based on the Switch parameter setting.
@@ -487,10 +529,17 @@ mulit switch greyscale
 control another property with a switch
 >	expose a function that will control this property
 >	now give the property a constant value and open it in a graph editor
-if else function:
+
+if else function (driven by boolean):
 >	two constant float values, an if/else node, and a 'variables get boolean'
 >	in the variables get boolean node properties, set the bool to the exposed funtion 
 >	set if/else as output node
+
+if else function (driven by 2 integers):
+>	a get integer (value 0) and an integer, plugged into an 'equal' node.
+>	two boolean nodes plugged into an 'if..else' node's 'if'(False) and 'else'(True) slots.
+>	plug the equal node output into the condition slot.
+
 
 
 

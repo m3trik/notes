@@ -1,7 +1,8 @@
 __AutoHotkey notes_________________________________________________________________
 
 
-
+; popup message box
+msgbox, Your Message
 
 
 
@@ -137,9 +138,10 @@ Return
 ; special chars (can be used in combination)
 {key}	-
 !key	-toggle
-~key	-
-$key	-disallows the hotkey to be triggered without explicity doing so inside the function.
+~key	-allow key to be triggered outside of the function.
+$key	-disallows the key to be triggered without explicity doing so inside the function.
 #key	-
+*key	-key works with modifiers held down.
 ^key	-suspend[,mode]. prevents other hotkeys from interfering with the currently executing hotkey for
 example if I have a hotkey that is activated by the middle mouse button I can prevent
 it from triggering using suspend, on until the routine allows it to by using Suspend Off.

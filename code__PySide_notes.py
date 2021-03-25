@@ -239,12 +239,13 @@ w.setAttribute(QtCore.Qt.WA_NoChildEventsFromChildren) #Indicates that the widge
 # Remove layout
 #recursively remove and delete all the objects from a layout.
 def clearLayout(self, layout):
-	if layout is not None:
-		while layout.count():
+	if not layout: return
+
+	while layout.count():
 		item = layout.takeAt(0)
 		widget = item.widget()
 		if widget is not None:
-			w.deleteLater()
+			widget.deleteLater()
 		else:
 			self.clearLayout(item.layout())
 
@@ -397,6 +398,7 @@ cmb.editTextChanged.connect(method)
 cmb.addItem(string, userData=None) #string/data
 cmb.addItems(list_) 			#string/data
 cmb.insertItem(index, string, userData=None) #at index
+cmb.insertItem(cmb.currentIndex(), string) #insert item at current index.
 cmb.insertItems(index, list_)
 #get all items:
 items = [cmb.itemText(i) for i in range(cmb.count())]
@@ -1022,7 +1024,11 @@ screenRect = QtWidgets.QApplication.desktop().rect()
 
 
 
-
+#layout
+layout = QtWidgets.QVBoxLayout() #if the parent is given as an arg, 'setLayout' is not needed. QBoxLayout, QGridLayout, QFormLayout, QStackedLayout.
+layout.addWidget(<widget>) #add a widget to a layout
+layout.setAlignment(QtCore.Qt.AlignCenter) #AlignAbsolute, AlignBottom, AlignCenter, AlignHCenter, AlignHorizontal_Mask, AlignJustify, AlignLeft, AlignRight, AlignTop, AlignVCenter, AlignVertical_Mask
+parent.setLayout(layout)
 
 
 
@@ -1040,6 +1046,8 @@ screenRect = QtWidgets.QApplication.desktop().rect()
 QtCore.QEvent.registerEventType([hint=-1]) #Returns: int Parameters: hint=int
 #
 QtWidgets.QApplication.notify(widget, event)
+
+QtWidgets.QApplication.processEvents()
 
 
 #QtWidgets.QApplication / QtCore.QCoreApplication
@@ -1531,7 +1539,10 @@ event.key() == QtCore.Qt.Key_X
 
 
 #modifiers:
-modifiers = QApplication.keyboardModifiers() #ex. (bool(modifiers == QtCore.Qt.ControlModifier)):
+modifiers = QtGui.QApplication.keyboardModifiers() #ex. (bool(modifiers == QtCore.Qt.ControlModifier)):
+if modifiers==QtCore.Qt.ShiftModifier: #check for Shift key.
+if modifiers==QtCore.Qt.ControlModifier: #check for Control key.
+if modifiers==(QtCore.Qt.ControlModifier|QtCore.Qt.ShiftModifier): #check for Shift+Control keys. 
 
 
 
@@ -1895,8 +1906,18 @@ timer.start()
 
 
 
+'Threading'#-----------------------------------------------------------------
 
-
+thread = QtCore.QThread()
+thread.start()
+thread.quit()
+thread.terminate()
+thread.isFinished()
+thread.isRunning()
+#signals
+finished
+started
+terminated
 
 
 
@@ -1913,19 +1934,15 @@ layout.rowCount()
 layout.columnCount()
 
 
-
-
 #get widgets from layout:
 widgets = (layout.itemAt(i).widget() for i in range(layout.count()))
 items = (layout.itemAt(i) for i in range(layout.count()))
 
 #get widgets from dynamic ui:
-#from a dict
-for widgetName, widgetObject in ui.__dict__.iteritems(): #for each object in the ui:
 #
-ui.__dict__.items()
-#from a list
-for widget in ui.children():
+ui.__dict__.items() #name:obj each object in the ui:
+#
+ui.children()
 
 
 
@@ -2152,6 +2169,12 @@ color = w.palette().color(QtGui.QPalette.Background) #alt method
 rgba = color.red(), color.green(), color.blue(), color.alpha()
 
 w.palette().setColor(QtGui.QPalette.Active, QtGui.QPalette.Text, background)
+
+#set
+palette = QToolTip.palette()
+palette.setColor(QPalette.ToolTipBase, QColor("#F6F6F6")) #light grey
+palette.setColor(QPalette.ToolTipText, QColor("#706F6F")) #dark grey for text
+QToolTip.setPalette(palette)
 
 
 

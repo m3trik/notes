@@ -1,0 +1,113 @@
+After Effects Notes
+-------------------
+
+
+
+
+
+
+
+COMPOSITIONS ---------------------------------------------------------------
+
+
+
+
+
+
+
+
+LAYERS ---------------------------------------------------------------------
+
+
+
+
+
+
+
+ANIMATION ------------------------------------------------------------------
+
+
+
+
+
+
+3D -------------------------------------------------------------------------
+
+
+
+# Convert 2d to 2.5d:
+> turn on 3d for the layer (3d box icon)
+
+
+# Modify on Z Axis
+>	Main Menu Bar> Composition> Composition Settings> 3d Renderer Tab> Renderer: Cinemea 4D
+# add depth | bevel
+>	Main Menu Bar> Layer> Create> Create Shapes from Vector Layer
+>	Expand the newly created shape layer> Geometry Options> Extrusion Depth
+>	""			""										  > Bevel Depth
+# add curvature
+>	Expand the layer> Geometry Options> Curvature (hidden if not valid on object)
+
+
+
+
+TEXT -----------------------------------------------------------------------
+
+# conform text to path
+>	main toolbar> pen tool
+>	draw a path that will define the desired curvatuve (on the text layer)
+>	expand the text layer> Text> Path Options> Path from None to name of newly created path.
+>	adjust draw path curvature to tweak
+
+
+# animate text to path
+#using path options:
+>	expand the text layer> Text> Path Options> adjust the margin values.
+#using text properties:
+>	Character tab (default: located right side)> adjust tracking, point size, kerning, etc.
+#using null object as center point:
+>	Create a null obj in a location to use as a center zoom point. Main Menu Bar> Layer> New> Null Object
+>	Show the layer parenting options if not visible: Layer Panel Menu> Columns> Parent & Link or right click context menu> Columns> Parent & Link
+>	Set text parent to the new null object: Drag & Drop from parent link icon to null obj layer, or use drop down parent menu on text layer.
+>	Animate using the null object properties. ie. Scale
+
+
+
+
+# inset text into background image
+>	adjust text opacity via color swatch alpha value
+>	Main Menu Bar> Layer> Layer Styles> Inner Shadow
+
+
+
+
+EFFECTS --------------------------------------------------------------------
+
+
+
+
+
+
+
+LIGHTING -------------------------------------------------------------------
+
+# Add a new light
+>	Main Menu Bar> Layer> New> Light
+
+
+
+
+
+RENDERING ------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

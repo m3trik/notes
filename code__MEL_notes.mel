@@ -39,8 +39,18 @@ int $var1, var2;
 $var1 = $var2 = 0; //same as $var1 = 0, $var2 = $var1
 
 
-
-whatIs	//query the type of variable   eg. whatIs "$tmp"; // Result: int variable
+// Check variable type:
+pm.mel.whatIs('$var') //query the type of variable   eg. whatIs "$var"; // Result: int variable
+eg.
+whatIs "$var1"; //result: string variable
+whatIs "$var2"; //result: float variable
+whatIs "$var3"; //result: int variable
+// Check node type:
+pm.nodeType(<curve>) //returns: 'transform'
+pm.nodeType(<curveShape>) //returns: 'nurbsCurve'
+pm.objectType(<curve>) //returns: 'nurbsCurve'
+//
+pm.ls(<curve>, showType=1) //returns: [nt.Transform(u'polyToCurve35'), u'transform']
 
 
 //variable's type CANNOT be redefined once it is created, until the maya session is ended.
@@ -69,10 +79,7 @@ int $var3 	 = $var; //repeated to an int
 //convert from array to string
 eg. string $newStringVar = ($floatArray[0] + "_" + $floatArray[1] + "_" + $floatArray[2]);
 
-eg. //check variable type:
-whatIs "$var1"; //result: string variable
-whatIs "$var2"; //result: float variable
-whatIs "$var3"; //result: int variable
+
 
 
 implicit    $variable = 1234;           //maya will determine the value as integers
@@ -125,7 +132,7 @@ print pm.selected()[0].namespace()
 
 filterExpand	//avoid Maya's component compression
 // #change [u'bodyShell.vtx[4:5]'] to [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
-edgeVertices = pm.filterExpand (edgeVertices, expand=1, selectionMask=31)
+edgeVertices = pm.filterExpand(edgeVertices, expand=1, selectionMask=31) //vertex=31, edge=32, face=34
 
 
 
@@ -171,6 +178,12 @@ $roundTruncatedValue = trunc($floatValue*`pow 10 $n`+0.5)/`pow 10 $n`;
 //if however you want a literal truncation, remove the "+0.5" bit
 eg.
 $truncatedValue = trunc($floatValue*`pow 10 $n`)/`pow 10 $n`;
+
+
+
+
+
+
 
 
 "STRINGS:	//-------------------------------------------------------------------------------------------------------------------------------------------"
@@ -364,7 +377,7 @@ string $buffer[];
 $numTokens = `tokenize "testing=non-default separators" "=" $buffer`;
 
 
-//string manipulation:
+//MEL string manipulation:
 basenameEx 
 capitalizeString 
 containsMultibyte 
@@ -1123,9 +1136,13 @@ ex. [pm.setAttr(node+'.'+attr, value) for attr, value in attributes.iteritems()]
 
 
 // connect atributes:
-ex. connectAttr -f "pSphere1.worldMesh" "cpom1.inMesh";	// Result: Connected pSphereShape1.worldMesh to cpom1.inMesh. // 
+connectAttr -f "pSphere1.worldMesh" "cpom1.inMesh";	// Result: Connected pSphereShape1.worldMesh to cpom1.inMesh. // 
+//
+pm.connectAttr(<node1>.outMesh, <node2>.inMesh)
+//using strings
+pm.connectAttr("SpineCurveInfo.arcLength", 'Spine_MDN'+'.input1X')
 
-ex. pm.connectAttr(<node1>.outMesh, <node2>.inMesh)
+
 
 
 
@@ -1313,9 +1330,9 @@ sel = pm.ls(orderedSelection=1)
 
 
 // component selection mask
-faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1)
-edges = pm.filterExpand(selection, selectionMask=32, expand=1)
-vertices = pm.filterExpand (obj1, selectionMask=31, expand=1)
+faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1) //vertex=31, edge=32, face=34
+edges = pm.filterExpand(selection, selectionMask=32, expand=1) //vertex=31, edge=32, face=34
+vertices = pm.filterExpand (obj1, selectionMask=31, expand=1) //vertex=31, edge=32, face=34
 
 
 //get:
@@ -1380,12 +1397,12 @@ faces = pm.polyEvaluate(face=1)
 //get all faces from object
 faces = pm.filterExpand(obj+'.f[*]', sm=34)
 //verts
-verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
+verts = pm.filterExpand(obj+'.v[*]', selectionMask=31) //vertex=31, edge=32, face=34
 //alt:
 int $vertcount = polyEvaluate -vertex $object; 
 string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
 //edges
-edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
+edges = pm.filterExpand(obj+'.e[*]', selectionMask=32) //vertex=31, edge=32, face=34
 
 //alt (get anything polyEvaluate querys)
 faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
@@ -1409,6 +1426,8 @@ polyEvaluate -edgeComponent $obj //
 selectedFaces = [int(f.split('[')[-1].rstrip(']')) for f in pm.filterExpand(sm=34)] //ie. [818, 1380] from [u'obj.f[818]', u'obj.f[1380]']
 polyEvaluate -faceComponent $obj //
 //
+componentNumbers = [int(str(i).split('[')[-1].split(']')[0]) for i in components] //#get the vertex numbers as integer values. ie. [818, 1380]
+//
 [int(str(i).split('[')[-1].split(']')[0]) for i in components] //ie. [818, 1380] from [u'obj.vtx[818]', u'obj.vtx[1380]']
 //using regex (import re)
 [int(re.findall(r'(?<=\[)[0-9]+(?=:?])', str(s))[0]) for s in components] //ie. [818, 1380] from [u'obj.vtx[818]', u'obj.vtx[1380]']
@@ -1417,11 +1436,11 @@ polyEvaluate -faceComponent $obj //
 // optional components arg (else use selection).
 // optional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
 //vertex
-verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
+verts = pm.filterExpand(vertices, expand=1, selectionMask=31) //vertex=31, edge=32, face=34
 //edge
-edges = pm.filterExpand(edges, expand=1, selectionMask=32)
+edges = pm.filterExpand(edges, expand=1, selectionMask=32) //vertex=31, edge=32, face=34
 //face
-faces = pm.filterExpand(faces, expand=1, selectionMask=34)
+faces = pm.filterExpand(faces, expand=1, selectionMask=34) //vertex=31, edge=32, face=34
 
 
 //get adjacent faces
@@ -1438,9 +1457,9 @@ adjFaces.remove(face)
 eg.
 vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
 //convert selection to vertices
-ConvertSelectionToVertices;
+pm.mel.ConvertSelectionToVertices()
 //or
-PolySelectConvert 3; //3=verts, 2=edges, 1=faces
+pm.mel.PolySelectConvert(3) //3=verts, 2=edges, 1=faces
 
 // get vertices without changing selection in the viewport:
 vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
@@ -1463,6 +1482,10 @@ for vertex in vertices.split():
 
 vertices = [componentName+".vtx["+vertices[2]+"]",componentName+".vtx["+vertices[3]+"]"] //'.vtx','.e','.f'
 
+
+//get connected faces
+sel = pm.ls(sl=1)[0]
+sel.connectedFaces()
 
 
 
@@ -1533,13 +1556,7 @@ scale
 
 nonLinear
 
-xform 
-// centerPivots () 
-// pivots (linear, linear, linear)
-// scalePivot (linear, linear, linear) 
-// rotatePivot (linear, linear, linear)
-// zeroTransformPivots ()
-
+xform
 // translation (linear, linear, linear)
 // rotation (angle, angle, angle)
 // rotateAxis (angle, angle, angle)
@@ -1547,22 +1564,21 @@ xform
 // scale (float, float, float)
 // scaleTranslation (linear, linear, linear) 
 
-// get an objects current rotation value:
-ex. origRotationValue = pm.xform(query=1, rotation=1)
-// set the rotation
+// get rotation
+ex. pm.xform(query=1, rotation=1)
+// set rotation
 ex. pm.xform(rotation=[x,y,z])
-// restore the original rotation value:
-ex. pm.xform(object_, rotation=origRotationValue)
-
 
 
 // get vertex position (get point position)
-ex. pm.xform(vertices, query=1, t=1, ws=1) //ie. result: [2, 1, 1]
+ex. pm.xform(vertices, query=1, translation=1, worldSpace=1) //ie. result: [2, 1, 1]
 ex. pm.pointPosition(vertex, world=True) //ie. result: [2, 1, 1]
 
+// get point between two points
+subtractPointPos = lambda p1, p2: (p1[0]-p2[0], p1[1]-p2[1], p1[2]-p2[2]) //#ex. subtractPointPos(p1, p2) returns: <point> 
 
 
-//get closest point on mesh:
+// get closest point on mesh:
 cpmNode = pm.ls(pm.createNode('closestPointOnMesh'))[0] //#get the closestPointOnMesh node.
 pm.connectAttr(<obj2Shape>.outMesh, cpmNode.inMesh)
 v1Pos = pm.pointPosition(<obj1Vertex>, world=True)
@@ -1570,32 +1586,43 @@ pm.setAttr(cpmNode.inPosition, v1Pos[0], v1Pos[1], v1Pos[2], type="double3") //#
 index = pm.getAttr(cpmNode.closestVertexIndex) //#vertex Index. | ie. result: [34]
 closestPoint = obj2Shape.vtx[index]
 
-//get nearest point on curve:
-npcNode = pm.ls(pm.createNode("nearestPointOnCurve"))[0] //#get the nearestPointOnCurve node.
-pm.connectAttr(<curveShape>.worldSpace, npcNode.inputCurve)
-pm.setAttr(npcNode.inPosition, 1, 2, 3, type="double3")
-wsPos = pm.getAttr(npcNode.position)
-uParam = pm.getAttr(npcNode.parameter)
+
+
+//get center point
+//object center
+x2, y2, z2 = pm.objectCenter(obj) //#centerPoint = pm.objectCenter(object)
+//alt using property
+obj.translate
+
+// get bounding box
+xmin, ymin, zmin, xmax, ymax, zmax = pm.xform(obj, q=1, boundingBox=1)
+//on polygon objects
+xmin, xmax, ymin, ymax, zmin, zmax = pm.polyEvaluate(obj, boundingBox=1)
+//on multiple objects:
+xmin, ymin, zmin, xmax, ymax, zmax = pm.exactWorldBoundingBox(objects)
+
 
 
 // pivots
-// get/set objects pivot point:
-ex.
-getAttr ball.scalePivot;
-ex.
-setAttr ball.scalePivot;
-//or
-ex.
-xform -query -scalePivot -worldSpace $ObjectName;
+//get pivot point
+ex. pm.getAttr(ball.scalePivot)
+ex. pm.xform(obj, q=1, scalePivot=1, worldSpace=1)
+ex. pm.getAttr(ball.rotatePivot)
+ex. pm.xform(obj, q=1, rotatePivot=1, worldSpace=1)
+//set pivot point
+ex. pm.setAttr(ball.scalePivot)
+ex. pm.xform(obj, scalePivot=[0,0,0], worldSpace=1)
+ex. pm.setAttr(ball.rotatePivot)
+ex. pm.xform(obj, rotatePivot=[0,0,0], worldSpace=1)
+ex. obj.setScalePivot(obj.c.get())
+ex. obj.setRotatePivot(obj.c.get())
+//center pivot
+pm.xform(obj, centerPivots=1)
+//
+pm.xform(obj, pivots=1)
+pm.xform(obj, zeroTransformPivots=1)
 
-// get/set objects rotate pivot position:
-ex.
-getAttr ball.rotatePivot;
-ex.
-setAttr ball.rotatePivot;
-//or
-ex.
-xform -query -rotatePivot -worldSpace $ObjectName;
+
 
 
 
@@ -1641,6 +1668,129 @@ $m1 = $m2 * $m3;
 
 // freeze transformations
 pm.makeIdentity (obj, apply=1, t=1, r=1, s=1, n=0, pn=1)
+
+
+
+
+
+
+
+
+
+
+
+
+"DEFORMATION: //-----------------------------------------------------------------------------------------------------------------------------------------"
+
+
+// Deform to curve
+pm.deformer(obj, <curve>, type='curveWarp', name='curveWarp#')
+
+
+
+
+
+
+
+
+
+
+
+"CURVES: //----------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+// Create a curve
+pm.curve(p=[(0, 0, 0), (3, 5, 6), (5, 6, 7), (9, 9, 9)])
+// with weighting
+pm.curve(pw=[(0, 0, 0, 1), (3, 5, 6, 1), (5, 6, 7, 1), (9, 9, 9, 1)]) //x,y,z and w values of a point, where the w is a weight value. [linear, linear, linear, float]
+
+
+// Get control vertices
+cvs = pm.getAttr(<curve1>.cp)
+// Get number of CVs
+numCVs = len(<curve1>.cv)
+numCVs = pm.getAttr(<curve1>.cp, size=1)
+
+
+// Get cv position
+pm.pointOnCurve('curve1', parameter=0.5, position=True) //(Parameter is the point on along the curve) #Returns the (x,y,z) position of curve1 at parameter 0.5. If no flag is specified, it assumes p/position by default.
+pm.pointPosition(object.cv[1], -w) //Point position works with any of the point attributes ep, cv, uv, pt etc.
+// Get cv tangent
+pm.pointOnCurve('curve1', parameter=0.5, tangent=True)
+pm.pointOnCurve('curve1', parameter=0.5, normalizedTangent=True)
+// Get cv normal
+pm.pointOnCurve('curve1', parameter=0.5, normal=True)
+pm.pointOnCurve('curve1', parameter=0.5, normalizedNormal=True) //#Returns the (x,y,z) normalized normal of curve1 at parameter 0.5.
+// Get cv curvature
+pm.pointOnCurve('curve1', parameter=0.5, curvatureRadius=True) //#Returns the curvature radius of curve1 at parameter 0.5.
+pm.pointOnCurve('curve1', parameter=0.5, curvatureCenter=True)
+//
+infoNode = pm.ls(pm.pointOnCurve('curve1', ch=True, parameter=0.55))
+pm.getAttr(infoNode.position) //# returns the position
+pm.getAttr(infoNode.normal) //# returns the normal
+
+
+
+// Curve Properties:
+// CV
+<curve1>.cv[0]		
+<curve1>.cv[0:2] //slice
+<curve1>.cv[:] //all
+// Get the degree of the curve.
+pm.getAttr(<curve1>.degree) //Note that the number of CVs = degree + spans.
+// Get the number of spans in the curve
+pm.getAttr(<curve1>.spans) //Note that the number of CVs = degree + spans.
+// Get the curve form
+pm.getAttr(<curve1>.form)
+// Get the minimum parameter value on the curve
+pm.getAttr(<curve1>.minValue)
+// Get the maximum parameter value on the curve
+pm.getAttr(<curve1>.maxValue)
+// Get the local x,y,z position of the 1st CV. (Use a curve info node if the curve is a result of a construction history operation)
+pm.getAttr(<curve1>.cv[0]) //cv position at index 0
+
+
+// Get the arc length of the curve. Use “-ch” flag with the arclen command to get a curve info node that constantly updates to the current arc length.
+pm.arclen(<curve1>)
+
+// Curve info node (You can use the curve info node to query other attributes such as world space CV values and arc length)
+cInfoNode = pm.ls(pm.createNode('curveInfo'))[0]
+pm.connectAttr(<curveShape>.worldSpace, cInfoNode.inputCurve) //#connect the info node to the curve.
+pm.getAttr(cInfoNode.knots[li]) //#query the knot vector of the curve.
+
+// Nearest point on curve Node:
+npcNode = pm.ls(pm.createNode("nearestPointOnCurve"))[0] //#get the nearestPointOnCurve node.
+pm.connectAttr(<curveShape>.worldSpace, npcNode.inputCurve)
+pm.setAttr(npcNode.inPosition, 1, 2, 3, type="double3")
+wsPos = pm.getAttr(npcNode.position)
+uParam = pm.getAttr(npcNode.parameter)
+
+
+
+
+// Reverse curve
+pm.reverseCurve(curves, rpo=1)
+
+
+// Rebuild curve
+// set parameter range:
+pm.rebuildCurve(curves, keepRange=0) //keepRange: (0)parameter 0-1, (1)keep original range, (2)parameter 0-number of spans.
+// rebuild curve to 5 uniform spans
+cmds.rebuildCurve(rebuildType=0, spans=5) //rebuildType: (0)uniform, (1)reduce spans, (2)match knots, (3)remove multiple knots, (4)curvature (5)rebuild ends (6)clean)
+// rebuild curve by reducing redundant spans
+cmds.rebuildCurve(rebuildType=1)
+// rebuild curve by matching the parameterization of another curve
+cmds.rebuildCurve('curve1', 'curve2', rebuildType=2) // curve1 is the curve to rebuild, curve2 is the reference curve
+// rebuild curve by removing all multiple interior knots
+cmds.rebuildCurve(rebuildType=3)
+// rebuild curve using the curvature of the curve to create more spans where curvature is higher
+cmds.rebuildCurve(rebuildType=4)
+
+
+// Extract curve from polygon edgeloop
+curveObj, curveNode = pm.polyToCurve(edgeLoop, form=2, degree=3, conformToSmoothMeshPreview=1) //returns Object name / node name ex. [u'polyToCurve12', u'polyEdgeToCurve8']
+
+
 
 
 
@@ -1722,7 +1872,19 @@ for material in pm.ls(mat=1, flatten=1):
 
 
 //create shader
-mat = pm.shadingNode('lambert', asShader=1, name=name)
+mat = pm.shadingNode('lambert', asShader=1, name='name#')
+//connect shader to sg surface shader
+pm.connectAttr(mat.outColor, shading_group.surfaceShader)
+
+//create file texture node
+file_node = pm.shadingNode('path_to_file', asTexture=1)
+//connect file texture node to shader's color
+pm.connectAttr(file_node.outColor, mat.color)
+
+//create a shading group
+shading_group = pm.sets(renderable=True, noSurfaceShader=True, empty=True)
+
+
 
 
 //assign shader
@@ -1730,14 +1892,12 @@ pm.hyperShade(face, assign=mat) //#without optional first arg specified, shader 
 //using sets:
 shader = pm.shadingNode('lambert', asShader=True)
 shaderGrp = pm.sets(empty=True, renderable=True, noSurfaceShader=True)
-pm.connectAttr(shader+".outColor", shaderGrp+".surfaceShader", f=True)
+pm.connectAttr(shader.outColor, shaderGrp.surfaceShader, f=True)
 pm.sets(faces, e=True, forceElement=shaderGrp)
 
 
-
-//get node type
-pm.nodeType(node) //returns ie. 'VRayMultiSubTex'
 //select by node type
+node_type = pm.nodeType(node) //get node type //returns ie. 'VRayMultiSubTex'
 node = pm.ls(selection=1, type='VRayMultiSubTex') //#List all objects of the specified type. exactType=not objects that are descendents of that type
 
 
@@ -1781,7 +1941,7 @@ convertedRGB = [round(float(v)/255, 3) for v in rgb]
 //Hypershade Editor
 
 //open the hypershade widow
-mel.eval("HypershadeWindow()") //pm.HypershadeWindow()
+pm.mel.HypershadeWindow()
 
 //Get the name of the hypershade panel
 panel = pm.getPanel(withFocus=True)
@@ -1871,18 +2031,20 @@ lights = pm.ls(lights=1) //#List all lights in the DAG.
 "CAMERAS: //---------------------------------------------------------------------------------------------------------------------------------------------"
 
 
-//get scene cameras and their transforms:
-//# Get all cameras first
+//get all cameras
 cameras = pm.ls(type='camera', l=True) //#List all cameras in the DAG.
-//# Let's filter all startup / default cameras
+//get default cameras
 startup_cameras = [c for c in cameras if pm.camera(c.parent(0), q=1, startupCamera=1)]
-//# non-default cameras are easy to find now. Please note that these are all PyNodes
+//get non-default cameras (note that these are all PyNodes)
 non_startup_cameras_pynodes = list(set(cameras) - set(startup_cameras))
-//# Let's get their respective transform names, just in-case
+//get non-default camera transforms
 non_startup_cameras_transform_pynodes = map(lambda x: x.parent(0), non_startup_cameras_pynodes)
-//# Now we can have a non-PyNode, regular string names list of them
+//get non-PyNode (list of string names)
 non_startup_cameras = map(str, non_startup_cameras_pynodes)
 non_startup_cameras_transforms = map(str, non_startup_cameras_transform_pynodes)
+//set camera attributes
+cmds.setAttr('persp.translate', [0,0,0])
+cmds.setAttr('persp.rotate', [0,0,0])
 
 
 //get camera from viewport panel
@@ -2006,15 +2168,15 @@ eg. pm.lsUI(windows=1)
 eg. pm.lsUI(panels=1, editors=1)
 
 //get all panels
-pm.getPanel(all=True)
+eg. pm.getPanel(all=True)
 
 //get panel by name
-cmds.getPanel(containing='button0')
+eg. pm.getPanel(containing='button0')
 
 //get panel by type
-pm.getPanel(type='modelPanel')
+eg. pm.getPanel(type='modelPanel')
 //
-pm.getPanel(scriptType='polyTexturePlacementPanel')
+eg. pm.getPanel(scriptType='polyTexturePlacementPanel')
 
 
 //#Use the -typ/type flag to list all controls and control layouts.
@@ -2038,7 +2200,7 @@ print [str(i.keyword1()) for i in pm.lsUI(editors=1,panels=1,windows=1,menus=0,c
 
 
 
-//VIEWPORT: ------------------------------------------------------
+"//VIEWPORT: -------------------------------------------------------------------------------------------------------------------------------------------"
 
 
 
@@ -2087,7 +2249,8 @@ pm.undoInfo(openChunk=1)
 undoInfo -closeChunk;
 pm.undoInfo(closeChunk=1)
 
-
+// flush undo
+pm.flushUndo()
 
 
 
@@ -2138,7 +2301,44 @@ unloadPlugin			ex. pm.unloadPlugin ('newNode.py')
 
 
 
+// MASH: ------------------------------------------------------------------------------------------------------------------------------------------------
 
+//connect to existing network
+mashNW = mapi.Network('mash_network1') //#connect to a network
+//create a new network
+mashNW = mapi.Network()
+mashNW.createNetwork(name='MASH#', geometry='Instancer') //#create a network
+//set point count
+mashNW.setPointCount(10)
+//get nodes in mash network
+mashNodes = [mapi.Node(n) for n in mashNW.getAllNodesInNetwork()]
+
+
+//mash waiter node
+waitNode = pm.ls(mashNW.waiter)[0]
+
+//mash distibute node
+distNode = pm.ls(mashNW.distribute)[0]
+pm.setAttr(distNode.pointCount, count)
+pm.setAttr(distNode.amplitudeX, 0)
+
+//mash instancer node
+instNode = pm.ls(mashNW.instancer)[0]
+
+//mash curve node
+curveNode = pm.ls(mashNW.addNode('MASH_Curve').name)[0]
+pm.connectAttr(<curve>.worldSpace[0], curveNode.inCurves[0], force=1) //#connect curve to mash curve node
+pm.setAttr(curveNode.stopAtEnd, 1) #0=off, 1=on
+pm.setAttr(curveNode.clipStart, 0)
+pm.setAttr(curveNode.clipEnd, 1)
+pm.setAttr(curveNode.timeStep, 1)
+pm.setAttr(curveNode.transformationSpace, 2) //#2=local space, 1=world space
+
+//mash random node
+randomNode = pm.ls(mashNW.addNode('MASH_Random').name)[0]
+
+//mash signal node
+signalNode = mashNetwork.addNode('MASH_Signal') //#add a Signal node
 
 
 
@@ -2274,19 +2474,27 @@ mel.createMelWrapper(module.method, retType='string[]'); //specify return type i
 
 
 //To associate a MEL script with a hotkey, you must first add the script to the list of available hotkey commands, then assign a hotkey to the command you created.
+'''
 >	Select Window > Settings/Preferences > Hotkey Editor.
+'''
 //Commands are grouped into categories. 
+'''
 >	Click the category name in the Categories list you want to put your script in.
 >	In the command area at the bottom of the hotkey editor, click New.
 >	Type a Name and Description for the new command.
 >	In the Command text box, type the MEL commands you want the hotkey to run.
 >	Click Accept.
 >	Type a key name in the Key text box and turn on any modifiers you want on the hotkey.
+'''
 //For example, type m in the text box and turn on the Alt setting to assign the marking menu to  + m.
 //As you edit these settings, Maya shows the command currently assigned to the hotkey, if any. Only assign the hotkey if you don’t mind overriding this command.
+'''
 >	Set the Direction option. //If you select Press, Maya runs the command when you press the key down. If you select Release, Maya runs the command when you let the key up.
+'''
 //The distinction between Press and Release can be important, for example when you assign a hotkey to a snapping mode. You want to assign the command to turns the snapping mode on to the key press, and the command that turns the snapping mode off to the key release.
+'''
 >	Click Assign.
+'''
 //If the hotkey you set already has a command assigned, Maya asks if you want to override it.
 
 
@@ -2360,12 +2568,16 @@ pm.hotkeyCtx(t='CustomEditor', rac=True)
 
 
 
-"MAYA SCRIPT EDITOR OPTIONS:"
+"MAYA SCRIPT EDITOR: //---------------------------------------------------------------------------------------------------------------------------------"
 
 
-HELP:
-// highlight command in script and right click to select command documentation link
-// ctrl + space   -  suggest possible commands based on current input
+// script editor state
+// query open state
+scriptEditorOpen = pm.window("scriptEditorPanel1Window", exists=True)
+// close
+pm.deleteUI("scriptEditorPanel1Window",  window = True)
+pm.flushIdleQueue()
+
 
 //tab
 tab		shift+tab //indent /unindent highlighted block
@@ -2373,46 +2585,47 @@ tab		shift+tab //indent /unindent highlighted block
 ctrl+/ //toggle comment highlighted block
 
 
-help<command name>  ex. help move
-
-						help -list "*keyword or fragment*";
-						
-						runTimeCommand -query -command "runtimeCommand";   (to figure out what a runtime commmand does)
-						defaultRunTimeCommands.mel //scripts\startup folder of the Maya installation directory
-						
-						whatIs command;                 (to figure out where a proc is defined and read that MEL script)
-
+// get info on a command
+// highlight command in script and right click to select command documentation link
+// ctrl + space   -  suggest possible commands based on current input
+ex. pm.help(move)
+ex. help -list "*keyword or fragment*";
+//
+runTimeCommand -query -command "runtimeCommand";   (to figure out what a runtime commmand does)
+defaultRunTimeCommands.mel //scripts\startup folder of the Maya installation directory
+//
+whatIs command;                 (to figure out where a proc is defined and read that MEL script)
 
 
 							 
-scriptEditorInfo	        http://help.autodesk.com/cloudhelp/2016/ENU/Maya-Tech-Docs/Commands/scriptEditorInfo.html 
+scriptEditorInfo	        //http://help.autodesk.com/cloudhelp/2016/ENU/Maya-Tech-Docs/Commands/scriptEditorInfo.html 
 							//script editor options mel commands
-							ex. scriptEditorInfo -clearHistory //Clears the read-only text in the upper field of the script editor.
+							//	ex. scriptEditorInfo -clearHistory //Clears the read-only text in the upper field of the script editor.
 
-Show Stack Trace             Opens another window which lists errors and their line numbers in external script files.
-							 This is very useful for debugging scripts in external files. 
+Show Stack Trace            //Opens another window which lists errors and their line numbers in external script files.
+							//This is very useful for debugging scripts in external files. 
 
-Suppress Command Results     When turned on, the Script editor does not show the result of 
-							 commands. Result messages start with // Result:
+Suppress Command Results    //When turned on, the Script editor does not show the result of 
+							//commands. Result messages start with // Result:
 
-Suppress Info Messages       When turned on, the Script editor does not show informational 
-							 messages. Informational messages are of many different types and do 
-							 not have a set prefix (except for //). 
+Suppress Info Messages      //When turned on, the Script editor does not show informational 
+							//messages. Informational messages are of many different types and do 
+							//not have a set prefix (except for //). 
 
-Suppress Warning Messages    When turned on, the Script editor does not show warning messages. 
-							 Warning messages start with // Warning:. 
+Suppress Warning Messages   //When turned on, the Script editor does not show warning messages. 
+							//Warning messages start with // Warning:. 
 
-Suppress Error Messages      When turned on, the Script editor does not show error messages. 
-							 Error messages start with // Error:. 
-								ex. scriptEditorInfo -e -suppressWarnings true;
-
-
+Suppress Error Messages     //When turned on, the Script editor does not show error messages. 
+							//Error messages start with // Error:. 
+							//	ex. scriptEditorInfo -e -suppressWarnings true;
 
 
 
 
 
-"MAYA ENVIRONMENT:"
+
+
+"MAYA ENVIRONMENT: //------------------------------------------------------------------------------------------------------------------------------------"
 
 //execute from batch or command line:
 maya -batch -file someMayaFile.mb -command "file -save"
@@ -2471,33 +2684,33 @@ ex. H2 = td2 + th2 //hypotanuse squared = total depth squared  + total hight squ
 
 
 inViewMessage 		//Used for displaying in-view messages.
-					ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
+					//	ex. inViewMessage -statusMessage "Multi-Component selection is now <hl>on</hl>.\nPress <hl>F8</hl> for object selection" -fade -pos topCenter;	
 					//html tags. Dont forget to close your tags like this </tag>
-					<em> – Italics
-					<hl> – Highlight (not HTML, but it works)
-					<small> – Small
-					<i> – Italics
-					<sub> – Subscript
-					<sup> – Superscript
-					<blockquote> – Indented Quote
-					<h1> – Large heading
-					<h2> – Medium heading
-					<h3> – Small heading
-					<br> – Line break
-					<p> – Paragraph
-					<span> – Allows you to set the font colour and size amongst other things.
+					//	<em> – Italics
+					//	<hl> – Highlight (not HTML, but it works)
+					//	<small> – Small
+					//	<i> – Italics
+					//	<sub> – Subscript
+					//	<sup> – Superscript
+					//	<blockquote> – Indented Quote
+					//	<h1> – Large heading
+					//	<h2> – Medium heading
+					//	<h3> – Small heading
+					//	<br> – Line break
+					//	<p> – Paragraph
+					//	<span> – Allows you to set the font colour and size amongst other things.
 
 //flags:
-message(msg) //The message to be displayed, can be html format. General message
-assistMessage(amg) //The user assistance message to be displayed, can be html format.
-statusMessage(smg) //The status info message to be displayed, can be html format.
+message(msg) 		//The message to be displayed, can be html format. General message
+assistMessage(amg) 	//The user assistance message to be displayed, can be html format.
+statusMessage(smg) 	//The status info message to be displayed, can be html format.
 
 
-fontSize(fts)	//Sets the message font size.
+fontSize(fts)		//Sets the message font size.
 
-dragKill(dk) //Use this flag if the message needs to be deleted on mouse drag.
+dragKill(dk) 		//Use this flag if the message needs to be deleted on mouse drag.
 
-position(pos) //The position that the message will appear at relative to the active viewport. The supported positions are:
+position(pos) 		//The position that the message will appear at relative to the active viewport. The supported positions are:
 "topLeft"
 "topCenter"
 "topRight"
@@ -2527,7 +2740,7 @@ objExists	eg. if(`objExists surface1`) {  // remember to enclose in high commas 
 							warning("No surface exists");
 							}
 
-break	 				//break out of current loop but continue statements within the current function
+break	 			//break out of current loop but continue statements within the current function
 continue 			//continue outside of the current function
 
 error 	eg. if (size($l) == 0) {
@@ -2535,7 +2748,7 @@ error 	eg. if (size($l) == 0) {
 						} // Error: error display string //
 
 //generally best practice is to use objExists, if ($node != "") or similar rather than catch
-catch			//takes a MEL expression as an argument.
+catch				//takes a MEL expression as an argument.
 					//returns '1' if the expression in parenthesis produces an error and 0 otherwise
 				ex.	if (catch(`createNode -name myTransform transform`)){
 						print "Could not create sphere\n";
@@ -2543,8 +2756,8 @@ catch			//takes a MEL expression as an argument.
 						// continue on as usual...
 					}
 
-catchQuiet 	//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
-						//catchQuiet behaves like catch, except that it supresses warnings and errors.
+catchQuiet			//returns 1 if the expression in parenthesis produces an error and 0 otherwise. 
+					//catchQuiet behaves like catch, except that it supresses warnings and errors.
 
  
 MayaNodeError		//

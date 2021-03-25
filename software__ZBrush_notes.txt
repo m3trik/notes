@@ -834,6 +834,21 @@ Transfer Color Data between models: (from non-uv mesh to uv)
 
 
 
+
+FILE:	------------------------------------------------------------------------------
+
+Importing multiple obj|fbx files:
+>	Switch to a primitive sub-tool if you don't want the current sub-tool is replaced.
+>	After the file is imported, you can add it to the layer stack using tool>subtool>append.
+
+
+
+
+
+
+
+
+
 	
 	
 

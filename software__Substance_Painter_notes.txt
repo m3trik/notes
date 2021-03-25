@@ -54,7 +54,8 @@ Weld seams:
 
 
 
-
+Mask overlapping geometry:
+>	Toggle 'brush alignment'> 'Tangent|Wrap' & 'UV' to mask separate uv's.
 
 
 

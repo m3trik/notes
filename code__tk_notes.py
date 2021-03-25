@@ -264,6 +264,8 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 # -----------------------------------------------
 
 
+
+
 tk_selection.py
 remove current selection comboBox, and replace with function that weeds out accidently welded verts.
 
@@ -357,6 +359,11 @@ AttributeError: 'pymxs.MXSWrapperBase' object has no attribute 'EditablePoly'
 
 # MAYA:
 # -----------------------------------------------
+
+#component ID display not working with nurbs curve:
+maya/slots\tk_slots_maya_display.py", line 169, in b011
+#     if visible[index] != True and index != 4:
+# TypeError: 'NoneType' object has no attribute '__getitem__'
 
 
 maya_normals.py", line 139, in tb003

@@ -506,15 +506,22 @@ eg. a,b,c = (1,2,3)
 #dynamically assign variables:
 #using a dictionary:
 eg. vars_={}
-	vars_['key']=value
-	#print vars_['key']
+	vars_['var1']=value #vars_['var1'] returns: <value>
+
 #adding to globals() or locals():
 eg. locals()[key]=value
 eg. globals()['var'] = "an object"
 #assign variables from **kwargs
-eg. for key,value in kwargs.iteritems(): #create variables for any kwargs passed in
-		exec('%s=%s' % (key,value))
-
+eg. kwargs_ = (exec('%s=%s' % (k,v)) for k,v in kwargs.items()) #create variables for any kwargs passed in
+#
+eg. kwargs_ = ('{}={}'.format(k,v) for k,v in kwargs.items())
+#
+# unpack an iterables contents to arguments in a function call
+#using * to get list or set as *args
+eg. *list_ #eq to: list_[0], list_[1], ...
+eg. *range(10, 13) #eq to: 10, 11, 12
+#using ** to get dictionary keys/values as **kwargs
+eg. **dict_ #eq to: key1=value1, key2=value2
 
 
 #swap variables
@@ -664,7 +671,7 @@ eg. '%s %s' % (hello, world)
 eg. '%i%f%s' %(x,y,z) #adding .x between % & f (ex %.xf) will give you x dec places (%f=%d)
 
 #using +
-eg.'str'+'ing'
+eg. 'str'+'ing'
 
 #using join()
 eg. '_'.join([hello, world]) #join inserting an underscore
@@ -686,41 +693,47 @@ eg.	'string'[0] #'s'
 eg. 'string'[1:-1] #'trin'
 
 
-#check for character:
-eg. '$' in 'string':
-eg. '$' not in 'string':
-eg. '.vtx' or '.f' in 'string':
-
-if any(char in set('0123456789$,') for char in 'string'):
+#check for single set of chars:
+eg. 'char' in 'chars' #returns: bool
+eg. 'char' not in 'chars' #returns: bool
 #using re
-pattern = re.compile(r'\d\$,')
-if pattern.findall(string):
+eg. pattern = re.compile(r'\d\$,')
+	pattern.findall(string) #returns: bool
+#find case-insensitive
+eg. 'chars'.lower() in 'chars'.lower()
+#using re (import re)
+eg. re.search('chars', string, flags=re.IGNORECASE)
+#check for multiple sets of chars:
+eg. any(char in set('0123456789$,') for char in 'chars') #returns: bool
+eg. any(((True if s in 'chars.' else False for s in ('Char', 'char')))) #returns: bool
+eg. all(((True if s in 'chars.' else False for s in ('Char', 'char')))) #returns: bool
+eg. next((True for s in ('Char', 'char') if s in 'chars.'), False) #returns: bool
 
-#check for a group of characters in a string or find the index 
-eg. string.index('ing') #'3'
 
-
+#find index 
+eg. string.index('chars') #'3'
 #find match anywhere in a string.
-re.search(r'')
+re.search(r'chars', string)
+#using re (import re)
+re.search('chars', string).start() #return starting index.
+re.search(r"\bchars\b", string).start() #return starting index. \b = whole words only.
+re.search('chars', string).end() #return ending index.
 #find all instances.
-re.findall(r'')
-
-
+re.findall(r'chars', string)
 #find first instance
-eg. string.find('g') #returns index ie. '5'
+eg. string.find('chars') #returns index ie. '5'
 #find first instance of char(s) from right
-eg. string.rfind('.mb') #returns '.' index of first instance of '.mb' from right
+eg. string.rfind('chars') #returns index of first instance from right.
+
 
 #matches beginning of a string.
-re.match(r'')
+re.match(r'chars')
 
 
 #startswith/ endswith (boolean)
 #can also supply a tuple of strings to test for or convert list to tuple
-eg. string.startswith('s') #'True'
-eg. 'This is a string'.startswith('This') #'True'
-eg  string.endswith('g') #'True'
-eg. 'This is a string'.endswith('string') #'True'
+eg. string.startswith('chars') #returns bool
+eg  string.endswith('chars') #returns bool
 
 
 #check for numeric characters:
@@ -731,21 +744,25 @@ eg. #import re
 m = re.search(r'\d+$', string) # if the string ends in digits m will be a Match object, or None otherwise.
 if m is not None:
 		print m.group()
+#get trailing integers
+#using re (import re)
+m = re.findall(r"\d+\s*$", W)
+trailing_digits = m[0] if m else None #returns trailing digits as a string.
 
 
 #number of occurrences. 
-eg. print string.count(' ')#count the #of whitespace '0' 
+eg. print string.count(' ') #count the #of whitespace '0' 
 
 
 
 #tokenize string to elements of a list
-eg. list('foobar')        #returns: ['f', 'o', 'o', 'b', 'a', 'r']
+eg. list('chars')        #returns: ['c', 'h', 'a', 'r', 's']
 #without using a list:
-eg. [c for c in 'foobar'] #returns: ['f', 'o', 'o', 'b', 'a', 'r']
+eg. [c for c in 'chars'] #returns: ['c', 'h', 'a', 'r', 's']
 
 #split string.
 eg. string.split()#splits on whitespace by default
-eg. 'This, is, a, string'.split(',') #"['This','is','a','string']"
+eg. 'c, h, a,r,s'.split(',') #returns: ['c','h','a','r','s']
 
 
 
@@ -775,6 +792,8 @@ eg. 'string'.replace('in', '', 0) #returns 'strg'
 eg. 'string'.replace('in', '', -1) #returns 'strg'
 #first x occurances of substring:
 eg. 'ABBA'.replace('B', '', 2) #returns 'AA'
+#first x occurances from right
+eg. ''.join('pCylinderShape1.f[0]'.rsplit('Shape', 1)) #replaces the first occurance of 'Shape' from the right with ''. #'pCylinder1.f[0]' from 'pCylinderShape1.f[0]'
 
 #strip numberic characters.  also lstrip/ rstrip.
 eg. 'b000'.strip('0123456789') #returns 'b'
@@ -788,7 +807,10 @@ eg. string = string[string.lfind('[')+1:string.rfind(']')] #'body_mainShape.vtx[
 eg. string[:string.rfind('Shape')] + string[string.rfind('Shape')+5:] #'tire_treadShape.e[1410]' becomes 'tire_tread.e[1410]' (also: string.replace('Shape.', '.', -1))
 #using index:
 eg. string = string[string.index('['):string.index(']')] #'body_mainShape.vtx[176]' becomes 176
-
+#replace case-insensitive:
+#using re (import re)
+eg. pattern = re.compile('char', re.IGNORECASE)
+	pattern.sub('replace', 'char Char CHAR') # 'replace replace replace'
 
 
 #strip using .join
@@ -797,6 +819,7 @@ eg. string = ''.join(string.partition('[')[1:]) #'body_mainShape.vtx[176]' becom
 
 
 #using re to remove specific chars
+eg. re.sub('[^A-Za-z0-9]+', '', 's_t_r_i_n_g') #returns: 'string'
 eg. re.sub('^-', '', '-23') # '^' indicates to remove the first '-' only
 # strip all characters using re
 # many more complex options in the re docs: https://docs.python.org/2/library/re.html
@@ -809,10 +832,10 @@ eg. re.sub('^-', '', '-23') # '^' indicates to remove the first '-' only
 # \A    matches only at the start of the string.
 # \Z    matches only at the end of the string.
 from re import sub
-sub('[\W_]+', '', string)
+sub(r'[\W_]+', '', string)
 #
 import re
-pattern = re.compile('[\W_]+')
+pattern = re.compile(r'[\W_]+')
 pattern.sub('', string)
 
 
@@ -824,7 +847,7 @@ eg. re.sub(pattern,replace,string,max=0)
 eg. string.translate(None, '!@#$')
 eg. string.replace('!@#$','') #optional third argument: integer max num of items to replace
 #or with loop
-eg. for char in '!@#$': string=string.replace(char,'')
+eg. [string.replace(char,'') for char in '!@#$']
 
 
 #remove trailing characters in a string
@@ -850,22 +873,22 @@ eg. string.capitalize() #'1Str ing' from '1str ing'
 #capitalize first alphanumberic char after white space. sets other characters in string as lower
 eg. string.title() #'1Str Ing' from '1str ing'
 #all UPPER
-eg. 'This is a string'.upper() #'THIS IS A STRING'
-eg. 'string'.isupper() #
+eg. 'string'.upper() #'STRING'
+eg. 'string'.isupper() #returns: bool
 #all lower
-eg. 'THIS IS A STRING'.lower() #'this is a string'
-eg. 'string'.islower()
+eg. 'STRING'.lower() #'string'
+eg. 'string'.islower() #returns: bool
 #swap case
-eg. string.swapcase()
+eg. 'String'.swapcase() #'sTRING'
 #specific chars
-eg. string[:4].upper()+string[2:] #effect only certain letters
+eg. string[:4].upper()+string[2:] #convert specific indices.
 
 
 
 
 
 #convert string to type integer
-int('8')
+int('8') #returns: int
 
 
 #insert a comma value every 3 digits
@@ -1050,8 +1073,7 @@ eg. sum([1, 2, 3, 4, 5]) #returns 15
 sum(list_) / float(len(list_))
 #alternately, instead of casting to float, you can add 0.0 to the sum.
 sum(list_, 0.0) / len(list_)
-#or using numpy:
-import numpy as np
+#or using numpy: (import numpy as np)
 np.mean(list_)
 
 # normalize list contents (with face normals; dividing a nonzero normal vector by its vector norm)
@@ -1190,6 +1212,9 @@ ex. list(set(list2) - set(list1)) #leave out the final list converstion if an en
 ex. list(set(list2).difference(list1))
 
 
+#get common elements between two lists
+common_elements = list(set(list1).intersection(list2)) #returns the unique common elements, but not any repeated elements that may exist.
+
 
 #combine lists
 eg. [1, 2, 3] + [4, 5, 6] #results in [1, 2, 3, 4, 5, 6]
@@ -1309,7 +1334,7 @@ eg. list_ = [x for x in list_ if x != 20]
 #by index or specify a slice [::-1]
 eg. del list_[-1] #deletes the last element
 #to delete an item x.pop(index)
-eg. x.pop(0) del(list_[1]) #delete index 1
+eg. x.pop(0)#delete the first index.
 #
 eg. x.pop(list_.index(x))
 
@@ -1849,24 +1874,11 @@ class ClassWithGlobalFunction:
 				global monty
 				def monty(): return 'python'
 
-#####
 class X:
 	global d
 	def d():
 		print 'I might be defined in a class, but I\'m global'
 
-
-
-
-
-
-
-# unpack an iterables contents to arguments in a function call
-#using * to get list or set as *args
-eg. func(*list_) #eq to: func(list_[0], list_[1], ...)
-eg. func(*range(10, 13)) #eq to: func(10, 11, 12)
-#using ** to get dictionary keys/values as **kwargs
-eg. func(**dict_) #eq to: func(key1=value1, key2=value2)
 
 
 
@@ -2089,6 +2101,9 @@ print [i for i in dir(uv) if kw in i or kw.title() in i or kw.swapcase() in i or
 
 #using __dict__:
 Class.__dict__ #get the attributes defined for the instance. returns: {attribute name:value}
+
+#
+vars(Class)
 
 #using help():
 help(Class) # Class information
@@ -2732,6 +2747,13 @@ keyboard.add_hotkey(shortcut, event) #attach the function to hot-key
 eg. os.path.isfile() #returns a boolean value
 
 
+# get all files of given type
+#using glob (import glob)
+txt_files = glob.glob('/dir/*.txt') #returns a list.
+#using pathlib (from pathlib import Path)
+txt_files = Path('/tmp').glob('*.txt') #matches files only in the top level directory.
+txt_files = Path('/tmp').glob('*.txt') #matches all files in the directory and all subdirectories, recursively.
+
 
 
 # environment variables
@@ -2764,7 +2786,7 @@ eg. 'HOME' in os.environ
 os.path.basename(os.path.abspath('.'))
 
 
-#get all paths:
+#get system paths:
 #using sys (import sys)
 for s in  sys.path: print s
 
@@ -2886,7 +2908,26 @@ print os.path.abspath(os.path.dirname(__file__))
 
 
 
+# RENAME A FILE
+os.rename(old, newname)
 
+
+
+# move a file
+#using shutil (import shutil)
+shutil.move(src, dest)
+#move and replace existing: (when specifying the full path to the destination, any existing file will be overwritten.)
+shutil.move(os.path.join(src, filename), os.path.join(dst, filename))
+#using rename
+os.rename(src, dest) #using forwardslashes, change the dest path
+
+
+
+
+# get last modified time stamp
+fileName = os.path.join(root, sc) #join fileName to include the path.
+mtime = os.path.getmtime(file_name) #returns float value which can be used with comparators.
+last_modified_date = datetime.fromtimestamp(mtime) #convert to readable format
 
 
 
@@ -3000,52 +3041,9 @@ eg. with open('file.txt', 'a') as f:
 
 
 
-
-
-											 
-
-
-
 #close a file previously opened
 eg. f.close() #the file is automatically closed at the end of 'with' statements. also.'try:' & 'finally:'
 
-
-
-
-
-
-
-# DELETING FILES AND/OR DIRECTORIES
-#delete a file.
-eg. file_ = '/tmp/<file_name>.txt'
-	if os.path.exists(file_): #check if file exists:
-#alt check 'isFile'
-eg.	file_='/tmp/foo.txt'
-	# If file exists, delete it
-	if os.path.isfile(file_):
-	else: # Show an error
-		print ('Error: %s file not found' % file_)
-
-#alt delete syntax
-eg. os.unlink('/tmp/<file_name>.txt')
-
-#using Exception Handling (import os)
-eg.	file_= raw_input('Enter file name to delete: ') #Get input
-	try: #Try to delete the file
-		os.remove(file_)
-	except OSError, e:  # if failed, report it back to the user
-
-
-#remove an empty directory.
-eg. os.rmdir()
-
-
-#delete a directory and all its contents.
-#import os, sys, shutil
-eg. try: #Try to remove tree; if failed show an error using try...except on screen
-		shutil.rmtree(dir_)
-	except OSError, e:
-		print ('Error: %s - %s.' % (e.filename, e.strerror))
 
 
 
@@ -3055,8 +3053,38 @@ eg. try: #Try to remove tree; if failed show an error using try...except on scre
 eg. os.path.getmtime(file)
 
 #convert to readable format
-eg. from datetime import datetime
-	datetime.fromtimestamp(1382189138.4196026).strftime('%Y-%m-%d %H:%M:%S') #returns '2013-10-19 16:25:38'
+# using datetime (from datetime import datetime)
+eg. datetime.fromtimestamp(1382189138.4196026).strftime('%Y-%m-%d %H:%M:%S') #returns '2013-10-19 16:25:38'
+
+
+
+
+# DELETING FILES AND/OR DIRECTORIES
+# delete a file
+os.remove(file_path) #use exception handling to catch OSError.
+os.unlink(file_path)
+#using pathlib (from pathlib import Path)
+file_path = Path('/tmp/file.txt')
+file_path.unlink()
+#check if file exists:
+eg. os.path.exists(file_)
+#check if file 'isFile':
+eg.	os.path.isfile(file_)
+
+
+
+# delete a directory
+#delete an empty directory
+os.rmdir()
+#using pathlib (from pathlib import Path)
+dir_path = Path('/tmp/img')
+dir_path.rmdir()
+#delete a non-empty directory.
+#using shutil (import shutil)
+dir_path = '/tmp/img' #The argument passed to shutil.rmtree() cannot be a symbolic link to a directory.
+shutil.rmtree(dir_path) #except OSError, e: print ('Error: %s - %s.' % (e.filename, e.strerror))
+
+
 
 
 
@@ -3134,16 +3162,13 @@ eg. module = __import__('module') #returns module
 eg. module = __import__(module, globals(), locals(), [module[module.rfind('_')+1:]]) #ie. import tk_buttons_maya_init as init. use module[strip at char] to get module variable from module name
 #using relative path
 eg. module = __import__('path.to.module.Module', fromlist=[''])
-#if module name is not a string
-eg. module = __import__(str(module))
 #import all
 eg. module = __import__(module, globals(), locals(), ['*'])
 
 
 
-# pass variable on import
-eg.
-	module.method(variablesPassedAsArguments)
+# pass arguments on import
+eg. module.method(args)
 	x = module.Class(range(1, 5))
 
 

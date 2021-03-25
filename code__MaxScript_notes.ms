@@ -1100,10 +1100,10 @@ ex. (getClassInstances turboSmooth).enabled=False
 
 --Collapses the modifiers out of a stack
 --collapse all:
-collapseStack <node> -- mapped
+ex. collapseStack <node> -- mapped
+ex. rt.maxOps.CollapseNode(obj, False)
 --collapse to:
---maxOps.CollapseNodeTo <node>node <index>modIndex <boolean>noWarning
-ex. rt.maxOps.CollapseNodeTo(obj, index, False)
+ex. rt.maxOps.CollapseNodeTo(obj, index, False) --maxOps.CollapseNodeTo <node>node <index>modIndex <boolean>noWarningprompt
 
 
 
@@ -2225,7 +2225,7 @@ uv = rt.selection[0].modifiers['Unwrap_UVW']
 
 
 
-"Materials: //-------------------------------------------------------------"
+"MATERIALS: //-------------------------------------------------------------"
 
 
 
@@ -2392,8 +2392,10 @@ ex. rt.SME.SetMtlInParamEditor(mat)
 ex. rt.rootScene[rt.name('SME')][rt.name('View1')][rt.name('door_handle____VRayMtl')].Properties.reference.anisotropy_channel = 3
 
 
-
-
+--delete unused material nodes:
+ex. for i in 1 to 24 do for m in scenematerials where m.name != ((medit.GetTopMtlSlot i).name) do meditmaterials[i] = standard()
+--python
+ex. [setattr(rt.meditmaterials[i], rt.standard()) for i in range(1, 24) for m in rt.scenematerials if not m.name==((rt.medit.GetTopMtlSlot(i)).name)]
 
 
 
@@ -3518,6 +3520,16 @@ hApp.run hForm
 --Changes active after restart
 
 
+-- Listener
+
+--clear text
+clearListener() --Clears all text from the Listener output pane.
+--set text selection
+setListenerSel #(-1, -1) --put the insertion point at the end of the text. #(start, end). (starting at 0)
+setListenerSel #(-1, -1) --select all of the text in the Listener output pane text:
+--get text selection
+getListenerSel() --Returns the current text selection indexes as a two-element array, #(start, end). (starting at 0)
+getListenerSelText() --Returns the currently selected text. If no selection has been set using the setListenerSel() method, an empty string is returned.
 
 
 
