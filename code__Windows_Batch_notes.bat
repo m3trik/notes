@@ -1,14 +1,15 @@
 ﻿@ECHO OFF
 EXIT
-
-
-
-
 :: command reference A-Z: https://technet.microsoft.com/en-us/library/bb490890.aspx
 :: get help on a command: ex. command /?
 
 
-:: general syntax ---------------------------
+
+
+
+
+:: GENERAL SYNTAX -------------------------------------------------
+
 :: print statement
 ECHO/	preferred print blank line methed
 ECHO.	alt print blank line
@@ -75,7 +76,7 @@ TIMEOUT			rem ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does pre
 
 
 
-:: operands ---------------------------------
+:: OPERANDS -------------------------------------------------------
 
 *multiply		rem ex. set /a sum1="num1 * num2"
 
@@ -96,7 +97,7 @@ TIMEOUT			rem ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does pre
 
 
 
-:: variables --------------------------------
+:: VARIABLES ------------------------------------------------------
 
 :: **the space before and after = is interpreted as part of the value.
 :: variable=value   not varible = value unless a whitespace before the value is intended
@@ -144,7 +145,7 @@ set /a VARIABLE=expression
 
 
 
-:: strings ----------------------------------
+:: STRINGS --------------------------------------------------------
 
 :: concatenate:
 set combinedString= str1 str2 str3
@@ -178,7 +179,7 @@ set string=%string:.=,%
 
 
 
-:: conditionals -----------------------------
+:: CONDITIONALS ---------------------------------------------------
 
 :: if statement:
 if %choice%==[%1]==[] goto start
@@ -203,7 +204,7 @@ if "%condition%" == "true" (
 
 
 
-:: directory navigation -------------------------
+:: DIRECTORY NAVIGATION -------------------------------------------
 
 :: change directory
 CD %dir%
@@ -269,17 +270,10 @@ mklink "%SYM%" "%DIR%\file.ini"
 
 
 
-:: network ----------------------------------
-
-::share a network drive. (set CATAGORY, DIR, USER)
-net share <CATAGORY>="<DIR>" /GRANT:"<USER>",READ
-:: ex.
-net share uncategorized_folder="C:\Users\fre_filer03\Desktop\20034\Uncategorized\" /GRANT:"fre_filer03",READ
 
 
 
-
-:: external files ---------------------------
+:: EXTERNAL FILES -------------------------------------------------
 
 :: check if file exists
 if exist file.txt
@@ -338,6 +332,9 @@ dir /al /s | findstr "<SYMLINKD>"
 ::The l attribute flag is key here; l is for Reparse Points (junctions, symlinks and symlink directories)
 
 
+:: assign a dir a drive letter
+SUBST w: <dir>
+
 
 
 :: zip a file
@@ -393,10 +390,15 @@ if exist "%dir%\%file%.rar" "%ProgramFiles%\WinRAR\Rar.exe" x -y "%dir%\%file%.r
 
 
 
+:: DISK -----------------------------------------------------------
 
 
 
-:: reg keys ---------------------------------
+
+
+
+
+:: REGISTRY -------------------------------------------------------
 
 :: delete key
 reg delete "HKCU\Some\Registry\Path" /f
@@ -409,10 +411,21 @@ reg delete "HKCU\Some\Registry\Path" /f
 
 
 
+:: NETWORK --------------------------------------------------------
+
+::share a network drive. (set CATAGORY, DIR, USER)
+net share <CATAGORY>="<DIR>" /GRANT:"<USER>",READ
+:: ex.
+net share uncategorized_folder="C:\Users\fre_filer03\Desktop\20034\Uncategorized\" /GRANT:"fre_filer03",READ
 
 
 
-:: time -------------------------------------
+
+
+
+
+
+:: TIME -----------------------------------------------------------
 
 PAUSE		rem stop execution of the batch file until someone presses a key, then continue.
 
@@ -427,7 +440,7 @@ TIMEOUT		rem ex. TIMEOUT 10 or TIMEOUT /t 10 (in seconds). If the user does pres
 
 
 
-:: errors -----------------------------------
+:: ERRORS ---------------------------------------------------------
 
 :: error: XXXX is not regognized as an internal or external command
 :: solution: check if a system variable ie. %path% has been redefined.
