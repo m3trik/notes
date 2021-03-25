@@ -1,3 +1,20 @@
+#-----------------------------------------------------
+
+
+
+#ignore:
+
+*desktop.ini
+*.rar
+.vscode
+grepWin_backup
+
+
+
+
+#-----------------------------------------------------
+
+
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
