@@ -132,7 +132,7 @@ print pm.selected()[0].namespace()
 
 filterExpand	//avoid Maya's component compression
 // #change [u'bodyShell.vtx[4:5]'] to [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
-edgeVertices = pm.filterExpand(edgeVertices, expand=1, selectionMask=31) //vertex=31, edge=32, face=34
+edgeVertices = pm.filterExpand(edgeVertices, expand=1, selectionMask=31)
 
 
 
@@ -1330,9 +1330,9 @@ sel = pm.ls(orderedSelection=1)
 
 
 // component selection mask
-faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1) //vertex=31, edge=32, face=34
-edges = pm.filterExpand(selection, selectionMask=32, expand=1) //vertex=31, edge=32, face=34
-vertices = pm.filterExpand (obj1, selectionMask=31, expand=1) //vertex=31, edge=32, face=34
+faces = pm.filterExpand (pm.ls(sl=1), selectionMask=34, expand=1)
+edges = pm.filterExpand(selection, selectionMask=32, expand=1)
+vertices = pm.filterExpand (obj1, selectionMask=31, expand=1)
 
 
 //get:
@@ -1397,12 +1397,12 @@ faces = pm.polyEvaluate(face=1)
 //get all faces from object
 faces = pm.filterExpand(obj+'.f[*]', sm=34)
 //verts
-verts = pm.filterExpand(obj+'.v[*]', selectionMask=31) //vertex=31, edge=32, face=34
+verts = pm.filterExpand(obj+'.v[*]', selectionMask=31)
 //alt:
 int $vertcount = polyEvaluate -vertex $object; 
 string $allVerts = ($object + ".vtx[0:" + ($vertcount - 1) + "]");
 //edges
-edges = pm.filterExpand(obj+'.e[*]', selectionMask=32) //vertex=31, edge=32, face=34
+edges = pm.filterExpand(obj+'.e[*]', selectionMask=32)
 
 //alt (get anything polyEvaluate querys)
 faces = [shell+".f["+str(num)+"]" for num in range(pm.polyEvaluate (shell, face=1))] //#create a list of all faces per shell
@@ -1436,11 +1436,11 @@ componentNumbers = [int(str(i).split('[')[-1].split(']')[0]) for i in components
 // optional components arg (else use selection).
 // optional expand arg = dont use maya's component compression. ie. [u'bodyShell.vtx[4:5]'] becomes [u'bodyShell.vtx[4]', u'bodyShell.vtx[5]']
 //vertex
-verts = pm.filterExpand(vertices, expand=1, selectionMask=31) //vertex=31, edge=32, face=34
+verts = pm.filterExpand(vertices, expand=1, selectionMask=31)
 //edge
-edges = pm.filterExpand(edges, expand=1, selectionMask=32) //vertex=31, edge=32, face=34
+edges = pm.filterExpand(edges, expand=1, selectionMask=32)
 //face
-faces = pm.filterExpand(faces, expand=1, selectionMask=34) //vertex=31, edge=32, face=34
+faces = pm.filterExpand(faces, expand=1, selectionMask=34)
 
 
 //get adjacent faces
@@ -1457,9 +1457,9 @@ adjFaces.remove(face)
 eg.
 vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
 //convert selection to vertices
-pm.mel.ConvertSelectionToVertices()
+ConvertSelectionToVertices;
 //or
-pm.mel.PolySelectConvert(3) //3=verts, 2=edges, 1=faces
+PolySelectConvert 3; //3=verts, 2=edges, 1=faces
 
 // get vertices without changing selection in the viewport:
 vertices = pm.ls(pm.polyListComponentConversion (fromFace=1, toVertex=1), flatten=1) //fromVertex,fromEdge,fromUV,fromFace,fromVertexFace,toVertex,toEdge,toUV,toFace,toVertexFace
@@ -1574,8 +1574,6 @@ ex. pm.xform(rotation=[x,y,z])
 ex. pm.xform(vertices, query=1, translation=1, worldSpace=1) //ie. result: [2, 1, 1]
 ex. pm.pointPosition(vertex, world=True) //ie. result: [2, 1, 1]
 
-// get point between two points
-subtractPointPos = lambda p1, p2: (p1[0]-p2[0], p1[1]-p2[1], p1[2]-p2[2]) //#ex. subtractPointPos(p1, p2) returns: <point> 
 
 
 // get closest point on mesh:
@@ -2249,8 +2247,7 @@ pm.undoInfo(openChunk=1)
 undoInfo -closeChunk;
 pm.undoInfo(closeChunk=1)
 
-// flush undo
-pm.flushUndo()
+
 
 
 
@@ -2301,44 +2298,7 @@ unloadPlugin			ex. pm.unloadPlugin ('newNode.py')
 
 
 
-// MASH: ------------------------------------------------------------------------------------------------------------------------------------------------
 
-//connect to existing network
-mashNW = mapi.Network('mash_network1') //#connect to a network
-//create a new network
-mashNW = mapi.Network()
-mashNW.createNetwork(name='MASH#', geometry='Instancer') //#create a network
-//set point count
-mashNW.setPointCount(10)
-//get nodes in mash network
-mashNodes = [mapi.Node(n) for n in mashNW.getAllNodesInNetwork()]
-
-
-//mash waiter node
-waitNode = pm.ls(mashNW.waiter)[0]
-
-//mash distibute node
-distNode = pm.ls(mashNW.distribute)[0]
-pm.setAttr(distNode.pointCount, count)
-pm.setAttr(distNode.amplitudeX, 0)
-
-//mash instancer node
-instNode = pm.ls(mashNW.instancer)[0]
-
-//mash curve node
-curveNode = pm.ls(mashNW.addNode('MASH_Curve').name)[0]
-pm.connectAttr(<curve>.worldSpace[0], curveNode.inCurves[0], force=1) //#connect curve to mash curve node
-pm.setAttr(curveNode.stopAtEnd, 1) #0=off, 1=on
-pm.setAttr(curveNode.clipStart, 0)
-pm.setAttr(curveNode.clipEnd, 1)
-pm.setAttr(curveNode.timeStep, 1)
-pm.setAttr(curveNode.transformationSpace, 2) //#2=local space, 1=world space
-
-//mash random node
-randomNode = pm.ls(mashNW.addNode('MASH_Random').name)[0]
-
-//mash signal node
-signalNode = mashNetwork.addNode('MASH_Signal') //#add a Signal node
 
 
 
@@ -2568,15 +2528,7 @@ pm.hotkeyCtx(t='CustomEditor', rac=True)
 
 
 
-"MAYA SCRIPT EDITOR: //---------------------------------------------------------------------------------------------------------------------------------"
-
-
-// script editor state
-// query open state
-scriptEditorOpen = pm.window("scriptEditorPanel1Window", exists=True)
-// close
-pm.deleteUI("scriptEditorPanel1Window",  window = True)
-pm.flushIdleQueue()
+"MAYA SCRIPT EDITOR OPTIONS: //--------------------------------------------------------------------------------------------------------------------------"
 
 
 //tab

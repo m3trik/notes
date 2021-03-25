@@ -1,0 +1,349 @@
+# mathematical equation notes for code .......
+
+
+
+
+# REVERSE A VALUE _____________________________________________________________________________________________
+
+# Integer or Float
+x*-1
+
+
+
+
+# MIN _________________________________________________________________________________________________________
+
+# Get Min Value:
+#python
+min(a,b,c)
+
+
+
+
+# MAX _________________________________________________________________________________________________________
+
+# Get Max Value
+#python
+max(a,b,c)
+
+
+
+
+# DIFFERENCE __________________________________________________________________________________________________
+
+# Between Two Numbers -----------------------------------------------------------------------------------------
+abs(x-y)
+
+
+
+
+
+# MEDIAN ______________________________________________________________________________________________________
+
+# Of Two or More Numbers --------------------------------------------------------------------------------------
+num1+num2/2 #get sum of all numbers. then divide by total numbers.
+
+
+
+
+
+
+
+# PERCENTAGE __________________________________________________________________________________________________
+
+# Get Percentage ----------------------------------------------------------------------------------------------
+percent=(value/totalValue) *100
+
+
+# Get Percentage of -------------------------------------------------------------------------------------------
+#what is n% of x:
+(percent * whole) / 100.0		ex. (5/20)*100.0 = 25%
+#what % is n of x:
+100.0 * part/whole				ex. (100.0*5)/20 = 25%
+
+
+# Change in Percentage ----------------------------------------------------------------------------------------
+First: work out the difference (increase) between the two numbers you are comparing. Then: divide the increase by the original number and multiply the answer by 100. If your answer is a negative number then this is a percentage decrease.
+
+
+# Add by Percentage -------------------------------------------------------------------------------------------
+num_to_increase/100*by_percent
+
+
+#0-1 float range to Percent -----------------------------------------------------------------------------------
+float value *desired percentage range as float
+eg. .5 * 100	=50% 	with a range of 0-100%
+eg. .5 * 0.08 	=0.04%	with a range of 0-0.08%
+
+
+
+
+
+
+
+
+
+
+
+# SQUARE ROOT _________________________________________________________________________________________________
+
+# Get the square root of a number -----------------------------------------------------------------------------
+sqrt = x**(1/2.0)
+
+
+
+
+
+
+
+
+
+
+
+
+# POINTS ______________________________________________________________________________________________________
+
+# Get the Distance Between Two Points -------------------------------------------------------------------------
+distance = sqrt(pow((x1-x2),2) + pow((y1-y2),2) + pow((z1-z2),2))
+
+#using python (from math import sqrt)
+distance = sqrt(pow((x1-x2),2) + pow((y1-y2),2) + pow((z1-z2),2)) #x1,y1,z1 & x2,y2,z2 are point coordinates.
+
+
+# Get a Point between Two Points ------------------------------------------------------------------------------
+((Ax+Bx)/2, (Ay+By)/2, (Az+Bz)/2)
+
+
+
+
+
+
+
+
+# VECTORS _____________________________________________________________________________________________________
+
+# Add Vectors -------------------------------------------------------------------------------------------------
+(x1 + x2, y1 + y2, z1 + z2)
+
+
+# Subtracting Vectors -----------------------------------------------------------------------------------------
+To subtract, first reverse the vector we want to subtract, then add.
+Example: subtract k = (4, 5) from v = (12, 2); a = v + −k
+a = (12, 2) + −(4, 5) = (12, 2) + (−4, −5) = (12−4, 2−5) = (8, −3)
+#same as:
+(x1 - x2, y1 - y2, z1 - z2)
+
+
+# Multiplying a Vector by a Scalar ----------------------------------------------------------------------------
+When we multiply a vector by a scalar it is called "scaling" a vector, because we change how big or small the vector is.
+#multiply (or scale) a vector by a number (generally called a scalar):
+eg. 2 * <1 1 1> = <2 2 2>
+
+#alt
+#multiply the vector m = (7, 3) by the scalar 3
+a = 3m = (3×7, 3×3) = (21, 9)
+
+
+# Multiplying a Vector by a Vector (Dot Product or Cross Product) ---------------------------------------------
+#using Dot Product (the result is a scalar):
+a · b = ax × bx + ay × by #multiply the x's, multiply the y's, then add.
+#same as:
+x1*x2 + y1*y2 + z1*z2
+
+#alt dot product method:
+a · b = |a| × |b| × cos(θ) #where: |a| is the magnitude (length) of vector a, |b| is the magnitude (length) of vector b, θ is the angle between a and b
+#So we multiply the length of a times the length of b, then multiply by the cosine of the angle between a and b
+
+#using Cross Product (the result is a vector):
+# Get the Cross Product of Two Vectors
+(a2*b3-a3*b2, a3*b1-a1*b3, a1*b2-a2*b1) #where a and b are xyz vector point values.
+
+#same as above:
+Cx = v1y*v2z − v1z*v2y
+Cy = v1z*v2x − v1x*v2z
+Cz = v1x*v2y − v1y*v2x
+
+#using numpy (import numpy as np)
+a = np.array([1,0,0]); b = np.array([0,1,0]); np.cross(a,b)
+
+#alt cross product method:
+a × b = |a| |b| sin(θ) n #where: |a| is the magnitude (length) of vector a, |b| is the magnitude (length) of vector b, θ is the angle between a and b, n is the unit vector at right angles to both a and b
+#So the length is: the length of a times the length of b times the sine of the angle between a and b,
+#Then we multiply by the vector n so it heads in the correct direction (at right angles to both a and b).
+
+
+# Get the Magnitude of a Vector -------------------------------------------------------------------------------
+length = sqrt(x**2 + y**2 + z**2)
+#same as:
+length = sqrt(x*x + y*y + z*z)
+
+
+#using numpy (import numpy as np)
+vector = pnt1 - pnt2 #vector between the points
+sqrt(vector.x^2 + vector.y^2 + vector.z^2)
+
+#using math (from math import sqrt)
+dX = x[0] - y[0]
+dY = x[1] - y[1]
+dZ = x[2] - y[2]
+length = sqrt(dX*dX + dY*dY + dZ*dZ)
+
+
+# Normalizing a Vector ----------------------------------------------------------------------------------------
+l = length #calculate its magnitude(length), then divide each of its (xy or xyz) components by its length.
+Nx = x / l #optionally: multiply each by an arbitrary number to control length. ie. Nx = (x / l) *100
+Ny = y / l
+Nz = z / l
+
+
+# Get the Angle between two Vectors ---------------------------------------------------------------------------
+#using math (import math)
+def dotproduct(v1, v2):
+  return sum((a*b) for a, b in zip(v1, v2))
+
+def length(v):
+  return (dotproduct(v, v))**0.5
+
+def angle(v1, v2, degree=False):
+  result = math.acos(dotproduct(v1, v2) / (length(v1) * length(v2)))
+  if degree:
+  	result = round(math.degrees(result), 2) #math.radians(a)
+  return result
+
+#using numpy (import numpy as np)
+def angleBetweenVectors (v1, v2, acute=True, degrees=False):
+	#args: v1=first vector, v2=second vector, acute or obtuse angle, return degrees or radians
+	#returns: angle in degrees or radians
+	angle = np.arccos(np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2)))
+	if acute:
+		if degrees:
+			return angle/np.pi
+		else:
+			return angle
+	else: #if obtuse
+		if degrees:
+			return 2 * np.pi - angle/np.pi
+		else:
+			return 2 * np.pi - angle
+
+
+# Get the Normal of a Plane (a tangent perpandicular to the plane) --------------------------------------------
+v1x, v1y, v1z = ( #get two vectors from three points (must be non-collinear)
+	p2[0] - p1[0],
+	p2[1] - p1[1], 
+	p2[2] - p1[2])
+
+v2x, v2y, v2z = (
+	p3[0] - p1[0], 
+	p3[1] - p1[1], 
+	p3[2] - p1[2])
+#finally get the cross product of the two vectors to have the normal
+
+
+
+
+
+
+
+
+
+
+
+# ASPECT RATIO ________________________________________________________________________________________________
+
+# Get Percentage from Size ------------------------------------------------------------------------------------
+# image width / height
+e.g. For a 1280x720 image (16:9), 1280/720= 1.777777…, so set Repeat UV: 1.000; 1.778, where 1 represents height, 1.778 is width
+
+
+
+
+
+
+
+# TRIANGLES ___________________________________________________________________________________________________
+
+# Opposite = leg opposite to the desired angle on a right triangle.
+# Adjacent = shorter of the two legs of the desired angle on a right triangle.
+# Hypotenuse = longest leg of a right triangle.
+
+
+# Get Sine of the angle ---------------------------------------------------------------------------------------
+sin = length opposite side / length hypotenuse
+
+
+# Get Cosine of the angle -------------------------------------------------------------------------------------
+cos = length adjacent side / length hypotenuse
+
+
+# Get Tangent of the angle ------------------------------------------------------------------------------------
+tan = length opposite side / length adjacent side
+
+
+
+# Get Angle from a right triangle -----------------------------------------------------------------------------
+#given two angles:
+a3 = 180° − a1 − a2
+
+
+#given two side lengths (from the 90 degree section) of a right triangle
+atan = total depth / divided by total hight #Arc Tangent
+
+
+
+# Get Side lengths --------------------------------------------------------------------------------------------
+#given angle and hypotenuse of a right triangle
+a = c * sin(A)
+
+
+#given two sides and an angle (get the length of the third)
+c = sqrt(a^2 + b^2 - 2*a*b*cos(C)) #sides a, b and angle C
+
+
+#given two sides lengths (get length of the third) of a right triangle
+a = √(c² - b²)
+hypotenuse squared = total depth squared  + total hight squared #Pythagorean Theorum
+ex. H2 = td2 + th2
+
+
+#given angle and one leg of a right triangle
+a = b * tan(α)
+
+
+#given area and one leg of a right triangle
+#given leg a
+b = 2 * area / a
+c = √(a² + (2 * area / a)²)
+
+
+
+# Get Area ----------------------------------------------------------------------------------------------------
+#calculate area by multiplying triangle height and base and dividing the result by two.
+
+
+#given a right triangle
+area = a * b / 2 #in a right triangle one leg is the height when the second leg is the base, so the equation gets simplified
+
+
+
+
+# Convert Float to Degree -------------------------------------------------------------------------------------
+(angle + value)%360
+
+
+# Convert Degree to Float -------------------------------------------------------------------------------------
+#start..end to 0..1:
+(value-start)/(end-start)
+
+ex. 0..360 to 0..1
+value/360
+
+
+# Convert Degree to Radians -----------------------------------------------------------------------------------
+#using math (import math)
+result = math.radians(a)
+
+
+# Convert Radians to Degree -----------------------------------------------------------------------------------
+#using math (import math)
+result = round(math.degrees(result), 2) #result rounded two decimal places.
