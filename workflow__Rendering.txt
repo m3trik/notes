@@ -11,9 +11,28 @@
 
 
 
-------	VRay setup
 
+------	Render Solid Background
+//3ds Max
+change the background color:
+>	Render>	Environment> Background: Map off, Adjust color
+>	Render Setup> Environment: Adjust color
+mask background:
+>	 
+
+
+
+
+
+
+------	Render Wireframe
+//3ds Max
 >	
+
+
+
+
+	
 
 
 
@@ -29,19 +48,6 @@ global render settings:
 vray tab> color mapping> type: linear multiply 
 
 
-
-------	HDRI setup
-
-//3ds Max VRay
-------	HDRI settings
-
->	materials>VRayHDRI node
->	load hdri bitmap image
->	change mapping type to spherical
->	main menu>rendering>'environment' window
->	drag hdri node output to environment map (replace as instance if necessary)
->	rotate image to desired position
->	increase multiplier to adjust intensity value
 
 
 

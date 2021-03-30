@@ -11,17 +11,44 @@
 
 ------ HDRI
 
->	Maps> VRay> VRayHDRI
->	VRayHDRI rollout:
+-- HDRI Environment:
+//3ds Max
+>	Maps> VRay> VRayBitmap
+>	VRayBitmap rollout:
 		Mapping> mapping type: spherical and flip horizontally
 		Coordinates> Environ and spherical environment (blur=0)
 >	Connect to: Maps> General> Output map
->	connect VRayHDRI -> output map -> the environment
+>	connect VRayBitmap -> output map -> the environment
 >	adjust output map> RGB level if necessary
 
 
+//3ds Max
+>	materials>VRayBitmap node
+>	load hdri bitmap image
+>	change mapping type to spherical
+>	main menu>rendering>'environment' window
+>	drag hdri node output to environment map (replace as instance if necessary)
+>	rotate image to desired position
+>	increase multiplier to adjust intensity value
 
-------	Daylight/Sun
+
+-- HDRI env using a Dome Light:
+//3ds Max
+>	Mod Panel> Create> Lights> Target Light (vray)
+>	Material Editor> Get Material> Maps: VRayBitmap
+>	VRayBitmap Material properties> Bitmaps: Add an HDRI map.
+>		""			> Mapping> Mapping Type> Spherical
+>		""			> Processing> Overall Mult: 1.5
+>		""			> Color Space> Inverse Gamma: 0.65
+>	Light Properties> General> Type: Dome
+>		""			> Options> Invisible
+>		""			> Sampling> Subdivs: 32
+>		""			> Texture> Resolution: 1080
+>		""				""	 > Drag the prev created VRayBitmap material to the texture slot (default: None)
+
+
+
+------	Daylight/Sun:
 
 >	mod panel>create>systems>daylight
 >	VRay sun
@@ -29,9 +56,19 @@
 >	increase sun size/ decrease sun intensity (or vice versa)
 >	set filter color
 
-------	Interior lights
+
+
+------	Interior lights:
 //VRay
->	mod panel>create>lights>'VRay' type from drop down menu
->	mod panel>modify>adjust 'color' temperature
->	adjust type (shape)
->	
+>	mod panel> create> lights> VRay (from drop down menu)
+>	Light Properties> Intensity> Mode: Temperature (adjust color)
+>		""			> General> Type: (adjust shape)
+>		""			> Size (adjust radius)
+>		""			> Sampling> Subdivs: 32
+>		""			> Options> invisible
+
+
+
+
+
+	

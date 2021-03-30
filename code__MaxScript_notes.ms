@@ -434,11 +434,47 @@ functionToCall keyword:arg1  keyword:arg2
 
 
 
-"ARRAYS/LISTS_&_DICTIONARYS //---------------------------------------------"
+"ARRAYS //-----------------------------------------------------------------"
 
 -- maxscript collection types
 -- https://help.autodesk.com/view/3DSMAX/2018/ENU/?guid=__files_GUID_DAABD302_FB6A_40BB_882A_888631488FB7_htm
 
+
+
+-- bitArray
+--#{1, 5, 10..200, 302} says that the bits 1, 5, 10 to 200, and 302 are "turned on".
+--When used in connection with selections in 3ds Max (such as vertex or face or control vertex) 
+--the "on" bits imply the elements or sub-objects with those indexes are selected.
+
+--convert bitArray to array
+ex. MaxPlus.Core.EvalMAXScript("fn bitArrayToArray b = (return b as Array)")
+	rt.bitArrayToArray(bitArray) --A bit in a BitArray can be either set (1, true) or not set (0, false).
+--convert array to bitarray
+ex. MaxPlus.Core.EvalMAXScript("fn arrayToBitArray a = (return a as BitArray)")
+	rt.arrayToBitArray(array) --Array containing only true and false values to bitArray.
+--alt method:
+ex. result = rt.Array(*array) --convert array to bitarray.
+
+
+-- bitArray properties
+ex. array.count --returns: int
+ex. array.numberSet --Returns the number of bits set. (read-only)
+ex. array.isEmpty --Returns: true if no bits are set and false if one or more bits are set. (read-only)
+
+-- bitArray operators
+ex. array[<int>] --Yields true if selected, else false
+ex. array[<int>] = <bool> --Sets or clears indexed bit
+ex. array1 + array2 --Union ("OR" operation)
+ex. array1 * array2 --Intersection ("AND" operation)
+ex. array1 - array2 --Difference
+ex. -array --Invert the bitarray
+
+-- bitArray methods
+ex. append(array, <int>) --Adds index to bitarray, growing bitarray if necessary.
+ex. join(array1, array2) --Union ("OR" operation) of the two bitarrays.
+ex. findItem(array, <int>) --Yields index <integer> if selected, 0 otherwise.
+ex. deleteItem(array, <int>) --Clears the index selection.
+ex. copy(array) --Creates an independent copy of the bitarray.
 
 
 --create a MaxScript Array (import pymxs; rt = pymxs.runtime):
@@ -638,7 +674,12 @@ free <array>
 
 
 
--- Dictionarys
+
+
+
+
+"DICTIONARYS //------------------------------------------------------------"
+
 d = Dictionary #(#ss, 1) #(#tt, 2)
 for i in d do print i
 -- RESULTS
@@ -700,11 +741,6 @@ free <dictionary>
 
 
 
---convert bit array to array
---You can convert a bitArray to an Array, and an Array containing only true and false values to bitArray.
---A bit in a BitArray can be either set (1, true) or not set (0, false).
-ex. MaxPlus.Core.EvalMAXScript("fn bitArrayToArray b = (return b as Array)")
-	rt.bitArrayToArray(bitArray)
 
 
 
@@ -1245,14 +1281,6 @@ obj.selectMode = 2 --multi-component selection preview
 
 
 
-
-
--- convert component selection type
---'Object', 'Vertex', 'Edge', 'Border', 'Face', 'Element', 'CurrentLevel'
-rt.selection[0].ConvertSelection('CurrentLevel', 'Face')
-
-
-
 -- component selection
 -- vertices
 ex. rt.select(vertices)
@@ -1262,10 +1290,20 @@ ex. obj.EditablePoly.SetSelection('Vertex', rt.BitArray(10)) --bitarray value 9
 ex. rt.select(edges)
 ex. rt.polyop.setEdgeSelection(obj, edges) --select the edges
 ex. obj.EditablePoly.SetSelection('Edge', rt.BitArray(*range(10))) --bitarray range 0-9
+-- edge ring
+ex. obj.SelectEdgeRing() --Select the edge loops containing the currently selected edges.
+ex. obj.setRingShift(<integer>RingShiftValue <bool>MoveOnly <bool>Add) --Moves the Ring selection. RingShiftValue=number of edges to shift. MoveOnly=selected edges will be moved. Add=add to the current selection.
+-- edge loop
+ex. obj.SelectEdgeLoop() --Select the edge rings using the currently selected edges.
 -- faces
 ex. rt.select(faces)
 ex. rt.polyop.setFaceSelection(obj, faces)  --select the faces
 ex. obj.EditablePoly.SetSelection('Face', rt.BitArray(*range(10, 20))) --bitarray range 10-19
+-- border
+ex. obj.SelectBorder() --Select the borders containing the currently selected edges.
+-- element
+ex. obj.SelectElement() --Select the elements containing the currently selected faces.
+
 
 
 vertices = rt.getVertSelection(obj) --get selected Vertices
@@ -1386,6 +1424,12 @@ objPath = execute("$'"+objName + "'")
 $Tile*
 
 
+--check for existence
+ex. [o for o in rt.objects if o.name=='name_']
+--
+ex. obj != undefined 
+
+
 --Access the base object in a scene node. This has relevance in nodes that have modifiers
 --present that change the node type as it is processed up the stack. For example, a line 
 --with an extrude modifier starts out as a Shape and turns into an Editable Mesh at the 
@@ -1393,6 +1437,7 @@ $Tile*
 --to the base object in the modifier stack.
 -- <node>.baseObject  A subclass of Node  default: varies
 baseClass = classOf(obj.baseObject)
+parentClass = superClassOf(obj)
 --store information about the geometry
 INode.BaseObject.ParameterBlock
 
@@ -1400,18 +1445,12 @@ INode.BaseObject.ParameterBlock
 --check if obj is a node
 ex. rt.IsValidNode(obj) --returns: boolean.
 
---check for existence
-ex. [o for o in rt.objects if o.name=='name_']
---
-ex. obj != undefined 
-
-
-
 --get object type
 --editable poly
 ex. rt.Ribbon_Modeling.IsEditablePoly()
 ex. rt.isKindOf(obj, rt.Editable_Poly)
-ex. rt.isKindOf(obj, "Edit_Poly")
+--
+type_ = str(rt.classOf(obj.baseObject)) --'Editable_Poly', 'Editable_Mesh'
 
 
 
@@ -1446,7 +1485,7 @@ nodeLocalBoundingBox <node>
 --Object properties
 showProperties $
 --explicitly
-showProperties ( VRayLight() )
+rt.showProperties(VRayLight())
 
 --Retrieves the node's user property with the given key as a string. 
 --<key_string> is either a String or a Name value.
@@ -1854,11 +1893,14 @@ ex. obj.GetFaceDegree(<face index>) --Returns the number of corners of the speci
 
 
 
---get one component type from another
+--get one component type from another (convert)
+-- from the current selection:
+ex. obj.convertSelection('CurrentLevel', 'Border') --Converts the current componet type to border. 'Object', 'Vertex', 'Edge', 'Border', 'Face', 'Element', 'CurrentLevel'
+ex. obj.convertselection('Face', 'Edge')
+
 --from vert:
 ex. rt.polyop.getEdgesUsingVert(obj, <vertlist>) --Bits in the result bitarray are set if the corresponding edge uses one of the vertices in <vertlist>
 ex. rt.polyop.getFacesUsingVert(obj, <vertlist>) --Bits in the result bitarray are set if the corresponding face uses one of the vertices in <vertlist> .
-
 
 --from edge:
 ex. rt.polyop.getEdgeVerts(obj, <int edge>) --Returns the edge's vertices as a 2 element array
@@ -3085,8 +3127,16 @@ pymxs.print_()
 
 "DIRECTORIES: //--------------------------------------------------------"
 
--- Returns the filename path of the source file the function has been called from.
-<filename>getSourceFileName() 
+
+filename = getSourceFileName() --getThisScriptFilename() -- Returns the filename path of the source file the function has been called from.
+filenameFromPath("filename_string") --Returns the file name and extension of a full file name, useful for labeling file buttons in rollout panels.
+getFilenamePath("filename_string") --Returns the directory path part of a full file name.
+getFilenameFile("filename_string") --Returns the file name part of a full file name.
+getFilenameType("filename_string") --Returns the type extension part of a full file name.
+doesFileExist("filename_string") --Returns true if the file exists, false otherwise.
+pathIsNetworkPath("file_path") --[ AVG ] Returns true if the specified file path has a UNC network path signature (\\someslave\) and false if it has a local path signature (D:\) where D: is a drive letter.
+
+
 
 
 -- [run maxscript]

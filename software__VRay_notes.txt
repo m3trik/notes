@@ -10,6 +10,11 @@
 
 
 
+Set UI workspace to VRay
+//3ds max:
+>	Main menu> Customize> CustimUI and Defaults Switcher: MAX vray
+
+
 
 
 

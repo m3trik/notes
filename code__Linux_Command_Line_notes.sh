@@ -74,15 +74,22 @@ sudo passwd <username>
 sudo -s
 
 
+#list all groups
+sudo cat /etc/group
+#get a group's members
+getent group <groupname>
 #create group
-addgroup <groupname>
+groupadd <groupname>
+#create new user and add to group
+sudo useradd <username> -G <groupname>
 #add user to group
 usermod -a -G <groupname> <username> #-a=append, -G=comma-separated list of additional groups to assign the user to.
 #
 adduser <username> <groupname>
-#change group name
+#
 sudo groupmod --new-name <newname> <oldname>
-
+#delete group
+groupdel <groupname>
 
 
 #change ownership (as root)
@@ -93,15 +100,19 @@ chown -R <user>:<group> <dir> #ex. sudo chown -R admin:admin /mnt/Storage
 ls -l <dir>
 stat <dir>
 stat -c %a dir #permissions in numeric (octal) format
-
 #change permissions
+# change home folder permissions:
+chmod 0755 /home/m3trik
+chmod 0644 /home/m3trik/.bashrc
+chmod 0644 /home/m3trik/.profile
+
+
 #change dir permissions recursively (default: 755|644)
 #u=users, g=group, o=others, a|ugo=all
 chmod -R g+rw <dir> #set group privaleges to read write.
 #using binary values. #5=rx, 6=rw, 7=rwx
 chmod -R 775 <dir> #ex. sudo chmod -R 777 /mnt/Storage
-#keep new files and directories within <dir> having the same group permissions.
-sudo chmod -R g+s <dir>
+
 
 
 
@@ -526,6 +537,8 @@ sudo systemctl restart redis
 sudo apt install samba samba-common-bin
 #add user to sambashare
 sudo gpasswd -a <user> sambashare
+#set samba user password
+sudo smbpasswd -a <user>
 #get version
 smbd --version
 #services
@@ -535,7 +548,8 @@ sudo systemctl start smbd nmbd #start services
 sudo nano /etc/samba/smb.conf
 #retart
 sudo service smbd restart
-
+#reset widows share
+net use \\<server>\<share> /delete
 
 
 #firewall

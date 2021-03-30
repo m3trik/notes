@@ -1,5 +1,6 @@
 ----modeling-------------------------------------------------------------------+
-¦	-concepting					
+¦	-concepting
+¦	-importing CAD					
 ¦	-reference image planes
 ¦	-initial block-in
 ¦	
@@ -22,6 +23,21 @@ dynamesh:
 
 
 
+
+
+
+-----	Importing CAD files
+
+//3ds Max:
+>	Customize menu> Units Setup> Setup dialog> US Standard Feet with Fractional Inches.
+>	Application menu> Import
+>	AutoCAD DWG/DXF Import Options dialog> Layers tab> Select From List: Choose what to import.
+
+
+
+
+
+
 -----	Reference Image Planes
 
 //3ds Max:
@@ -41,9 +57,10 @@ dynamesh:
 -Custom image background
 
 
-
+//Maya
 using a plane
->	Select Create > Free Image Plane from the main menu bar.
+>	Select Create> Free Image Plane from the main menu bar.
+>	To view image from both sides of the plane: Viewport Menu> Lighting> Two Sided Lighting: On
 
 attached to camera
 >	In the perspective view panel, select View > Image Plane > Import Image.

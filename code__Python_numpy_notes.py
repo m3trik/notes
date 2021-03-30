@@ -62,8 +62,6 @@ np.array([9, 11], [12, 13])[boolean_list] #returns: [[12 13]]
 
 # EXTERNAL FILES: -------------------------------------------------------------
 
-from io import BytesIO #for handling byte strings (Python 2 and 3)
-from io import StringIO #for handling unicode strings (Python 2 and 3)
 
 # read file into an ndarray (an ndarray contains a single datatype)
 ndarray = np.genfromtext('file', delimeter='', skip_header=1) #delimeter=char used to separate each value. skip_header=number of rows

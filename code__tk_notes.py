@@ -327,6 +327,12 @@ slots: info:  strip chars that share the same char and index from second int and
 # 3DS MAX:
 # -----------------------------------------------
 
+
+startup.ms
+fix auto dir_root string command and remove the explicit path.
+
+
+
 change to: <name>.0000.ext format
 
 

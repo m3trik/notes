@@ -27,6 +27,7 @@ fsutil.exe file setCaseSensitiveInfo "C:\my folder" enable #doesn't affect subfo
 # un-block only the contents of a single folder:
 #get-childitem "full path of folder" | unblock-file -confirm
 #recursive
+cd O:\Cloud #
 get-childitem "<dir>" -recurse | unblock-file -confirm #get-childitem "full path of folder" -recurse | unblock-file -confirm
 
 

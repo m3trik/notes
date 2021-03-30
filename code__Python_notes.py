@@ -62,6 +62,19 @@ eg. i -= 1 #AND assignment operator, eg. x -= 5 is equivanent to x = x - 5
 <<=		#x <<= 5	x = x << 5
 
 
+
+#numberic:          overriding +-*/% operators
+__add__             +  Addition    eg. print (int.__add__(arg1,arg2))#when used with an 
+							# '__add__' method. the methods body described in what way they are added.
+__sub__             -  Subtraction eg. print (str.__sub__(arg1,arg2))
+__mul__             *  Multiplication
+__truediv__         /  Division
+__floordiv__        // Floor Division. Drops remainder & rounds down.
+__mod__             %  Modulus. Remainder
+__pow__             ** Power of. Exponent
+
+
+
 #reverse the sign of a number. (turn a neg number positive and vice versa):
 # by multiplying by -1
 eg. -10 * -1
@@ -149,9 +162,23 @@ is      #object identity (ie. listA==listB, but not is ListB)
 is not  #negated object identity
 
 
+__lt__              <  Less than
+__le__              <= Less than or equal to
+__eq__              == Equal to
+__ne__              != Not Equal to
+__gt__              >  Greater than
+__ge__              >= Greater than or equal to
+
+
+
+
 eg. isinstance(var, (str, unicode))
 eg. type(var)
 eg. type(x) in [str, float]
+
+
+
+
 
 
 
@@ -172,6 +199,11 @@ not #evaluated first
 and #evaluated next
 or #evaluated last
 () #evaluated first regardless
+
+
+__and__             &  
+__xor__             ^
+__or__              |
 
 
 # Toggle
@@ -633,12 +665,33 @@ eg. del x
 
 
 
+'Iterables__________________________________________________________________________________'
+
+
+#container:         for emulating lists like classes
+__len__             len() Length of.
+__getitem__         Index
+__setitem__         Assign to Index
+__delitem__         Delete item at Index
+__iter__            Iteration eg. in for Loops #create an iterator method
+__contains__        In
+
+
+
+
+
+
+
+
 
 'Strings____________________________________________________________________________________'
 
 ''
 ""        #single line.
 """ """   #multi-line.
+
+
+__str__
 
 
 #raw string. raw strings don't escape anything.
@@ -2429,37 +2482,6 @@ help(method_name)   #lists information on that module.
 
 #basic:             initialization, new & delete
 __init__  
-				
-
-#numberic:          overriding +-*/% operators
-__add__             +  Addition    eg. print (int.__add__(arg1,arg2))#when used with an 
-							# '__add__' method. the methods body described in what way they are added.
-__sub__             -  Subtraction eg. print (str.__sub__(arg1,arg2))
-__mul__             *  Multiplication
-__truediv__         /  Division
-__floordiv__        // Floor Division. Drops remainder & rounds down.
-__mod__             %  Modulus. Remainder
-__pow__             ** Power of. Exponent
-
-__and__             &  
-__xor__             ^
-__or__              |
-
-__lt__              <  Less than
-__le__              <= Less than or equal to
-__eq__              == Equal to
-__ne__              != Not Equal to
-__gt__              >  Greater than
-__ge__              >= Greater than or equal to
-
-#descripter:        get, set, getAttribute, etc
-#container:         for emulating lists like classes
-__len__             len() Length of.
-__getitem__         Index
-__setitem__         Assign to Index
-__delitem__         Delete item at Index
-__iter__            Iteration eg. in for Loops #create an iterator method
-__contains__        In
 
 
 __str__             enduser output.   readable output.
@@ -2505,7 +2527,6 @@ __reduce_ex__
 __repr__
 __setattr__
 __sizeof__
-__str__
 __subclasscheck__
 __subclasses__ 			#Each new-style class keeps a list of weak references to its immediate subclasses. This method returns a list of all those references still alive.
 __subclasshook__
@@ -2786,7 +2807,7 @@ eg. 'HOME' in os.environ
 os.path.basename(os.path.abspath('.'))
 
 
-#get system paths:
+#get all paths:
 #using sys (import sys)
 for s in  sys.path: print s
 
@@ -2800,7 +2821,9 @@ eg. os.listdir(os.curdir)
 # create a filepath safely using os.join
 eg. os.path.join('c:\\', 'temp', 'new folder')
 
-
+# get module full dir path
+eg. __file__ #for current module
+eg. module.__file__ #for an imported module (import module). returns: ie. <fullpath>\module.py
 # get filename with extension
 eg. os.path.basename(__file__)
 # get directory name
@@ -2813,6 +2836,12 @@ eg. os.path.dirname(os.path.abspath(__file__)) #ie. /path/to/dir/
 eg. os.path.split(script_path)[0] #ie. /path/to/dir/
 # from relative path
 eg. os.path.join(script_dir, 'subfolder/file.txt')
+# using inspect (import inspect)
+file_path = inspect.getfile(lambda: None)
+# alt using inspect (import os, inspect)
+currentFrame = inspect.currentframe()
+currentFile = os.path.abspath(inspect.getfile(currentFrame))
+currentDir = os.path.dirname(currentFile)
 
 
 # dir navigation
@@ -3184,7 +3213,7 @@ eg. module.__name__ #when run directly the name will be main. else when importin
 
 #re-import module
 #using importlib (import importlib)
-eg. importlib.reload(module)
+eg. importlib.reload(<module>)
 #global and local are dicts.
 eg.	module = 'tk_slots_maya_edit'
 	if module not in locals() or module not in globals(): 
@@ -3214,6 +3243,9 @@ eg. del sys.modules['tk_slots_maya_edit']
 
 
 'Packages___________________________________________________________________________________'
+
+
+globals()['__package__'] = 'radial.ui.widgets'
 
 
 # import module from a package
