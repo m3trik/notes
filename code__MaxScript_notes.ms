@@ -1044,6 +1044,18 @@ convertToNURBSCurve <node> -- mapped
 
 
 
+--perform boolean operation
+--Boolean3: --https://help.autodesk.com/view/3DSMAX/2017/ENU/?guid=__files_GUID_BFCB8480_8EAE_43E4_8B37_3374DCD6BDCE_htm
+objectA + objectB --boolean union between the two objects
+objectA - objectB --boolean subtraction
+objectA * objectB --boolean intersecton
+
+
+
+
+
+
+
 
 
 "MODIFIERS: //-------------------------------------------------------------"
