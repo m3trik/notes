@@ -260,85 +260,8 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 
 
 
-# GENERAL:
+# BUGFIXES:
 # -----------------------------------------------
-
-
-
-
-tk_selection.py
-remove current selection comboBox, and replace with function that weeds out accidently welded verts.
-
-
-
-_file.py
-Recent Autosave: contextMenu: open directory, delete all, toggle autosave, autosave interval spinbox.
-
-
-
-# Traceback (most recent call last):
-#   File "O:/Cloud/__portable/_scripts/ui\widgets\qPushButton_Draggable.py", line 96, in mouseMoveEvent
-#     diff = globalPos - self.__mouseMovePos
-# AttributeError: 'QPushButton_Draggable' object has no attribute '_QPushButton_Draggable__mouseMovePos'
-
-
-
-
-
-
-
-
-
-# Traceback (most recent call last):
-#   File "O:/Cloud/__portable/_scripts/maya/slots\tk_slots_maya_main.py", line 42, in <lambda>
-#     lambda value, widget=w, obj=node: self.setAttributesMEL(node, {widget.prefix().rstrip(': '):value})) 
-#   File "O:/Cloud/__portable/_scripts/maya/slots\tk_slots_maya_init.py", line 745, in setAttributesMEL
-#     if attr and value] #ie. pm.setAttr('polyCube1.subdivisionsDepth', 5)
-#   File "C:\Program Files\Autodesk\Maya2020\Python\lib\site-packages\pymel\core\general.py", line 611, in setAttr
-#     raise _objectError(attr)
-# pymel.core.general.MayaAttributeError: Maya Attribute does not exist (or is not unique):: u'polyCube1.fraction'
-
-#     raise _objectError(attr)
-# pymel.core.general.MayaAttributeError: Maya Attribute does not exist (or is not unique):: u'polyCube1.smoothingAngle'
-
-
-
-
-
-
-
-
-loading bar on first start
-
-
-new output window, output class
-
-
-
-
-
-
-slots: info:  strip chars that share the same char and index from second int and break when a match is found
-
-
-
-
-
-# 3DS MAX:
-# -----------------------------------------------
-
-
-startup.ms
-fix auto dir_root string command and remove the explicit path.
-
-
-
-change to: <name>.0000.ext format
-
-
-tk_slots_max_transform
-global name 'pm' is not defined
-
 
 
 max_edit.py", line 66, in tb000
@@ -359,12 +282,10 @@ max_edit.py", line 66, in tb000
 AttributeError: 'pymxs.MXSWrapperBase' object has no attribute 'EditablePoly'
 
 
+#maya_uv: transfer uv's
+#fix transfer UV's by trying new method below:
+polyTransfer -uv 1 -v 0 -ao $souceMesh $destMesh[$i];
 
-
-
-
-# MAYA:
-# -----------------------------------------------
 
 #component ID display not working with nurbs curve:
 maya/slots\tk_slots_maya_display.py", line 169, in b011

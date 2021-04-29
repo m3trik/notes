@@ -1,12 +1,11 @@
-+---VRay-notes----------------------------------------------------+
++--- VRay notes ---------
 ¦
 ¦	-Material properties
 ¦	-Nodes
 ¦	-Modifiers
 ¦	-Import/Export
-¦
-+-----------------------------------+
-
+¦	-Procedures
++-------------------------------------------------------------
 
 
 
@@ -14,13 +13,20 @@ Set UI workspace to VRay
 //3ds max:
 >	Main menu> Customize> CustimUI and Defaults Switcher: MAX vray
 
+--------------------------------------------------------------
 
 
 
 
 
 
-MATERIAL_PROPERTIES:____________________________________________________
+
+
+
+==============================================================
+	MATERIAL_PROPERTIES:
+==============================================================
+
 //VRay:
 
 general:
@@ -283,9 +289,9 @@ Painted Wood:
 
 
 
-
-Nodes_________________________________________________________
-
+==============================================================
+	NODES:
+==============================================================
 
 vray dirt:
  Adding VRayDirt to a material will add render to render times. So you want to use as few dirt nodes as possible to avoid this. Some tricks to increasing the intensity of a VRayDirt is to add one instance several times into a a Composite node with each of the blends sent to “Multiply”.
@@ -373,8 +379,6 @@ C. Using Multiple Dirt Maps
 
 	>	Plug the new composite node into the blend 1 slot of our material.
 
-
-
 --------------------------------------------------------------
 
 
@@ -385,10 +389,9 @@ C. Using Multiple Dirt Maps
 
 
 
-
-
-Modifiers_____________________________________________________
-
+==============================================================
+	MODIFIERS
+==============================================================
 
 VRayDisplacementModifier:
 
@@ -433,8 +436,58 @@ Keep continuity:
 Edge thresh:
 	This value controls the blending between different maps on different faces. Keep it low – generally you shouldn’t change it from the default
 
+--------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+==============================================================
+	MAPS
+==============================================================
+
+
+Connecting maps: ---------------------------------------------
+
+Ambient Occlusion: (on materials missing height map for displacement)
+>	maps> vray> vraycomptex: set to multiply.
+>	plug ambient occlusion map into Source A.
+>	plug diffuse map into Source B.
+>	plug vraycomptex into material diffuse (of reflect (metals))
+
+
+Height:
+>	use vray displacement modifier described above
+>	
+
+
+Metallic: (greyscale)
+>	Add an Output node between the Metalness map. 
+>	Change the Output Amount to 40 (this will bump the whites in your map to 40 once they’re plugged into the IOR slot).
+>	Plug the output node into the IOR material slot. (IOR determines the reflectivity of an object with metals 20-70)
+
+
+Specular Workflow: (where the map has some grey values in it and you do not have a metalness map)
+>	Use a Composite node to combine your specular map and your diffuse map.
+>	Then plug this into the Reflect map channel.
+>	In the Composite node, diffuse map is set to “Color”
+
+
+Roughness: (V-Ray: White on a roughness map indicates a smooth surface (inverse is true for substance))
+>	Connect the roughness map to a Color Correction node.
+>	Connect that node to the Refl. gloss channel of the material.
+>	Inside the Color Correction node, select “Invert”. 
+
+
+Normal Map:
+>	Create a VRayNormalMap node.
+>	Plug your normal map into the “Normal map” slot of this node.
+>	Plug the output of this node into the Bump map slot.
+>	Double click on the normal map, then click on the “Bitmap” input (where the file name is listed). This will open a file browser window. In this window, with the same texture selected, go to “Gamma” and select “Override” and set it to 1.0.
 
 --------------------------------------------------------------
 
@@ -443,7 +496,13 @@ Edge thresh:
 
 
 
-IMPORT/EXPORT:
+
+
+
+==============================================================
+	IMPORT/EXPORT:
+==============================================================
+
 FBX export
 //from substance designer:
 
@@ -511,8 +570,41 @@ vrayMtl node properties:
 	
 	METALNESS -> IOR (greyscale, increase output amount to ~40)
 	
-	IOR ALPHA -> FRESNEL IOR (Uncheck Lock Fresnel IOR to Refraction IOR(reflection menu, RAW) 
+	IOR ALPHA -> FRESNEL IOR (Uncheck Lock Fresnel IOR to Refraction IOR(reflection menu, RAW)
+
+--------------------------------------------------------------
 	
+	
+	
+	
+	
+	
+	
+
+	
+==============================================================
+	PROCEDURES
+==============================================================
+
+
+Coat material using VRayBlendMtl:
+>	Create a VRayBlendMtl.
+>	Plug the base material to base; coat material to coat1.
+>	In Coat material; set diffuse: Black and reflections: Pure White (fresnel off).
+>	Create a Falloff map and plug into VRayBlendMtl Blend1.
+>	Set Falloff map to Fresnel with 1.5 IOR (acrylic). lower the white color to 215.
+>	Create a Composite map and plug into Coat material bump slot.
+>	Add noise map and bump map from Base material to Composite map.
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------
 
 
 

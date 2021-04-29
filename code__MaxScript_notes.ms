@@ -472,9 +472,17 @@ ex. -array --Invert the bitarray
 -- bitArray methods
 ex. append(array, <int>) --Adds index to bitarray, growing bitarray if necessary.
 ex. join(array1, array2) --Union ("OR" operation) of the two bitarrays.
-ex. findItem(array, <int>) --Yields index <integer> if selected, 0 otherwise.
+ex. findItem(<array>, <value>) --Does a MAXScript '==' comparison between elements in the array and the target object and then returns the index of the first occurrence of the given value in the array or 0 (zero) if the value is not in the array.
+ex. insertItem <value> <array> <integer> --Inserts the value at the specified index in the array, growing the array if necessary. Returns OK.
 ex. deleteItem(array, <int>) --Clears the index selection.
+ex. sort <array> --Sorts the elements of the array into ascending order. All the elements must be comparable.
+ex. qsort <array> <function> [start:<integer>] [end:<integer>] [user-defined key args passed to function] --Sorts the array using the specified function for element-by-element comparison.
 ex. copy(array) --Creates an independent copy of the bitarray.
+ex. deepCopy <array> --Creates a copy of all elements in the array, including nested sub-arrays and returns the new array as the result.
+ex. makeUniqueArray <array> --Returns a new array with only unique members of source array.
+ex. bsearch <key> <array> <function> [start:<integer>] [end:<integer>] [index:&variable] [user-defined key args passed to function] --Performs binary search in a sorted list of arrays, returning the found element, or undefined if no match is found.
+ex. amin (<array> | {value}) --Returns minimum value of items in the array or of the argument values.
+ex. amax (<array> | {value}) --Returns maximum value of items in the array or of the argument values.
 
 
 --create a MaxScript Array (import pymxs; rt = pymxs.runtime):
@@ -773,7 +781,7 @@ rt.selection.position.z = rt.selection.position.z + 10 --move relative
 
 
 --scale
-scale <node> <point3> -- mapped
+scale obj <point3> -- mapped
 --absolute
 INode.Scaling
 scale $ [2,2,1]		--scale 2x in xy.  z is 1:1 unchanged
@@ -805,22 +813,22 @@ rt.rotate(self.node, euler)
 $*_left*.position += [50,20,10] -- adds 50,20,10 units (x,y,z order) to the positions
                                   -- of all objects whose names contain "_left"
 --
-rotate <node> <angle> <axis_point3> -- mapped -- angle in degrees 
-rotate <node> <quat> -- mapped 
-rotate <node> <eulerangles> -- mapped 
+rotate obj <angle> <axis_point3> -- mapped -- angle in degrees 
+rotate obj <quat> -- mapped 
+rotate obj <eulerangles> -- mapped 
 
 --
 --queries the transform axis of the indexed axis system of the node 
-getTransformAxis (<node>|undefined) <index> --returns as a matrix3 value
+getTransformAxis (obj|undefined) <index> --returns as a matrix3 value
 
 --queries the transformation matrix of the givennode or rootnode
-getNodeTM {<node> | <rootnode>} --returnsas a matrix3 value
+getNodeTM {obj | <rootnode>} --returnsas a matrix3 value
 
 --Returns the transform controller for the node
-getTMController <node>
+getTMController obj
 
 --Computes the distance between the pivot points of the two specified nodes.
-distance <node> <node>
+rt.distance(obj1, obj2)
 
 
 
@@ -1018,7 +1026,7 @@ rt.TextPlus(layouttype=0, width=100, length=100)
 
 -- test whether a given node is convertible into a given class
 --[ Mesh, SplineShape, NURBSCurve, NURBSSurface, etc.]
-canConvertTo <node> <class>
+canConvertTo obj <class>
 if canConvertTo $foo NURBSSurface then...
 
 --general form of the existing specific conversion functions such as convertToMesh()
@@ -1027,17 +1035,17 @@ ex. convertTo $circle01 SplineShape --If the conversion is not supported, return
 
 --Convert an object to an editable mesh
 --it will remove all modifiers present
-convertToMesh <node> -- mapped
+convertToMesh obj -- mapped
 convertToMesh()
 
 --These functions work on those primitive geometry and shape classes that support 
 --conversion to NURBS (such as boxes, spheres, circles, lines, etc.)
 --Convert to a SplineShape object.
-convertToSplineShape <node> -- mapped 
+convertToSplineShape obj -- mapped 
 --Convert to a NURBSSurface
-convertToNURBSSurface <node> -- mapped 
+convertToNURBSSurface obj -- mapped 
 --Convert to a NURBSCurve
-convertToNURBSCurve <node> -- mapped 
+convertToNURBSCurve obj -- mapped 
 
 
 
@@ -1132,9 +1140,9 @@ addModifier $box01 (ffd_2x2x2())-- add FFD mod to those faces
 
 
 
---Tests whether a particular modifier or modifier class may be added the given <node> or 
+--Tests whether a particular modifier or modifier class may be added the given obj or 
 --to all of the objects in the objectset or group.
-validModifier [<node> | <objectset> | <group> ] <modifier |modifier_class> 
+validModifier [obj | <objectset> | <group> ] <modifier |modifier_class> 
 
 --enable/disable modifier
 ex. obj.modifiers[2].enabled = False --turn off 2nd modifier
@@ -1148,23 +1156,23 @@ ex. (getClassInstances turboSmooth).enabled=False
 
 --Collapses the modifiers out of a stack
 --collapse all:
-ex. collapseStack <node> -- mapped
+ex. rt.collapseStack(obj) -- mapped
 ex. rt.maxOps.CollapseNode(obj, False)
 --collapse to:
-ex. rt.maxOps.CollapseNodeTo(obj, index, False) --maxOps.CollapseNodeTo <node>node <index>modIndex <boolean>noWarningprompt
+ex. rt.maxOps.CollapseNodeTo(obj, index, False) --maxOps.CollapseNodeTo obj <index>modIndex <boolean>noWarningprompt
 
 
 
 
 
 
---Takes either a modifier value which is present on the <node> stack, or an index 
+--Takes either a modifier value which is present on the obj stack, or an index 
 --specifying the index of the modifier to delete, counting from the top of the stack.
-deleteModifier <node> <modifier_or_index> -- mapped
+deleteModifier obj <modifier_or_index> -- mapped
 
 
 --Prints a representation of the current modifier stack for the given node.
-printStack <node>
+printStack obj
 
 
 
@@ -1188,14 +1196,14 @@ showEndResult
 
 
 --select All
-$*	
+ex. $*
+ex. rt.execute('$*')
 
 --get current selection
-$ --returns 'undefined' if nothing selected
-
-rt.selection
-
-rt.getCurrentSelection() --returns the current selection as an array
+ex. $ --returns 'undefined' if nothing selected
+ex. rt.execute('$')
+ex. rt.selection
+ex. rt.getCurrentSelection() --returns the current selection as an array
 
 
 --get only top-level nodes from selection
@@ -1230,8 +1238,7 @@ def applyMaterialToNodes(m):
 
 --select by name
 --select object woth the name Box01
-select <node> -- mapped
-select $Box01		
+rt.select(obj) -- mapped	
 
 --objects whose names start with 'Tile'
 $Tile*					
@@ -1247,14 +1254,14 @@ select (for obj in $box* where obj.height > 100 collect obj)
 
 
 --Add a node to the set of selected objects.
-selectMore <node> -- mapped
+rt.selectMore(obj) --mapped
 
 --query if the specified point is selected. NURBS, poly and spline objects.
-isPointSelected <node> <point_index> 
+isPointSelected obj <point_index> 
 
 --Returns a floating point weighted point selection if the object supports soft selections.
 --Most object types just return 1.0 if the point is selected and 0.0 if not.
-pointSelection <node> <point_index>
+pointSelection obj <point_index>
 
 
 
@@ -1400,13 +1407,14 @@ namedSelPaste()
 "OBJECTS_&_ATTRIBUTES: //--------------------------------------------------"
 
 
+obj.baseobject --Returns: subclass(obj). Access the base object in a scene node. This has relevance in nodes that have modifiers present that change the node type as it is processed up the stack.
+obj.parent --Returns: parent(obj)(default:undefined). Get or set the parent of the object. If the object is a top-level object, accessing the parent property will return undefined .
 
 
 -- naming
 --set
 obj.name = rt.uniqueName('')
 rt.sphere(prefix="baz")
-
 --get
 obj.name
 --using wildcards:
@@ -1447,7 +1455,7 @@ ex. obj != undefined
 --with an extrude modifier starts out as a Shape and turns into an Editable Mesh at the 
 --top of the stack, its so-called world state. The baseObject property gives you access 
 --to the base object in the modifier stack.
--- <node>.baseObject  A subclass of Node  default: varies
+-- obj.baseObject  A subclass of Node  default: varies
 baseClass = classOf(obj.baseObject)
 parentClass = superClassOf(obj)
 --store information about the geometry
@@ -1467,27 +1475,27 @@ type_ = str(rt.classOf(obj.baseObject)) --'Editable_Poly', 'Editable_Mesh'
 
 
 --check if shape object
-isShapeObject <node>	--boolean
+isShapeObject obj	--boolean
 
 --query if the node's object is deformable. 
 --A deformable object is an object with points that can be modified.
 --isDeformable might return true for some nodes, 
 --this does not necessarily mean that they can be deformed.
 --while all geometry primitives return false but can be deformed.
-isDeformable <node>
+isDeformable obj
 
 --Returns the number of deformable points for the node's object.
-numPoints <node>
+numPoints obj
 
 --Returns the position of the indexed point for the node's object.
-getPointPos <node> <index> 
+getPointPos obj <index> 
 
 --Returns a 2 element array containing the min and max points of 
 --the node's bounding box in coordinate system matrix3 as point3 values.
-nodeGetBoundingBox <node> <matrix3>
+nodeGetBoundingBox obj <matrix3>
 
 --Returns a 2 element array containing the min and max points of the node's local bounding box
-nodeLocalBoundingBox <node> 
+nodeLocalBoundingBox obj 
 
 
 
@@ -1501,12 +1509,12 @@ rt.showProperties(VRayLight())
 
 --Retrieves the node's user property with the given key as a string. 
 --<key_string> is either a String or a Name value.
-getUserProp <node> <key_string>
+getUserProp obj <key_string>
 --get property
 eg. obj.getmxsprop('SelectByAngle')
 
 --Sets the node's user property with the given key to the given value.
-setUserProp <node> <key_string> <value>
+setUserProp obj <key_string> <value>
 
 
 --set property on selected object
@@ -1515,29 +1523,29 @@ ex. $.renderable = false
 -- toggle
 ex. $renderable = not $.renderable
 --
-obj.setmxsprop('SelectByAngle', True)
+obj.setmxsprop('SelectByAngle', True) --set: key, value
 
 
 --This is effectively the contents of the User Defined Properties box in 
 --the Object Properties dialog
-getUserPropBuffer <node>
+getUserPropBuffer obj
 
 --Sets the user property buffer to the given string.
-setUserPropBuffer <node> <string>
+setUserPropBuffer obj <string>
 
 
 
 --Returns the rotation binding weight for the node.
-getRotTaskWeight <node>
+getRotTaskWeight obj
 
 --Sets the rotation binding weight for the node.
-setRotTaskWeight <node> <float> 
+setRotTaskWeight obj <float> 
 
 --Returns the position binding weight for the node.
-getPosTaskWeight <node>
+getPosTaskWeight obj
 
 --Sets the position binding weight for the node.
-setPosTaskWeight <node> <float> 
+setPosTaskWeight obj <float> 
 
 --query if the specified axis is turned on for position or rotation binding. 
 --If an axis is turned off, the specified axis is no longer influenced by the 
@@ -1545,33 +1553,33 @@ setPosTaskWeight <node> <float>
 --sets whether the method returns the position state or the rotation state: 
 --0 specifies position; 1 specifies rotation. 
 --<axis_integer> sets the axis to check: 0 specifies X, 1 specifies Y, 2 specifies Z.
-getTaskAxisState <node> <pos_or_rot_integer> <axis_integer> 
+getTaskAxisState obj <pos_or_rot_integer> <axis_integer> 
 
 --Sets the axis state for position or rotation binding to the specified boolean value. 
 --See getTaskAxisState() for a description of the parameters.
-setTaskAxisState <node> <pos_or_rot_integer> <axis_integer> <boolean>
+setTaskAxisState obj <pos_or_rot_integer> <axis_integer> <boolean>
 
 --Mirrors the specified IK constraints on the specified node's transform controller 
 --about the specified axis . <axis_integer> specifies the axis of reflection: 
 --0 for X, 1 for Y, 2 for Z . <pos_or_rot_integer> specifies which type of 
 --constraints are being mirrored: 0 for position, 1 for rotation.
-mirrorIKConstraints <node> <axis_integer> <pos_or_rot_integer>
+mirrorIKConstraints obj <axis_integer> <pos_or_rot_integer>
 
 --Call this method when one of the node level IK parameters has been changed.
-nodeIKParamsChanged <node>
+nodeIKParamsChanged obj
 
---query if the <ik_node> can be bound to the <node> as a follow object.
-OKToBindToNode <ik_node> <node> --boolean
+--query if the <ik_node> can be bound to the obj as a follow object.
+OKToBindToNode <ik_node> obj --boolean
 
 
 
 
 
 --query number of surfaces (loft objects)
-numSurfaces <node>
+numSurfaces obj
 
 --query if the node's showLinksOnly property is true .
-isBoneOnly <node>
+isBoneOnly obj
 
 
 
@@ -1580,7 +1588,7 @@ isBoneOnly <node>
 -- <node_constructor> [name: <string> ]
 [ prefix: <string> ] 
 [ material: <material> ] 
-[ target: <node> ] 
+[ target: obj ] 
 [ pos: <point3> ] -- default [0,0,0] 
 [ position: <point3> ] -- synonym for pos 
 [ rotation: <quat> ] -- default 0 rotation 
@@ -1603,7 +1611,7 @@ for i in 1 to 100 do sphere prefix:"baz"
 --surface normal direction vector at that point. The intersection test respects the 
 --face normals of the node, i.e. if a face's normal points away from the ray's source, 
 --an intersection test is not performed on that face.
-intersectRay <node> <ray> 
+intersectRay obj <ray> 
 
 --Takes a ray and computes the closest intersection to the surface of the given node.
 --It returns an array with the following three elements.
@@ -1611,7 +1619,7 @@ intersectRay <node> <ray>
 --	 direction vector at the point.
 --2) The index of the face the ray intersects with
 --3) The barycentric coordinates of the face that was hit.
-intersectRayEx <node> <ray>
+intersectRayEx obj <ray>
 
 --Performs intersectRay on all nodes in the scene.
 --Returns an array of results, one entry per node hit, where each entry is a 2 element 
@@ -1619,7 +1627,7 @@ intersectRayEx <node> <ray>
 intersectRayScene <ray>
 
 --query if the bounding boxes of the two specified nodes overlap.
-intersects <node> <node>	--boolean
+rt.intersects(obj1, obj2)	--boolean
 
 
 
@@ -1627,12 +1635,12 @@ intersects <node> <node>	--boolean
 --clone
 -- All the clone operations can take any of the standard node creation optional keyword 
 -- arguments which are applied after the node has been copied.
-copy <node> -- mapped 
-reference<node> -- mapped 
-instance<node> -- mapped 
+rt.copy(obj) -- mapped 
+rt.reference(obj) -- mapped 
+rt.instance(obj) -- mapped 
 
 --query instance
-areNodesInstances <node> <node>
+rt.areNodesInstances(obj1, obj2)
 InstanceMgr.GetInstances $ &rptInstances
 trueInstances = for n in rptInstances where\
 (areNodesInstances $ n) collect n
@@ -1641,10 +1649,10 @@ trueInstances = for n in rptInstances where\
 maxOps.cloneNodes 
 
 --generates a new node that contains a copy of the world-state mesh of the source
-snapshot <node> -- mapped
+rt.snapshot(obj) --mapped
 
 --Returns world state of node as a <mesh> value.
-snapshotAsMesh <node>
+rt.snapshotAsMesh(obj)
 
 --Lets you turn existing nodes into instances and references to other nodes. 
 --You can use these, for example, to replace the geometry of one node with another
@@ -1669,7 +1677,7 @@ ex. rt.polyop.attach(obj, <source>) --Attaches <source>, converted to a polymesh
 --delete - delete faces after being detached.
 --asNode True- the faces are detached as a separate node.
 	--If asNode is True , <name> specifies the name of the new node.
-	--If asNode is True and is an Editable Poly (not a node), <node> must be specified.
+	--If asNode is True and is an Editable Poly (not a node), obj must be specified.
 --asNode False - the faces are detached as an element.
 --detach faces used by verts:
 ex. rt.polyop.detachVerts(obj, <vertlist>, delete=True, asNode=False, name="Object01") --Returns true if the operation is successful.
@@ -1716,7 +1724,7 @@ explodeGroup <group_head_node> -- mapped
 ex. rt.hide(obj) -- mapped --Hides the specified node or node collection.
 --If the optional doLayer keyword is set to true and the node is in a layer that is hidden,
 --the entire layer is unhidden. When false (the default), just the node is unhidden.
-unhide <node> [doLayer:<boolean>] -- mapped 
+rt.unhide(obj, doLayer=True) --mapped 
 
 --hide all children in scene (leave only top-level nodes)
 maxEval("hide $*/*")
@@ -1733,29 +1741,29 @@ ex. g.xray = True
 ex. freeze(obj) -- mapped --Freezes the specified node or node collection.
 --If the optional doLayer keyword is set to true and the node is in a layer that is frozen, 
 --the entire layer is unfrozen. When false (the default), just the node is unfrozen.
-unfreeze <node> [doLayer:<boolean>] -- mapped
+rt.unfreeze(obj, doLayer=True) --mapped
 
 ex. obj.isFrozen == True
 
 
 
 --Sets whether the node is renderable.
-setRenderable <node> <boolean>
+rt.setRenderable(obj, True)
 
 
 --query if node is displayed using vertex colors in shaded viewports, false otherwise.
-getCVertMode <node> 
+rt.getCVertMode(obj)
 
 --Sets whether to display the effect of assigned vertex colors for the node in shaded viewports.
-setCVertMode <node> <boolean>
+rt.setCVertMode(obj, True)
 
 --query if the vertex color display for the node is shaded in the viewports
-getShadeCVerts <node> 
+rt.getShadeCVerts(obj)
 
 --Sets whether the vertex color display for the node is shaded in the viewports. 
 --When true , the colors are unshaded and appear in their pure RGB values. 
 --When false , the colors appear like any other assigned color in the viewports.
-setShadeCVerts <node> <boolean>
+rt.setShadeCVerts(obj, True)
 
 
 
@@ -1945,7 +1953,7 @@ ex. obj.GetFaceEdge(1, 1) --ie. Returns edge 1. args=(faceID, side)
 --get component point coordinates
 ex. target = rt.polyOp.getVert(obj, index[-1])
 --group of vertices averaged:
-ex. averageSelVertCenter <node> --Returns the average position (center) of the selected vertices in the given mesh as a Point3.
+ex. rt.averageSelVertCenter(obj) --Returns the average position (center) of the selected vertices in the given mesh as a Point3.
 ex. target = rt.polyOp.getEdge(obj, index[-1])
 ex. target = rt.polyOp.getFace(obj, index[-1])
 
@@ -2091,13 +2099,6 @@ m.rotation(rt.Quat([0,0,0,1])) --Quat. The rotation of the Mirror gizmo.
 m.scale(rt.Point3([1,1,1])) --Point3. The scale of the Mirror gizmo.
 m.value(rt.Matrix3([1,0,0] [0,1,0] [0,0,1] [0,0,0])) --Matrix3. The complete matrix3 transformation value of the Mirror gizmo.
 
-
-
-
-
-
-
-"RIGGING: //---------------------------------------------------------------"
 
 
 
@@ -2294,8 +2295,10 @@ ex. rt.medit.getCurMtl()
 --get material by name
 ex. rt.sceneMaterials['name']
 --get all scene materials
-ex. rt.sceneMaterials
-ex. [m for m in rt.sceneMaterials]
+ex. rt.sceneMaterials --list(rt.sceneMaterials)
+--
+ex. bitmaps = rt.usedMaps()
+
 --get material from face
 ex. obj.GetFaceMaterial(face) --#Returns the material of the specified face.
 --get all materials including submaterials
@@ -2413,6 +2416,7 @@ ex. rt.SME.activeView(index) --set index
 ex. rt.SME.GetViewByName('name') --Returns the index of the named Node View
 --get view object by index
 ex. rt.SME.GetView(index) --Returns an IObject:IFP_NodeViewImp object representing the indexed Node View.
+ex. rt.SME.GetView(rt.SME.activeView)
 --get view index by view object
 ex. rt.SME.GetViewIndex(view) --Returns the index of the given Node View
 
@@ -2429,6 +2433,7 @@ ex. view.GetNumNodes() --Returns the number of nodes in the View.
 ex. view.GetNode(index) --Returns the Node Interface of the indexed node from the View.
 --get node interface by reference
 ex. view.GetNodeByRef(<ref object>) --Returns the Node Interface to the given Material or Map object reference, or undefined if the reference does not exist.
+ex. rt.viewNode.GetNodeByRef(<ref object>) --
 
 --create/show node in graph
 ex. node = view.CreateNode(mat, rt.point2(0, 0))
@@ -2450,6 +2455,17 @@ ex. rt.rootScene[rt.name('SME')][rt.name('View1')][rt.name('door_handle____VRayM
 ex. for i in 1 to 24 do for m in scenematerials where m.name != ((medit.GetTopMtlSlot i).name) do meditmaterials[i] = standard()
 --python
 ex. [setattr(rt.meditmaterials[i], rt.standard()) for i in range(1, 24) for m in rt.scenematerials if not m.name==((rt.medit.GetTopMtlSlot(i)).name)]
+
+
+
+
+--render a map to a bitmap and save it as a .bmp file.
+ex. rm = renderMap $foo.material.diffuseMap size:[640,480] fileName:"foodif.bmp"
+	save rm
+	close rm
+
+
+
 
 
 
@@ -2543,6 +2559,52 @@ ex. rt.polyop.meshSmoothByVert(obj, <vertlist>) --Smooths the faces associated w
 
 
 
+
+
+"Render: //----------------------------------------------------------------"
+
+max quick render 	--equivalent to pushing the 'render' button
+
+--additional function to kick off renders independant of the current render dialog settings
+render camera:$Camera01 frame:100 outputfile:"%currentuser%\\desktop\\.filename.exr"
+
+--set render type
+rendTimeType = 1	--( 1= single frame
+-- 										2= active frame
+-- 										3= user range
+-- 										4= frame string )
+
+--set render start frame
+rendStart = 100
+
+--set render end frame
+rendEnd = 250
+
+--set render size
+renderWidth = 1920
+renderHight	= 1080
+
+--render to disk
+rendSaveFile = true
+
+rendOutputFilename = "%currentuser%\\desktop\\.filename.exr"
+
+
+--[VRay Specific]
+
+--set current renderer to VRay
+renderers.current = VRay()
+
+--set adaptive sampling min rate
+renderers.current.adaptiveSubdivision_minRate = 1
+
+--turn on VRays GI calculation
+renderers.current.gi_on = true
+
+
+
+
+
 "CLASSES: //---------------------------------------------------------------"
 
 --determine class
@@ -2559,20 +2621,8 @@ rt.SpacewarpObject
 
 
 --Query class and parent class
-obj = selection
-print("ClassOf:"+(ClassOf obj) as string)
-print("SuperClassOf:"+(SuperClassOf obj) as string)
-
---alternative method
-for obj in selection do 
-	case (superClassOf obj ) of 
-		(GeometryClass)	: (format "object : % | superclass : %\n" (obj.name) "this is GeometryClass")
-		(light) : (format "object : % | superclass : %\n" (obj.name) "this is light")
-		(camera)	: (format "object : % | superclass : %\n" (obj.name) "this is camera")
-		(helper)	: (format "object : % | superclass : %\n" (obj.name) "this is helper")
-		(SpacewarpObject)	: (format "object : % | superclass : %\n" (obj.name) "this is SpacewarpObject")
-
-
+apropos "controller:super" --list of controller superclasses. ie. FloatController (const MAXSuperClass): FloatController
+showClass "*: *controller*" --lists all the known classes that have "controller" in their superclass name.
 
 
 
@@ -2620,17 +2670,53 @@ Struct.functionTwo()
 
 
 
--- INode.Parent
-$Tile.parent = $Wall						--link tile to wall object
+--parent
+obj.parent = <obj>						--link tile to wall object
+--unparent
+obj.parent = undefined
 
--- INode.Children
-$.children[1].name = "Tile_01"	--set name of first child object
-
+--children
+obj.children
+--number of children
+.children.count
 
 
 --query
 --for each selected helper which is not parented to anything print out its name
 for obj in selection where isKindOf obj Helper AND obj.parent == undefined do print obj.name
+
+
+
+
+
+"RIGGING: //---------------------------------------------------------------"
+
+--create locator point
+Point pos:[46.5545,-11.1098,0] isSelected:on
+
+
+
+
+-- IK
+--create IK handle bones
+macros.run "Inverse Kinematics" "Bones"
+$Bone001.length = 57.1095
+$Bone002.length = 51.7123
+
+
+IKSys.ikChain(startJoint_node, endJoint_node, 'solver_str') --Creates an IK chain where startJoint is the first node in the new chain (ancestor), endJoint is the last node in the chain (descendant) and solver is the name of the IK solver to use (as returned by the iksys.solverName() method described below. Returns: obj
+
+IKSys.solverCount() --Returns the number of available solvers installed on the system. Returns: <integer>
+IKSys.solverName(solverIndex_int) --Returns the name of the indexed solveras string. Returns: <string>
+IKSys.solverUIName(solverIndex_int) --Returns the UI Name of the indexed solver. Returns: <string>
+
+IKSys.suspendLinkNotify() --Disables the link notification in IK systems.
+IKSys.resumeLinkNotify() --Enables the link notification in IK systems.
+
+IKSys.isLinkNotifySuspended() --Returns true if IK link notification is disabled, false if enabled. Returns: <bool>
+
+
+
 
 
 
@@ -2642,10 +2728,102 @@ for obj in selection where isKindOf obj Helper AND obj.parent == undefined do pr
 "ANIMATION: //-------------------------------------------------------------"
 
 
+-- turn on animation
+animate on
+
+
+-- animation time
+--literals
+2.5s -- 2.5 seconds
+1m15s -- 1 minute 15 seconds
+2m30s5f2t -- 2 minutes 30 seconds 5 frames 2 ticks
+125f -- 125 frames
+17.25f -- 17.25 frames
+1f20t -- 1 frame 20 ticks
+2:10.0 -- 2 minutes 10 seconds 0 frames (SMPTE)
+0:0.29 -- 29 frames (SMPTE)
+--properties
+<time>.ticks --Time as ticks.
+<time>.frame --Time as frames.
+<time>.normalized --Time as normalized fraction of active segment (scene animation range):
+--set
+ex. sliderTime = 35
+ex. sliderTime = 80f
+--get
+ex. sliderTime
+ex. rt.currentTime --Returns the current frame number on the time slider: ex. 35f
+ex. currentTime as integer --int(rt.currentTime). Get current time as int value.
+
+
+-- controller
+apropos "controller:super" --list of controller superclasses. ie. FloatController (const MAXSuperClass): FloatController
+showClass "*: *controller*" --lists all the known classes that have "controller" in their superclass name.
+controller = globaltracks.float.<controller>
+--set
+rt.setPropertyController(obj.controller, 'Position', rt.noise_position()) --set the transform -> position controller.
+rt.setPropertyController(sphr_pos_ctrl, 'X Position', rt.noise_float()) --set the transform -> position -> x_position controller.
+--get
+controller = obj.getmxsprop('postion.controller') --Returns: <Position_XYZ<Controller:Position_XYZ>>
+controller = rt.getPropertyController(obj.controller, 'Position') --Returns: <Position_XYZ<Controller:Position_XYZ>>
+obj[<index>] --Returns the subAnim with the specified index. $foo[3][1]. You cannot set subAnims with the index operator, this is a read-only access.
+obj[<subanim_name>] --Returns the subAnim with the specified name. ie. $foo[#transform][#position]. You cannot set subAnims with the index operator, this is a read-only access.
+rt.getSubAnim(obj, key+1) --Returns the indexed subAnim. See the index operator below. 
+rt.getSubAnimName(obj, key+1, asString=True) --Returns the name of the indexed subAnimin the supplied MAXWrapper.
+rt.getSubAnimNames(obj) --Returns an array of names in subAnim index order.
+getPointController <editable_mesh_node> <vertex_index_integer> --Returns the controller currently assigned to the vertex, undefined if no controller is assigned.
+getPointController <editable_spline_node> <spline_index_integer> <vertex_index_integer> --Returns the controller for specified vertex in the specified spline, undefined if no controller is assigned. Each spline knot consists of three vertices: the in vector, knot, and out vector.
+getPointControllers {<editable_mesh_node> | <editable_spline_node>} --Returns an array of controllers assigned to the vertices in the mesh or spline. If no controller is assigned to a vertex, the array element value will be undefined. For editable splines, each knot consists of three vertices: the in vector, knot, and out vector. The array of controllers returned is a "snapshot" of the current controllers. If controllers are assigned or changed for a vertex, this change is not reflected in the array. If a vertex is added/deleted, the array is not resized to reflect the change in number of vertices.
+--controller properties
+print(dir(controller)) --get the controller's properties
+print([prop.name for prop in dir(controller)]) --get the controller's properties' names.
+--
+controller.keys -- read-only, the controller’s key array.
+obj.pos.controller.x_position
+obj.pos.x_position.controller.keys[2]
+controller.value -- get or set the current controller value.
+
+obj.height.controller --<property>.controller also: <property>.track
+obj.width.controller = noise_float()
+<property>.isAnimated --Returns: bool. A boolean indicating whether the property is animated.
+<property>.keys --(read-only). gets the property’s controller’s key array.
+<property>.supportsKeys --Returns: bool(read-only) true if controller is key-framable.
+<property>.keyable --Returns: bool(read-only). True if controller is keyable, false if set to unkeyable
+<property>.numsubs --Returns: int(read-only). Yields the number of accessible sub-animatables, or tracks, in an object. This is the number of immediate children subAnims, and may include as yet invisible tracks in the track view, such as visibility tracks on a node or yet-to-be animated vertices in an FFD.
+<subAnim>.name --Returns: str(read-only). the name of the track subAnim as shown in TrackView.
+<subAnim>.parent --Returns: obj(read-only). the true owner of the subAnim.
+
+
+-- controller curves
+addEaseCurve <controller> [ <float_controller> ] --Adds an ease curve to the specified controller.
+deleteEaseCurve <controller> <index_integer> --Deletes the indexed ease curve from the controller. The indexes are 1- based and correspond to the order in which the curves were originally added to the controller.
+numEaseCurves <controller> --Returns the number of ease curves currently operating on the controller.
+applyEaseCurve <controller> <time> --Applies the combined ease curves in the specified controller to the given time value, returning the transformed time.
+addMultiplierCurve <controller> [ <float_controller> ] --Adds a multiplier curve to the specified controller.
+deleteMultiplierCurve <controller> <index_integer> --Deletes the indexed multiplier curve from the controller. The indices are 1- based and correspond to the order in which the curves were originally added to the controller.
+numMultiplierCurves <controller> --Returns the number of multiplier curves currently operating on the controller.
+getMultiplierValue <controller> <time> --Returns the combined (float) value of the multiplier curves in the specified controller at the given time value.
+--curve properties
+<controller>.Multiplier_Curve -- the controller’r s multiplier curve value 
+<controller>.Multiplier_Curve.controller -- the multiplier curve controller itself
+-- controller time
+getTimeRange <controller> [#selOnly] [#allKeys] [#children] --Returns the range of time covered by keys in the controller. #selOnly=time range of selected keys only. #allKeys(default)=time range for all keys. #children=returns the total time interval covering all keys in all sub-controllers
+animationRange --get the current animation range.
+setTimeRange <controller> [<interval>] [#linkToKeys] --Sets the time range to be an interval other than that covered by existing keys. #linkToKeys=any keys exactly at the start or end of the given interval become anchors for the time range and moving them move the time range for the controller. #linkToKeys=set the time range to the current start and end keysin all the controllers affected.
+deleteTime <controller> <interval> [#incLeft] [#incRight] [#noSlide] --Deletes an interval of time from the controller, removing all the keys with that interval and, by default, sliding the keys to the right of the interval to the left by the width of the interval. #incLeft=includes any key exactly at the start time of the interval. #incRight=includes any key exactly at the end time of the interval. #noSlide=doesn’t slide the later keys to fill in the gap removed- this effectively just deletes any keys in the interval.
+reverseTime <controller> <interval> [#incLeft] [#incRight] --Reverses time in the given interval.
+scaleTime <controller> <interval> <float_scale> --Scales the times of the keys within the given interval.
+insertTime <controller> <at_time> <amount_time> --Inserts a block of time at the specified time.
+
+
+-- Keys
+-- set keys
+addNewKey obj.pos.controller 0f [#select] --Adds a new key at the specified time. #select=(optional) select the new key. Returns: <key>. NOTE:If the controller is a compound controller (like a Position_XYZ controller), a value of OK is returned. A single key value cannot be returned because addNewKey creates a key in each of the sub-controllers.
+createLockKey <controller> <time> <rot_or_pos_integer> --This is a key that looks back to the previous key and creates a new key at the specified time that matches the previous key in value. It also adjusts the parameters for the key such that the value stays constant from the previous key to this key. 
+
+
 animate on (at time 50f (move$ [0,0,5]))	--with AutoKey on, move object at frame 50
 
 animate on (at time 100f ($.radius = 10))	--with AutoKey on, set radius at frame 100
-
 
 
 -- import pymxs
@@ -2653,42 +2831,71 @@ at = pymxs.attime; t = rt.Teapot()
 
 --animate it
 with pymxs.animate(True):
-	with at(1):
-		t.pos = rt.Point3(2,2,2)
-	with at(12):
-		t.pos = rt.Point3(10, 10, 10)
-	with at(21):
-		t.pos = rt.Point3(20,20,20)
+	with at(1): t.pos = rt.Point3(2,2,2)
+	with at(12): t.pos = rt.Point3(10, 10, 10)
+	with at(21): t.pos = rt.Point3(20,20,20)
 
 
+-- get key
+getKey <controller> <index_integer> --Returns the indexed key as a MAXKey instance. See Controller Key Functions for MAXKey class information.
 
+-- assign key
+assignKey <key_array> <max_key> <index> --Deletes the key specified by <index> from the target key array and inserts the source key into the target key array at the source key’s time.
 
+-- append key
+appendKey <key_array> <max_key> --Appends the given key to the specified key array at the key’s original time.
 
+-- select keys
+--postion
+selectKey obj.pos.controller 1 --Selects the indexed key. Key indexes are 1- based.
+selectKeys obj.pos.controller.x_position 0f 30f --Selects the specified keys in the track view. If an interval is given, all the keys within the interval are selected. If a single time is given, the key at that time is selected. If no time or interval is given, all keys are selected.
+--rotation
+selectKeys obj.rotation.controller 0f 30f --Selects the specified keys in the track view. If an interval is given, all the keys within the interval are selected. If a single time is given, the key at that time is selected. If no time or interval is given, all keys are selected.
+--query selection state
+isKeySelected <controller> <index_integer> --Returns true if indexed key is selected, false otherwise. Key indexes are 1- based.
+numSelKeys <controller> --Returns the number of keys currently selected in the track view.
+
+-- deselect keys
+deselectKey <controller> <index_integer> --Deselects the indexed key. Key indexes are 1 -based.
+deselectKeys <controller> [ <interval> | <time> ] --Deselects specified keys. Arguments are as described in selectKeys()
+
+-- move keys
+moveKey <controller> <index_integer> <time> --Move the indexed key by the specified time.
+moveKeys <controller> <time> [#selection] --Moves the specified keys by the time given. If #selection is specified, move the current selection otherwise move all keys. The moveKeys function only works on track properties: .controller and .track . It is not defined on the keys’ virtual array.
+moveKeys obj.pos.controller 5
+moveKeys obj.pos.track 5
+
+-- get number of keys
+numKeys <controller> --Returns the number of keys in the controller. Returns -1 if you call it on a controller that does not support keyframing.
+
+-- get time
+getKeyTime <controller> <index_integer> --Returns the time of indexed key.
+
+-- get index
+rt.getKeyIndex(controller, frame) --Returns the index of the key at the specified time.
+
+-- sort keys
+sortKeys <controller> --Re-sorts keys according to their times. Some MAXKey operations can result in out of order keys and this function must be called to correctly order keys.
+
+-- copy and paste
+copyPasteKeys <controller> (<map_struct> | <fn> <arg>) [#replacekeys] [#insertkeys] --This function is pretty similar to the existing mapKeys() method, but implies that some keys have been selected. Upon calling copyPasteKeys(), selected keys will first get copied, then copied keys get selected and pasted, using either the map_struct or a mapping function. #replacekeys argument deletes any unselected key within the copied keys' range. Additionally, using the #insertkeys argument shifts any unselected key that is located on or after the copied keys' insertion point to the right (the location of the first copied key) with a time value equal to the length of the copied keys' range.
+
+-- delete keys
+--postion
+deleteKeys o.pos.controller #selection --deletes any selected position keys.
+deleteKeys o.pos.controller #allKeys --deletes all position keys.
+--rotation
+deleteKeys o.rotation.controller #selection --deletes any selected rotation keys.
+deleteKeys o.rotation.controller #allKeys --deletes all rotation keys.
 
 
 
 --Out-of-Range Functions
---Gets the Out-of-Range type (ORT) for the controller for the time before the first key.
-getBeforeORT <controller>
--- Returns one of the following name values:
-
--- Gets the Out-of-Range (ORT) type for the controller for the time after the last key.
-getAfterORT <controller>
---Returns one of the name values as for getBeforeORT() shown above.
-
--- Sets the Out-of-Range (ORT) type for the controller for the time before the first key.
--- The <ORT_type_name> must be one of the following name values:
--- #constant #cycle #loop #pingPong #linear #relativeRepeat
-setBeforeORT <controller> <ORT_type_name>
-
--- Sets the Out-of-Range (ORT) type for the controller for the time after the last key. 
--- The <ORT_type_name> must be one of the symbolic values shown in setBeforeORT() above. 
--- No testing done on the validity of <ORT_type_name> is performed.
-setAfterORT <controller> <ORT_type_name>
-
--- Enables or disables the Out-of-Range processing for the controller. 
--- If set to disabled with false , the controller effectively employs a constant ORT.
-enableORTs <controller> <boolean>
+getBeforeORT <controller> --Gets the Out-of-Range type (ORT) for the controller for the time before the first key.
+getAfterORT <controller> --Gets the Out-of-Range (ORT) type for the controller for the time after the last key.
+setBeforeORT <controller> <ORT_type_name> -- Sets the Out-of-Range (ORT) type for the controller for the time before the first key. The <ORT_type_name> must be one of the following name values: #constant #cycle #loop #pingPong #linear #relativeRepeat
+setAfterORT <controller> <ORT_type_name> --Sets the Out-of-Range (ORT) type for the controller for the time after the last key. The <ORT_type_name> must be one of the symbolic values shown in setBeforeORT() above. No testing done on the validity of <ORT_type_name> is performed.
+enableORTs <controller> <boolean> --Enables or disables the Out-of-Range processing for the controller. If set to disabled with false , the controller effectively employs a constant ORT.
 
 
 
@@ -2697,45 +2904,83 @@ enableORTs <controller> <boolean>
 
 
 
-"Render: //----------------------------------------------------------------"
+"TIME: //------------------------------------------------------------------"
 
-max quick render 	--equivalent to pushing the 'render' button
-
---additional function to kick off renders independant of the current render dialog settings
-render camera:$Camera01 frame:100 outputfile:"%currentuser%\\desktop\\.filename.exr"
-
---set render type
-rendTimeType = 1	--( 1= single frame
--- 										2= active frame
--- 										3= user range
--- 										4= frame string )
-
---set render start frame
-rendStart = 100
-
---set render end frame
-rendEnd = 250
-
---set render size
-renderWidth = 1920
-renderHight	= 1080
-
---render to disk
-rendSaveFile = true
-
-rendOutputFilename = "%currentuser%\\desktop\\.filename.exr"
+-- sleep
+--interrupt sleep with ESC key; halts execution. SPACE bar to halt sleep & continue executing
+--argument is a floating point number of seconds.
+sleep 20 --pause a script in seconds
 
 
---[VRay Specific]
 
---set current renderer to VRay
-renderers.current = VRay()
+--delay commands:
+-- dotNetObject:System.Windows.Forms.Timer
+-- alternative to the MAXScript rollout Timer control.
+-- The main advantage of the DotNet version is the ability to call MAXScript functions at given intervals without the need for a rollout.
+function PerformDelayedTasks sender evt=
+	sender.enabled = false 	--important: don't repeat this timer event
+	dotnet.RemoveEventHandler sender "Elapsed" PerformDelayedTasks --for sanity and cleanup
 
---set adaptive sampling min rate
-renderers.current.adaptiveSubdivision_minRate = 1
+	-- put all your delayed tasks below --
+delayTimer= dotnetobject "Windows.Forms.Timer"
+delayTimer.Interval=5000
+dotnet.AddEventHandler delayTimer "Tick" PerformDelayedTasks
+delayTimer.enabled = truee
 
---turn on VRays GI calculation
-renderers.current.gi_on = true
+
+-- another dotNet example
+theTimer = dotNetObject "System.Windows.Forms.Timer" --create a Timer
+fn printTime = 
+	print localTime --define a MAXScript function to be called by the Timer.
+) 
+dotnet.addEventHandler theTimer "tick" printTime --add ON TICK event hander to call the function
+theTimer.interval = 1000 --set the tick interval to 1 second (1000 milliseconds)
+theTimer.start() --start the Timer
+--theTimer.stop() --use this method to stop the Timer.
+
+
+
+
+
+
+
+
+
+
+
+
+"RANDOMIZE: //-------------------------------------------------------------"
+
+random
+
+$.pos.x = random 0 10		--integer or float. randomize between first and second value.
+
+$material.diffuseColor = color 0 0 (random 0 360) --randomize rgb 'b' value
+
+
+
+--deselect random objects until only 50 are left selected
+while selection.count > 50 do deselect selection[random 1 selection.count]
+
+
+
+
+
+
+
+
+
+
+"LAYERS: //----------------------------------------------------------------"
+
+
+obj.displayByLayer --Returns: bool. When true, object visibility will be controlled by the Layer.   
+obj.motionByLayer --Returns: bool. When true , Motion Blur will be controlled by the Layer.
+obj.renderByLayer --Returns: bool. When true , Rendering will be controlled by the Layer.
+obj.colorByLayer --Returns: bool. When true , the object will use the Layer's color. When false , the object's color will be used instead.
+obj.globalIlluminationByLayer --Returns: bool. When true , the advanced lighting inclusion/exclusion will be controlled by the layer.
+
+
 
 
 
@@ -2859,76 +3104,6 @@ viewportSetting.SelectedEdgedFacesEnabled = not state --toggle
 ex. rt.showEndResult = True
 --enable/disable
 ex. rt.enableShowEndRes(True)
-
-
-
-
-
-
-"TIME: //------------------------------------------------------------------"
-
--- sleep
---interrupt sleep with ESC key; halts execution. SPACE bar to halt sleep & continue executing
---argument is a floating point number of seconds.
-sleep 20 --pause a script in seconds
-
-
-
---delay commands:
-
--- dotNetObject:System.Windows.Forms.Timer
--- alternative to the MAXScript rollout Timer control.
--- The main advantage of the DotNet version is the ability to call MAXScript functions at given intervals without the need for a rollout.
-function PerformDelayedTasks sender evt=
-	sender.enabled = false 	--important: don't repeat this timer event
-	dotnet.RemoveEventHandler sender "Elapsed" PerformDelayedTasks --for sanity and cleanup
-
-	-- put all your delayed tasks below --
-delayTimer= dotnetobject "Windows.Forms.Timer"
-delayTimer.Interval=5000
-dotnet.AddEventHandler delayTimer "Tick" PerformDelayedTasks
-delayTimer.enabled = truee
-
-
--- another dotNet example
-theTimer = dotNetObject "System.Windows.Forms.Timer" --create a Timer
-fn printTime = 
-	print localTime --define a MAXScript function to be called by the Timer.
-) 
-dotnet.addEventHandler theTimer "tick" printTime --add ON TICK event hander to call the function
-theTimer.interval = 1000 --set the tick interval to 1 second (1000 milliseconds)
-theTimer.start() --start the Timer
---theTimer.stop() --use this method to stop the Timer.
-
-
-
-
-
-
-
-
-
-
-
-
-"RANDOMIZE: //-------------------------------------------------------------"
-
-random
-
-$.pos.x = random 0 10		--integer or float. randomize between first and second value.
-
-$material.diffuseColor = color 0 0 (random 0 360) --randomize rgb 'b' value
-
-
-
---deselect random objects until only 50 are left selected
-while selection.count > 50 do deselect selection[random 1 selection.count]
-
-
-
-
-
-
 
 
 

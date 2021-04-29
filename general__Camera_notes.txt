@@ -1,0 +1,38 @@
+Camera notes:
+
+
+
+
+
+Exposure:
+	The amount of light that reaches the camera sensor. Exposure Value is simply a way to combine shutter speed and aperture to a single value.
+	
+	overcast: ~10
+	sunset: ~8
+	bright interior: ~6
+	night w/artificial lighting: ~2
+	dark interior: ~1
+
+	Shutter Speed:
+		How long the camera will take to absorb the light.
+
+
+	Aperture:
+		How wide the opening of the lense will be. Aperture is generally measured byF-Stop. Aperture also has a secondary effect of controlling the depth of field of an image.
+
+
+	Sensitivity:
+		ISO value. How reactive the camera sensor is to light.
+	
+
+	
+	
+	
+Depth of field:
+	describes how much of an image is in focus from front to back. Depth of field is controlled by the aperture as well as the lens magnification.
+
+
+
+
+
+

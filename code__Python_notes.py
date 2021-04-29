@@ -2768,6 +2768,15 @@ keyboard.add_hotkey(shortcut, event) #attach the function to hot-key
 eg. os.path.isfile() #returns a boolean value
 
 
+# get file
+#using os.walk and fnmatch: (import os, fnmatch)
+def findFile(dir_, pattern):
+	for root, dirnames, filenames in os.walk(dir_):
+		for fn in fnmatch.filter(filenames, pattern):
+			yield os.path.join(root, fn)
+print (next(findFile(dir_root, file)))
+
+
 # get all files of given type
 #using glob (import glob)
 txt_files = glob.glob('/dir/*.txt') #returns a list.
@@ -3297,8 +3306,8 @@ eg. pip show PySide2
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-
+#convert string from unicode to encoded text / bytes.
+string.encode('utf-8')
 
 
 

@@ -347,3 +347,20 @@ result = math.radians(a)
 # Convert Radians to Degree -----------------------------------------------------------------------------------
 #using math (import math)
 result = round(math.degrees(result), 2) #result rounded two decimal places.
+
+
+
+
+
+
+
+# Cameras _____________________________________________________________________________________________________
+
+
+# Eposure value formula ---------------------------------------------------------------------------------------
+#Exposure Value (EV) is simply a way to combine shutter speed and aperture to a single value.
+EV = log2 (N2/t) #N is your f-number, and t is your shutter speed.
+
+
+
+

@@ -1292,7 +1292,7 @@ pm.scriptNode(nodeName, executeAfter=True) //Test the after script
 
 
 
-"Components: //------------------------------------------------------------------------------------------------------------------------------------------"
+"COMPONENTS: //------------------------------------------------------------------------------------------------------------------------------------------"
 
 
 
@@ -1814,33 +1814,6 @@ axis = pm.symmetricModelling(query=1, axis=1)
 
 
 
-"RIGGING: //---------------------------------------------------------------------------------------------------------------------------------------------"
-
-
-//joints
-//get all
-joints = pm.ls(type="joint")
-
-//check type
-pm.objectType(obj, isType='joint') //#Returns: bool
-
-//display size
-pm.jointDisplayScale(1.5) //#set global joint display size
-
-//set root
-pm.reroot() //#re-root joints
-
-//set orientation
-pm.joint(edit=1, orientJoint='xyz', zeroScaleOrient=1, ch=1) //#orient joints
-
-//connect
-pm.connectJoint(cm=1) //#connect joint
-
-//remove
-pm.removeJoint(obj) //#remove joints
-
-
-
 
 
 
@@ -2093,6 +2066,57 @@ normal = [round(i-min(xyz)/(max(xyz)-min(xyz)),6) for i in xyz] #normalize and r
 
 
 
+
+
+
+
+"ANIMATION: //-------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+
+
+
+
+
+
+
+
+
+"RIGGING: //---------------------------------------------------------------------------------------------------------------------------------------------"
+
+
+//joints
+//get all
+joints = pm.ls(type="joint")
+
+//check type
+pm.objectType(obj, isType='joint') //#Returns: bool
+
+//display size
+pm.jointDisplayScale(1.5) //#set global joint display size
+
+//set root
+pm.reroot() //#re-root joints
+
+//set orientation
+pm.joint(edit=1, orientJoint='xyz', zeroScaleOrient=1, ch=1) //#orient joints
+
+//connect
+pm.connectJoint(cm=1) //#connect joint
+
+//remove
+pm.removeJoint(obj) //#remove joints
+
+
+
+
+
+
+
+
+
+
+
 "HIERARCHY: //------------------------------------------------------------------------------------------------------------------------------------------"
 
 
@@ -2112,6 +2136,12 @@ else: //#else create group with object
 // get parent
 obj.getParent()
 
+
+// set parent contraint
+pm.parentConstraint(obj, objects[:-1], maintainOffset=1, weight=1)
+
+// remote parent constraint
+pm.parentConstraint(obj, objects[:-1], remove=1)
 
 
 

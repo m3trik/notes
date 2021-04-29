@@ -628,22 +628,22 @@ lbl.mousePressEvent = method #method must take event as an arg.
 
 
 # QLineEdit
-ex.	if lineEdit.text() == default_text:
+ex.	if l.text() == default_text:
 		lineEdit.setText("")
 		set_focus_in_color()
 		QtGui.QLineEdit.focusInEvent(lineEdit, QtGui.QFocusEvent(QtCore.QEvent.FocusIn))
 	  
-	lineEdit.focusInEvent = focus_in
+	l.focusInEvent = focus_in
 
 #		QLineEdit signal in
 #		Qt signals: editingFinished(), returnPressed(), selectionChanged(), textChanged(const QString &text), textEdited(const QString &text)
 #		Qt slots: clear(), copy() const, cut(), paste(), redo(), selectAll(), setText(const QString &), undo()  
-ex.	QLineEdit.returnPressed.connect(self.mel_b019) #qpushbutton b019
+ex.	l.returnPressed.connect(self.mel_b019) #qpushbutton b019
 
 
 # .maxLength(int)  By default, this property contains a value of 32767
-ex.	QLineEdit.maxLength()
-ex.	QLineEdit.setMaxLength(8)
+ex.	l.maxLength()
+ex.	l.setMaxLength(8)
 
 
 #increment/ decrement a QLineEdit
@@ -656,7 +656,7 @@ ex.	def b001(self): #decrement t000
 # .setInputMask
 #allows the user to type only one digit ranging from 0 to 9. 
 #Use multiple 9's to allow the user to enter multiple numbers
-ex.	QLineEdit.setInputMask("9")
+ex.	l.setInputMask("9")
 
 #list of char arguments for setInputMask
 #Use \ to escape the special characters listed above to use them as separators.
@@ -691,8 +691,8 @@ QtGui.QDoubleValidator.setTop() #upper bound
 QtGui.QDoubleValidator.setDecimals() #limit on the number of digits after the decimal point
 
 #QDoubleValidator(bottom, top, decimals, parent)
-ex.	QLineEdit.setValidator(QtGui.QIntValidator(0, 100))
-ex.	QLineEdit.setValidator(QtGui.QDoubleValidator(0, 100, 2))
+ex.	l.setValidator(QtGui.QIntValidator(0, 100))
+ex.	l.setValidator(QtGui.QDoubleValidator(0, 100, 2))
 
 
 
@@ -818,13 +818,12 @@ w.frameGeometry()				#Returns QtCore.QSize - geometry of the widget relative to 
 #get recommended widget size
 w.sizeHint()
 w.sizeHint().width()
-w.sizeHint()
+w.sizeHint().height()
 
 #set size:
 w.resize(width, height) 		#int, int or QSize
 w.setBaseSize(width, height)	#int, int or QSize - The base size is used to calculate a proper widget size if the widget defines QtWidgets.QWidget.sizeIncrement().
 w.setFixedSize(width, height)	#int, int or QSize
-
 
 #set in one direction
 w.setFixedWidth(width)			#int or QSize
@@ -1086,7 +1085,8 @@ QtCore.QEvent.Drop
 QtCore.QEvent.key
 QtCore.QEvent.KeyPress
 
-QtGui.QKeyEvent
+ex. QtGui.QKeyEvent(QtCore.QEvent.KeyPress, QtCore.Qt.Key_F12, QtCore.Qt.NoModifier)
+QtGui.QKeyEvent					
 QtGui.QMouseEvent 				#supports mouse button presses, double-clicks, moves, and other related operations.
 QtGui.QWheelEvent
 QtGui.QInputEvent 				#base class for events that describe user input.
@@ -1112,7 +1112,7 @@ w.onLeave
 QtCore.QEvent.MouseButtonDblClick 	#Mouse press again(QMouseEvent).
 w.mouseDoubleClickEvent
 ex.
-def mouseDoubleClickEvent(self, event): ""
+def mouseDoubleClickEvent(self, event): ''
 
 QtCore.QEvent.MouseMove 	#Mouse move(QMouseEvent).
 w.mouseMoveEvent
@@ -1492,9 +1492,12 @@ w.setAttribute(QtCore.Qt.WindowTransparentForInput) #
 w.setAttribute(QtCore.Qt.WA_KeyboardFocusChange) #Set on a toplevel window when the users changes focus with the keyboard(tab, backtab, or shortcut).
 
 
-setFocusPolicy( Qt::NoFocus );
+setFocusPolicy(QtCore.Qt.NoFocus) #QtCore.Qt.TabFocus, QtCore.Qt.ClickFocus, QtCore.Qt.StrongFocus, QtCore.Qt.WheelFocus, QtCore.Qt.NoFocus
 
 
+Qt::Key
+#key names used by Qt
+#http://doc.qt.io/archives/qt-4.8/qt.html#Key-enum
 # keyboard Codes:
 # https://doc.qt.io/archives/qtjambi-4.5.2_01/com/trolltech/qt/core/Qt.Key.html
 ex. QtCore.Qt.Key_Z
@@ -1503,11 +1506,6 @@ ex. QtCore.Qt.Key_Z
 #repainting(key auto repeating)
 event.isAutoRepeat()
 QApplication.setKeyboardInputInterval(int) #the time limit that distinguishes a key press from two consecutive key presses. default: 400 milliseconds.
-
-
-Qt::Key
-#key names used by Qt
-#http://doc.qt.io/archives/qt-4.8/qt.html#Key-enum
 
 
 QtGui.QKeyEvent
@@ -1552,8 +1550,8 @@ QShortcut Class
 ex.
 def shortcutActivated(shortcut):
 	shortcut.setEnabled(0)
-	e = QtGui.QKeyEvent(QEvent.KeyPress, Qt.Key_H, Qt.CTRL)
-	QCoreApplication.postEvent(theMainApplicationQtWindowInstance, e)
+	event = QtGui.QKeyEvent(QEvent.KeyPress, Qt.Key_H, Qt.CTRL)
+	QCoreApplication.postEvent(<theMainApplicationQtWindowInstance>, event)
 	mel.evalDeferred(partial(shortcut.setEnabled, 1)) #functools.partial
 
 def initShortcut():

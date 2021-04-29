@@ -26,6 +26,31 @@ world aligned texture:
 
 
 
+CONVERT:
+convert Metallic|Roughness|Height|AO  ->  Mask map (unity).
+Convert multiple maps to channles of a single RGBA map.
+A = Smoothness 
+>	Open the roughness map in photoshop.
+>	convert to RGB (image> mode> RGB color).
+>	Invert Image (image> adjustments> invert).
+>	channles> create new channel ([+] icon).
+>	copy and paste the inverted image to the new alpha channel.
+R = Metallic
+>	Copy existing metallic to Red channel (or convert the roughness map).
+G = AO
+>	Copy existing AO to Green channel
+B = Detail Mask
+>	Set as solid black, or use detail map.
+
+
+
+convert roughness to metallic:
+>	invert roughness map.
+>	levels>	input levels> set center gamma slider left 90% (brighten).
+>	levels> output levels> set right slider 90% (darken).
+
+
+
 	
 
 EMISSIVE:
