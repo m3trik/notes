@@ -10,7 +10,13 @@
 
 
 
------	Manual Retopology	
+
+
+
+
+======================================================================
+	MANUAL RETOPOLOGY:
+======================================================================
 
 When creating topology in ZBrush you do not have to close all of the polygon faces. ZBrush will automatically close many of these polygon faces for you. The setting that determines how many unconnected vertices that ZBrush will close is Max Strip Length. If ZBrush is closing holes that you do not want it to close, set this number to 4.
 You can also use the topology option to create a new mesh such as armor or a helmet or something of that sort. Just create the topology and press Make Adaptive Skin. You can then import this into your model as a subtool. You could also keep it as a ZSphere model if you want to edit the topology later. If you plan on doing this it may be good to delete the mesh from the rigging palette (Press Tool > Rigging > Delete).
@@ -33,7 +39,31 @@ If you are creating armor or helmets you may want to use the Skin Thickness slid
 If your model explodes when you press A, try setting Tool > Projection > Projection Strength to -1.
 If there are flat spots in your projection increase Tool > Projection > ProjectRange.
 
------	Automatic Retopology	
+
+-----	Manual Retopology using the Quad Draw Tool;
+>	Make reference mesh live.
+
+>	LMB to Drop vertices. (Ctrl + Shift + LMB to delete)
+
+>	Shift + LMB to Create polygons. (Ctrl + Shift + LMB to delete)
+
+>	Ctrl + LMB to insert edgeloop. (Ctrl + Shift + MMB to move)(Ctrl + Shift + LMB to delete)(Ctrl + MMB to insert centered edge loop)
+
+Tip: You can press Y to reactivate the Quad Draw Tool after switching to another tool.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	AUTOMATIC RETOPOLOGY:
+======================================================================
 
 ZRemesher; Hard Surface
 >	Lower Target Poly counts will stress the algorithm more. 
@@ -71,8 +101,19 @@ Additional info;
 >	Try to avoid small holes in your mesh! Retopology will keep them and can poten­tially increase the polygon count. Wherever possible, it is advised to do retopology on a “watertight” mesh or a surface that is free from imperfections. Since scan data and flat surface DynaMesh models can have small, hard to see holes, using ZBrush’s Close Holes feature before running ZRemesher will improve your results.
 >	When your model is in DynaMesh mode it can also be beneficial to run the Tool >> Geometry >> Mesh Integrity >> Fix Mesh operation before using ZRemesher.
 
+----------------------------------------------------------------------
 
------	Transferring detail to a lower poly model	
+
+
+
+
+
+
+
+
+======================================================================
+	TRANSFERRING DETAIL: (to a lower poly model)
+======================================================================
 
 //zbrush:
 method 1; Freeze Subdivision Levels
@@ -106,18 +147,19 @@ option 2
 >	Use Groups by Normals feature in the polygroups panel in zbrush. When using just the default settings I got rid of almost all of my interpenetrating geo and was left with a decent outer shell. You can simply delete everything that's not in that group and then re-dynamesh it
 
 
+----------------------------------------------------------------------
 
------	Manual Retopology using the Quad Draw Tool;
->	Make reference mesh live.
 
->	LMB to Drop vertices. (Ctrl + Shift + LMB to delete)
 
->	Shift + LMB to Create polygons. (Ctrl + Shift + LMB to delete)
 
->	Ctrl + LMB to insert edgeloop. (Ctrl + Shift + MMB to move)(Ctrl + Shift + LMB to delete)(Ctrl + MMB to insert centered edge loop)
 
-Tip: You can press Y to reactivate the Quad Draw Tool after switching to another tool.
 
+
+
+
+======================================================================
+	POLY REDUCTION:
+======================================================================
 
 -----	Automatic Poly Reduction using Mesh Reduce
 >	Select the faces you want to reduce.
@@ -126,8 +168,20 @@ Tip: You can press Y to reactivate the Quad Draw Tool after switching to another
 >	Choose Mesh Tools > Paint Reduce Weights Tool.
 >	Paint reduction values on the original polygon mesh.
 
+----------------------------------------------------------------------
 
------	Blend Shape;
+
+
+
+
+
+
+
+
+======================================================================
+	BLEND SHAPE;
+======================================================================
+
 To create a blend shape deformer
 Do any of the following to get set up, depending on your method of shape animation:
 - If you're deforming the base object directly, select the base object - see Create blend shapes using only the base object.
@@ -150,10 +204,19 @@ If you created the blend shape deformer using multiple target objects, a target 
 With a blend shape deformer on the base object, you can now add target shapes to it (see Add target shapes), or add more blend shape deformers.
 The blend shape deformer (Blend Shape node) uses the target shape weight settings to create the blend shape deformation on the base object.
 
+----------------------------------------------------------------------
 
 
 
------	Transferring Attributes;
+
+
+
+
+
+
+======================================================================
+	TRANSFER ATTRIBUTES;
+======================================================================
 
 //maya:
 To transfer attributes between separate meshes:
@@ -184,7 +247,7 @@ options:
 	Specify the attributes you want transferred (Vertex Position, UV Sets, Color Sets)
 	Specify the axis you want the attributes mirrored along.
 
-
+----------------------------------------------------------------------
 
 
 

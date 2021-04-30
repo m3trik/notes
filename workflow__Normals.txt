@@ -14,8 +14,10 @@
 
 
 
+======================================================================
+	CAGE:
+======================================================================
 
-CAGE:
 //maya:
 >Make sure the High Poly Mesh and the Low Poly Mesh are aligned, sized, and centered in the scene.
 
@@ -45,6 +47,7 @@ CAGE:
 
 >	shell modifier
 
+----------------------------------------------------------------------
 
 
 
@@ -54,7 +57,10 @@ CAGE:
 
 
 
-//BAKING
+======================================================================
+	BAKING:
+======================================================================
+
 //general:
 >	On a low res mesh, either use a single smoothing group with more geometry to avoid unsightly gradients in your normal maps at lower texture resolutions, Or Multiple smoothing groups, but only on hard edges.
 
@@ -133,6 +139,7 @@ blending an averaged and non-averaged bake:
 Wavy lines where high res and low res have a hard edge on a sharp curved cliff (such a a cylindrical shape or cutout):
 -	Give the high poly a large enough curved edge. If this is not an option, manually paint out the baking errors. Do this in SP though, not in PhotoShop as brush strokes are saved on a separate layer and will be preserved when a re-bake is done. Either way, using normal maps to simulate edge detail is a crude approximation and you will always have rendering errors from certain angles.
 
+----------------------------------------------------------------------
 
 
 

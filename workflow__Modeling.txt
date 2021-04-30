@@ -15,30 +15,51 @@
 
 
 
------	Concepting
+
+
+
+
+
+======================================================================
+	CONCEPTING:
+======================================================================
 
 kitbashing:
 
 dynamesh:
 
+----------------------------------------------------------------------
 
 
 
 
 
------	Importing CAD files
+
+
+
+
+======================================================================
+	IMPORTING CAD FILES:
+======================================================================
 
 //3ds Max:
 >	Customize menu> Units Setup> Setup dialog> US Standard Feet with Fractional Inches.
 >	Application menu> Import
 >	AutoCAD DWG/DXF Import Options dialog> Layers tab> Select From List: Choose what to import.
 
+----------------------------------------------------------------------
 
 
 
 
 
------	Reference Image Planes
+
+
+
+
+======================================================================
+	REFERENCE IMAGE PLANES:
+======================================================================
 
 //3ds Max:
 -Using plane
@@ -66,6 +87,7 @@ attached to camera
 >	In the perspective view panel, select View > Image Plane > Import Image.
 >	importImagePlane { "perspShape" };	
 
+----------------------------------------------------------------------
 
 
 
@@ -73,7 +95,11 @@ attached to camera
 
 
 
------	Initial block-in
+
+
+======================================================================
+	INITIAL BLOCK-IN:
+======================================================================
 
 image reference:
 
@@ -90,15 +116,15 @@ image reference:
 
 retopology tool (see zbrush retopology workflow)
 
+-----------------------------------------------------------------------
 
 
 
-modeling techniques -----
+======================================================================
+	PROCEDURES:
+======================================================================
 
-
-
------	Boolean Operations
-
+Boolean Operations:
 //ZBrush:
 
 >	Can be Used with Symmetry
@@ -138,6 +164,7 @@ Tip: Before performing your boolean operation, view the normals on your mesh (Di
 >	explicitly select objects for consistent results
 >	Performing boolean operations on parent objects may produce undesirable results. If multiple meshes are grouped under a common parent, explicitly select the objects as input to the boolean operation.
 
+----------------------------------------------------------------------
 
 
 
@@ -147,8 +174,9 @@ Tip: Before performing your boolean operation, view the normals on your mesh (Di
 
 
 
------   insert multi mesh brushes (IMM)
-
+======================================================================
+	INSERT MULTI MESH BRUSHES (IMM):
+======================================================================
 //ZBrush
 To create a Tri Parts brush:
 
@@ -167,6 +195,7 @@ Usage:
 
 >	Brush Menu> Load Brush> M hotkey to select part
 
+----------------------------------------------------------------------
 
 
 

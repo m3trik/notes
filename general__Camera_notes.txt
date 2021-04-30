@@ -23,13 +23,18 @@ Exposure:
 
 	Sensitivity:
 		ISO value. How reactive the camera sensor is to light.
-	
+
 
 	
 	
 	
 Depth of field:
 	describes how much of an image is in focus from front to back. Depth of field is controlled by the aperture as well as the lens magnification.
+	
+	
+	
+	
+
 
 
 

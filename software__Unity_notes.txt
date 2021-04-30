@@ -1,4 +1,4 @@
-Unity notes --------------------
+Unity notes --
 
 
 
@@ -6,12 +6,12 @@ Unity notes --------------------
 
 
 
-ERRORS: ------------------------
+ERRORS: -----------------------------------------------------------------------------
 
 material settings greyed out (on import)
 >	select the imported obj in the 'project' tab.
 >	inspector tab> materials> Extract Textures
 >		""			""		  Extract Materials
 
-
+-------------------------------------------------------------------------------------
 

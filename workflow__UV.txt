@@ -1,4 +1,4 @@
-+---uv----------------------------------------------------------+
++-- UV notes ---------------------------------------------------------+
 ¦
 ¦	-
 ¦
@@ -8,7 +8,35 @@
 
 
 
-UNWRAP:
+
+
+
+======================================================================
+	TIPS:
+======================================================================
+
+//UV for film
+• Supporting edges around the seam.
+• UV tiles based on materials.
+• Keep uniform scale.
+• Avoid cutting where you have a 5 pole (can cause stretching)
+• Avoid visible seams
+• Correct orientation
+• Straiten any text.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	UNWRAP:
+======================================================================
 //3ds Max:
 Align UVs
 >	In the Unwrap UVW modifier, start by using the Relax Tool to unfold the UVs.
@@ -20,6 +48,7 @@ Tweak the UVs
 >	UVW modifier> Modeling> Graphite tools> Tweak button
 >	When the Tweak setting is active you can move the UV’s position locally by painting on the mesh, pushing the texture to the exact place with real-time feedback on the Viewport.
 
+----------------------------------------------------------------------
 
 
 
@@ -29,9 +58,11 @@ Tweak the UVs
 
 
 
-IMPORTING/EXPORTING
+======================================================================
+	IMPORTING/EXPORTING:
+======================================================================
+
 >	put UV seams on hard edges (harden all UV edge script)
-
 >	
 	
 //zbrush:
@@ -56,13 +87,21 @@ IMPORTING/EXPORTING
 //maya:
 >	adding a suffix in order to enable Painter to recognise them. In our case, GUN_001_LOW will match with GUN_001_HIGH. Following the same example, if you need to bake multiple HD meshes on one single LP mesh, you’ll find that GUN_001_LOW matches GUN_001_HIGH_Part1, GUN_001_HIGH_Part2 and so on.
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-UV PLACEMENT
+
+
+
+
+======================================================================
+	UV PLACEMENT:
+======================================================================
+
 place3dTexture node (world space)
 
 
@@ -78,6 +117,7 @@ using place2dTexture node (UV space)
 >	move corresponding uv's to separate uv space
 >	set translate frame in place2dTexture to correspond with maps intended uv space (ie. 1,0)
 
+----------------------------------------------------------------------
 
 
 
@@ -87,24 +127,27 @@ using place2dTexture node (UV space)
 
 
 
+======================================================================
+TRANSFERRING UV's:
+======================================================================
 
-
-
-
-
-
-
-
-
-TRANSFERRING UV'S	
 //Maya
 >	Use custom batch transfer tool
 
-
-
-
 //UV Layout:
 >
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
 
 

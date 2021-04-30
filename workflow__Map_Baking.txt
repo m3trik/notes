@@ -12,7 +12,14 @@
 
 
 
-NAMING CONVENTION FOR MESH PARTS:
+
+
+
+
+======================================================================
+	NAMING CONVENTION FOR MESH PARTS:
+======================================================================
+
 //substance:
 baking in substance with meshes consisting of multiple overlapping parts;
 
@@ -21,11 +28,20 @@ baking in substance with meshes consisting of multiple overlapping parts;
 
 >	optional: if you need to bake multiple HD meshes on one single LP mesh, you’ll find that GUN_001_LOW matches GUN_001_HIGH_Part1, GUN_001_HIGH_Part2 and so on.	
 
+----------------------------------------------------------------------
 
 
 
 
-IMPORT/EXPORT:
+
+
+
+
+
+======================================================================
+	IMPORT/EXPORT:
+======================================================================
+
 //maya to substance painter
 >	export settings:
 	-face weighted vertex normals.
@@ -33,11 +49,20 @@ IMPORT/EXPORT:
 	-smooth mesh
 	-triangulate (Substance Painter triangulation of polygons doesn't match the triangulation used in Unreal. Triangulate before baking & exporting)
 
-	
+----------------------------------------------------------------------	
 
 
 
-BAKING MAPS:
+
+
+
+
+
+
+======================================================================
+	BAKING MAPS:
+======================================================================
+
 //maya
 -----	Texture Baking using Turtle plug-in ( Turtle.mll);
 To set up a surface transfer
@@ -59,13 +84,20 @@ To set up a surface transfer
 >	Open the Texture Baking View window (Windows > Materials/Texture Baking Editors > Texture Baking View).
 >	In the toolbar, click  to initiate the texture baking.
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-ID MAP:
+
+
+
+======================================================================
+	ID MAP:
+======================================================================
+
 //ZBrush
 >	assign material+color to your high rez mesh in 3d app. optionaly, can use low res mesh and bake seperatly, selecting that mesh in baking> common> 'high definition meshes'
 
@@ -92,6 +124,7 @@ baking ID:
 >	Material ID maps bake in from HI-poly object's shader map
 >	TextureSet Settings> Bake textures> ID map
 
+----------------------------------------------------------------------
 
 
 

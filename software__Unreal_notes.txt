@@ -8,9 +8,9 @@ Unreal Engine notes.
 
 
 
-GEOMETRY: -------------------------------------------------------------
-
-
+=======================================================================
+	GEOMETRY:
+=======================================================================
 
 geometry brushes: ---------------
 
@@ -46,6 +46,7 @@ create spline:
 deform mesh along spline:
 >	create mesh object with enough subdivisions to deform appropriately.
 
+----------------------------------------------------------------------
 
 
 
@@ -55,8 +56,9 @@ deform mesh along spline:
 
 
 
-LIGHTING: -------------------------------------------------------------
-
+======================================================================
+	LIGHTING:
+======================================================================
 
 
 create sun:
@@ -83,6 +85,7 @@ Environment Directional Light w/Fog
 >	""		   > light shaft occlusion> checked on
 >	""		   > light shaft bloom>	checked on
 
+----------------------------------------------------------------------
 
 
 
@@ -90,7 +93,11 @@ Environment Directional Light w/Fog
 
 
 
-BLUEPRINTS: -----------------------------------------------------------
+
+
+======================================================================
+	BLUEPRINTS:
+======================================================================
 
 Add blueprint to:
 :asset:
@@ -166,6 +173,7 @@ Order of Operations: ------------
 
 sequence	-execute sequentially
 
+----------------------------------------------------------------------
 
 
 
@@ -174,7 +182,10 @@ sequence	-execute sequentially
 
 
 
-MATERIALS: -----------------------------------------------------------
+
+======================================================================
+	MATERIALS:
+======================================================================
 
 Node hotkeys: ------------------
 
@@ -249,6 +260,7 @@ Create a Particle (volume) Material:
 >	Details tab> Material Domain> Volume
 >	""		   > Blend Mode> Additive
 
+----------------------------------------------------------------------
 
 
 
@@ -258,7 +270,9 @@ Create a Particle (volume) Material:
 
 
 
-ANIMATION: -----------------------------------------------------------
+======================================================================
+	ANIMATION:
+======================================================================
 
 spawnable camera (lightning bolt icon): exists only within a sequence.	
 possessable camera (): scene actor
@@ -307,12 +321,7 @@ Hide Sequence actors(geometry):
 >	(add) +track> Actor Hidden In Game
 >	visibility track is now visible. Uncheck to hide on all frames.
 
-
-
-
-
-
-IMPORT / EXPORT: -----------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -322,7 +331,9 @@ IMPORT / EXPORT: -----------------------------------------------------
 
 
 
-PERFORMANCE: ---------------------------------------------------------
+======================================================================
+	PERFORMANCE:
+======================================================================
 
 General:
 - use viewport toolbar> lit> optimization viewmodes to visualize potential issues.
@@ -352,9 +363,44 @@ Textures:
 Minimize draw calls:
 - combine geometry when able
 
+----------------------------------------------------------------------
 
 
 
 
 
-ERRORS: --------------------------------------------------------------
+
+
+
+
+======================================================================
+	IMPORT / EXPORT:
+======================================================================
+
+Exporting Geometry to Unreal:
+- smooth mesh normals.
+- uniform scale and not flipped uv's (use uv checker with text to determine uv direction).
+- material id mapped to model.
+- group geometry and set pivot points for any potential animation.
+- scale model to real world units.
+- reset (bake) scale/rotation
+- export each part that requires a separate pivot as FBX (settings: smoothing groups=1).
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	ERRORS:
+======================================================================
+
+
+
+
+----------------------------------------------------------------------

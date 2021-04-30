@@ -15,7 +15,6 @@
 
 PROCEDURES: -------------------------------------------------------------------------
 
-
 non-destructive workflow:
 This approach allows you to modify the properties of the Fill layer, such as base colour, roughness, metallic, height and so on any time, without having to repeat your drawings, since all the painted data is stored in the mask.
 >	create a Fill layer. 
@@ -57,6 +56,12 @@ Weld seams:
 Mask overlapping geometry:
 >	Toggle 'brush alignment'> 'Tangent|Wrap' & 'UV' to mask separate uv's.
 
+-------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
@@ -83,6 +88,9 @@ mask by geometry:
 >	paint in the mask then invert (ctrl+i)
 >	'y' clears quick mask
 
+-------------------------------------------------------------------------------------
+
+
 
 
 
@@ -92,11 +100,14 @@ mask by geometry:
 
 UV: ---------------------------------------------------------------------------------
 
-
 fix UV seams:	blend together the information on all the channels simultaneously, making seams fade away.
 >	create a layer (not a Fill).
 >	set the blending mode of every channel to Pass Through.
 >	then select the Smudge tool and lightly draw on the edges where the seams are visible.
+
+-------------------------------------------------------------------------------------
+
+
 
 
 
@@ -105,7 +116,6 @@ fix UV seams:	blend together the information on all the channels simultaneously,
 
 
 NORMALS: ----------------------------------------------------------------------------
-
 
 Paint Normal Map Details:
 >	Add a normal channel in the current current Texture Set (if not already present)
@@ -122,6 +132,11 @@ Painting Over A Baked Normal Map:
 >	Texture Set settings tab> Change the Texture Set blending mode to replace.
 >	Change the fill layer blending mode from NMdt (Normal map details) to Normal.
 >	Create a new layer (regular or fill) and change its blending mode to "normal" for the normal channel.
+
+-------------------------------------------------------------------------------------
+
+
+
 
 
 
@@ -145,6 +160,11 @@ shader:
 show material transparency by enabling alpha blending.
 >	shader settings window> set material to pbr-metal-rough-with-alpha-blending (very top under 'undo' 'redo' buttons)
 >	texture set settings> '+' add channel> opacity
+
+-------------------------------------------------------------------------------------
+
+
+
 
 
 
@@ -193,19 +213,22 @@ Types of maps:
 -	Glossiness²: Square version of the glossiness channel (Glossiness * Glossiness)
 -	f0: Reflectance value at fresnel 0 (0.04 for dielectrics, 1.0 for metallic)
 
+-------------------------------------------------------------------------------------
 
 
 
 
 
-ERRORS: ----------------------------------------------------------------------------
+
+
+
+
+ERRORS: -----------------------------------------------------------------------------
 
 Import Texture: Cannot import texture.
 As of version 2020, substance does not support importing over a network drive
 
-
-
-
+-------------------------------------------------------------------------------------
 
 
 
@@ -303,7 +326,7 @@ enable disable layer			shft + LM on icon in layer stack
 
 translate projection/ alpha		S + LM, RM, MM (scale,rotate,pan)
 
-
+-------------------------------------------------------------------------------------
 
 
 

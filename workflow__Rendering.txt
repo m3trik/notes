@@ -12,7 +12,15 @@
 
 
 
-------	Render Solid Background
+
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
+
+Render Solid Background:
 //3ds Max
 change the background color:
 >	Render>	Environment> Background: Map off, Adjust color
@@ -21,23 +29,21 @@ mask background:
 >	 
 
 
-
-
-
-
-------	Render Wireframe
+Render Wireframe
 //3ds Max
 >	
 
+----------------------------------------------------------------------
 
 
 
-	
 
 
+======================================================================
+	RENDER SETTINGS:
+======================================================================
 
-------	VRay settings
-//maya: 
+//maya:
 render subdivisions
 >	shape node attributes> attributes drop down menu> vray> subdivisions
 
@@ -46,8 +52,6 @@ Display colors in sRGB space (on by default) #without gamma correction the rende
 
 global render settings:
 vray tab> color mapping> type: linear multiply 
-
-
 
 
 
@@ -62,5 +66,5 @@ vray tab> color mapping> type: linear multiply
 
 
 
-
+----------------------------------------------------------------------
 

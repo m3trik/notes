@@ -1,4 +1,4 @@
-+---rigging-----------------------------------------------------+
++--- rigging --------------------------------------------------------+
 ¦
 ¦	-
 ¦
@@ -9,6 +9,13 @@
 
 
 
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
+
 freeze joint transforms:
 >	hit ctrl+g without selecting anything (this will create an empty transform node called null1). 
 >	point-snap this transform node at the same position as the joint you want to zero out.
@@ -18,4 +25,5 @@ freeze joint transforms:
 >	make the child joint a child of the null node.
 this should give you zero values in the channel box of the joint.
 
+----------------------------------------------------------------------
 

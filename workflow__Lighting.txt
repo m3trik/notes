@@ -9,7 +9,13 @@
 
 
 
------- HDRI
+
+
+
+
+======================================================================
+	HDRI:
+======================================================================
 
 -- HDRI Environment:
 //3ds Max
@@ -46,9 +52,19 @@
 >		""			> Texture> Resolution: 1080
 >		""				""	 > Drag the prev created VRayBitmap material to the texture slot (default: None)
 
+----------------------------------------------------------------------
 
 
-------	Daylight/Sun:
+
+
+
+
+
+
+
+======================================================================
+	Daylight/Sun:
+======================================================================
 
 >	mod panel>create>systems>daylight
 >	VRay sun
@@ -56,9 +72,20 @@
 >	increase sun size/ decrease sun intensity (or vice versa)
 >	set filter color
 
+----------------------------------------------------------------------
 
 
-------	Interior lights:
+
+
+
+
+
+
+
+======================================================================
+	Interior lights:
+======================================================================
+
 //VRay
 >	mod panel> create> lights> VRay (from drop down menu)
 >	Light Properties> Intensity> Mode: Temperature (adjust color)
@@ -67,8 +94,7 @@
 >		""			> Sampling> Subdivs: 32
 >		""			> Options> invisible
 
-
-
+----------------------------------------------------------------------
 
 
 	

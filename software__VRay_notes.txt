@@ -5,7 +5,7 @@
 ¦	-Modifiers
 ¦	-Import/Export
 ¦	-Procedures
-+-------------------------------------------------------------
++--------------------------------------------------------------------
 
 
 
@@ -13,7 +13,7 @@ Set UI workspace to VRay
 //3ds max:
 >	Main menu> Customize> CustimUI and Defaults Switcher: MAX vray
 
---------------------------------------------------------------
+---------------------------------------------------------------------
 
 
 
@@ -23,9 +23,9 @@ Set UI workspace to VRay
 
 
 
-==============================================================
+
 	MATERIAL_PROPERTIES:
-==============================================================
+======================================================================
 
 //VRay:
 
@@ -58,7 +58,7 @@ Fresnel			on and unlocked - spread of reflection across the surface
 
 BDRF			Microfacet GTR(GGX) - 1.6-2.2 softness of highlight across surface.
 
---------------------------------------------------------------
+---------------------------------------------------------------------
 
 metal (generic):
 >	no diffuse color (black). Metal color in reflect channel.
@@ -125,7 +125,7 @@ Antique Silver
 >	Fresnel IOR 40.
 >	Noise map in bump (the surface is rarely perfectly smooth) set to an intensity of around 2-5%.
 
---------------------------------------------------------------
+---------------------------------------------------------------------
 
 fabric (generic):
 >
@@ -148,7 +148,7 @@ Velvet/Suede:
 >	Fresnel IOR 1.6.
 >	Use a noise as a bump map to create the ‘hair’ effect on velvet/suede.
 
---------------------------------------------------------------
+---------------------------------------------------------------------
 
 Plastic (generic):
 	Plastic, being a softer material, will show surface wear more than glass would, so bump maps and R.Glossiness maps would be slightly more noticable.
@@ -191,7 +191,7 @@ Clear Color Plastic:
 >	Fog multiplier 0.6 (decrease for lighter effect).
 >	Bump map and RGlossiness map with subtle grunge/scratch.
 
---------------------------------------------------------------
+---------------------------------------------------------------------
 
 Glass (generic):
 >	Set reflection to 98% black (if you need less reflection, reduce the IOR)
@@ -244,7 +244,7 @@ Crystal Glass:
 >	IOR 1.9.
 >	Max depth 12.
 
---------------------------------------------------------------
+---------------------------------------------------------------------
 
 Wood (generic):
 >	Reflect - greyscale value 30.
@@ -277,7 +277,7 @@ Painted Wood:
 >	BRDF GGX
 >	Bump: Mix noise map with black and white wood bump.
 
---------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -289,9 +289,9 @@ Painted Wood:
 
 
 
-==============================================================
+======================================================================
 	NODES:
-==============================================================
+======================================================================
 
 vray dirt:
  Adding VRayDirt to a material will add render to render times. So you want to use as few dirt nodes as possible to avoid this. Some tricks to increasing the intensity of a VRayDirt is to add one instance several times into a a Composite node with each of the blends sent to “Multiply”.
@@ -379,7 +379,7 @@ C. Using Multiple Dirt Maps
 
 	>	Plug the new composite node into the blend 1 slot of our material.
 
---------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -389,9 +389,9 @@ C. Using Multiple Dirt Maps
 
 
 
-==============================================================
+======================================================================
 	MODIFIERS
-==============================================================
+======================================================================
 
 VRayDisplacementModifier:
 
@@ -436,7 +436,7 @@ Keep continuity:
 Edge thresh:
 	This value controls the blending between different maps on different faces. Keep it low – generally you shouldn’t change it from the default
 
---------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -446,9 +446,9 @@ Edge thresh:
 
 
 
-==============================================================
+======================================================================
 	MAPS
-==============================================================
+======================================================================
 
 
 Connecting maps: ---------------------------------------------
@@ -489,7 +489,7 @@ Normal Map:
 >	Plug the output of this node into the Bump map slot.
 >	Double click on the normal map, then click on the “Bitmap” input (where the file name is listed). This will open a file browser window. In this window, with the same texture selected, go to “Gamma” and select “Override” and set it to 1.0.
 
---------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -499,9 +499,9 @@ Normal Map:
 
 
 
-==============================================================
+======================================================================
 	IMPORT/EXPORT:
-==============================================================
+======================================================================
 
 FBX export
 //from substance designer:
@@ -572,7 +572,7 @@ vrayMtl node properties:
 	
 	IOR ALPHA -> FRESNEL IOR (Uncheck Lock Fresnel IOR to Refraction IOR(reflection menu, RAW)
 
---------------------------------------------------------------
+----------------------------------------------------------------------
 	
 	
 	
@@ -582,9 +582,9 @@ vrayMtl node properties:
 	
 
 	
-==============================================================
+======================================================================
 	PROCEDURES
-==============================================================
+======================================================================
 
 
 Coat material using VRayBlendMtl:
@@ -596,15 +596,7 @@ Coat material using VRayBlendMtl:
 >	Create a Composite map and plug into Coat material bump slot.
 >	Add noise map and bump map from Base material to Composite map.
 
-
-
-
-
-
-
-
-
---------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 

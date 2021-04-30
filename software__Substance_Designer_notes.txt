@@ -1,6 +1,5 @@
 Substance Designer notes.
 
-
 node documentation:
 https://support.allegorithmic.com/documentation/display/SDDOC/Node+Library
 
@@ -12,10 +11,7 @@ https://support.allegorithmic.com/documentation/display/SDDOC/Node+Library
 
 
 
-
-
-
-keyboard shortcuts -----------------------------------------------------------------
+KEYBOARD SHORTCUTS: ----------------------------------------------------
 
 collapse node to parent			[d key]
 
@@ -23,30 +19,52 @@ duplicate w/o connections		[ctrl+ shft+ d]
 
 drag inputs to another node		[shft+ left mouse drag]
 
+------------------------------------------------------------------------
 
 
-autosave		The backup files will be located in three possible locations :
+
+
+
+
+
+
+
+FILE: ------------------------------------------------------------------
+
+Autosave:
+The backup files will be located in three possible locations :
 				>	If the current project has been saved the backups will be next to it.
 				>	If the project has never been saved (untitled) the backups will be in the autosave folder in the user's Documents folder. (Documents/Allegorithmic/Substance Painter/autosave)
 				>	If the override setting has been enabled the backups will be located in the path given in the settings.
+				
+------------------------------------------------------------------------
 
 
 
 
 
 
-views -----------------------------------------------------------------
+
+
+
+VIEWS: -----------------------------------------------------------------
 
 view outputs in 3d view		-rt click empty graph area (context menu)
 
 
 load custom mesh in 3d view	-drag-drop it into explorer resource folder
 
+------------------------------------------------------------------------
 
 
 
 
-shapes -----------------------------------------------------------------
+
+
+
+
+
+SHAPES: ----------------------------------------------------------------
 
 
 Shape node
@@ -65,10 +83,17 @@ Shape Extrude		-Extrude a 2d mask into a 2.5d shape.
 Star				-Generates a five pointed star.
 Starburst			-Generates a simple starburst effect, with adjustment parameters available.
 
+------------------------------------------------------------------------
 
 
 
-patterns ------------------------------------------------------------------
+
+
+
+
+
+
+PATTERNS: --------------------------------------------------------------
 
 
 Tile Generator
@@ -104,16 +129,21 @@ Tile Sampler Node	- Pattern Input: The shape you want to tile.
 
 					- Vector Map Input: gives you more control. Rotates, moves, scales based on RGB Values. (Rotates in one direction only)
 
+------------------------------------------------------------------------
 
 
 
 
 
 
-crop ----------------------------------------------------------------------
+
+
+
+CROP: ------------------------------------------------------------------
 
 multi-crop node		- crop multiple
 
+------------------------------------------------------------------------
 
 
 
@@ -121,7 +151,9 @@ multi-crop node		- crop multiple
 
 
 
-transform -----------------------------------------------------------------
+
+
+TRANSFORM: -------------------------------------------------------------
 
 transform node		-
 
@@ -131,16 +163,22 @@ safe transform		-pixel snap offset. tile safe rotation.
 
 distance node		-
 
+------------------------------------------------------------------------
 
 
 
 
 
-deformation --------------------------------------------------------------
+
+
+
+
+DEFORMATION: -----------------------------------------------------------
 
 
 Directional Warp	- deformation depends on the warping value and direction.
 
+------------------------------------------------------------------------
 
 
 
@@ -150,9 +188,7 @@ Directional Warp	- deformation depends on the warping value and direction.
 
 
 
-
-
-edges -----------------------------------------------------------------
+EDGES: -----------------------------------------------------------------
 
 Bevel node
 
@@ -196,11 +232,18 @@ Edge Wear
 Fiber Glass Edge Wear
 	Represents a mask specifically intended for a fibreglass-type of wear, 
 	could perhaps be used for cloth
+	
+------------------------------------------------------------------------
 
 
-	
-	
-gradient -----------------------------------------------------------------
+
+
+
+
+
+
+
+GRADIENT: --------------------------------------------------------------
 
 radial gradient		-Shape node (Cone shape) plugged into a levels (or histogram, curve) to adjust the falloff.
 					-levels plugged into a gradient map.
@@ -209,6 +252,7 @@ radial gradient		-Shape node (Cone shape) plugged into a levels (or histogram, c
 	"" greyscale	
 					-Shape node (Cone shape) plugged into a levels to adjust the falloff.
 
+------------------------------------------------------------------------
 
 
 
@@ -217,7 +261,8 @@ radial gradient		-Shape node (Cone shape) plugged into a levels (or histogram, c
 
 
 
-blur -----------------------------------------------------------------
+
+BLUR: ------------------------------------------------------------------
 
 Slope Blur Greyscale	
 	Directional blur driven by greyscale slope map
@@ -234,25 +279,33 @@ Blur IQ greyscale
 edge blur
 	This mask highlights edges based on a baked curvature map
 	
+------------------------------------------------------------------------
+	
+	
+	
+	
+
 
 	
 	
-	
-	
-	
 
-diffuse ----------------------------------------------------------------
+DIFFUSE: ---------------------------------------------------------------
 
 color equalizer		- correct non-uniform color across brimap or scan data
 
 color match			- adjust (change) color. (click the node's mask output to preview the mask)
 
+------------------------------------------------------------------------
+
+
+
+
+
 
 
 
 	
-height -----------------------------------------------------------------
-
+HEIGHT: ----------------------------------------------------------------
 
 Render height map in 3d View.
 >	3D Viewport> Materials menu> Default> Definitions> physically_metallic_roughness> Enable Tessellation
@@ -265,6 +318,7 @@ displacement:
 
 Normal to Height node	-never be able to provide a 100% correct result, as information is lost. good for simple details.
 
+------------------------------------------------------------------------
 
 
 
@@ -273,7 +327,8 @@ Normal to Height node	-never be able to provide a 100% correct result, as inform
 
 
 
-normal -----------------------------------------------------------------
+
+NORMAL: ----------------------------------------------------------------
 
 From Height:
 	Height to Normal node	(world units)
@@ -297,23 +352,28 @@ Repair:
 		Performs a mathematical vector normalisation operation on every single pixel in the image.
 		Useful for when a lot of blending and modifications have been made to the Normalmap, and you want to ensure a correct result gets exported.
 
-	
-	
-	
+------------------------------------------------------------------------
 
 
+
+
+
 	
-	
-ambient occlusion -------------------------------------------------------
+AMBIENT OCCLUSION: -----------------------------------------------------
 
 Ambient Occlusion (HBAO) -height to AO conversion
 
+------------------------------------------------------------------------
+
+
+
+
 
 
 
 
 	
-roughness --------------------------------------------------------------
+ROUGHNESS: -------------------------------------------------------------
 
 curvature to roughness:
 >	curvature node to histogram scan
@@ -321,7 +381,7 @@ curvature to roughness:
 >	adjust position to desired roughness.
 >	expose position parameter. (name: Roughness)
 
-
+------------------------------------------------------------------------
 
 
 
@@ -329,12 +389,15 @@ curvature to roughness:
 	
 	
 
-channels -----------------------------------------------------------------
+
+
+CHANNELS: --------------------------------------------------------------
 
 channels shuffle	-mix rgba values between inputs 1 and 2
 
 channels mixer		-adjust rgb values of 1 input
 
+------------------------------------------------------------------------
 
 
 
@@ -342,7 +405,9 @@ channels mixer		-adjust rgb values of 1 input
 
 
 
-convert -----------------------------------------------------------------
+
+
+CONVERT: ---------------------------------------------------------------
 
 color to greyscale	-Grayscale conversion node (right click 'add node' menu)
 
@@ -354,12 +419,17 @@ vector to bitmap	-SVG node. use pen tool in 2d graph view to draw mask input ima
 
 ---- to vector		-normal map as vector image input for effects (warping)
 
+------------------------------------------------------------------------
 
 
 
 
 
-adjust color / greyscale values
+
+
+
+
+ADJUST COLOR / GREYSCALE VALUES: ---------------------------------------
 
 levels node
 
@@ -382,11 +452,17 @@ Histogram Scan
 histogram shift
 	shifts the whole range of the image, wrapping around when reaching range limits.
 
+------------------------------------------------------------------------
 
 
 
 
-opacity -----------------------------------------------------------------
+
+
+
+
+
+OPACITY: ---------------------------------------------------------------
 
 create opacity map:
 >	right click, add node, (opacity) output
@@ -395,11 +471,17 @@ create opacity map:
 >	set alpha channel on channels to uniform color alpha channel input 
 >	change r,g,&b inputs to while alpha channels from image input
 
+------------------------------------------------------------------------
 
 
 
 
-noise -----------------------------------------------------------------
+
+
+
+
+
+NOISE: -----------------------------------------------------------------
 
 Splatter
 	Most people mistake this Node for “Scatter”, because that’s what it does really
@@ -415,6 +497,7 @@ Perlin Noise
 	Another Noise Node that has a few variations. My favorite is the Perlin Noise
 	Zoom, as it gives a little more control over how the Noise looks and acts.
 
+------------------------------------------------------------------------
 
 
 
@@ -424,8 +507,7 @@ Perlin Noise
 
 
 
-
-functions -----------------------------------------------------------------
+FUNCTIONS: -------------------------------------------------------------
 
 create new function:
 >	in the main graph (root) options create an input parameter
@@ -471,6 +553,7 @@ get access to each channel of a node and reorganize them into x, y, z variables
 
 sample color	-sample color per pixel
 
+------------------------------------------------------------------------
 
 
 
@@ -480,7 +563,7 @@ sample color	-sample color per pixel
 
 
 
-MDL --------------------------------------------------------------------
+MDL: -------------------------------------------------------------------
 
 Graph Color Code:
 Yellow			color type 
@@ -506,6 +589,7 @@ Expose value	-right click context> Expose
 
 blend layers	-weighted layer node
 
+------------------------------------------------------------------------
 
 
 
@@ -515,8 +599,7 @@ blend layers	-weighted layer node
 
 
 
-
-switch -----------------------------------------------------------------
+SWITCH: ----------------------------------------------------------------
 
 switch				Returns either Input 1 or Input 2 based on the Switch parameter setting.
 switch greyscale	
@@ -540,12 +623,17 @@ if else function (driven by 2 integers):
 >	two boolean nodes plugged into an 'if..else' node's 'if'(False) and 'else'(True) slots.
 >	plug the equal node output into the condition slot.
 
+------------------------------------------------------------------------
 
 
 
 
 
-outputs -----------------------------------------------------------------
+
+
+
+
+OUTPUTS: ---------------------------------------------------------------
 
 Add an output node:
 	Right-click in an empty area; Add Node --> Output
@@ -572,13 +660,17 @@ creating a preset graph template
 to see or change the directory location:
 >	add new (+ icon)
 
+------------------------------------------------------------------------
 
 
 
 
 
 
-user data ---------------------------------------------------------------
+
+
+
+USER DATA: -------------------------------------------------------------
 
 The user data field in Substance files is a place for expressions that will be preserved after the cooking. Substance Painter is able to read some specific user data in order to execute specific behaviors. The field is parsed as a list of pair key=value separated by semicolons. Multiple information are separated by a semicolon (;).
 
@@ -597,23 +689,35 @@ blendingmode=normal		--normal, passthrough, disable, replace, multiply, divide, 
 
 Padding=Extend			--provide an input that has padding/dilation instead outside the UV islands.
 
+------------------------------------------------------------------------
 
 
 
 
 
-procedures -----------------------------------------------------------------
+
+
+
+
+PROCEDURES: ------------------------------------------------------------
 
 masking techniques:
 
 >	blend node on subtract to histogram scan (which can drive opacity in another blend)
 
+------------------------------------------------------------------------
 
 
 
 
 
-errors -----------------------------------------------------------------
+
+
+
+
+ERRORS: ----------------------------------------------------------------
 
 export cooking fail (error 13)
 enable output computation in current graph settings
+
+------------------------------------------------------------------------

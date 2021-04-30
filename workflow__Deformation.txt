@@ -1,4 +1,4 @@
-+---deformation-----------------------------------------------------+
++---deformation------------------------------------------------------+
 ¦	
 ¦	-bend & lattice
 ¦
@@ -8,7 +8,14 @@
 
 
 
------	bend & lattice	
+
+
+
+
+
+======================================================================
+	BEND & LATTICE:
+======================================================================
 
 //ZBrush:
 
@@ -66,3 +73,5 @@ lattice deformer
 To create lattice deformation effects
 >   Move, rotate, or scale influence lattice points.
 >   Edit lattice deformer channels and attributes.
+
+----------------------------------------------------------------------

@@ -9,13 +9,15 @@
 
 
 
-
 	
 
 
 
 
-MATERIAL CREATION:
+======================================================================
+	MATERIAL CREATION:
+======================================================================
+
 world aligned texture:
 //unreal
 >	create a worldAlignedTexture node.
@@ -23,10 +25,21 @@ world aligned texture:
 >	create a size node and plug it into the worldAlignedTexture TextureSize input.
 >	connect the XYZ texture output of the worldAlignedTexture node to the base materials 'base color' input.
 
+----------------------------------------------------------------------
 
 
 
-CONVERT:
+
+
+
+
+
+
+
+======================================================================
+	CONVERT:
+======================================================================
+
 convert Metallic|Roughness|Height|AO  ->  Mask map (unity).
 Convert multiple maps to channles of a single RGBA map.
 A = Smoothness 
@@ -49,11 +62,20 @@ convert roughness to metallic:
 >	levels>	input levels> set center gamma slider left 90% (brighten).
 >	levels> output levels> set right slider 90% (darken).
 
+----------------------------------------------------------------------
 
 
-	
 
-EMISSIVE:
+
+
+
+
+
+
+======================================================================
+	EMISSIVE:
+======================================================================
+
 //unreal:
 >	create material and double click to open the material editor
 >	create a constant(float)(name it emission), a constant3vector(name it color), and a plug those into a multiply node
@@ -61,10 +83,19 @@ EMISSIVE:
 >	close out the material editor, right click the material and create a new instance.
 >	
 
+----------------------------------------------------------------------
 
 
 
-PROCEDURAL:
+
+
+
+
+
+
+======================================================================
+	TILING:
+======================================================================
 
 //Procedural tiling of bitmaps: (This will only work for relatively uniform textures, not for those with repetitive patterns, such as bricks, planks or tiles.)
 
@@ -74,7 +105,7 @@ PROCEDURAL:
 >	take a Noise map with fractals on and use the RGB curve to clamp it to just black and white (it will look like a cow hide).
 >	Now you can use this Noise map as a mask to mix your two bitmaps, introducing chaos in the tiling – though you’ll need a high value for the scale of the Noise.
 
-
+----------------------------------------------------------------------
 
 
 
