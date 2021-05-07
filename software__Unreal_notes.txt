@@ -8,11 +8,11 @@ Unreal Engine notes.
 
 
 
-=======================================================================
+======================================================================
 	GEOMETRY:
-=======================================================================
+======================================================================
 
-geometry brushes: ---------------
+geometry brushes: ----------------------------------------------------
 
 
 insert edgeloop:
@@ -35,7 +35,7 @@ combine / convert to static mesh:
 
 
 
-splines: -------------------------
+splines: -------------------------------------------------------------
 create spline:
 >	New blueprint class> actor
 >	components tab> add component> spline
@@ -105,18 +105,18 @@ Add blueprint to:
 >	details tab> (add) blueprint
 
 
-Variables: -----------------------
+Variables: -----------------------------------------------------------
 
 
 
-Events: --------------------------
+Events: --------------------------------------------------------------
 
 addCustomEvent	- (after addCustomEvent creation, a trigger function can be found of the event name specified in addCustomEvent (call fuction> name))
 
 
 
 
-Mathmatical Operations: ----------
+Mathmatical Operations: ----------------------------------------------
 
 :value types
 	integer, integer64
@@ -142,7 +142,7 @@ Mathmatical Operations: ----------
 
 
 
-Coordinates: --------------------
+Coordinates: ---------------------------------------------------------
 
 setActorLocationAndRotation -
 setWorldLocationAndRotation	-
@@ -152,7 +152,7 @@ setWorldOffset				-
 
 
 
-Conditionals: -------------------
+Conditionals: --------------------------------------------------------
 
 :boolean	
 branch		-can be used to expose a toggle parameter
@@ -160,7 +160,7 @@ branch		-can be used to expose a toggle parameter
 
 
 
-Loop: ---------------------------
+Loop: ----------------------------------------------------------------
 
 for loop (for loop w/break)
 
@@ -169,7 +169,7 @@ event tick	-increments every frame
 
 
 
-Order of Operations: ------------
+Order of Operations: -------------------------------------------------
 
 sequence	-execute sequentially
 
@@ -187,44 +187,103 @@ sequence	-execute sequentially
 	MATERIALS:
 ======================================================================
 
-Node hotkeys: ------------------
+Common hotkeys: ------------------------------------------------------
 
-1234	- 1-4 vector constant node
-u		- TexCoord (uv coorinates) node
-t 		- Texture sampler node
-s/v		-scalar or vector parameter
-a/d/m 	-Create an Add, Divide, Multiply node
+1234+lmb	- 1-4 vector constant node
+u			- TexCoord (uv coorinates) node
+t			- Texture sampler node
+s/v			-scalar or vector parameter
+a/d/m		-Create an Add, Divide, Multiply node
+c			-Frame (comment) the currently selected nodes.
+ctrl		-repin connections while ctrl+drag
 
 
 
+Nodes: ---------------------------------------------------------------
 
-Nodes: -------------------------
+Color:
+Constant2Vector		- 0-1 greyscale
+Constant3Vector		- rgb
+Contandt4Vector		- rgba
+VectorParameter 	-identical to the Constant4Vector, except that it is a parameter and can be modified in instances of the material and through code. value can be set using the Color picker.
 
-Numberical values:
-vector1		- 0-1 greyscale
-vector3		- full rgb
 
+Grayscale:
+Desaturation node	-grayscale balancing
+RGBtoHSV node		-convert color to Hue, Saturation, Value and use value.
 
 
 Blend:
-Lerp 	-mix a/b/ alpha
-
-
+Lerp 	-mix A(base)/ B/ Alpha. (Lerp gets a num between two numbers at a specific increment.)
 
 
 Reflections:
 Fresnel 	-the lower the angle, the stronger the reflection becomes
 
 
+Texture:
+TextureSample	- outputs the color value(s) from a texture. This texture can be a regular Texture2D (including normal maps), a cubemap, or a movie texture.
+
+TextureObject - provides a default texture for a texture function input within a function. This node does not actually sample the texture, so it must be used in conjunction with a TextureSample node.
 
 
-Procedures: --------------------
+Range:
+Clamp			-clamp values within a given range.
 
-Texture Maps:
+
+Input:
+FuntionInput	-Select input type from drop down list.
+
+
+Output:
+FunctionOutput	-Material expression function output.
+
+
+
+
+Functions: -----------------------------------------------------------
+
+Create a Material Function:
+>	Content browser right context menu>	New> Materials & Textures> Material Function.
+
+
+Publish a Material Function: (make visible within the Material Function Library)
+>	Deselect all nodes within your function. This will bring up the function's base properties within the Details panel.
+>	Add a description (tooltip).
+>	Set 'Expose to Library' property: true
+
+
+
+Procedures: ----------------------------------------------------------
+
 Increase Texture RGB intensity:
->	add multiply node and input from texture RGB out.
+>	add Multiply node and input from texture RGB out.
 >	add integer to B slot and adjust intensity as needed.
 >	multiply node output to material base color.
+
+
+Color Tint:
+>	Create a ColorTint node and plug it into a Multiply node's 'A' slot.
+>	Plug the tinted output into the Multiply node's 'B' slot.
+
+
+Contrast:
+>	Create two Constant nodes, and plug them into a Lerp node (they will drive the high/low range).
+>	Plug the grayscale value to be adjusted into the 'Alpha' slot.
+
+CheapContrast node (remaps the high end of the histogram to a lower value, and the low end of the histogram to a higher one. This is similar to applying a Levels adjustment in Photoshop, and pulling the black and white flags in a bit).
+
+CheapConstrast_RGB node (takes in a Vector3 as the input, allowing it to perform contrast operations on a color image).
+
+
+Lighten | Darken:
+>	Create a Power node (outputs: a num * itself x number of times).
+>	Plug the color to modify into the 'Base' slot.
+>	Plug a Constant into the 'Exp' slot (neg values lighten, pos values darken).
+
+
+Invert:
+>	Create a OneMinus node (outputs: 1 - x).
 
 
 Decals:
@@ -239,20 +298,28 @@ Decals:
 >	Details tab> Rendering> Receives decals on/off (advanced option expandable submenu, eye icon> expand all catagories)
 
 
+Opacity:
+>	Set material node> details tab> Material> Blend Mode: 'Masked'.
+>	Plug grayscale opacity map to the material nodes 'Opacity Mask' slot. (white=opaque)
+
+
+Tiling:
+>	create a TexCoord and plug it into the 'A' slot of a Multiply node.
+>	Create a Constant and plug it to the 'B' slot of the Multiply node.
+>	Plug the output of the Multiply node into the texture sample 'uv' slot.
+>	Adjust tiling via the Constant.
+
 
 Substance Materials:
-Occlusion/roughness/metallic Node connections:
+>	Map details tab> Texture> Uncheck: sRGB (switch to linear). 
+>	Occlusion/roughness/metallic Node connections:
 	r	-ambient occlusion
 	g	-roughness
 	b	-metallic
-	
 
 
-Expose Parameters (make variable public/private):
+Expose A Parameter: (make variable public/private)
 >	Node> right click context menu> Convert to Parameter
-
-
-
 
 
 Create a Particle (volume) Material:

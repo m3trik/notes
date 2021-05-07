@@ -1,10 +1,11 @@
-+---texturing----------------------------------------------------+
-¦
-¦	-Material creation
-¦	
-¦	
-¦
-+-----------------------------------+
+texturing ------------------------------------------------------------
+
+• Material creation
+• Convert
+• Emissive
+• Tiling
+
+----------------------------------------------------------------------
 
 
 
@@ -24,6 +25,12 @@ world aligned texture:
 >	convert the bitmap/normal map to a 'Texture Object' and plug it into the worldAlignedTexture 'TextureObject' input. (right click 'Texture Sample' and Convert to texture object)
 >	create a size node and plug it into the worldAlignedTexture TextureSize input.
 >	connect the XYZ texture output of the worldAlignedTexture node to the base materials 'base color' input.
+
+
+material from megascan default material:
+//unreal
+>	After importing a material from bridge:
+>	content browser> MSPresets> MS_DefaultMaterial> MS_DefaultMaterial: create instance.
 
 ----------------------------------------------------------------------
 

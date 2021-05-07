@@ -1,0 +1,46 @@
+World Creator notes --
+
+
+
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
+
+Tileable maps:
+>	Base tab> Seamless Properties> seamless (enamble)
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	Import / Export:
+======================================================================
+
+Export maps:
+>	Surface Tab: Map Type: Terrain Height maps
+>	""			 Bit Depth: 32 bit float
+>	Textures Tab: Color map
+
+
+Create geometry from height map:
+//3ds Max
+>	Create a plane based on map resolution and scale (~8000x8000km)
+>	Add TurboSmooth modifier to subivide the plane.
+>	Add a displacement modifier and add the world creator's height map.
+>	Collapse stack to bake in the displacement.
+>	Add ProOptimizer modifier, and decimate the mesh (~500,000 polys).
+>	Collapse stack to bake in the displacement.
+>	Add UVW Map modifier with planar projection.
+>	Collapse stack to bake in the displacement.
+
+----------------------------------------------------------------------

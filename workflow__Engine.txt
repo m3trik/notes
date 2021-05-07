@@ -1,8 +1,11 @@
-+---engine-----------------------------------------------------------+
-¦	-export to engine
-¦	-
-¦
-+-----------------------------------+
+engine ---------------------------------------------------------------
+
+• 
+• 
+• Import / Export
+
+----------------------------------------------------------------------
+
 
 
 
@@ -19,6 +22,21 @@ export to engine:
 //unreal
 >	'Compute tangent space per fragment' enabled.
 >	'Smoothing Groups' enabled.
+
+
+
+import to engine:
+//unreal
+>	Mesh> 'Auto Generate Collision' enabled.
+>	""	> 'Generate Lightmap UV's' disabled. 
+>	""	> 'Combine Meshes' enabled. (disabled for fbx with consolidated separate assets).
+>	""	> Normal Import Method> 'Import Normals' (or 'Compute Normals' if mesh does not have normals set)
+>	Miscellaneous> 'Convert Scene' enabled.
+>	""			 > 'Convert Scene Unit' enabled.
+>	Material> Import textures> 'Do Not Create Material'.
+>	""		> Import Textures disabled.
+>	
+
 
 ----------------------------------------------------------------------
 

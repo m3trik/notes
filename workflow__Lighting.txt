@@ -1,9 +1,12 @@
-+---lighting-----------------------------------------------------+
-¦	-Daylight/Sun
-¦	-Interior lights
-¦	-
-¦
-+-----------------------------------+
+lighting notes -------------------------------------------------------
+
+• HDRI
+• Daylight/Sun
+• Directional Lights
+• Interior Lights
+• Tips
+
+----------------------------------------------------------------------
 
 
 
@@ -18,7 +21,7 @@
 ======================================================================
 
 -- HDRI Environment:
-//3ds Max
+//3ds Max / VRay
 >	Maps> VRay> VRayBitmap
 >	VRayBitmap rollout:
 		Mapping> mapping type: spherical and flip horizontally
@@ -28,7 +31,7 @@
 >	adjust output map> RGB level if necessary
 
 
-//3ds Max
+//3ds Max / VRay
 >	materials>VRayBitmap node
 >	load hdri bitmap image
 >	change mapping type to spherical
@@ -39,7 +42,7 @@
 
 
 -- HDRI env using a Dome Light:
-//3ds Max
+//3ds Max /VRay
 >	Mod Panel> Create> Lights> Target Light (vray)
 >	Material Editor> Get Material> Maps: VRayBitmap
 >	VRayBitmap Material properties> Bitmaps: Add an HDRI map.
@@ -63,9 +66,10 @@
 
 
 ======================================================================
-	Daylight/Sun:
+	DAYLIGHT/SUN:
 ======================================================================
 
+//3ds Max / VRay
 >	mod panel>create>systems>daylight
 >	VRay sun
 >	adjust position (time ect)
@@ -83,10 +87,26 @@
 
 
 ======================================================================
-	Interior lights:
+	DIRECTIONAL LIGHTS:
 ======================================================================
 
-//VRay
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	INTERIOR LIGHTS:
+======================================================================
+
+//3ds Max / VRay
 >	mod panel> create> lights> VRay (from drop down menu)
 >	Light Properties> Intensity> Mode: Temperature (adjust color)
 >		""			> General> Type: (adjust shape)
@@ -97,4 +117,40 @@
 ----------------------------------------------------------------------
 
 
-	
+
+
+
+
+
+
+
+======================================================================
+	FOG:
+======================================================================
+
+//Unreal
+Sky Atmosphere:
+(aerial perspective fog; approximation of light scattering through a planetary atmosphere with time-of-day featuring sunrise and sunset)
+
+Exponential Height Fog:
+(height adjustable volumetric fog)
+
+Atmospheric Fog:
+(legacy fog)
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	TIPS:
+======================================================================
+
+----------------------------------------------------------------------

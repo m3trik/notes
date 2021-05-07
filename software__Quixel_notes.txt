@@ -1,0 +1,52 @@
+Quixel notes ------------------------------------------------------------
+
+• Material creation
+
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+======================================================================
+	Errors:
+======================================================================
+
+#Bridge plugin download hangs:
+>	Close Bridge.
+>	Proceed to %AppData% ("AppData" roaming folder hidden by default).
+>	Delete (or zip) "Bridge" and "Megascans Bridge" folders.
+>	Open Bridge as Admin (it will rebuild the missing folders).
+>	When installing the plugin make sure Unreal or whatever the destination app is running.
+
+-------------------------------------------------------------------------

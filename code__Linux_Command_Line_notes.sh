@@ -779,6 +779,34 @@ journalctl -u certbot-renewal.service #show journal entries for the timer.
 
 
 
+
+#perforce server
+#Add the Perforce packaging key to your APT keyring. For example,
+wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add -
+#Add the Perforce repository to your APT configuration.
+sudo nano /etc/apt/sources.list.d/perforce.list #add the line: deb http://package.perforce.com/apt/ubuntu {distro} release (distro = the ubuntu version ie. focal).
+#install helix p4d server
+sudo apt-get update
+Install the package by running sudo apt-get install helix-p4d
+#configure p4d (as root):
+sudo /opt/perforce/sbin/configure-helix-p4d.sh
+#
+sudo -u perforce p4dctl <cmd> 
+#set the P4PORT and P4USER environment variables.
+# export P4PORT=ssl:1666
+export P4PORT=ssl:192.168.1.240:1666 #To connect to this p4d service from another machine, include this machine's name or IP address in the P4PORT
+export P4USER=m3trik
+#login
+p4 login
+#add fingerprint
+p4 -p ssl:m3trik.com:1666 trust -i 5B:B7:7A:38:AB:9D:CC:36:8F:B7:E6:82:A3:45:E5:ED:FA:B1:03:61
+#create user (no whitespace)
+p4 user -f "<username>" #option(-i) takes input from the standard input instead of the forms editor. To quickly create a large number of users, write a script that reads user data, generates output in the format used by the p4 user form, and then pipes each generated form to p4 user -i -f.
+#rename user
+p4 renameuser
+
+
+
 #delete a package
 dpkg --list #determine a package name
 sudo apt-get remove <packagename> && sudo apt-get autoremove #remove a program.

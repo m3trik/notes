@@ -1,10 +1,10 @@
-+---normals----------------------------------------------------------+
-¦
-¦	-Cage
-¦	-Baking
-¦	-Resolving baking errors
-¦
-+-----------------------------------+
+normals --------------------------------------------------------------
+
+• Cage
+• Baking
+• Resolving Baking Errors
+
+----------------------------------------------------------------------
 
 
 
@@ -111,7 +111,9 @@ non-averaged bake:
 
 
 blending an averaged and non-averaged bake:
--	high poly has rounded edges and also things sticking out of the surface. This is when you need to combine two different bakes with a mask. Have a look at NormalFix at Substance Share to help you with that. Otherwise, you need to add support geometry near the edges. (non-averaged bake at the location where something sticks out averaged bake at the edges.) 
+-	high poly has rounded edges and also things sticking out of the surface. This is when you need to combine two different bakes with a mask. Have a look at NormalFix at Substance Share to help you with that. Otherwise, you need to add support geometry near the edges. (non-averaged bake at the location where something sticks out averaged bake at the edges.)
+
+----------------------------------------------------------------------
 
 
 
@@ -119,7 +121,12 @@ blending an averaged and non-averaged bake:
 
 
 
-//resolving baking errors:
+
+
+======================================================================
+	RESOLVING BAKING ERRORS:
+======================================================================
+
 -Cut UV's on hard edges.
 
 -Change the cage max front and/or and max rear distance.

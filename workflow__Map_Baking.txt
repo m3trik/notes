@@ -1,12 +1,11 @@
-+---map baking----------------------------------------------------+
-¦
-¦	-Naming convention
-¦	-Import/Export
-¦	-Baking maps
-¦	-ID map
-¦	
-¦
-+-----------------------------------+
+map baking -----------------------------------------------------------
+
+• Naming Convention
+• ID Map
+• Baking Maps
+• Import / Export
+
+----------------------------------------------------------------------
 
 
 
@@ -39,17 +38,36 @@ baking in substance with meshes consisting of multiple overlapping parts;
 
 
 ======================================================================
-	IMPORT/EXPORT:
+	ID MAP:
 ======================================================================
 
-//maya to substance painter
->	export settings:
-	-face weighted vertex normals.
-	-smoothing groups (checked)
-	-smooth mesh
-	-triangulate (Substance Painter triangulation of polygons doesn't match the triangulation used in Unreal. Triangulate before baking & exporting)
+//ZBrush
+>	assign material+color to your high rez mesh in 3d app. optionaly, can use low res mesh and bake seperatly, selecting that mesh in baking> common> 'high definition meshes'
 
-----------------------------------------------------------------------	
+>	baking> ID; select material color, hue shift and apply to all.
+
+>	baking> 'bake all texture sets' (deselect maps you don't want to bake.)
+
+
+
+----- Polypaint Identity Map (substance material id)
+>	color:polypaint from polygroups (Tool:Polypaint:Polypaint from Polygroups).  
+
+>	texture map from polypaint (Tool:Textue Map:New from Polypaint)
+
+
+
+//Substance:
+import ID:
+>	Import bmp ID map to textures by drag and drop then select this map in the 'texture set' menu.
+
+>	Add 'Mask with Color Selection' to layer and choose mask ID color. (copy/paste mask to any additional layer)
+
+baking ID:
+>	Material ID maps bake in from HI-poly object's shader map
+>	TextureSet Settings> Bake textures> ID map
+
+----------------------------------------------------------------------
 
 
 
@@ -95,36 +113,17 @@ To set up a surface transfer
 
 
 ======================================================================
-	ID MAP:
+	IMPORT/EXPORT:
 ======================================================================
 
-//ZBrush
->	assign material+color to your high rez mesh in 3d app. optionaly, can use low res mesh and bake seperatly, selecting that mesh in baking> common> 'high definition meshes'
+//maya to substance painter
+>	export settings:
+	-face weighted vertex normals.
+	-smoothing groups (checked)
+	-smooth mesh
+	-triangulate (Substance Painter triangulation of polygons doesn't match the triangulation used in Unreal. Triangulate before baking & exporting)
 
->	baking> ID; select material color, hue shift and apply to all.
-
->	baking> 'bake all texture sets' (deselect maps you don't want to bake.)
-
-
-
------ Polypaint Identity Map (substance material id)
->	color:polypaint from polygroups (Tool:Polypaint:Polypaint from Polygroups).  
-
->	texture map from polypaint (Tool:Textue Map:New from Polypaint)
-
-
-
-//Substance:
-import ID:
->	Import bmp ID map to textures by drag and drop then select this map in the 'texture set' menu.
-
->	Add 'Mask with Color Selection' to layer and choose mask ID color. (copy/paste mask to any additional layer)
-
-baking ID:
->	Material ID maps bake in from HI-poly object's shader map
->	TextureSet Settings> Bake textures> ID map
-
-----------------------------------------------------------------------
+----------------------------------------------------------------------	
 
 
 

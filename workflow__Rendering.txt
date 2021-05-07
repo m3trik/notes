@@ -1,12 +1,11 @@
-+---rendering-----------------------------------------------------+
-¦	-VRay setup
-¦	-VRay settings
-¦	-HDRI setup
-¦	-HDRI settings
-¦	-Test render settings
-¦	-Final render settings
-¦
-+-----------------------------------+
+rendering ------------------------------------------------------------
+
+• Procedures
+• Render Settings
+• 
+• 
+
+----------------------------------------------------------------------
 
 
 

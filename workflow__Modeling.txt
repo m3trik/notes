@@ -1,16 +1,67 @@
-----modeling-------------------------------------------------------------------+
-¦	-concepting
-¦	-importing CAD					
-¦	-reference image planes
-¦	-initial block-in
-¦	
-¦	modeling techniques:
-¦	-booleans
-¦	-deformers
-¦	-tubes
-¦	-insert mesh brushes
-¦
-+---------------------------+
+modeling -------------------------------------------------------------
+
+• Procedures
+• Concepting
+• Importing CAD
+• Reference Image Planes
+• Initial Block-in
+• Insert Mesh Brushes
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
+
+Boolean Operations:
+//ZBrush:
+
+>	Can be Used with Symmetry
+Add(default)-Subtract-intersection with DynaMesh;
+>	subtool to subtract below (add & intersect doesnt matter)
+>	put lower subtool in add/subtraction/or intersect mode (they are listed in that order)
+>	on lower subtool - Tool\PolyGroups\Group As DynaMesh Sub
+>	merge down
+>	run dynamesh remesh to subtract (ctrl + drag canvas)
+
+ZSub
+ZAdd
+>
+
+Create Difference Mesh using Morph Target;
+>	 
+
+
+//Maya:
+
+Union-Difference-Intersection with Mesh > Booleans;
+After performing a boolean operation, the original objects cannot be selected in the scene. When construction history is enabled, you can select the objects in the Channel Box, Hypergraph, Attribute Editor, or Outliner. Any changes you make to the original objects are automatically applied to the new shape
+>	Select the meshes.  Select Mesh > Booleans, and then select a boolean operation.
+>	If the boolean operation uses dense meshes, a progress bar appears to track the state of the operation.
+Maya performs the boolean operation. The faces of the objects are now connected and the original meshes act as one single object. The new object is named after the first selected object and increments by 1. For example, if you select pSphere1 and combine it with pCube1, the combined mesh will be named pSphere2.
+Note: Non-planar faces are automatically triangulated before the operation is performed.
+>	In the In-View Editor that appears, adjust the attributes in the polyCBoolOp node.
+Note: A polyBoolOp node is created when you perform a boolean operation using the legacy boolean algorithm.
+>	(Optional) Edit the original objects to tweak your boolean operation. See Edit the original objects after a boolean operation.
+For example, you can subtract a sphere from a cube using the Difference operation, and then animate the original sphere to create an interesting effect.
+
+For best results using booleans:
+>	all objects should be manifold meshes
+Note: Non-manifold meshes are only supported if the non-manifold components are not at the intersection of the boolean operation.
+>	face normals should be uniform across all surfaces
+Tip: Before performing your boolean operation, view the normals on your mesh (Display > Polygons > Face Normals). If you want to produce predictable boolean results, make the normals uniform using Mesh Display > Conform.
+>	explicitly select objects for consistent results
+>	Performing boolean operations on parent objects may produce undesirable results. If multiple meshes are grouped under a common parent, explicitly select the objects as input to the boolean operation.
+
+----------------------------------------------------------------------
 
 
 
@@ -117,54 +168,6 @@ image reference:
 retopology tool (see zbrush retopology workflow)
 
 -----------------------------------------------------------------------
-
-
-
-======================================================================
-	PROCEDURES:
-======================================================================
-
-Boolean Operations:
-//ZBrush:
-
->	Can be Used with Symmetry
-Add(default)-Subtract-intersection with DynaMesh;
->	subtool to subtract below (add & intersect doesnt matter)
->	put lower subtool in add/subtraction/or intersect mode (they are listed in that order)
->	on lower subtool - Tool\PolyGroups\Group As DynaMesh Sub
->	merge down
->	run dynamesh remesh to subtract (ctrl + drag canvas)
-
-ZSub
-ZAdd
->
-
-Create Difference Mesh using Morph Target;
->	 
-
-
-//Maya:
-
-Union-Difference-Intersection with Mesh > Booleans;
-After performing a boolean operation, the original objects cannot be selected in the scene. When construction history is enabled, you can select the objects in the Channel Box, Hypergraph, Attribute Editor, or Outliner. Any changes you make to the original objects are automatically applied to the new shape
->	Select the meshes.  Select Mesh > Booleans, and then select a boolean operation.
->	If the boolean operation uses dense meshes, a progress bar appears to track the state of the operation.
-Maya performs the boolean operation. The faces of the objects are now connected and the original meshes act as one single object. The new object is named after the first selected object and increments by 1. For example, if you select pSphere1 and combine it with pCube1, the combined mesh will be named pSphere2.
-Note: Non-planar faces are automatically triangulated before the operation is performed.
->	In the In-View Editor that appears, adjust the attributes in the polyCBoolOp node.
-Note: A polyBoolOp node is created when you perform a boolean operation using the legacy boolean algorithm.
->	(Optional) Edit the original objects to tweak your boolean operation. See Edit the original objects after a boolean operation.
-For example, you can subtract a sphere from a cube using the Difference operation, and then animate the original sphere to create an interesting effect.
-
-For best results using booleans:
->	all objects should be manifold meshes
-Note: Non-manifold meshes are only supported if the non-manifold components are not at the intersection of the boolean operation.
->	face normals should be uniform across all surfaces
-Tip: Before performing your boolean operation, view the normals on your mesh (Display > Polygons > Face Normals). If you want to produce predictable boolean results, make the normals uniform using Mesh Display > Conform.
->	explicitly select objects for consistent results
->	Performing boolean operations on parent objects may produce undesirable results. If multiple meshes are grouped under a common parent, explicitly select the objects as input to the boolean operation.
-
-----------------------------------------------------------------------
 
 
 

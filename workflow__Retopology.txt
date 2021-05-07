@@ -1,10 +1,13 @@
-+---Retopology----------------------------------------------------------+
-¦	-manual
-¦	-automatic
-¦	-transferring detail
-¦	-transferring attributes
-¦
-+-----------------------------------+
+retopology------------------------------------------------------------
+
+• Manual
+• Automatic
+• Poly Reduction
+• Blend Shape
+• Transferring Detail
+• Transferring Attributes
+
+----------------------------------------------------------------------
 
 
 
@@ -112,52 +115,6 @@ Additional info;
 
 
 ======================================================================
-	TRANSFERRING DETAIL: (to a lower poly model)
-======================================================================
-
-//zbrush:
-method 1; Freeze Subdivision Levels
->	Choose the lowest subdivision level that is able to maintain the desired silhouette and Del Lower. After which you can return to the highest and Freeze Subdivision Levels.
-
-
->	Once the remesh is complete, click the Freeze Subdivison Level button again. ZBrush will now recalculate your subdivision levels and project the details onto the new mesh topology.
-Note: The projection quality is controlled by the various settings in the Tool >> SubTool >> Project All UI group.
-
-
-method 2; Remesh a Duplicate of your sculpted SubTool
->	Duplicate your selected SubTool.
-
->	Use ZRemesher with any desired settings.
-
->	Set Projection Shell & PA blur.
-
->	With the remeshed subtool selected and at lowest subD level, turn on visiblity for the original SubTool.
-
->	Click the Tool>>SubTool>> Project All button. 	The controls in the Project All UI group can be adjusted to refine the projection as you work. 
-													The Dist slider is the one that you will most likely use the most.
-
->	Keep subdividing/projecting until you have all of your sculpted detail.
-
-
-Merging subtools & deleting inner shell
-option 1
->	Delete parts of the model that will not be seen, then dynamesh.
-
-option 2
->	Use Groups by Normals feature in the polygroups panel in zbrush. When using just the default settings I got rid of almost all of my interpenetrating geo and was left with a decent outer shell. You can simply delete everything that's not in that group and then re-dynamesh it
-
-
-----------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-======================================================================
 	POLY REDUCTION:
 ======================================================================
 
@@ -203,6 +160,52 @@ If you created the blend shape deformer using multiple target objects, a target 
 
 With a blend shape deformer on the base object, you can now add target shapes to it (see Add target shapes), or add more blend shape deformers.
 The blend shape deformer (Blend Shape node) uses the target shape weight settings to create the blend shape deformation on the base object.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	TRANSFERRING DETAIL: (to a lower poly model)
+======================================================================
+
+//zbrush:
+method 1; Freeze Subdivision Levels
+>	Choose the lowest subdivision level that is able to maintain the desired silhouette and Del Lower. After which you can return to the highest and Freeze Subdivision Levels.
+
+
+>	Once the remesh is complete, click the Freeze Subdivison Level button again. ZBrush will now recalculate your subdivision levels and project the details onto the new mesh topology.
+Note: The projection quality is controlled by the various settings in the Tool >> SubTool >> Project All UI group.
+
+
+method 2; Remesh a Duplicate of your sculpted SubTool
+>	Duplicate your selected SubTool.
+
+>	Use ZRemesher with any desired settings.
+
+>	Set Projection Shell & PA blur.
+
+>	With the remeshed subtool selected and at lowest subD level, turn on visiblity for the original SubTool.
+
+>	Click the Tool>>SubTool>> Project All button. 	The controls in the Project All UI group can be adjusted to refine the projection as you work. 
+													The Dist slider is the one that you will most likely use the most.
+
+>	Keep subdividing/projecting until you have all of your sculpted detail.
+
+
+Merging subtools & deleting inner shell
+option 1
+>	Delete parts of the model that will not be seen, then dynamesh.
+
+option 2
+>	Use Groups by Normals feature in the polygroups panel in zbrush. When using just the default settings I got rid of almost all of my interpenetrating geo and was left with a decent outer shell. You can simply delete everything that's not in that group and then re-dynamesh it
+
 
 ----------------------------------------------------------------------
 
