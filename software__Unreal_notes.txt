@@ -9,6 +9,58 @@ Unreal Engine notes.
 
 
 ======================================================================
+	Naming Convention:
+======================================================================
+
+prefix:
+M_		-material
+MT_		-
+MS_		-
+MI_		-material instance
+MF_		-material function
+MPC_	-material parameter collection
+T_		-texture
+
+P_		-particle system
+
+BP_		-blueprint (except for derived common classes: HUD/GameMode/Character)
+BPI_	-blueprint interface
+
+SM_		-static mesh
+SK_		-skeletal mesh
+
+S_		-sound (include _Mono or _Stereo designations (ex. S_HitImpact_Mono_01))
+S_*_Cue	-sound cue (ex.S_HitImpact_01_Cue)
+
+E	-enumeration (similar to convention in code (enum EWeaponType))
+
+RT_	-render target
+
+Curve_	-vector/float/color curve
+
+CamShake_	-camera shake
+
+Widget_	-user widget
+
+Font_	-font (size is included in name. (ex. Font_Roboto48))
+
+
+suffix:
+_PhysMat -physics material
+
+_att	-attenuation
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
 	GEOMETRY:
 ======================================================================
 
@@ -199,6 +251,8 @@ ctrl		-repin connections while ctrl+drag
 
 
 
+
+
 Nodes: ---------------------------------------------------------------
 
 Color:
@@ -216,27 +270,56 @@ RGBtoHSV node		-convert color to Hue, Saturation, Value and use value.
 Blend:
 Lerp 	-mix A(base)/ B/ Alpha. (Lerp gets a num between two numbers at a specific increment.)
 
+Multiply	-
+Add			-
+Subtract	-
+Divide		-
+
 
 Reflections:
-Fresnel 	-the lower the angle, the stronger the reflection becomes
+Fresnel		-the lower the angle, the stronger the reflection becomes.
 
 
 Texture:
-TextureSample	- outputs the color value(s) from a texture. This texture can be a regular Texture2D (including normal maps), a cubemap, or a movie texture.
+TextureSample	-outputs the color value(s) from a texture. This texture can be a regular Texture2D (including normal maps), a cubemap, or a movie texture.
 
-TextureObject - provides a default texture for a texture function input within a function. This node does not actually sample the texture, so it must be used in conjunction with a TextureSample node.
+TextureObject	-provides a default texture for a texture function input within a function. This node does not actually sample the texture, so it must be used in conjunction with a TextureSample node.
+
+
+Gradient:
+TexCoord	-cheaper and more accurate to mask a UV sample rather than importing a texture,
 
 
 Range:
 Clamp			-clamp values within a given range.
+Saturate node	-clamps the value between 0 and 1.
+
+
+Mask:
+ComponentMask	-set a specific subset of channels (R,G,B,A)
+
+
+Opacity:
+OpacityStrength -
+
+
+Translate:
+Panner		-outputs UV texture coordinates that can be used to create panning, or moving, textures.
+
+Rotator		-outputs UV texture coordinates in the form of a two-channel vector value that can be used to create rotating textures.
+
+
+UV:
+TextureCoordinate	-outputs UV texture coordinates in the form of a two-channel vector value. 
 
 
 Input:
-FuntionInput	-Select input type from drop down list.
+FuntionInput	-select input type from drop down list.
 
 
 Output:
-FunctionOutput	-Material expression function output.
+FunctionOutput	-material expression function output.
+
 
 
 
@@ -320,6 +403,7 @@ Substance Materials:
 
 Expose A Parameter: (make variable public/private)
 >	Node> right click context menu> Convert to Parameter
+>	Node details tab> Material Expression> Set Group and Sort Priority (grouping and order)
 
 
 Create a Particle (volume) Material:
