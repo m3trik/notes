@@ -5,7 +5,12 @@
 
 
 
-# HELP -----------------------------------------------------------------
+
+
+
+# ======================================================================
+# 	HELP:
+# ======================================================================
 
 #keyboard shortcuts:
 #autocomplete.  tab key twice to get all possible suggestions.
@@ -21,13 +26,36 @@ whatis <command> #get the description of a command.
 
 man <command> #manual for a command.
 
+# ----------------------------------------------------------------------
 
 
 
 
 
 
-# VARIABLES -------------------------------------------------------------
+
+
+
+# ======================================================================
+#	USER INPUT:
+# ======================================================================
+
+read -p "message string: "  VAR #[-s] silent mode.
+echo $VAR
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	VARIABLES:
+# ======================================================================
 
 #user assigned:
 #set
@@ -51,12 +79,49 @@ $HOME #home directory
 $USER #name of the current user
 $PS1 #prompt style #ex. export PS1=">> "
 
+# ----------------------------------------------------------------------
 
 
 
 
 
-# OWNERSHIP ------------------------------------------------------------
+
+
+
+
+# ======================================================================
+#	CONDITIONALS:
+# ======================================================================
+
+
+#if statement:
+if [ -z "$var" ]
+then
+      echo "\$var is empty"
+else
+      echo "\$var is NOT empty"
+fi
+#alt:
+if test -z "$var" 
+then
+      echo "\$var is empty"
+else
+      echo "\$var is NOT empty"
+fi
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	OWNERSHIP:
+# ======================================================================
 
 #enviroment settings
 ~/.bash_profile	# '~' represents the user's home directory. '.' indicates a hidden file.
@@ -101,6 +166,14 @@ ls -l <dir>
 stat <dir>
 stat -c %a dir #permissions in numeric (octal) format
 #change permissions
+# 0 = no permissions whatsoever; this person cannot read, write, or execute the file
+# 1 = execute only
+# 2 = write only
+# 3 = write and execute (1+2)
+# 4 = read only
+# 5 = read and execute (4+1)
+# 6 = read and write (4+2)
+# 7 = read and write and execute (4+2+1)
 # change home folder permissions:
 chmod 0755 /home/m3trik
 chmod 0644 /home/m3trik/.bashrc
@@ -113,12 +186,92 @@ chmod -R g+rw <dir> #set group privaleges to read write.
 #using binary values. #5=rx, 6=rw, 7=rwx
 chmod -R 775 <dir> #ex. sudo chmod -R 777 /mnt/Storage
 
+# ----------------------------------------------------------------------
 
 
 
 
 
-# DIRECTORIES & NAVIGATION ---------------------------------------------
+
+
+
+
+# ======================================================================
+#	FILES:
+# ======================================================================
+
+#create a new file
+touch <filename>
+
+
+
+#edit a text based file
+#using gedit
+sudo gedit <dir>
+#using nano
+sudo nano <dir>
+#using vim
+sudo vi <dir>
+
+
+less filename.txt #scroll through text file using arrow keys. or search for keywords.
+
+
+#text
+echo "" #print to terminal as standard output.   
+cat >> <file> #anything typed into the terminal will be added to 'file'     #concatenate. can be used to output the contents of a file to the terminal or vice versa.
+
+wc <file> #outputs the number of lines, words, and characters in .txt file
+sort <file> #sorts lines of text alphabetically.
+uniq <file> #filter adjacent duplicate lines in a file (non-adjacent files are not filtered out, calling a 'sort' command then piping in the standard output to 'uniqu' will place all duplcates adjacent before filtering)
+
+
+
+#search
+#regular expressions
+#search files for lines that match a pattern and returns the results. 
+grep <dir> #[-i] case insensitive. #[-R] Recursive #[-l] files with matches.
+
+#find and replace
+#using stream editor     
+sed 's/search string/replacement string/g' #expressions: 's' substitution, 'g' global
+
+
+
+#copy the contents of a text file to another text file
+cp textFromThisFile.txt toThisFile.txt
+
+
+#rename
+mv <from> <to> #rename more than one file using additional <from> arguments.
+
+
+#zip file
+sudo zip -m <dir>.zip <dir> #-m=delete the orig file
+#unzip file
+unzip <dir>.zip #unzip <what> <where>
+
+
+
+
+#delete a file
+rm <dir> #[-f][--force] force.
+#all
+rm <dir> * #delete all files of the dir that start with the given file name. Used alone it removes all files in a directory.
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	DIRECTORIES & NAVIGATION:
+# ======================================================================
 
 #get current directory
 pwd #current working directory.
@@ -192,6 +345,7 @@ rm -r -f <dir> #[-r] recursive. [-f] force. Delete a directory and all of its ch
 #delete empty directories
 remdir * #safe way to clean up all empty sub-directories in a directory
 
+# ----------------------------------------------------------------------
 
 
 
@@ -201,75 +355,9 @@ remdir * #safe way to clean up all empty sub-directories in a directory
 
 
 
-
-
-
-# FILES ----------------------------------------------------------------
-
-#create a new file
-touch <filename>
-
-
-
-#edit a text based file
-#using gedit
-sudo gedit <dir>
-#using nano
-sudo nano <dir>
-#using vim
-sudo vi <dir>
-
-
-less filename.txt #scroll through text file using arrow keys. or search for keywords.
-
-
-#text
-echo "" #print to terminal as standard output.   
-cat >> <file> #anything typed into the terminal will be added to 'file'     #concatenate. can be used to output the contents of a file to the terminal or vice versa.
-
-wc <file> #outputs the number of lines, words, and characters in .txt file
-sort <file> #sorts lines of text alphabetically.
-uniq <file> #filter adjacent duplicate lines in a file (non-adjacent files are not filtered out, calling a 'sort' command then piping in the standard output to 'uniqu' will place all duplcates adjacent before filtering)
-
-
-
-#search
-#regular expressions
-#search files for lines that match a pattern and returns the results. 
-grep <dir> #[-i] case insensitive. #[-R] Recursive #[-l] files with matches.
-
-#find and replace
-#using stream editor     
-sed 's/search string/replacement string/g' #expressions: 's' substitution, 'g' global
-
-
-
-#copy the contents of a text file to another text file
-cp textFromThisFile.txt toThisFile.txt
-
-
-
-#zip file
-sudo zip -m <dir>.zip <dir> #-m=delete the orig file
-#unzip file
-unzip <dir>.zip #unzip <what> <where>
-
-
-
-
-#delete a file
-rm <dir> #[-f][--force] force.
-#all
-rm <dir> * #delete all files of the dir that start with the given file name. Used alone it removes all files in a directory.
-
-
-
-
-
-
-
-
-# DISK -----------------------------------------------------------------
+# ======================================================================
+#	DISK:
+# ======================================================================
 
 #list all drives
 fdisk -l
@@ -340,13 +428,19 @@ pvmove <dir> #relocate the extents to peer volumes.
 vgreduce <groupname> <dir> #remove the physical volume from the volume group
 pvremove <dir> #remove the physical volume marker from the storage device
 
+# ----------------------------------------------------------------------
 
 
 
 
 
 
-# SCRIPTING --------------------------------------------------------------
+
+
+
+# ======================================================================
+#	SCRIPTING:
+# ======================================================================
 
 #create a script
 #shell header
@@ -394,12 +488,19 @@ EOF
 #run it: 
 import.sh database.db log_entry
 
+# ----------------------------------------------------------------------
 
 
 
 
 
-# I/O REDIRECTION -------------------------------------------------------
+
+
+
+
+# ======================================================================
+# I/O REDIRECTION:
+# ======================================================================
 
 Redirection #reroutes standard input, standard output, and standard error.
 
@@ -416,16 +517,19 @@ stderr  #standard error:   an error message outputted by a failed process.
 				#ex.
 				cat volcanoes.txt | wc | cat > islands.txt
 
-
- 
-
+# ----------------------------------------------------------------------
 
 
 
 
 
 
-# SCREEN SHARING -------------------------------------------------------
+
+
+
+# ======================================================================
+#	SCREEN SHARING:
+# ======================================================================
 
 #Install xRDP
 apt-get update
@@ -438,6 +542,7 @@ nano /etc/xrdp/startwm.sh
 #Restart xRDP
 service xrdp restart
 
+# ----------------------------------------------------------------------
 
 
 
@@ -446,7 +551,10 @@ service xrdp restart
 
 
 
-# NETWORK --------------------------------------------------------------
+
+# ======================================================================
+#	NETWORK:
+# ======================================================================
 
 #get ip address
 hostname -I
@@ -459,6 +567,7 @@ curl ifconfig.me
 #
 ip a | egrep "inet "
 
+# ----------------------------------------------------------------------
 
 
 
@@ -468,12 +577,9 @@ ip a | egrep "inet "
 
 
 
-
-
-
-
-# APPS ----------------------------------------------------------------
-
+# ======================================================================
+#	PACKAGES:
+# ======================================================================
 
 #ubuntu software
 install gnome-software
@@ -568,6 +674,7 @@ sudo ufw allow http
 sudo ufw allow https
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
+sudo ufw allow 1666/tcp #perforce
 sudo ufw allow proto tcp from any to any port 80,443 #http|https
 sudo ufw allow from 192.168.1.1/24 to any port 3389 proto tcp #remote desktop (xrdp)
 #network interface
@@ -781,29 +888,60 @@ journalctl -u certbot-renewal.service #show journal entries for the timer.
 
 
 #perforce server
-#Add the Perforce packaging key to your APT keyring. For example,
-wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add -
+#Add the Perforce packaging key to your APT keyring
+#deprecated: wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add -
 #Add the Perforce repository to your APT configuration.
 sudo nano /etc/apt/sources.list.d/perforce.list #add the line: deb http://package.perforce.com/apt/ubuntu {distro} release (distro = the ubuntu version ie. focal).
 #install helix p4d server
 sudo apt-get update
-Install the package by running sudo apt-get install helix-p4d
+sudo apt-get install helix-p4d
 #configure p4d (as root):
-sudo /opt/perforce/sbin/configure-helix-p4d.sh
+sudo /opt/perforce/sbin/configure-helix-p4d.sh #interactive configuration for p4d
 #
-sudo -u perforce p4dctl <cmd> 
+sudo -u perforce p4dctl <cmd> #manage it with the 'perforce' user
 #set the P4PORT and P4USER environment variables.
-# export P4PORT=ssl:1666
 export P4PORT=ssl:192.168.1.240:1666 #To connect to this p4d service from another machine, include this machine's name or IP address in the P4PORT
-export P4USER=m3trik
+export P4USER=admin #alt: p4 set P4USER=admin
+export P4CLIENT=m3trik-w230ss #alt: p4 set P4CLIENT=m3trik-w230ss. name of the created workspace.
 #login
 p4 login
 #add fingerprint
-p4 -p ssl:m3trik.com:1666 trust -i 5B:B7:7A:38:AB:9D:CC:36:8F:B7:E6:82:A3:45:E5:ED:FA:B1:03:61
+p4 -p ssl:m3trik.com:1666 trust -i FE:9C:38:75:7F:72:6F:B5:75:B3:F6:E6:1B:6B:AC:E4:2F:DB:69:10 #5B:B7:7A:38:AB:9D:CC:36:8F:B7:E6:82:A3:45:E5:ED:FA:B1:03:61
 #create user (no whitespace)
 p4 user -f "<username>" #option(-i) takes input from the standard input instead of the forms editor. To quickly create a large number of users, write a script that reads user data, generates output in the format used by the p4 user form, and then pipes each generated form to p4 user -i -f.
 #rename user
-p4 renameuser
+p4 renameuser <username>
+#create or administer groups:
+p4 group <groupname>
+#create depots:
+p4 depot <depotname>
+#Add the symbolic link from the shell using the -t option to set the symlink type.
+p4 add -t symlink <dir>
+#configure protection:
+p4 protect
+#
+p4 admin start
+p4 admin restart
+p4 admin stop
+#
+p4 sync
+#
+p4 info #server info
+p4 clients -u $P4USER #list of workspace names
+#workspace root ownership / permissions
+sudo chown -R perforce:perforce /mnt/Storage/Linux/Ubuntu/perforce
+sudo chmod -R 700 /mnt/Storage/Linux/Ubuntu/perforce
+#switch server to unicode mode
+sudo p4d -xi -r <server_root> #Restart p4d, specifying server root and port as you normally do.
+export P4CHARSET=auto #Unicode server. Fix:'Unicode clients require a Unicode enabled server'
+export P4CHARSET=none #Unicode clients. Fix:'Unicode server permits only Unicode enabled clients'
+#remove
+sudo apt-get remove helix-p4d
+sudo apt-get purge helix-p4d
+sudo apt-get remove helix-p4dctl
+sudo apt-get purge helix-p4dctl
+sudo rm -R /etc/perforce
+sudo rm -R /opt/perforce
 
 
 

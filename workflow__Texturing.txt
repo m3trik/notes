@@ -48,7 +48,7 @@ material from megascan default material:
 ======================================================================
 
 convert Metallic|Roughness|Height|AO  ->  Mask map (unity).
-Convert multiple maps to channles of a single RGBA map.
+Convert multiple maps to channeles of a single RGBA map.
 A = Smoothness 
 >	Open the roughness map in photoshop.
 >	convert to RGB (image> mode> RGB color).
@@ -61,6 +61,14 @@ G = AO
 >	Copy existing AO to Green channel
 B = Detail Mask
 >	Set as solid black, or use detail map.
+
+
+
+convert Metallic|Roughness|AO  ->  OcclusionRoughnessMetallic map (unreal).
+Convert multiple maps to channeles of a single RGB map.
+OcclusionRoughnessMetallic (Green Channel)	Linear	Roughness
+OcclusionRoughnessMetallic (Blue Channel)	Linear	Metallic
+OcclusionRoughnessMetallic (Red Channel)	Linear	Ambient Occlusion
 
 
 

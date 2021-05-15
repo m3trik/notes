@@ -32,9 +32,9 @@ SK_		-skeletal mesh
 S_		-sound (include _Mono or _Stereo designations (ex. S_HitImpact_Mono_01))
 S_*_Cue	-sound cue (ex.S_HitImpact_01_Cue)
 
-E	-enumeration (similar to convention in code (enum EWeaponType))
+E		-enumeration (similar to convention in code (enum EWeaponType))
 
-RT_	-render target
+RT_		-render target
 
 Curve_	-vector/float/color curve
 
@@ -255,6 +255,12 @@ ctrl		-repin connections while ctrl+drag
 
 Nodes: ---------------------------------------------------------------
 
+Material:
+MakeMaterialAttributes	-combine material attributes.
+
+BreakMaterialAttributes	-split up all of the incoming attributes of the Material Layer, and then just plug in the ones you want. This also allows for complex blending of various Material Attributes.
+
+
 Color:
 Constant2Vector		- 0-1 greyscale
 Constant3Vector		- rgb
@@ -263,12 +269,19 @@ VectorParameter 	-identical to the Constant4Vector, except that it is a paramete
 
 
 Grayscale:
-Desaturation node	-grayscale balancing
-RGBtoHSV node		-convert color to Hue, Saturation, Value and use value.
+Desaturation	-grayscale balancing
+RGBtoHSV		-convert color to Hue, Saturation, Value and use value.
 
 
 Blend:
-Lerp 	-mix A(base)/ B/ Alpha. (Lerp gets a num between two numbers at a specific increment.)
+LinearInterpolate 	-mix A(base)/ B/ Alpha. (Lerp gets a num between two numbers at a specific increment.)
+
+MatLayerBlend_Simple	-Provides a simple linear interpolation (Lerp) blending solution for 2 Material Layers. Does not blend Normal; instead, retains Normal of the Base Material.
+
+MatLayerBlend_Standard	-Blends all attributes of two Material Layers.
+
+MatLayerBlend_Decal		-Blends a decal sheet over the Material using the 2nd UV channel.
+
 
 Multiply	-
 Add			-
@@ -303,24 +316,24 @@ Opacity:
 OpacityStrength -
 
 
+Normal:
+FlattenNormal	-set normal intensity.
+
+
 Translate:
 Panner		-outputs UV texture coordinates that can be used to create panning, or moving, textures.
 
 Rotator		-outputs UV texture coordinates in the form of a two-channel vector value that can be used to create rotating textures.
 
 
+Switch:
+StaticSwitch	-takes two inputs, outputs the first if the value of the parameter is true, else; false. (static=cannot change at runtime)
+
+StaticBool		-boolean. (parameter version is static=cannot change at runtime)
+
+
 UV:
 TextureCoordinate	-outputs UV texture coordinates in the form of a two-channel vector value. 
-
-
-Input:
-FuntionInput	-select input type from drop down list.
-
-
-Output:
-FunctionOutput	-material expression function output.
-
-
 
 
 
@@ -328,6 +341,12 @@ Functions: -----------------------------------------------------------
 
 Create a Material Function:
 >	Content browser right context menu>	New> Materials & Textures> Material Function.
+>	Create a FuntionInput and select input type from drop down list.
+>	Create a FunctionOutput (material expression function output).
+
+
+Call a Material Funtion:
+MaterialFunctionCall	-select the function to call from the drop down properites list.
 
 
 Publish a Material Function: (make visible within the Material Function Library)
@@ -551,7 +570,8 @@ Exporting Geometry to Unreal:
 	ERRORS:
 ======================================================================
 
-
+Material function input error:
+Either the parameter is missing a default value alltogether, or the checkbox 'use preview as default value' on the parameter is unchecked.
 
 
 ----------------------------------------------------------------------
