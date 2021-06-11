@@ -1,4 +1,3 @@
-____________________________________________________________________________________
 
 _________________Headus UV Layout Pro_______________________________________________
 (tutorials: http://www.uvlayout.com/index.php?option=com_wrapper&Itemid=98)
@@ -33,9 +32,9 @@ M/shift-M.........magnet snap weld edges, or snap a shell onto its mirror
 []................pack shells left lower corner
 
 
-				  
+
 frequently used:
-				  
+
 ___select/edit:
 C/W...............cut/weld edge (Shift-C/W for multiple edges)
 shft+S............split
@@ -105,9 +104,9 @@ Copy UV's and Stack -using custom mapped f1 and f2 keys:  (there is also a stack
 
 
 Flatten all shells:
-	hit f/ shift+f, then LMB drag a box around the shells to flatten
+	hit f or shift+f, then after the prompt; LMB drag a box around the shells to flatten
 
-	
+
 Drop/unDrop all shells with d /shft+d
 	(if not working try LMB drag method above)
 

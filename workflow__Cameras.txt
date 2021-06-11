@@ -53,3 +53,22 @@ Exposure> Exposure Control Installed: On
 	""	> Target: ~3
 
 ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	DEPTH OF FIELD:
+======================================================================
+
+Depth of Field:
+//Unreal
+>	Create> Cine Camera Actor
+>	CineCameraActor Details> Focus Settings> Set 'Manual Focus Distance' (or use eyedropped tool) to set focus.
+
+----------------------------------------------------------------------

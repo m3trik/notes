@@ -1,19 +1,25 @@
-+---Substance-Painter-notes----------------------------------------------------------+
-¦
-¦	-Procedures
-¦	-Masking
-¦	-Uv
-¦	-Normals
-¦	-Import/Export
-¦	-Keyboard Shortcuts
-¦
-+-----------------------------------+
+Substance-Painter notes ----------------------------------------------
+
+• Procedures
+• Masking
+• Uv
+• Normals
+• Import/Export
+• Keyboard Shortcuts
+
+----------------------------------------------------------------------
 
 
 
 
 
-PROCEDURES: -------------------------------------------------------------------------
+
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
 
 non-destructive workflow:
 This approach allows you to modify the properties of the Fill layer, such as base colour, roughness, metallic, height and so on any time, without having to repeat your drawings, since all the painted data is stored in the mask.
@@ -56,7 +62,7 @@ Weld seams:
 Mask overlapping geometry:
 >	Toggle 'brush alignment'> 'Tangent|Wrap' & 'UV' to mask separate uv's.
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -65,8 +71,11 @@ Mask overlapping geometry:
 
 
 
-	
-MASKING: ----------------------------------------------------------------------------
+
+======================================================================	
+	MASKING:
+======================================================================
+
 Quick Masking:
 works in a similar way as the masking in ZBrush.
 >	Hit T to switch to quick mask edit mode, this will allow you to paint a temporary mask.
@@ -88,7 +97,7 @@ mask by geometry:
 >	paint in the mask then invert (ctrl+i)
 >	'y' clears quick mask
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -98,14 +107,16 @@ mask by geometry:
 
 
 
-UV: ---------------------------------------------------------------------------------
+======================================================================
+	UV:
+======================================================================
 
 fix UV seams:	blend together the information on all the channels simultaneously, making seams fade away.
 >	create a layer (not a Fill).
 >	set the blending mode of every channel to Pass Through.
 >	then select the Smudge tool and lightly draw on the edges where the seams are visible.
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -115,7 +126,9 @@ fix UV seams:	blend together the information on all the channels simultaneously,
 
 
 
-NORMALS: ----------------------------------------------------------------------------
+======================================================================
+	NORMALS:
+======================================================================
 
 Paint Normal Map Details:
 >	Add a normal channel in the current current Texture Set (if not already present)
@@ -126,14 +139,13 @@ Paint Normal Map Details:
 
 
 Painting Over A Baked Normal Map:
->	Create a new fill layer and in the properties panel, put the baked normal map inside the "normal" slot.
-	(not a fill layer as a sub-layer)
-	(UV scale of the fill layer should be set to 1.)
+>	Create a new fill layer (not a fill layer as a sub-layer)
+>	In the properties panel; put the baked normal map inside the "normal" slot. (UV scale=1)
 >	Texture Set settings tab> Change the Texture Set blending mode to replace.
->	Change the fill layer blending mode from NMdt (Normal map details) to Normal.
+>	Select Normal from the combobox, and Change the fill layer blending mode from NMdt (Normal map details) to 'normal'.
 >	Create a new layer (regular or fill) and change its blending mode to "normal" for the normal channel.
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -143,7 +155,9 @@ Painting Over A Baked Normal Map:
 
 
 
-PROJECT: ---------------------------------------------------------------------------
+======================================================================
+	PROJECT:
+======================================================================
 
 Templates:
 .spt files are created from an existing project via the File menu and saved inside the Shelf folder.
@@ -161,7 +175,7 @@ show material transparency by enabling alpha blending.
 >	shader settings window> set material to pbr-metal-rough-with-alpha-blending (very top under 'undo' 'redo' buttons)
 >	texture set settings> '+' add channel> opacity
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -171,7 +185,9 @@ show material transparency by enabling alpha blending.
 
 
 
-IMPORT/EXPORT: ---------------------------------------------------------------------
+======================================================================
+	IMPORT/EXPORT:
+======================================================================
 
 Importing a sbsar file:
 >	drag into subsance shelf or file> import resources
@@ -213,7 +229,7 @@ Types of maps:
 -	Glossiness²: Square version of the glossiness channel (Glossiness * Glossiness)
 -	f0: Reflectance value at fresnel 0 (0.04 for dielectrics, 1.0 for metallic)
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -223,12 +239,14 @@ Types of maps:
 
 
 
-ERRORS: -----------------------------------------------------------------------------
+======================================================================
+	ERRORS:
+======================================================================
 
 Import Texture: Cannot import texture.
 As of version 2020, substance does not support importing over a network drive
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 
 
@@ -238,7 +256,9 @@ As of version 2020, substance does not support importing over a network drive
 
 
 
-KEYBOARD SHORTCUTS: ----------------------------------------------------------------
+======================================================================
+	KEYBOARD SHORTCUTS:
+======================================================================
 
 ________________________________default_________________________custom______________
 Shortcuts pop-up list
@@ -326,8 +346,7 @@ enable disable layer			shft + LM on icon in layer stack
 
 translate projection/ alpha		S + LM, RM, MM (scale,rotate,pan)
 
--------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------
 
 
 

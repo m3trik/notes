@@ -3,7 +3,15 @@
 
 
 
-'Graph: //-------------------------------------------------------------------------------------'
+
+
+
+
+
+
+# ======================================================================
+#	GRAPH:
+# ======================================================================
 
 #Get the Current Graph and Selection (import sd):
 # Get the application and UI manager object.
@@ -12,18 +20,30 @@ app = ctx.getSDApplication()
 uiMgr = app.getQtForPythonUIMgr()
 
 # Get the current graph.
-g = uiMgr.getCurrentGraph()
-print("The current graph is %s" % g)
+currentGraph = UIMgr.getCurrentGraph()
+
+#Get the package manager & current package.
+pkgMgr = app.getPackageMgr()
+currentpackage = pkgMgr.getUserPackages().getItem(0)
 
 # Get the currently selected nodes.
 selection = uiMgr.getCurrentGraphSelection()
 for node in selection:
 	print("Node %s" % node)
 
+# ----------------------------------------------------------------------
 
 
 
-'Nodes: //-------------------------------------------------------------------------------------'
+
+
+
+
+
+
+# ======================================================================
+#	NODES:
+# ======================================================================
 
 # Accessing node definitions and properties (import sd, from sd.api.sdproperty import SDPropertyCategory, from sd.api.sdvalueserializer import SDValueSerializer):
 # Available node information include:
@@ -33,8 +53,9 @@ for node in selection:
 	#properties (as a list);
 	#resources that are being referenced;
 
-# Get and print information regarding the selected nodes.
 def printSelectedNodesInfo(nodes):
+	'''Print information regarding the selected nodes.
+	'''
 	for node in nodes:
 		definition = node.getDefinition()
 		nodeId = node.getIdentifier()
@@ -85,11 +106,55 @@ for i in range(len(nodeProps)):
 
 
 
+def getMaterialList(rootpath):
+    for i in os.listdir(rootpath):
+        path = os.path.join(rootpath, i)
+        if path.split('')[-1] == '.autosave' or path.split('')[-1] == 'dependencies':
+            continue
+        filename = path.split('')[-1]
+        if filename.split('.')[-1] == 'sbs' and not os.path.isfile(path + 'ar'):
+            print(path)
+            MaterialPathList.append(path)
+        if os.path.isdir(path):
+            getMaterialList(path)
 
 
-'History: //-----------------------------------------------------------------------------------'
+
+def createPBRRenderNode(app, pkgMgr, currentGraph):
+	'''Create PBR Render Node.
+	'''
+	resourcePath = app.getPath(SDApplicationPath.DefaultResourcesDir)
+	package = pkgMgr.loadUserPackage(os.path.join(resourcePath, 'packages', 'pbr_render_ortho.sbs'))
+	packageName = 'PBR_render_ortho'
+	instanceNode = currentGraph.newInstanceNode(package.findResourceFromUrl(packageName))
+	instanceNode.setInputPropertyValueFromId('shape', SDValueInt.sNew(1))
+	instanceNode.setInputPropertyValueFromId('envrionment_horizontal_rotation', SDValueFloat.sNew(0.06))
+	instanceNode.setInputPropertyValueFromId('background_color', SDValueColorRGBA.sNew(ColorRGBA(0, 0, 0, 0)))
+	return instanceNode
 
 
+def linkEnvironmentMap(app, pbrRenderNode, package, currentGraph):
+	'''
+	'''
+	resourcePath = app.getPath(SDApplicationPath.DefaultResourcesDir)
+	envMapPath = resourcePath + '/view3d/maps/glazed_patio.exr'
+	envMap = SDResourceBitmap.sNewFromFile(package, envMapPath, EmbedMethod.Linked)
+	envMapNode = currentGraph.newInstanceNode(envMap)
+	envMapNode.newPropertyConnectionFromId('unique_filter_output', pbrRenderNode, 'environment_map')
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	HISTORY:
+# ======================================================================
 
 #Undo groups (import sd, from sd.api.sdhistoryutils import *):
 #Get the application and package manager objects.
@@ -99,16 +164,23 @@ pkgMgr = app.getPackageMgr()
 
 #Group one or more changes into an undo group.
 with SDHistoryUtils.UndoGroup("My Undo Group"):
-    # Create two new packages.
-    pkgMgr.newUserPackage()
-    pkgMgr.newUserPackage()
+	# Create two new packages.
+	pkgMgr.newUserPackage()
+	pkgMgr.newUserPackage()
+
+# ----------------------------------------------------------------------
 
 
 
 
-'UI: //-----------------------------------------------------------------------------------------'
 
 
+
+
+
+# ======================================================================
+#	UI:
+# ======================================================================
 
 # Get the application.
 app = sd.getContext().getSDApplication()
@@ -151,37 +223,37 @@ mainWindow.addToolBar(QtCore.Qt.TopToolBarArea, toolbar)
 
 # Creating Toolbars in Graph Views (from functools import partial, import sd, from PySide2 import QtCore, QtGui, QtWidgets):
 class MyGraphToolBar(QtWidgets.QToolBar):
-    def __init__(self, graphViewID, uiMgr):
-        super(MyGraphToolBar, self).__init__(parent=uiMgr.getMainWindow())
+	def __init__(self, graphViewID, uiMgr):
+		super(MyGraphToolBar, self).__init__(parent=uiMgr.getMainWindow())
 
-        # Save the graphViewID and uiMgr for later use.
-        self.__graphViewID = graphViewID
-        self.__uiMgr = uiMgr
+		# Save the graphViewID and uiMgr for later use.
+		self.__graphViewID = graphViewID
+		self.__uiMgr = uiMgr
 
-        # Add actions to our toolbar.
-        act = self.addAction("P")
-        act.setToolTip("Print the selected nodes to the Python console")
-        act.triggered.connect(self.__onPrintNodes)
+		# Add actions to our toolbar.
+		act = self.addAction("P")
+		act.setToolTip("Print the selected nodes to the Python console")
+		act.triggered.connect(self.__onPrintNodes)
 
-    def __onPrintNodes(self):
-        for node in self.__getSelectedNodes():
-            print(node)
+	def __onPrintNodes(self):
+		for node in self.__getSelectedNodes():
+			print(node)
 
-    def __getSelectedNodes(self):
-        # Use our saved graphViewID to retrieve the graph selection.
-        return self.__uiMgr.getCurrentGraphSelectionFromGraphViewID(
-            self.__graphViewID)
+	def __getSelectedNodes(self):
+		# Use our saved graphViewID to retrieve the graph selection.
+		return self.__uiMgr.getCurrentGraphSelectionFromGraphViewID(
+			self.__graphViewID)
 
 def onNewGraphViewCreated(graphViewID, uiMgr):
-    # Create our toolbar.
-    toolbar = MyGraphToolBar(graphViewID, uiMgr)
+	# Create our toolbar.
+	toolbar = MyGraphToolBar(graphViewID, uiMgr)
 
-    # Add our toolbar to the graph widget.
-    uiMgr.addToolbarToGraphView(
-        graphViewID,
-        toolbar,
-        icon = None,
-        tooltip = "My Graph Toolbar")
+	# Add our toolbar to the graph widget.
+	uiMgr.addToolbarToGraphView(
+		graphViewID,
+		toolbar,
+		icon = None,
+		tooltip = "My Graph Toolbar")
 
 # Get the application and UI manager object.
 ctx = sd.getContext()
@@ -190,7 +262,9 @@ uiMgr = app.getQtForPythonUIMgr()
 
 # Register a callback to know when GraphViews are created.
 uiMgr.registerGraphViewCreatedCallback(
-    partial(onNewGraphViewCreated, uiMgr=uiMgr))
+	partial(onNewGraphViewCreated, uiMgr=uiMgr))
+
+# ----------------------------------------------------------------------
 
 
 
@@ -199,3 +273,29 @@ uiMgr.registerGraphViewCreatedCallback(
 
 
 
+
+# ======================================================================
+#	IMPORT | EXPORT:
+# ======================================================================
+
+exporterInstance = SDSBSARExporter(ctx, None)
+e = exporterInstance.sNew()
+e.exportPackageToSBSAR(package, savepath)
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+# ======================================================================
+#	ERRORS:
+# ======================================================================
+
+
+
+
+# ----------------------------------------------------------------------

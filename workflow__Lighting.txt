@@ -150,6 +150,61 @@ Atmospheric Fog:
 
 
 ======================================================================
+	GOD RAYS:
+======================================================================
+
+Using Volumetric Fog:
+//Unreal
+>	ExponentialHeightFog Details> Volumetric Fog> Enable Volumetric Fog
+>	""							""				> Adjust 'Static Lighting Scattering Intensity'
+>	""							""				> Adjust 'Scattering Distribution' (how intense the rays are based on viewing perspective)
+>	""							""				> Set 'Albedo' white for water based particles (fog, mist, clouds). else darker (smoke, smog) (Albedo=reflectivity of particles in the air)
+>	""							> Exponential Height Fog Component> Adjust 'Fog Density' and 'Fog Height Falloff' (also physically moving the fog location using transpose)
+(to reduce overall fog, but maintain god ray effect; reduce global fog density, and increase volumetric scattering intensity on the light)
+
+
+Using Light Shafts:
+//Unreal
+>	Directional light details> Light Shafts> Light Shaft Occlusion checked.
+>	""							""		   > Light Shaft Bloom checked.
+>	In addition to the 'Bloom Scale' and 'Bloom Threshhold' settings, you can also adjust the HDRI images brightness and contrast.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	BLOOM & LENS FLARE:
+======================================================================
+
+Bloom:
+//Unreal
+>	Create> 'Post Process Volume' (set 'Infinite Extent (unbound)' to effect entire world)
+>	PostProcessVolume Details> Bloom> 'Intensity' checkbox.
+
+
+Lens Flare:
+//Unreal
+>	Create> 'Post Process Volume' (set 'Infinite Extent (unbound)' to effect entire world)
+>	PostProcessVolume Details> Lens> Lens Flares> 'Intensity' checkbox.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
 	TIPS:
 ======================================================================
 

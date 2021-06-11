@@ -6,7 +6,11 @@ zbrush 4R7	http://docs.pixologic.com/user-guide/3d-modeling/
 
 
 
-Mesh Visibility:
+
+
+======================================================================
+	MESH VISIBILITY
+======================================================================
 
 Show mesh portion – Shift+Ctrl+Click, release keys & drag (green selection area)
 Hide mesh portion - Shift+Ctrl+Click, release keys & drag – press Alt (red selection area)
@@ -60,12 +64,19 @@ rotate:  (r key)
 outer red rings      rotate
 center red ring      twist 
 
+----------------------------------------------------------------------
 
 
 
 
-PRIMITIVES:    -----------------------------------------------------------------------
 
+
+
+
+
+======================================================================
+	PRIMITIVES
+======================================================================
 
 : existing primitives
 	create:		select and drag out from the tool menu 
@@ -96,6 +107,8 @@ create using shadowbox: (define the shape in 3 perspectives)
 	erase	ctrl + alt   
 	finish	subtool>shadowbox  unhilight
 
+----------------------------------------------------------------------
+
 
 
 
@@ -104,9 +117,9 @@ create using shadowbox: (define the shape in 3 perspectives)
 
 
 	
-
-SUBTOOLS:    -------------------------------------------------------------------------
-
+======================================================================
+	SUBTOOLS
+======================================================================
 
 : subract sub-tool  (keywords: boolean,inverse,subtract subtool,create difference mesh)
 >	subtool to subtract below
@@ -121,6 +134,7 @@ SUBTOOLS:    -------------------------------------------------------------------
 : extract mask to new subtool
 >	subtool menu>	extract>	extract by mask or visibility
 
+----------------------------------------------------------------------
 
 
 
@@ -128,8 +142,11 @@ SUBTOOLS:    -------------------------------------------------------------------
 
 
 
-LAYERS:    ---------------------------------------------------------------------------
 
+
+======================================================================
+	LAYERS
+======================================================================
 
 append          after a tool is created or imported select the tool and append to subtool 
 rename          change name of subtool
@@ -148,6 +165,7 @@ layer modes:
 	Polypaint on/off (Shift+click the paintbrush icon to turn polypaint on/off for all SubTools) 
 	Visibility on/off (click below the icon to just turn off the selected SubTool (it will remain in view until you switch to a different SubTool)).
 
+----------------------------------------------------------------------
 
 
 
@@ -157,12 +175,9 @@ layer modes:
 
 
 
-
-
-
-
-POLYGROUPS:    -----------------------------------------------------------------------
-
+======================================================================
+	POLYGROUPS
+======================================================================
 
 select polygroup:			ctrl + shift + click, release keys drag
 
@@ -188,6 +203,7 @@ Polygroup (ZModeler):
 Temp Polygroup (ZModeler):
 >	alt click existing polygroup to add temp polygroup (symmetry off to paint center polys) to an existing.
 
+----------------------------------------------------------------------
 
 
 
@@ -197,12 +213,9 @@ Temp Polygroup (ZModeler):
 
 
 
-
-
-
-
-MASKING:    --------------------------------------------------------------------------
-
+======================================================================
+	MASKING
+======================================================================
 
 paint mask		ctrl
 erase mask		ctrl + alt
@@ -247,6 +260,7 @@ mask by ambient acclusion (auto mask shadow areas)
 >	Mask by Intensity.
 (you can only have one polygroups set, but you can have as many layers as you want)
 
+----------------------------------------------------------------------
 
 
 
@@ -256,7 +270,11 @@ mask by ambient acclusion (auto mask shadow areas)
 
 
 
-SELECTION:    ------------------------------------------------------------------------
+======================================================================
+	SELECTION
+======================================================================
+
+----------------------------------------------------------------------
 
 
 
@@ -266,20 +284,10 @@ SELECTION:    ------------------------------------------------------------------
 
 
 
+======================================================================
+	TRANSPOSE
+======================================================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-TRANSPOSE:    ------------------------------------------------------------------------
 http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/transpose/
 
 
@@ -319,6 +327,7 @@ Pivot:
 : center on selection
 >	click white circle to center your selection pivot
 
+----------------------------------------------------------------------
 
 
 
@@ -328,12 +337,9 @@ Pivot:
 
 
 
-
-
-
-
-DUPLICATE & MIRROR GEOMETRY:   -------------------------------------------------------
-
+======================================================================
+	DUPLICATE & MIRROR GEOMETRY
+======================================================================
 
 : Duplicate
 using transpose tool:
@@ -353,6 +359,7 @@ using transpose tool:
 >	mask side to protect from change.
 >	deformation> smart re-sym (to mirror one side to the next) averages both sides by default.
 
+----------------------------------------------------------------------
 
 
 
@@ -362,9 +369,9 @@ using transpose tool:
 
 
 
-
-CURVES:    ---------------------------------------------------------------------------
-
+======================================================================
+	CURVES
+======================================================================
 
 profile editor:  edit point curve type -drag a point off the editor and leaving the mouse button pressed move back onto the editor.
 
@@ -383,11 +390,7 @@ delete curve on surface:
 Add to Curve (ZModeler):
 	generate a curve corresponding to the selected Target. The created curves can later be used with Curve Actions or other Curve brushes. 
 
-
-
-
-	
-
+----------------------------------------------------------------------
 
 
 
@@ -397,12 +400,9 @@ Add to Curve (ZModeler):
 
 
 
-
-
-
-
-EDIT TOPOLOGY:-----------------------------------------------------------------------
-
+======================================================================
+	EDIT TOPOLOGY
+======================================================================
 
 : Toggle Polyframe (mesh visability) (shft + f)
 
@@ -508,6 +508,7 @@ extrude clean edges using transpose:
 Equalize (ZModeler):
 	evaluate the surface and add geometry to surface that has been stretched and is light on geometry
 
+----------------------------------------------------------------------
 
 
 
@@ -516,10 +517,10 @@ Equalize (ZModeler):
 
 
 
-	
 
-RETOPOLOGY:    -----------------------------------------------------------------------
-
+======================================================================
+	RETOPOLOGY
+======================================================================
 
 : zremesher 
 (target polygon count 1 = 1000 polys)
@@ -575,6 +576,7 @@ method 2 (storing a morph target)
 >	tool> subtool> project> project all (PA blur 0) (projecting one subdivision at at time starting from lowest level can slightly improve results)
 >	use brush> morph brush where needed.
 
+----------------------------------------------------------------------
 
 
 
@@ -584,13 +586,9 @@ method 2 (storing a morph target)
 
 
 
-
-
-
-
-SCULPTING:    ------------------------------------------------------------------------
-
-
+======================================================================
+	SCULPTING
+======================================================================
 
 : skin
 pores:
@@ -606,6 +604,7 @@ wrinkles:
 >	tool> morph target> store morph target
 >	use morph target brush to remove any details that were sculpted after the target was stored.
 
+----------------------------------------------------------------------
 
 
 
@@ -615,12 +614,9 @@ wrinkles:
 
 
 
-
-
-
-
-BRUSHES:    --------------------------------------------------------------------------
-
+======================================================================
+	BRUSHES
+======================================================================
 
 brush mode:
 	Zadd            sculpt (add)
@@ -685,6 +681,7 @@ basic use:
 
 	Curve Actions:http://docs.pixologic.com/user-guide/3d-modeling/modeling-basics/creating-meshes/zmodeler/zmodeler-actions/curve-actions/
 
+----------------------------------------------------------------------
 
 
 
@@ -694,13 +691,9 @@ basic use:
 
 
 
-
-
-
-
-
-NANAOMESH:    ------------------------------------------------------------------------
-
+======================================================================
+	NANAOMESH
+======================================================================
 
 Insert Nanomesh (ZModeler):
 http://docs.pixologic.com/user-guide/3d-modeling/nanomesh/
@@ -708,6 +701,7 @@ http://docs.pixologic.com/user-guide/3d-modeling/nanomesh/
 >	use target option to select placement
 >	after placement the nanomesh palette becomes active and the instance can be modified.  (You can delete the geometry the nanomesh was built on after converting to polymesh 3d.)
 
+----------------------------------------------------------------------
 
 
 
@@ -717,18 +711,15 @@ http://docs.pixologic.com/user-guide/3d-modeling/nanomesh/
 
 
 
-
-
-
-
-UV:		------------------------------------------------------------------------------
-
-
+======================================================================
+	UV
+======================================================================
 
 Flip or Rotate UV:
 >	Tool> Texture Map> Clone Texture
 >	Texture> Flip, Rotate, or Inverse.
 
+----------------------------------------------------------------------
 
 
 
@@ -738,17 +729,9 @@ Flip or Rotate UV:
 
 
 
-
-
-
-
-
-
-
-
-
-TEXTURES:    -------------------------------------------------------------------------
-
+======================================================================
+	TEXTURES
+======================================================================
 
 : Create Tiled Noise Texture
 >	Set Document> (canvas) width and height to 512/1024/2048 resolution.
@@ -757,6 +740,7 @@ TEXTURES:    -------------------------------------------------------------------
 >	exit edit mode, hold tilda key, and position geometry.
 >	use layers to add more instances of geometry to tile.
 
+----------------------------------------------------------------------
 
 
 
@@ -766,14 +750,9 @@ TEXTURES:    -------------------------------------------------------------------
 
 
 
-
-
-
-
-   
-
-POLYPAINT:    ------------------------------------------------------------------------
-
+======================================================================
+	POLYPAINT
+======================================================================
 
 tun on/off polypaint:
 >	Tool> Polypaint> Colorize
@@ -822,6 +801,7 @@ Transfer Color Data between models: (from non-uv mesh to uv)
 >	With the UVed model selected, and the painted model visable, Press Project All.
 (If project all gives errors, turn on RGB, backface masking, and the zproject brush can fix them)
 
+----------------------------------------------------------------------
 
 
 
@@ -831,16 +811,20 @@ Transfer Color Data between models: (from non-uv mesh to uv)
 
 
 
+======================================================================
+	IMPORT | EXPORT
+======================================================================
 
+Import obj|fbx with UV map:
+>	Make sure that ZBrush is in edit mode, and that the star primitive is selected.
+>	Then import as usual.
 
-
-
-FILE:	------------------------------------------------------------------------------
 
 Importing multiple obj|fbx files:
 >	Switch to a primitive sub-tool if you don't want the current sub-tool is replaced.
 >	After the file is imported, you can add it to the layer stack using tool>subtool>append.
 
+---------------------------------------------------------------------
 
 
 
@@ -849,11 +833,11 @@ Importing multiple obj|fbx files:
 
 
 
-	
-	
 
 
-HOTKEYS:    --------------------------------------------------------------------------
+======================================================================
+	HOTKEYS
+======================================================================
 
 Set Hotkey:
 >	hold CTRL + ALT & click on the interface item you want to assign a hotkey to.
@@ -909,6 +893,7 @@ focus /frame          f key
 perspective           draw>perspective distortion   adjust perspective view
 silhouette            v key toggles silhouette mode  
 
+----------------------------------------------------------------------
 
 
 
@@ -916,7 +901,11 @@ silhouette            v key toggles silhouette mode
 
 
 
-NAVIGATION:    -----------------------------------------------------------------------
+
+
+======================================================================
+	NAVIGATION
+======================================================================
 
 *middleMouse plug-in
 *default
@@ -958,6 +947,7 @@ Hide selected Polygroup (on partially visible mesh) – Shift+Ctrl+Click
 Reverse visibility – Shift+Ctrl+Click & drag Background
 Hide edge loop – with Lasso option selected, Shift+Ctrl+click on edge that crosses loop
 
+----------------------------------------------------------------------
 
 
 
@@ -967,13 +957,12 @@ Hide edge loop – with Lasso option selected, Shift+Ctrl+click on edge that cross
 
 
 
-
-
-PLUG-INS:    -------------------------------------------------------------------------
-
+======================================================================
+	PLUG-INS
+======================================================================
 
 : GoZ
-Maya ----------------------------
+Maya:
 	maya shelf: shelf_GoZBrush();
 
 paths:
@@ -984,4 +973,4 @@ paths:
 prevent GoZ from opening a new version of Maya every time:
 	copy "userSetup.mel" from C:\Users\Public\Pixologic\GoZApps\Maya and paste to C:\Users\user_name\Documents\maya\version\scripts
 
-
+----------------------------------------------------------------------

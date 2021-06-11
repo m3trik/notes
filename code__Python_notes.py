@@ -533,6 +533,11 @@ eg. a, b, *c = [1,2,3,4,5] #returns: 1 2 [3, 4, 5]
 #if separate lists are desired, use: 
 eg. x=[];y=[];z=[]
 eg. a,b,c = (1,2,3)
+#starred assignments:
+eg. a, *b, c = [1, 2, 3, 4, 5] #result: a=1, b=[2, 3, 4], c=5
+#deep unpacking:
+eg. color, (r, g, b) = ('red', (250, 23, 10)) #result: color='red', r=250, g=23, b=10
+
 
 
 #dynamically assign variables:
@@ -700,11 +705,25 @@ r'string'
 u'string'
 #convert unicode:
 u'string'.encode('utf-8')
+#
+'string'.decode('utf-8')
 
+
+#string properties
+'string'.punctuation
+'string'.digits
 
 
 #get length of a string.           
 eg. len('string') #'6'
+
+#set length with optional fill char.
+rjust("str", 20) #returns: '                 str'
+ljust("str", 20) #left-justifies a string to a given width. returns: 'str                 '
+center("str", 20) #returns: '        str         '
+zfill("0.1", 10) #pads a numeric string with leading zeros. returns: '00000000.1'
+
+
 
 #repeat string       
 eg. '.'*10
@@ -836,6 +855,8 @@ eg. 'ABBA'.replace('B', '') #returns: 'AA'
 eg. 'ABBA'.translate({ord('B'): None}) #returns: 'AA'
 #mutiple chars:
 eg. 'ABBA'.translate({ord(i): None for i in 'AB'}) #returns: ''
+#python 3
+eg. text = text.translate(str.maketrans('','','1234567890')) #string.digits can be substituted for '1234567890'.
 #substring:  (replace elements of a string.  may work with a tuple of multiple strings or list converted to tuple)
 # replace (this, withThis, howMany) 
 eg. 'ABBA'.replace('AB', '') #returns 'BA' (Strips ALL 'AB')
@@ -2162,7 +2183,7 @@ vars(Class)
 help(Class) # Class information
 
 #using inspect (import inspect):
-inspect.getmembers(Class, predicate=inspect.ismethod)
+inspect.getmembers(Class, predicate=inspect.isroutine) #predicate=inspect.ismethod
 #alt (same output as inspect method)
 methods = [(m, getattr(c, m)) for m in dir(c) if callable(getattr(c, m)) and not all([m.startswith('__'), m.endswith('__')])] #c = class
 
@@ -3000,8 +3021,10 @@ eg. path = r'C:\Users\m3\AppData\Roaming\Autodesk\MAYA\Autosave'
 
 
 # similar to the exec statement, but parses a python file instead of a string.
+#python 2
 eg. execfile
-
+#python 3
+eg. exec(open('userSetup.py').read())
 
 
 
@@ -3213,6 +3236,8 @@ eg. module.method(args)
 
 #get module file name
 eg. module = os.path.splitext(os.path.basename(__file__))[0]
+#
+eg. packageName = os.path.split(__file__)[1].split('.')[0] #Get the package name from the current python file base name
 #using sys (import sys)
 eg. __import__(sys.argv[1]) #sys.argv[0]
 #using special variable

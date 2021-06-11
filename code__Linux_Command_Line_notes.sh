@@ -35,13 +35,71 @@ man <command> #manual for a command.
 
 
 
+# ======================================================================
+#	SYNTAX
+# ======================================================================
+
+#shell header
+#!/bin/sh
+
+#bash header
+#!/bin/bash --
+
+
+#run a script
+chmod u+x <script> #set permissions
+./<script> #execute
+
+
+# combine languages in a single shell file using heredoc import.sh
+#!/bin/bash --
+sqlite3 -batch $1 <<"EOF"
+CREATE TABLE log_entry ( <snip> );
+.separator "\t"
+.import logfile.log log_entry
+EOF
+#run it:
+import.sh database.db
+
+
+#using bash variables:
+#!/bin/bash --
+table_name=log_entry
+
+sqlite3 -batch $1 <<EOF
+CREATE TABLE ${table_name} ( <snip> );
+.separator "\t"
+.import logfile.log ${table_name}
+EOF
+
+
+#Or even do a trick like this:
+#!/bin/bash --
+table_name=$2
+
+sqlite3 -batch $1 <<EOF
+CREATE TABLE ${table_name} ( <snip> );
+.separator "\t"
+.import logfile.log ${table_name}
+EOF
+#run it: 
+import.sh database.db log_entry
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 # ======================================================================
-#	USER INPUT:
+#	COMMENTING
 # ======================================================================
 
-read -p "message string: "  VAR #[-s] silent mode.
-echo $VAR
+# single line comment
 
 # ----------------------------------------------------------------------
 
@@ -88,6 +146,47 @@ $PS1 #prompt style #ex. export PS1=">> "
 
 
 
+# ======================================================================
+#	Mathmatical Operators:
+# ======================================================================
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	Comparators:
+# ======================================================================
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	Boolean Operations:
+# ======================================================================
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 # ======================================================================
 #	CONDITIONALS:
@@ -97,17 +196,232 @@ $PS1 #prompt style #ex. export PS1=">> "
 #if statement:
 if [ -z "$var" ]
 then
-      echo "\$var is empty"
+	  echo "\$var is empty"
 else
-      echo "\$var is NOT empty"
+	  echo "\$var is NOT empty"
 fi
 #alt:
 if test -z "$var" 
 then
-      echo "\$var is empty"
+	  echo "\$var is empty"
 else
-      echo "\$var is NOT empty"
+	  echo "\$var is NOT empty"
 fi
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	LOOPING:
+# ======================================================================
+
+# for loop in range:
+for i in 1 2 3 4 5 #for i in {1..5} #step {START..END..INCREMENT}.
+do
+	# ...
+done
+# for loop on file contents:
+for i in file1 file2 file3
+do
+	# ...
+done
+# for loop on a 
+for i in $(Linux-Or-Unix-Command-Here)
+do
+	# ...
+done
+
+
+
+#Three-expression
+for (( EXP1; EXP2; EXP3 ))
+do
+	command1
+	command2
+	command3
+done
+# The C-style Bash for loop ##
+for (( initializer; condition; step ))
+do
+  shell_COMMANDS
+done
+A representative three-expression example in bash as follows:
+
+
+
+#!/bin/bash
+for (( c=1; c<=5; c++ ))
+do  
+   echo "Welcome $c times"
+done
+
+
+
+#A representative three-expression example in bash as follows:
+#!/bin/bash
+for (( c=1; c<=5; c++ ))
+do  
+   echo "Welcome $c times"
+done
+
+
+
+#Infinite for loop can be created with empty expressions, such as:
+#!/bin/bash
+for (( ; ; ))
+do
+   echo "infinite loops [ hit CTRL+C to stop]"
+done
+
+
+
+# Conditional exit with break
+for I in 1 2 3 4 5
+do
+  statements1      #Executed for all values of ''I'', up to a disaster-condition if any.
+  statements2
+  if (disaster-condition)
+  then
+	break       	   #Abandon the loop.
+  fi
+  statements3              #While good and, no disaster-condition.
+done
+
+# Early continuation with continue statement
+for I in 1 2 3 4 5
+do
+  statements1      #Executed for all values of ''I'', up to a disaster-condition if any.
+  statements2
+  if (condition)
+  then
+	continue   #Go to next iteration of I in the loop and skip statements3
+  fi
+  statements3
+done
+
+
+
+#For loop with array elements
+DB_AWS_ZONE=('us-east-2a' 'us-west-1a' 'eu-central-1a')
+ 
+for zone in "${DB_AWS_ZONE[@]}"
+do
+  echo "Creating rds (DB) server in $zone, please wait ..."
+  aws rds create-db-instance \
+  --availability-zone "$zone"
+  --allocated-storage 20 --db-instance-class db.m1.small \
+  --db-instance-identifier test-instance \
+  --engine mariadb \
+  --master-username my_user_name \
+  --master-user-password my_password_here
+done
+
+
+
+# Loop with a shell variable
+_admin_ip="202.54.1.33|MUM_VPN_GATEWAY 23.1.2.3|DEL_VPN_GATEWAY 13.1.2.3|SG_VPN_GATEWAY"
+for e in $_admin_ip
+do
+   ufw allow from "${e%%|*}" to any port 22 proto tcp comment 'Open SSH port for ${e##*|}'
+done
+
+
+
+# Loop with a number
+for i in {START..END}
+do
+   commands
+done
+## step value ##
+for i in {START..END..STEP}
+do
+   commands
+done
+## example: ping cbz01, cbz02, cbz03, and cbz04 using a loop ##
+for i in 0{1..4}
+do
+    h="cbz${i}"
+    ping -c 1 -q "$h" &>/dev/null 
+    if [ $? -eq 0 ]
+    then
+        echo "server $h alive" 
+    else
+        echo "server $h dead or can not ping."
+    fi
+done
+
+
+
+# Loop with strings
+PKGS="php7-openssl-7.3.19-r0  php7-common-7.3.19-r0  php7-fpm-7.3.19-r0  php7-opcache-7.3.19-r0 php7-7.3.19-r0"
+for p in $PKGS
+do
+   echo "Installing $p package"
+   sudo apk add "$p"
+done
+
+
+
+# Command substitution
+for var in $(command)
+do
+  print "$var"
+done
+## example ##
+for f in $(ls /nas/*.pdf)
+do
+  print "File $f"
+done
+
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	ITERABLES:
+# ======================================================================
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	STRINGS:
+# ======================================================================
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	ARRAYS:
+# ======================================================================
 
 # ----------------------------------------------------------------------
 
@@ -439,66 +753,6 @@ pvremove <dir> #remove the physical volume marker from the storage device
 
 
 # ======================================================================
-#	SCRIPTING:
-# ======================================================================
-
-#create a script
-#shell header
-#!/bin/sh
-#bash header
-#!/bin/bash --
-#run a script
-chmod u+x <script> #set permissions
-./<script> #execute
-
-
-
-
-# combine languages in a single shell file using heredoc import.sh
-#!/bin/bash --
-sqlite3 -batch $1 <<"EOF"
-CREATE TABLE log_entry ( <snip> );
-.separator "\t"
-.import logfile.log log_entry
-EOF
-#run it:
-import.sh database.db
-
-
-#using bash variables:
-#!/bin/bash --
-table_name=log_entry
-
-sqlite3 -batch $1 <<EOF
-CREATE TABLE ${table_name} ( <snip> );
-.separator "\t"
-.import logfile.log ${table_name}
-EOF
-
-
-#Or even do a trick like this:
-#!/bin/bash --
-table_name=$2
-
-sqlite3 -batch $1 <<EOF
-CREATE TABLE ${table_name} ( <snip> );
-.separator "\t"
-.import logfile.log ${table_name}
-EOF
-#run it: 
-import.sh database.db log_entry
-
-# ----------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-# ======================================================================
 # I/O REDIRECTION:
 # ======================================================================
 
@@ -511,11 +765,28 @@ stderr  #standard error:   an error message outputted by a failed process.
 
 >       #redirects the standard output to a file & overwrites (left to right)   ex.  echo "string" > textdoc.txt   ("string" is entered as the standard input. The standard output "string" is redirected by > to the file textdoc.txt.)  
 >>      #takes the standard output of the command & appends  (left to right)
-        <    <<     #to redirect right to left
+		<    <<     #to redirect right to left
 |       #pipe.  command to command redirection.  
 				#takes the standard output of the command on the left, and pipes it as standard input to the command on the right.  
 				#ex.
 				cat volcanoes.txt | wc | cat > islands.txt
+
+# ----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ======================================================================
+#	USER INPUT:
+# ======================================================================
+
+read -p "message string: "  VAR #[-s] silent mode.
+echo $VAR
 
 # ----------------------------------------------------------------------
 
@@ -566,6 +837,9 @@ ip a
 curl ifconfig.me
 #
 ip a | egrep "inet "
+
+# ports
+netstat -a #gives a list of all processes listening on network ports.
 
 # ----------------------------------------------------------------------
 
@@ -923,10 +1197,13 @@ p4 protect
 p4 admin start
 p4 admin restart
 p4 admin stop
+p4d & #start helix server
 #
 p4 sync
+#start service
+sudo systemctl start perforce-p4dctl
 #
-p4 info #server info
+p4 info #server info. #p4 -p ssl:192.168.1.240:1666 info
 p4 clients -u $P4USER #list of workspace names
 #workspace root ownership / permissions
 sudo chown -R perforce:perforce /mnt/Storage/Linux/Ubuntu/perforce

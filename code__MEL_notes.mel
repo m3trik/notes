@@ -2414,7 +2414,8 @@ file_name("directory");
 //source $myScriptPath ;
 //correct format using the eval command:
 string $command = "source \"C:/script.mel\" ;" ;
-eval $command ;
+eval $command;
+evalDeferred $command -lowestPriority; //lowestPriority=command executed when no other idle events are scheduled.
 
 //"eval" will run the string as a command, thus sourcing it and your script/variable.
 //Another option here is to create your own proc, let's call it betterSource() ;
@@ -2452,6 +2453,8 @@ file -open "file.ma";
 //Open a commandline to mayapy.exe (Generally in AutoDesk\Maya\20XX\bin) and run the file:
 ex. ...Maya\2017\bin mayapy.exe get-pip.py
 //it will have added Autodesk\Maya\20xx\Python\Scripts\pip.exe
+//pip install pymel
+"C:\Program Files\Autodesk\Maya2022\bin\mayapy.exe" -m pip install --user pymel
 
 
 //import a python module

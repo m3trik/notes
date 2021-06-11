@@ -263,6 +263,24 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 # BUGFIXES:
 # -----------------------------------------------
 
+maya normals:
+polyPerformAction "polySoftEdge -a 30" e 0;
+
+
+File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_materials.py", line 119, in cmb002
+#     cmb.addItems_(self.currentMats.keys(), clear=True)
+#   File "O:/Cloud/Code/_scripts/radial\radial\ui\widgets\comboBox.py", line 85, in addItems_
+#     self.addItem(item) #item.encode('utf-8')
+# TypeError: # 'PySide2.QtWidgets.QComboBox.addItem' called with wrong argument types:
+
+
+maya macros:
+isolateSelect -state 0 modelPanel4
+
+
+maya_init.py
+replace any uses of maya's undochunk with the undoChunk decorator.
+
 
 max_edit.py", line 66, in tb000
     self.meshCleanup(isolatedVerts=isolatedVerts, edgeAngle=edgeAngle, nGons=nGons, repair=repair)

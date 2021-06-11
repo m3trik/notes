@@ -1,8 +1,17 @@
-- Maya notes --------------------------------------------
+- Maya notes  --------------------------------------------------------
 
 
 
-Procedures:
+
+
+
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
+
 curve warp a mesh
 >	select the mesh and then the input curve.
 >	go to Deform > (Create) Curve Warp. (Maya creates a curveWarp node and automatically assigns the selected curve as its input curve.)
@@ -22,12 +31,20 @@ Break node connection in attribute editor
 >	right click on an attribute name with an incoming or outgoing connection.
 >	select break connections
 
+----------------------------------------------------------------------
 
 
 
-	 
 
-___selection
+
+
+
+
+
+======================================================================
+	SELECTION:
+======================================================================
+	
 ctrl + marquee       deselect only
 ctrl + right click   selection marking menu	 
 
@@ -35,10 +52,21 @@ move selection marquee:		alt + LMB
 
 grow selection (shrink);	hold shft + > (or <)
 
+----------------------------------------------------------------------
 
-___transform:
+
+
+
+
+
+
+
+
+======================================================================
+	TRANSFORM:
+======================================================================
+	
 nudge values-				highlight alt+ up/down/left/right arrow keys
-
 
 
 ___snapping
@@ -56,6 +84,11 @@ reset pivot point and other settings  -  hold d, right click on canvas (also too
 set position:		hold shift while in edit mode.  (with component or object selected)
 set orientation:	hold ctrl while in edit mode. ("")
 
+----------------------------------------------------------------------
+
+======================================================================
+	COMPONENTS:
+======================================================================
 
 ___edges
 ctrl+alt+rt arrow  spin edge
@@ -76,16 +109,37 @@ ___joints and pivot points
 to move a joint without moving its children, you can just move its pivot point.
 move pivot point;   hit insert or hold down the D key while moving.
 
+----------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+======================================================================
+	CURVES:
+======================================================================
 
 ___combining nurbs curves
 1.select then unparent (shft+P)  2.freeze transformations. turn display shapes on 
 in outliner.  create empty group.   4.ctrl select the new group & the curves from their current groups.  5. execute mel command;  parent -r -s
 
+----------------------------------------------------------------------
 
 
 
-__cameras
+
+
+
+
+
+
+======================================================================
+	CAMERAS:
+======================================================================
 
 adjust viewport clipping planes
 cameraShape> properties>
@@ -93,7 +147,19 @@ cameraShape> properties>
 	far clipping plane
 	object display> loctor scale (scale camera locator icon in viewport)
 
+----------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+======================================================================
+	NORMALS:
+======================================================================
 
 edge normals
 shft + right click   marking menu
@@ -103,12 +169,35 @@ shft + right click   marking menu
 ___smoothing
 convert the smoothed preview to real polygons via Modify > Convert > Smooth mesh preview to Polygon
 
+----------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+======================================================================
+	UV:
+======================================================================
 
 ___UV Editor
 
+----------------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+======================================================================
+	UI:
+======================================================================
 
 ___Menus:
 dragging items to custom shelf or marking menu editor: hold ctrl +shift or MMB for scripts
@@ -123,6 +212,7 @@ delete word(s) in node names	-use modify>search and replace and replace word(s) 
 ___Outliner:
 show selected object in outliner-	right click in outliner window> reveal selected
 
+----------------------------------------------------------------------
 
 
 
@@ -132,31 +222,28 @@ show selected object in outliner-	right click in outliner window> reveal selecte
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-___tools
+======================================================================
+	TOOLS:
+======================================================================
 
 
 brush tool
 holding b and left-click dragging changes brush size
 
+----------------------------------------------------------------------
 
 
 
 
 
-___plug-ins
+
+
+
+
+======================================================================
+	PLUG-INS:
+======================================================================	
+
 mental ray 
 plug-in   mayatomr.mll
 
@@ -196,6 +283,7 @@ print("GoZ to Maya");
 source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZBrushFromMaya.mel" ;
 source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZScript.mel" ;
 
+----------------------------------------------------------------------
 
 
 
@@ -205,8 +293,10 @@ source "C:/Users/Public/Pixologic/GoZApps/Maya/GoZScript.mel" ;
 
 
 
+======================================================================
+	HOTKEYS:
+======================================================================
 
-___hotkeys
 scale interface    preferences>interface>use custom scaling
 custom shelf       ctrl + shift select items from drop down menus or middle mouse drag items from shelves
 
@@ -229,10 +319,10 @@ keys 1-10    default:                               custom:
      
 	 9 -     										toggle status line
      0 -     										toggle grid
-	 
-	 
-	 
-	 
+
+
+
+
 notable hotkeys:	 
 	 t -	Hold to rotate an object in 15 degrees increments.
 	 d -	toggle pivot translate mode
@@ -245,3 +335,5 @@ notable hotkeys:
 notable marking menus:	 
 	 w + LMB					transform marking menu
 	 pivot edit mode + RMB		pivot edit menu
+
+----------------------------------------------------------------------

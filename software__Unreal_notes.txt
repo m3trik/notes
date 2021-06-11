@@ -275,6 +275,7 @@ RGBtoHSV		-convert color to Hue, Saturation, Value and use value.
 
 Blend:
 LinearInterpolate 	-mix A(base)/ B/ Alpha. (Lerp gets a num between two numbers at a specific increment.)
+Lerp_ScratchGrime	-
 
 MatLayerBlend_Simple	-Provides a simple linear interpolation (Lerp) blending solution for 2 Material Layers. Does not blend Normal; instead, retains Normal of the Base Material.
 
@@ -282,11 +283,10 @@ MatLayerBlend_Standard	-Blends all attributes of two Material Layers.
 
 MatLayerBlend_Decal		-Blends a decal sheet over the Material using the 2nd UV channel.
 
+Texture Blending:
+Blend_ColorBurn, Blend_ColorDodge, Blend_Darken, Blend_Difference, Blend_Exclusion, Blend_Hardlight, Blend_Lighten, Blend_LinearBurn, Blend_LinearDodge, Blend_LinearLight, Blend_Overlay, Blend_PinLight, Blend_Screen, Blend_SoftLight
 
-Multiply	-
-Add			-
-Subtract	-
-Divide		-
+Multiply, Add, Subtract, Divide
 
 
 Reflections:
@@ -511,6 +511,14 @@ General:
 >	level right click context menu> asset actions> migrate..
 
 
+Global:
+>	Settings> Engine Scalability Settings (Set the overall effect quality)
+
+
+GPU
+>	Viewport options (drop down arrow in viewport)> Stat> Advanced> GPU (will give a breakdown of the gpu cost of scene objects)
+
+
 
 Lighting:
 - main menu> window> World Settings (Lightmass section)
@@ -555,6 +563,14 @@ Exporting Geometry to Unreal:
 - scale model to real world units.
 - reset (bake) scale/rotation
 - export each part that requires a separate pivot as FBX (settings: smoothing groups=1).
+
+
+
+Exporting Functions:
+- .COPY and .T3D are legacy UE3 options.
+- The Migrate feature will allow you to simply move the Blueprint and any relevant assets from one project to another.
+- .uassets can be moved to and opened in a separate project directly as long as all references are moved with it (with the same file structure). This is basically what the Migrate feature does.
+
 
 ----------------------------------------------------------------------
 
