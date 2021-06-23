@@ -71,7 +71,7 @@ Tile Generator
 
 	
 Smart Auto Tile		- alt-drag crop border to align image.
-	
+
 
 Shape Splatter		-
 

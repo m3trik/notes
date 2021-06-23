@@ -135,6 +135,8 @@ w.show()
 w.hide()
 w.close()
 
+w.setWindowOpacity(0.5) #0.0-1.0 only works on top-level widgets.
+
 
 
 
@@ -1576,27 +1578,35 @@ self.s000.activated.connect(self.xkeyisdown)
 
 'Paint Event'#--------------------------------------------------------------
 
-	def paintEvent(self, event):
-		#args: [QEvent]
-		if any ([self.hotBox.name=="main", self.hotBox.name=="viewport"]):
-			self.raise_()
-			self.setWindowFlags(QtCore.Qt.WA_TransparentForMouseEvents)
 
-			#Initialize painter
-			painter = QtGui.QPainter(self)
-			pen = QtGui.QPen(QtGui.QColor(115, 115, 115), 3, QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin)
-			painter.setPen(pen)
-			painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
-			painter.setBrush(QtGui.QColor(115, 115, 115))
-			painter.drawEllipse(self.hotBox.point, 5, 5)
+#force repaint (in most cases w.update is recommended vs repaint):
+w.repaint()
 
-			#perform paint
-			if self.hotBox.mousePosition:
-				mouseX = self.hotBox.mousePosition.x()
-				mouseY = self.hotBox.mousePosition.y()
-				line = QtCore.QLine(mouseX, mouseY, self.hotBox.point.x(), self.hotBox.point.y())
-				painter.drawLine(line)
-				painter.drawEllipse(mouseX-5, mouseY-5, 10, 10)
+#schedule a paint event: 
+w.update() #only updates the widget but not its children. 
+
+
+def paintEvent(self, event):
+	#args: [QEvent]
+	if any ([self.hotBox.name=="main", self.hotBox.name=="viewport"]):
+		self.raise_()
+		self.setWindowFlags(QtCore.Qt.WA_TransparentForMouseEvents)
+
+		#Initialize painter
+		painter = QtGui.QPainter(self)
+		pen = QtGui.QPen(QtGui.QColor(115, 115, 115), 3, QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin)
+		painter.setPen(pen)
+		painter.setRenderHint(QtGui.QPainter.Antialiasing, True)
+		painter.setBrush(QtGui.QColor(115, 115, 115))
+		painter.drawEllipse(self.hotBox.point, 5, 5)
+
+		#perform paint
+		if self.hotBox.mousePosition:
+			mouseX = self.hotBox.mousePosition.x()
+			mouseY = self.hotBox.mousePosition.y()
+			line = QtCore.QLine(mouseX, mouseY, self.hotBox.point.x(), self.hotBox.point.y())
+			painter.drawLine(line)
+			painter.drawEllipse(mouseX-5, mouseY-5, 10, 10)
 
 
 
@@ -2149,8 +2159,6 @@ w.setAttribute(QtCore.Qt.WA_SetStyle) #Indicates that the widget has a style of 
 w.setAttribute(QtCore.Qt.WA_SetFont) #Indicates that the widget has a font of its own.
 
 
-ex.
-w.setWindowOpacity(0.5)
 
 ex.
 w.setAutoFillBackground(False)

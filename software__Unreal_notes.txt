@@ -61,6 +61,28 @@ _att	-attenuation
 
 
 ======================================================================
+	TRANSFORMATION:
+======================================================================
+
+Set Pivot:
+E key to edit pivot.  The Alt + MM click on component to reposition.
+
+
+Snapping:
+snap to ground	-end key. (hold alt to snap to the object's pivot point)
+
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
 	GEOMETRY:
 ======================================================================
 
@@ -253,7 +275,7 @@ ctrl		-repin connections while ctrl+drag
 
 
 
-Nodes: ---------------------------------------------------------------
+Material Nodes: ---------------------------------------------------------------
 
 Material:
 MakeMaterialAttributes	-combine material attributes.
@@ -262,7 +284,7 @@ BreakMaterialAttributes	-split up all of the incoming attributes of the Material
 
 
 Color:
-Constant2Vector		- 0-1 greyscale
+Constant			- 0-1 greyscale (black:0, white:1)
 Constant3Vector		- rgb
 Contandt4Vector		- rgba
 VectorParameter 	-identical to the Constant4Vector, except that it is a parameter and can be modified in instances of the material and through code. value can be set using the Color picker.
@@ -337,7 +359,7 @@ TextureCoordinate	-outputs UV texture coordinates in the form of a two-channel v
 
 
 
-Functions: -----------------------------------------------------------
+Material Functions: -----------------------------------------------------------
 
 Create a Material Function:
 >	Content browser right context menu>	New> Materials & Textures> Material Function.
@@ -356,7 +378,7 @@ Publish a Material Function: (make visible within the Material Function Library)
 
 
 
-Procedures: ----------------------------------------------------------
+Material Procedures: ----------------------------------------------------------
 
 Increase Texture RGB intensity:
 >	add Multiply node and input from texture RGB out.
@@ -490,6 +512,62 @@ Hide Sequence actors(geometry):
 >	Drag geometry to hide into the sequence editor.
 >	(add) +track> Actor Hidden In Game
 >	visibility track is now visible. Uncheck to hide on all frames.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+======================================================================
+	PARTICLES:
+======================================================================
+
+Add Emitter Attributes:
+Particle Emitter> Emitters tab> right click context menu (deadspace)
+
+
+Distribution Types: (Y and Z axis ignored on 2d planes.)
+	Vector Constant - Static value for all particles.
+	Vector Constant Curve - Creates an array. use 'point' + to an an element. 'In Val'=time input, 'Out Val'=color at that time.
+	Vector Particle Parameter - Exposed parameter that can be modified by instances.
+	Vector Uniform - Random between a min and max value.
+	Vector Uniform Curve - 
+
+
+set Duration:
+Particle Emitter> Emitters tab> 'Required' details tab> set Emitter Loops: 0=continuous, 1=single, etc.
+""				""									""> set Emitter Duration: 1=second, etc.
+
+
+set Burst Spawn Rate:
+Particle Emitter> Emitters tab> 'Spawn' details tab> Spawn> set Constant to 0.
+""				""								 ""> Burst> + to add element to burst list.
+""				""								 ""		""> adujust 'count' and 'time'. (if 'account low' is less than 0, only the 'count' value will be used.)
+
+
+set Particle Size:
+Particle Emitter> Emitters tab> 'Initial Size' details tab> Start Size> set Distribution (ie. 'Vector Uniform').
+
+
+set Color:
+Particle Emitter> Emitters tab> 'Color Over Life' details tab> Set Distribution (ie. 'Vector Constant Curve').
+
+
+set Gravity:
+Particle Emitter> Emitters tab> right click context menu (deadspace)> add Acceleration attribute.
+Particle Emitter> Emitters tab> 'Acceleration' details tab> Set Distribution Z min and max (ie. 'Vector Uniform').
+
+
+Deform along motion path:
+Particle Emitter> Emitters tab> 'Required' details tab> 'Screen Alignment' combobox> set to PSA Velocity.
+Particle Emitter> Emitters tab> 'Initial Size' details tab> Start Size> tweak XYZ values.
+
+
 
 ----------------------------------------------------------------------
 

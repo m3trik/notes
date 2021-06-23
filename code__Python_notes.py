@@ -725,7 +725,7 @@ zfill("0.1", 10) #pads a numeric string with leading zeros. returns: '00000000.1
 
 
 
-#repeat string       
+#repeat string
 eg. '.'*10
 
 
@@ -3307,6 +3307,7 @@ eg. python -m install pip
 eg. python -m pip install --upgrade pip #windows env variable.
 eg. C:/python -m pip install --upgrade pip #explicit dir
 eg. python -m pip #install, uninstall, download, list, show, check, config, search, wheel, version, 
+eg. C:/python38/Scripts/pip.exe install PySide2
 # uninstall
 eg. pip uninstall PySide2
 # version, location, dependancies 

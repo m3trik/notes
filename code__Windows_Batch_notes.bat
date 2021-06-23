@@ -120,7 +120,8 @@ set /a VARIABLE=expression
 
 
 :: Windows environment variables:
-:: Windows environment variables:
+
+setx VAR_NAME "pathto\file.txt"
 
 %userprofile%	=C:\Users\<username>
 %systemroot%	=C:WINDOWS

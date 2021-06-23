@@ -263,14 +263,43 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 # BUGFIXES:
 # -----------------------------------------------
 
+polySoftEdge -a 60 -ch 1 pCylinder5;
+// Result: polySoftEdge5 // 
+# Traceback (most recent call last):
+#   File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_init.py", line 2099, in wrapper
+#     self.setAttributeWindow(fn(self, *args, **kwargs))
+#   File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_init.py", line 2116, in setAttributeWindow
+#     attributes = self.getAttributesMEL(obj, include=include, exclude=exclude)
+#   File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_init.py", line 2001, in getAttributesMEL
+#     for attr in pm.listAttr(node):
+#   File "C:\Program Files\Autodesk\Maya2022\Python37\lib\site-packages\pymel\core\general.py", line 8476, in listAttr
+#     res = cmds.listAttr(*args, **kwargs)
+#   File "C:\Program Files\Autodesk\Maya2022\Python37\lib\site-packages\pymel\internal\pmcmds.py", line 217, in listAttr_wrapped
+#     res = new_cmd(*new_args, **new_kwargs)
+# TypeError: Object polySoftEdge -a 60 -ch 1 pCylinder5 is invalid
 
-maya selection:
-EventFactoryFilter selection cmb002 '>' not supported between instances of 'NoneType' and 'int'
-EventFactoryFilter selection cmb005 '>' not supported between instances of 'NoneType' and 'int'
-EventFactoryFilter selection cmb003 '>' not supported between instances of 'NoneType' and 'int'
+
+3ds Max;
+Most of the viewport functionality is located in the NitrousGraphicsManager class, so for your first one, try:
+
+>>> graphicsmanager = 
+pymxs.runtime.NitrousGraphicsManager.GetActiveViewportSetting()
+>>> graphicsmanager.ShowEdgedFacesEnabled
+False
+>>> graphicsmanager.ShowEdgedFacesEnabled = True
+The second one you can find in the pathconfig struct:
+
+pymxs.runtime.pathconfig.getCurrentProjectFolderPath()
+The third is stored as a 3ds Max system directory, so this should work:
+
+>>> pymxs.runtime.GetDir(pymxs.runtime.name('autoback'))
 
 
-maya macros:
+new tool:
+import image as plane
+
+
+maya macros (broken in maya 2022):
 isolateSelect -state 0 modelPanel4
 
 
