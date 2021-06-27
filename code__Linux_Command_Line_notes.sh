@@ -115,11 +115,19 @@ import.sh database.db log_entry
 #	VARIABLES:
 # ======================================================================
 
-#user assigned:
+# assignment
 #set
-VARIABLE="value"
+VARIABLE="value" #no whitepace. with or without quotes.
 #get
 $VARIABLE
+# assign with attributes
+declare -r VAR='Hello world' #with the attribute: -r (read only)
+# user prompt
+read -p 'message: ' VAR
+
+
+# Command substitution
+var3=$(echo "scale=2;$var1/$var2" | bc) #stores the output of the command into a variable.
 
 
 #environment variables:
@@ -409,6 +417,23 @@ done
 #	STRINGS:
 # ======================================================================
 
+
+
+# get length:
+${#"STRING"} #hash (#) operator inside parameter expansion.
+
+
+# get substring:
+${"STRING":3} #Returns: "ING"
+${"STRING":0:4} #Returns: "STRI"
+
+
+# multiplying strings
+$ for i in {1..4}; do echo -n 'm'; done #outputs: mmmm
+#alt (concatenating characters into a string)
+n=2; chr=o; str=; for ((i = 0; i < n; i++)); do str="$str$chr"; done #printf "f%s\n" "$str"
+
+
 # ----------------------------------------------------------------------
 
 
@@ -422,6 +447,13 @@ done
 # ======================================================================
 #	ARRAYS:
 # ======================================================================
+
+# create an array
+a=(1 2 3 4)
+
+# get the size of an array
+echo ${#a[@]}
+
 
 # ----------------------------------------------------------------------
 

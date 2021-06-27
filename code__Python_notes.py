@@ -2162,6 +2162,9 @@ eg. classInstance.__class__.__name__
 eg. [n for n, o in inspect.getmembers(sys.modules[__name__], inspect.isclass) if o.__module__ is __name__]
 
 
+#get calling class: (import sys)
+eg. sys._getframe().f_back.f_code.co_name
+
 
 
 
@@ -3397,11 +3400,19 @@ parent.kill()
 
 'Errors__(error handling)___________________________________________________________________'
 
-# easier to ask forgiveness then ask permission
+
+#raise an exception with lambda:
+eg. y = lambda: (_ for _ in ()).throw(Exception('foobar'))
+#w/condition:
+eg. y = lambda x: 2*x if x < 10 else raise_(Exception('foobar'))
+
+
+
+# (EAFTAP) easier to ask forgiveness then ask permission
 try:
-	something
-except:
-	on error do this
+	'something'
+except Exception as error:
+	print (error)
 
 
 # try # of times

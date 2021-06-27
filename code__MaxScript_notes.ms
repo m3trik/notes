@@ -3088,7 +3088,16 @@ undo my_context_name on
 
 
 
--- Viewport:
+
+
+
+"Viewport: //------------------------------------------------------------"
+
+-- Most of the viewport functionality is located in the NitrousGraphicsManager class.
+ex. graphicsmanager = rt.NitrousGraphicsManager.GetActiveViewportSetting()
+	state = graphicsmanager.ShowEdgedFacesEnabled
+	graphicsmanager.ShowEdgedFacesEnabled = not state
+
 
 --redraw
 ex. rt.redrawViews() --Causes the 3ds Max viewports to be immediately redrawn in an optimal way, such that only those parts of the view that have changed are redrawn.
@@ -3104,6 +3113,7 @@ viewportSetting.SelectedEdgedFacesEnabled = not state --toggle
 ex. rt.showEndResult = True
 --enable/disable
 ex. rt.enableShowEndRes(True)
+
 
 
 
@@ -3315,6 +3325,69 @@ pymxs.print_()
 "DIRECTORIES: //--------------------------------------------------------"
 
 
+-- get 3ds Max system directories by name.
+rt.GetDir(rt.name("autoback")) --returns: the auto backup directory.
+
+
+--built-in environment paths
+#animations	--"C:\Users\<UserName>\Documents\3dsMax\sceneassets\animations"
+#archives	--"C:\Users\<UserName>\Documents\3dsMax\archives"
+#assemblies --
+#autoback	--"C:\Users\<UserName>\Documents\3dsMax\autoback"
+#autodeskCloud --"C:\Users\<UserName>\AppData\Local\Autodesk\Autodesk Sync\Cloud\<LoginName>" Returns empty string "" if the user is not logged in Autodesk 360.
+#defaults	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\en-US\defaults\MAX"
+#downloads	--"C:\Users\<UserName>\Documents\3dsMax\downloads"
+#drivers	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\drivers"
+#expression --
+#font		--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\fonts"
+#fluidSimulations --
+#help		--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\help"
+#hardwareShadersCache --
+#image		--"C:\Users\<UserName>\Documents\3dsMax\sceneassets\images"
+#import		--"C:\Users\<UserName>\Documents\3dsMax\import"
+#export		--"C:\Users\<UserName>\Documents\3dsMax\export"
+#macroScripts --
+#matlib		--"C:\Users\<UserName>\Documents\3dsMax\materiallibraries"
+#maxData	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\"
+#maxSysIcons --
+#maxroot	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\"
+#maxstart	--"C:\Users\<UserName>\Documents\3dsMax\scenes"
+#pageFile	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\temp"
+#photometric --"C:\Users\<UserName>\Documents\3dsMax\sceneassets\photometric"
+#plugcfg	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\en-US\plugcfg"
+#plugcfg_ln --
+#plugindata --
+#presets 	--
+#preview	--"C:\Users\<UserName>\Documents\3dsMax\previews"
+#proxies	--"C:\Users\<UserName>\Documents\3dsMax\proxies"
+#privateExchangeStoreInstallPath --
+#publicExchangeStoreInstallPath --
+#privatePluginPackageInstallPath --
+#publicPluginPackageInstallPath --
+#renderassets	--	"C:\Users\<UserName>\Documents\3dsMax\sceneassets\renderassets"
+#renderPresets	--	"C:\Users\<UserName>\Documents\3dsMax\renderpresets"
+#renderoutput	--	"C:\Users\<UserName>\Documents\3dsMax\renderoutput"
+#scene		--	"C:\Users\<UserName>\Documents\3dsMax\scenes"
+#scripts	--	"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\scripts"
+#sound		--	"C:\Users\<UserName>\Documents\3dsMax\sceneassets\sounds"
+#startupScripts	--	"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\scripts\startup"
+#systemImage --
+#systemPhotometric --
+#systemSound --
+#temp		--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\temp"
+#ui			--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\en-US\UI\"
+#ui_ln		-- 
+#userMacros	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\usermacros"
+#userScripts	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\scripts"
+#userSettings --
+#userStartupScripts	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\scripts\startup"
+#userStartupTemplates --
+#userTools --
+#userIcons	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\usericons"
+#vpost		--
+#web 		--
+
+
 filename = getSourceFileName() --getThisScriptFilename() -- Returns the filename path of the source file the function has been called from.
 filenameFromPath("filename_string") --Returns the file name and extension of a full file name, useful for labeling file buttons in rollout panels.
 getFilenamePath("filename_string") --Returns the directory path part of a full file name.
@@ -3344,7 +3417,7 @@ Include
 
 
 -- Set 3rd Party Plug-Ins paths
-baseDir = pathConfig.removePathLeaf (getDir #temp)
+baseDir = rt.pathConfig.removePathLeaf (getDir #temp)
 iniFile = baseDir + "\\Plugin.UserSettings.ini"
 setIniSetting iniFile "Directories" "Your Plugin Name" "Your Plugin Directory"
 
@@ -3370,224 +3443,150 @@ ex. ((dotnetclass "System.IO.File").exists "D:\	emp\\Wow.ms")
 
 --access 3ds Max system directories:
 --get directory
-GetDir <filetype_name> --Returns as a string the directory specified in the Customize > Configure Paths dialog for the specified file type.
+rt.GetDir <filetype_name> --Returns as a string the directory specified in the Customize > Configure Paths dialog for the specified file type.
 --set directory
-SetDir <filetype_name> <string> --Returns true if successful, false if not. 
+rt.SetDir <filetype_name> <string> --Returns true if successful, false if not. 
 
 
 
--- Project Folder: ---------------------------------------------------------------------
-pathConfig.doProjectSetupSteps()
--- Performs all steps necessary to set up a new Project, including browsing for project folder and creating all sub-folders. Returns true on success, false if cancelled.
 
-pathConfig.doProjectSetupStepsUsingDirectory <ProjectPath> 	 
--- Performs all steps necessary to set up a new Project using the supplied Project Path as the Root. Returns true on success, false if cancelled.
+-- pathconfig struct:
+rt.pathConfig.doProjectSetupSteps() --Performs all steps necessary to set up a new Project, including browsing for project folder and creating all sub-folders. Returns true on success, false if cancelled.
+rt.pathConfig.doSetProjectFolderSteps()
+rt.pathConfig.doProjectSetupStepsUsingDirectory(projectPath) --Performs all steps necessary to set up a new Project using the supplied Project Path as the Root. Returns true on success, false if cancelled.
 
-pathConfig.getCurrentProjectFolder() 
--- Returns the current Project Folder.
+rt.pathConfig.getCurrentProjectFolder() --Returns the current Project Folder.
 
-pathConfig.getCurrentProjectFolderPath() 
--- Returns the current Project Folder definition file (*.MXP).
+rt.pathConfig.getCurrentProjectFolderPath() --Returns the current Project Folder definition file (*.MXP).
 
-pathConfig.getProjectFolderPath <ProjectPath> 
--- Returns the Project Definition filename (<ProjectPath>\<ProjectName>.mxp) for the specified Project Folder.
+rt.pathConfig.getProjectFolderPath(projectPath) --Returns the Project Definition filename (<ProjectPath>\<ProjectName>.mxp) for the specified Project Folder.
 
-pathConfig.getProjectSubDirectory <subdir_index> 
--- Returns the indexed Project sub-directory.
-ex. for i = 1 to pathConfig.getProjectSubDirectoryCount() do
-		format "%: %\n" i (pathConfig.getProjectSubDirectoryi) --Print all Project Sub-Directories:
+rt.pathConfig.getProjectSubDirectory(subdir_index) --Returns the indexed Project sub-directory.
+ex. for i = 1 to rt.pathConfig.getProjectSubDirectoryCount() do
+		format "%: %\n" i (rt.pathConfig.getProjectSubDirectoryi) --Print all Project Sub-Directories:
 
-pathConfig.getProjectSubDirectoryCount() 
--- Returns the number of Project sub-directories. See above example.
+rt.pathConfig.getProjectSubDirectoryCount() --Returns the number of Project sub-directories. See above example.
 
-pathConfig.addProjectDirectoryCreateFilter <#directory_type> 
--- Adds Project Directory Filter where <directory_type> is one of the following:
+rt.pathConfig.getProjectDirectoryCreateFilters() --
+rt.pathConfig.addProjectDirectoryCreateFilter("#directory_type") --Adds Project Directory Filter where <directory_type> is one of the following:
 -- #font | #Scene | #export | #import | #help | #expression | #preview | #image | #Sound | #plugcfg | #maxstart | #vpost | #drivers | #autoback | #matlib | #scripts | #startupScripts | #defaults | #renderPresets | #ui | #maxroot | #renderoutput | #animations | #archives | #Photometric | #renderassets | #userScripts | #userMacros | #userStartupScripts | #temp | #userIcons | #maxData | #downloads | #proxies 
 
-pathConfig.removeAllProjectDirectoryCreateFilters() 
--- Removes all filters added using pathConfig.addProjectDirectoryCreateFilter()
+rt.pathConfig.removeAllProjectDirectoryCreateFilters() --Removes all filters added using pathConfig.addProjectDirectoryCreateFilter()
+rt.pathConfig.removeProjectDirectoryCreateFilter() --
 
-pathConfig.setCurrentProjectFolder <ProjectPath> 
--- Sets the current project folder to the given path. The Project Folder is displayed in the title bar of 3ds Max and will be updated instantly.
-
-
+rt.pathConfig.setCurrentProjectFolder(projectPath) --Sets the current project folder to the given path. The Project Folder is displayed in the title bar of 3ds Max and will be updated instantly.
 
 
 -- Path Manipulation, Conversion and Resolving: -----------------------------------------
-pathConfig.appendPath <path1> <path2> -- Appends the second argument filename to the first argument path, adding backslash if necessary.
-ex. pathConfig.appendPath "c:\\temp" "test.txt"
-	"c:\temp\test.txt"
-	pathConfig.appendPath "c:\\temp\\" "test"
-	"c:\temp\test"
+rt.pathConfig.appendPath(path1, path2) --Appends the second argument filename to the first argument path, adding backslash if necessary.
+ex. rt.pathConfig.appendPath("c:\\temp", "test.txt") --"c:\temp\test.txt"
+	rt.pathConfig.appendPath("c:\\temp\\", "test") --"c:\temp\test"
 
-pathConfig.convertPathToAbsolute <relative_path> -- Converts the relative path argument to absolute project path using the Project Directory.
-ex.	pathConfig.convertPathToAbsolute "meshes"
-	"C:\Documents and Settings\username\My Documents\3dsmax\meshes"
+rt.pathConfig.convertPathToAbsolute(relative_path) --Converts the relative path argument to absolute project path using the Project Directory.
+ex.	rt.pathConfig.convertPathToAbsolute("meshes") --"C:\Documents and Settings\username\My Documents\3dsmax\meshes"
 
-pathConfig.convertPathToLowerCase <path> -- Converts the path argument to lower case and unifies the backslashes.
-ex.	pathConfig.convertPathToLowerCase "C:\\Temp\Test/pATH"
-	"c:\temp\test\path"
+rt.pathConfig.convertPathToLowerCase(path_string) --Converts the path argument to lower case and unifies the backslashes.
+ex.	rt.pathConfig.convertPathToLowerCase("C:\\Temp\Test/pATH") --"c:\temp\test\path"
 
-pathConfig.convertPathToRelativeTo <path1> <path2> -- Converts the first path argument to a relative path with respect to the second path argument.
-ex.	pathConfig.convertPathToRelativeTo "C:\\Temp\\Test" "c:\\Program Files\\"
-	"..\Temp\Test"
+rt.pathConfig.convertPathToRelativeTo(path1, path2) --Converts the first path argument to a relative path with respect to the second path argument.
+ex.	rt.pathConfig.convertPathToRelativeTo("C:\\Temp\\Test", "c:\\Program Files\\") --"..\Temp\Test"
 
-pathConfig.convertPathToUnc <path> -- Returns the UNC path from a mapped drive path.
-ex. pathConfig.convertPathToUnc "t:\\project" --If drive letter T: is mapped to a server called MyServer, then
+rt.pathConfig.convertPathToUnc(filepath) --Returns the UNC path from a mapped drive path.
+ex. rt.pathConfig.convertPathToUnc "t:\\project" --If drive letter T: is mapped to a server called MyServer, then
 	"\\MyServer\projects"
 
-mapPaths.getFullFilePath <filename> -- Resolves the filename using map paths, returns fully qualified filename if the file is found.
+rt.mapPaths.getFullFilePath(filename) --Resolves the filename using map paths, returns fully qualified filename if the file is found.
 
-pathConfig.normalizePath <path> -- Returns a normalized path name.
-ex. pathConfig.normalizePath "scenes/test.txt"
+rt.pathConfig.normalizePath(filepath) --Returns a normalized path name.
+ex. rt.pathConfig.normalizePath "scenes/test.txt"
 	".\scenes\test.txt"
 
-pathConfig.pathsResolveEquivalent <path1> <path2> -- Returns true if the two paths resolve to the same location (in other words the two paths are equivalent), false if they are not equivalent.
-ex. pathConfig.pathsResolveEquivalent "scenes\\test.txt" "./scenes/test.txt"
+rt.pathConfig.pathsResolveEquivalent(path1, path2) --Returns true if the two paths resolve to the same location (in other words the two paths are equivalent), false if they are not equivalent.
+ex. rt.pathConfig.pathsResolveEquivalent "scenes\\test.txt" "./scenes/test.txt"
 	true
 
-pathConfig.resolvePathSymbols <path> -- Resolves the path symbols.
+rt.pathConfig.resolvePathSymbols(filepath) --Resolves the path symbols.
 
-pathConfig.resolveUNC SystemGlobal:resolveUNC false -- This is the property toggle found in Preferences>Files which controls whether max automatically converts absolute paths to their UNC equivalents. (i.e. M:\file.txt to server1\\file.txt if M: is mapped to server1\\)
+rt.pathConfig.resolveUNC SystemGlobal:resolveUNC false -- This is the property toggle found in Preferences>Files which controls whether max automatically converts absolute paths to their UNC equivalents. (i.e. M:\file.txt to server1\\file.txt if M: is mapped to server1\\)
 
-pathConfig.removePathLeaf <path> -- Removes a leaf from the given path.
-ex.	pathConfig.removePathLeaf "c:\\temp\\test"
-	"c:\temp"
+rt.pathConfig.removePathLeaf(filepath) --Removes a leaf from the given path.
+ex.	rt.pathConfig.removePathLeaf "c:\\temp\\test" --"c:\temp"
 
-pathConfig.removePathTopParent <path> -- Removes the top parent from the given path.
-ex. pathConfig.removePathTopParent "c:\\temp\\test"
-	"temp\test"
+rt.pathConfig.removePathTopParent(filepath) --Removes the top parent from the given path.
+ex. rt.pathConfig.removePathTopParent "c:\\temp\\test" --"temp\test"
 
-pathConfig.stripPathToLeaf <path_or_filename> -- Returns the last sub-directory name from the given path. If the path is a full file name, returns the file name. Equivalent to filename from path.
-ex.	pathConfig.stripPathToLeaf "C:\\temp\\test"
-	"test"
-	pathConfig.stripPathToLeaf "C:\\temp\\test\\"
-	""
-	pathConfig.stripPathToLeaf "C:\\temp\\test\\somefile.tga"
-	"somefile.tga"
+rt.pathConfig.stripPathToLeaf(path_or_filename) -- Returns the last sub-directory name from the given path. If the path is a full file name, returns the file name. Equivalent to filename from path.
+ex.	rt.pathConfig.stripPathToLeaf("C:\\temp\\test") --"test"
+	rt.pathConfig.stripPathToLeaf("C:\\temp\\test\\") --""
+	rt.pathConfig.stripPathToLeaf("C:\\temp\\test\\somefile.tga") --"somefile.tga"
 	--COMPARE:
-	filenamefrompath "C:\\temp\\test"
-	"test"
-	filenamefrompath "C:\\temp\\test\\"
-	""
-	filenamefrompath "C:\\temp\\test\\somefile.tga"
-	"somefile.tga"
+	filenamefrompath("C:\\temp\\test") --"test"
+	filenamefrompath("C:\\temp\\test\\") --""
+	filenamefrompath("C:\\temp\\test\\somefile.tga") --"somefile.tga"
    
-pathConfig.stripPathToTopParent -- Returns the root of the given path.
-ex.	pathConfig.stripPathToTopParent "C:\\temp\\test\\test.tga"
-	"C:\\"
-	pathConfig.stripPathToTopParent "\\\\SomeServer\\Projects\\Test"
-	"\\SomeServer"
-	pathConfig.isAbsolutePath <path_string> --Is... Query Methods --Returns true if the argument is an absolute path, false if it is a relative path. The path does not have to exist for this method to operate on it.
+rt.pathConfig.stripPathToTopParent(filepath) --Returns the root of the given path.
+ex.	rt.pathConfig.stripPathToTopParent "C:\\temp\\test\\test.tga" --"C:\\"
+	rt.pathConfig.stripPathToTopParent "\\\\SomeServer\\Projects\\Test" --"\\SomeServer"
+	rt.pathConfig.isAbsolutePath(filepath) --Returns true if the argument is an absolute path, false if it is a relative path. The path does not have to exist for this method to operate on it.
 
-pathConfig.isLegalPath <path_string> -- Returns true if the argument is a legal path definition, false if it is an illegal path. The path does not have to exist for this method to operate on it, it is only being parsed for correctness.
-ex. pathConfig.isLegalPath "c:\\" --legal path, existing
-	true
-	pathConfig.isLegalPath "z:\\path" --legal path, not existing
-	true
-	pathConfig.isLegalPath "zz:\\path" --illegal double drive letter!
-	false
+rt.pathConfig.isLegalPath(filepath) --Returns true if the argument is a legal path definition, false if it is an illegal path. The path does not have to exist for this method to operate on it, it is only being parsed for correctness.
+ex. rt.pathConfig.isLegalPath("c:\\") --legal path, existing Returns: Bool
+	rt.pathConfig.isLegalPath("z:\\path") --legal path, not existing Returns Bool
+	rt.pathConfig.isLegalPath("zz:\\path") --illegal double drive letter! Returns: Bool
 
-pathConfig.isPathRootedAtBackslash <path> -- Returns true if the argument starts with a backslash, false if it does not.
-ex. pathConfig.isPathRootedAtBackslash "\\machine\\c$" --starts with backslash:
-	true
-	pathConfig.isPathRootedAtBackslash "c:\\temp" --does not start with backslash:
-	false
+rt.pathConfig.isPathRootedAtBackslash(filepath) --Returns true if the argument starts with a backslash, false if it does not.
+ex. rt.pathConfig.isPathRootedAtBackslash "\\machine\\c$" --starts with backslash: Returns: Bool
+	rt.pathConfig.isPathRootedAtBackslash "c:\\temp" --does not start with backslash: Returns: Bool
 
-pathConfig.isPathRootedAtDriveLetter <path> -- Returns false if the argument starts with a backslash, true if it starts with a drive letter. The inverse of pathConfig.isPathRootedAtBackslash()
+rt.pathConfig.isPathRootedAtDriveLetter(filepath) --Returns false if the argument starts with a backslash, true if it starts with a drive letter. The inverse of rt.pathConfig.isPathRootedAtBackslash()
 
-pathConfig.isProjectFolder<path> -- Returns true if the argument path is a valid Project Folder root, false otherwise.
+rt.pathConfig.isProjectFolder(filepath) --Returns true if the argument path is a valid Project Folder root, false otherwise.
 
-pathConfig.isRootPath <path> -- Returns true if the argument path is a Root path, false otherwise
-ex.	pathConfig.isRootPath "C:\\"
-	true
-	pathConfig.isRootPath "C:\\temp"
-	false
+rt.pathConfig.isRootPath(filepath) --Returns true if the argument path is a Root path, false otherwise
+ex.	rt.pathConfig.isRootPath("C:\\") --Returns: Bool
+	rt.pathConfig.isRootPath "C:\\temp" --Returns: Bool
 
-pathConfig.isUncPath <path> -- Returns true if the argument path is a UNC path, false otherwise
-ex. pathConfig.isUncPath "T:\\Projects" --mapped drive, not UNC
-	false
-	pathConfig.isUncPath "\\\\MyServer\\Projects" --UNC path
-	true
+rt.pathConfig.isUncPath(filepath) --Returns true if the argument path is a UNC path, false otherwise
+ex. rt.pathConfig.isUncPath("T:\\Projects") --mapped drive, not UNC. Returns: Bool
+	rt.pathConfig.isUncPath("\\\\MyServer\\Projects") --UNC path. Returns: Bool
 
-pathConfig.isUncSharePath <path> -- Returns true if the argument path is a UNC share path, false otherwise.
+rt.pathConfig.isUncSharePath(filepath) --Returns true if the argument path is a UNC share path, false otherwise.
 
-pathConfig.isUsingProfileDirectories() -- Returns true if the system is using Profile directories, false otherwise.
+rt.pathConfig.isUsingProfileDirectories() --Returns true if the system is using Profile directories, false otherwise.
 
-pathConfig.isUsingRoamingProfiles() -- Returns true if the system is using Roaming Profiles, false otherwise. When using roaming profiles on somebody else's machine, your profile is being accessed over the network from your own machine. This mode is not officially supported.
-
-
+rt.pathConfig.isUsingRoamingProfiles() --Returns true if the system is using Roaming Profiles, false otherwise. When using roaming profiles on somebody else's machine, your profile is being accessed over the network from your own machine. This mode is not officially supported.
 
 
 
 -- Other Path-Related Methods and Structs: ----------------------------------------------
-pathConfig.GetDir <#directory_type> -- Points at the GetDir() method documented here. -- Returns the system directory where directory_type is one of the following: -- #font | #Scene | #export | #import | #help | #expression | #preview | #image | #Sound | #plugcfg | #maxstart | #vpost | #drivers | #autoback | #matlib | #scripts | #startupScripts | #defaults | #renderPresets | #ui | #maxroot | #renderoutput | #animations | #archives | #Photometric | #renderassets | #userScripts | #userMacros | #userStartupScripts | #temp | #userIcons | #maxData | #downloads | #proxies | #pageFile 
+rt.pathConfig.GetDir("#directory_type") --Points at the GetDir() method documented here. -- Returns the system directory where directory_type is one of the following: -- #font | #Scene | #export | #import | #help | #expression | #preview | #image | #Sound | #plugcfg | #maxstart | #vpost | #drivers | #autoback | #matlib | #scripts | #startupScripts | #defaults | #renderPresets | #ui | #maxroot | #renderoutput | #animations | #archives | #Photometric | #renderassets | #userScripts | #userMacros | #userStartupScripts | #temp | #userIcons | #maxData | #downloads | #proxies | #pageFile 
 
-pathConfig.SetDir -- Points at the SetDir() method documented here.
+rt.pathConfig.SetDir --Points at the SetDir() method documented here.
 
-pathConfig.mapPaths #Struct:mapPaths -- Points at the mapPaths struct definition.
+rt.pathConfig.mapPaths("#Struct:mapPaths") --Points at the mapPaths struct definition.
 ex. --the two method calls are equivalent:
-	mapPaths.getFullFilePath "fir.tga"
-	pathConfig.mapPaths.getFullFilePath "fir.tga"
+	mapPaths.getFullFilePath("fir.tga")
+	rt.pathConfig.mapPaths.getFullFilePath("fir.tga")
 
-pathConfig.pluginPaths #Struct:pluginPaths -- Points at the pluginPaths struct.
-ex. count = pathConfig.pluginPaths.count()
+rt.pathConfig.pluginPaths("#Struct:pluginPaths") --Points at the pluginPaths struct.
+ex. count = rt.pathConfig.pluginPaths.count()
 	for j = 1 to count do
-		format " % : %\n" j (pathConfig.pluginPaths.get j)
+		format " % : %\n" j (rt.pathConfig.pluginPaths.get j)
 
-pathConfig.sessionPaths #Struct:sessionPaths -- Points at the sessionPaths struct.
+rt.pathConfig.sessionPaths("#Struct:sessionPaths") --Points at the sessionPaths struct.
 
-pathConfig.xrefPaths #Struct:xrefPaths -- Points at theXRefPath struct
+rt.pathConfig.xrefPaths("#Struct:xrefPaths") --Points at theXRefPath struct
 ex. --the two method calls are equivalent:
 	xrefPaths.getFullFilePath "delme.max"
-	pathConfig.xrefPaths.getFullFilePath "delme.max"
+	rt.pathConfig.xrefPaths.getFullFilePath "delme.max"
 	Configurate User Paths Dialog - Path Settings Loading, Saving and Merging
-	pathConfig.SaveTo <filename> 
+	rt.pathConfig.SaveTo <filename> 
 	Saves the path configuration to the given filename.Returns true on success, false otherwise.Corresponds to the Save To... button in the Customize>Configure User Paths dialog.
 
-pathConfig.load <filename> -- Loads the path configuration from the specified path configuration file. Returns true on success, false otherwise.Corresponds to the Load button in the Customize>Configure User Paths dialog.
+rt.pathConfig.load(filename) --Loads the path configuration from the specified path configuration file. Returns true on success, false otherwise.Corresponds to the Load button in the Customize>Configure User Paths dialog.
 
-pathConfig.merge <filename> -- Merges the settings from the given path configuration file. Returns true on success, false otherwise. Loads the path configuration from the specified path configuration file. Returns true on success, false otherwise. Corresponds to the Merge button in the Customize>Configure User Paths dialog.
+rt.pathConfig.merge(filename) --Merges the settings from the given path configuration file. Returns true on success, false otherwise. Loads the path configuration from the specified path configuration file. Returns true on success, false otherwise. Corresponds to the Merge button in the Customize>Configure User Paths dialog.
 
-
-
-
---built-in environment paths
-#animations	--"C:\Users\<UserName>\Documents\3dsMax\sceneassets\animations"
-#archives	--"C:\Users\<UserName>\Documents\3dsMax\archives"
-#autoback	--"C:\Users\<UserName>\Documents\3dsMax\autoback"
-#autodeskCloud --"C:\Users\<UserName>\AppData\Local\Autodesk\Autodesk Sync\Cloud\<LoginName>" Returns empty string "" if the user is not logged in Autodesk 360.
-#defaults	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\en-US\defaults\MAX"
-#downloads	--"C:\Users\<UserName>\Documents\3dsMax\downloads"
-#drivers	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\drivers"
-#export		--"C:\Users\<UserName>\Documents\3dsMax\export"
-#font		--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\fonts"
-#help		--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\help"
-#image		--"C:\Users\<UserName>\Documents\3dsMax\sceneassets\images"
-#import		--"C:\Users\<UserName>\Documents\3dsMax\import"
-#matlib		--"C:\Users\<UserName>\Documents\3dsMax\materiallibraries"
-#maxData	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\"
-#maxroot	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\"
-#maxstart	--"C:\Users\<UserName>\Documents\3dsMax\scenes"
-#pageFile	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\temp"
-#photometric --"C:\Users\<UserName>\Documents\3dsMax\sceneassets\photometric"
-#plugcfg	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\en-US\plugcfg"
-#preview	--"C:\Users\<UserName>\Documents\3dsMax\previews"
-#proxies	--"C:\Users\<UserName>\Documents\3dsMax\proxies"
-#renderassets	--	"C:\Users\<UserName>\Documents\3dsMax\sceneassets\renderassets"
-#renderPresets	--	"C:\Users\<UserName>\Documents\3dsMax\renderpresets"
-#renderoutput	--	"C:\Users\<UserName>\Documents\3dsMax\renderoutput"
-#scene	--	"C:\Users\<UserName>\Documents\3dsMax\scenes"
-#scripts	--	"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\scripts"
-#sound	--	"C:\Users\<UserName>\Documents\3dsMax\sceneassets\sounds"
-#startupScripts	--	"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\scripts\startup"
-#temp	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\temp"
-#ui	--"C:\Program Files\Autodesk\3ds Max <ReleaseNumber>\en-US\UI\"
-#userMacros	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\usermacros"
-#userScripts	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\scripts"
-#userStartupScripts	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\scripts\startup"
-#userIcons	--"C:\Users\<UserName>\AppData\Local\Autodesk\3dsMax\<ReleaseNumber> - 64bit\ENU\usericons"
-#vpost	--
 
 
 

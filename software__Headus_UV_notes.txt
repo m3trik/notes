@@ -81,7 +81,7 @@ print screen......screenshot save window
 
 procedures::
 
-	 
+
 Copy UV's and Stack -using custom mapped f1 and f2 keys:  (there is also a stacking tool GUI>Snap/Stack>Stack if UV's have already been copied)
 	Copy UV's and stack-
 		[F1] (GUI>Edit>Copy UV's).

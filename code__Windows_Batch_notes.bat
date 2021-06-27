@@ -221,10 +221,12 @@ U:\a\network\path> 	REM a temporary U: virtual drive has been created
 U:\a\network\path> popd
 C:\a\local\path> 	REM the U: drive has been deleted
 
-:: current file location
-%~dp0
 
-:: current file location w/filename
+:: get current directory
+%cd%
+:: get current file location
+%~dp0
+:: get current file location w/filename
 %~f0
 
 :: set path two levels up
