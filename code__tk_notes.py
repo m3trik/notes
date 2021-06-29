@@ -264,27 +264,6 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 # -----------------------------------------------
 
 
-polySoftEdge -a 60 -ch 1 pCylinder5;
-// Result: polySoftEdge5 // 
-# Traceback (most recent call last):
-#   File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_init.py", line 2099, in wrapper
-#     self.setAttributeWindow(fn(self, *args, **kwargs))
-#   File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_init.py", line 2116, in setAttributeWindow
-#     attributes = self.getAttributesMEL(obj, include=include, exclude=exclude)
-#   File "O:/Cloud/Code/_scripts/radial/radial\apps\maya\slots\maya_init.py", line 2001, in getAttributesMEL
-#     for attr in pm.listAttr(node):
-#   File "C:\Program Files\Autodesk\Maya2022\Python37\lib\site-packages\pymel\core\general.py", line 8476, in listAttr
-#     res = cmds.listAttr(*args, **kwargs)
-#   File "C:\Program Files\Autodesk\Maya2022\Python37\lib\site-packages\pymel\internal\pmcmds.py", line 217, in listAttr_wrapped
-#     res = new_cmd(*new_args, **new_kwargs)
-# TypeError: Object polySoftEdge -a 60 -ch 1 pCylinder5 is invalid
-
-
-
-new tool:
-import image as plane
-
-
 maya macros (broken in maya 2022):
 isolateSelect -state 0 modelPanel4
 
@@ -323,16 +302,15 @@ maya_normals.py", line 139, in tb003
 # AttributeError: 'Tk_maya' object has no attribute 'ui'
 
 
+new tool:
+import image as plane
+
+
 create _high / _low layers with wireframe colors
 
 
 
-
-
 fix create> circle>  attributes
-
-
-
 
 
 scene> rename;  with selection, and find field empty, nothing is renamed. (an * in the find field returns correct result) 

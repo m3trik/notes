@@ -125,6 +125,8 @@ declare -r VAR='Hello world' #with the attribute: -r (read only)
 # user prompt
 read -p 'message: ' VAR
 
+# referencing a variable within a string:
+"string$VAR" #using a double quoted string.
 
 # Command substitution
 var3=$(echo "scale=2;$var1/$var2" | bc) #stores the output of the command into a variable.
@@ -820,6 +822,9 @@ stderr  #standard error:   an error message outputted by a failed process.
 read -p "message string: "  VAR #[-s] silent mode.
 echo $VAR
 
+#pause bash script
+read -p 'Press any button to continue.' PAUSE
+
 # ----------------------------------------------------------------------
 
 
@@ -899,7 +904,8 @@ lxrun /install #from command prompt
 
 
 #update local apt package cache
-sudo apt-get update
+sudo apt-get update #update current version
+sudo apt-get upgrade #update to new version
 
 
 
@@ -964,6 +970,7 @@ sudo service smbd restart
 net use \\<server>\<share> /delete
 
 
+
 #firewall
 #server profiles
 sudo ufw app list
@@ -973,7 +980,7 @@ sudo ufw status numbered #ex. sudo ufw delete 2
 #config
 sudo nano /etc/ufw/ufw.conf
 #add rules
-sudo ufw allow Apache #(Apache, Apache Full, Apache Secure, etc)
+sudo ufw allow Apache #(Apache, 'Apache Full', 'Apache Secure', etc)
 sudo ufw allow Samba
 sudo ufw allow ssh
 sudo ufw allow http
@@ -1045,9 +1052,9 @@ sudo mysql_secure_installation #allows; Setting a strong password for the root u
 sudo mysql -u root -p #login to your MariaDB server and enter your password when prompted.
 
 #create db
-CREATE DATABASE owncloud; #Create OwnCloud database user and password by typing the commands below. Replace ‘PASSWORD’ with a strong value.
+CREATE DATABASE nextcloud; #Create nextcloud database user and password by typing the commands below. Replace ‘PASSWORD’ with a strong value.
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL ON owncloud.* TO 'admin'@'localhost' IDENTIFIED BY 'your_password' WITH GRANT OPTION; 
+GRANT ALL ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY 'your_password' WITH GRANT OPTION; 
 FLUSH PRIVILEGES;
 EXIT;
 
@@ -1065,46 +1072,49 @@ DESCRIBE <table>;
 
 
 #php
+#install
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update #update local apt package cache
 sudo apt install php7.4
 
-sudo apt-get install php7.4-cli php7.4-common php7.4-mbstring php7.4-gd php7.4-intl php7.4-xml php7.4-mysql php7.4-zip php7.4-curl php7.4-xmlrpc #install related PHP modules
+# sudo apt-get install php7.4-cli php7.4-common php7.4-mbstring php7.4-gd php7.4-intl php7.4-xml php7.4-mysql php7.4-zip php7.4-curl php7.4-xmlrpc #install related PHP modules
+sudo apt update && apt install -y php8.0-cli php8.0-common php8.0-mbstring php8.0-gd php8.0-imagick php8.0-intl php8.0-bz2 php8.0-xml php8.0-pgsql php8.0-zip php8.0-dev php8.0-curl php8.0-fpm redis-server php8.0-redis php8.0-smbclient php8.0-ldap php8.0-bcmath php8.0-gmp libmagickcore-6.q16-6-extra
 
-sudo nano /etc/php/7.4/apache2/php.ini #Open the default 'php.ini' amd adjust default PHP settings.
+sudo nano /etc/php/8.0/apache2/php.ini #Open the default 'php.ini' amd adjust default PHP settings.
 '''memory_limit = 256M
 upload_max_file_size = 100M
 '''
 sudo apt update #update local apt package cache
 sudo apt install php-smbclient #install smbclient
+#check version
+php -version
 
 
 
-
-#owncloud
+#nextcloud0
 #install from zip
 cd /tmp 
-wget https://download.owncloud.org/community/owncloud-10.0.3.zip
-unzip owncloud-10.0.3.zip
-sudo mv owncloud /var/www/owncloud/
+wget https://download.nextcloud.org/community/nextcloud-<version>.zip
+unzip nextcloud-<version>.zip
+sudo mv nextcloud /var/www/nextcloud/
 #Set directory and file permissions
-sudo chown -R www-data:www-data /var/www/owncloud/
-sudo chmod -R 755 /var/www/owncloud/
+sudo chown -R www-data:www-data /var/www/nextcloud/
+sudo chmod -R 755 /var/www/nextcloud/
 
 
-#manual update (https://memoriaferroviaria.rosana.unesp.br/pmf2/owncloud/core/doc/admin/maintenance/enable_maintenance.html#)
-cd /var/www/owncloud #run it as your HTTP user to ensure that the correct permissions are maintained.
+#manual update (https://memoriaferroviaria.rosana.unesp.br/pmf2/nextcloud/core/doc/admin/maintenance/enable_maintenance.html#)
+cd /var/www/nextcloud #run it as your HTTP user to ensure that the correct permissions are maintained.
 sudo -u www-data php occ maintenance:mode --on #maintenence mode
 sudo service apache2 stop #stop the web server
 sudo -u www-data php ./occ upgrade
 sudo -u www-data php occ maintenance:mode --off #maintenence mode
 
-#Create a file named owncloud.conf in this directory with the following contents:
+#Create a file named nextcloud.conf in this directory with the following contents:
 cd /etc/apache2/sites-available/
-'''Alias /owncloud "/var/www/owncloud/"
+'''Alias /nextcloud "/var/www/nextcloud/"
 
-<Directory /var/www/owncloud/>
+<Directory /var/www/nextcloud/>
   Options +FollowSymlinks
   AllowOverride All
 
@@ -1112,13 +1122,13 @@ cd /etc/apache2/sites-available/
   Dav off
  </IfModule>
 
- SetEnv HOME /var/www/owncloud
- SetEnv HTTP_HOME /var/www/owncloud
+ SetEnv HOME /var/www/nextcloud
+ SetEnv HTTP_HOME /var/www/nextcloud
 
 </Directory>
 '''
-sudo a2ensite owncloud #Enable the new configuration.
-sudo a2enmod rewrite #enable an apache module needed for ownCloud.
+sudo a2ensite nextcloud #Enable the new configuration.
+sudo a2enmod rewrite #enable an apache module needed for nextcloud.
 
 #enable SSL using ubuntu self-signed cert
 sudo a2enmod ssl
@@ -1131,11 +1141,11 @@ sudo crontab -u www-data -l #list background jobs
 #tasks
 sudo -u www-data php occ background:cron #set the schedular. schedulers: cron|ajax|webcron
 sudo -u www-data php ./occ system:cron #manually run cron jobs.
-sudo -u www-data php occ trashbin:expire #remove any file in the ownCloud trash bin which is older than the specified maximum file retention time.
+sudo -u www-data php occ trashbin:expire #remove any file in the nextcloud trash bin which is older than the specified maximum file retention time.
 sudo -u www-data php occ versions:expire #expire versions of files which are older than the specified maximum version retention time.
 sudo -u www-data php occ dav:cleanup-chunks #clean up outdated chunks (uploaded files) more than a certain number of days old.
 #add task to crontab
-*  *  *  *  * /usr/bin/php -f /path/to/your/owncloud/occ versions:expire
+*  *  *  *  * /usr/bin/php -f /path/to/your/nextcloud/occ versions:expire
 
 #set strict Transport Security HTTP Header
 sudo nano /etc/apache2/sites-available/default-ssl.conf
@@ -1143,15 +1153,22 @@ sudo nano /etc/apache2/sites-available/default-ssl.conf
 ''' #Add the following snippet of code to the SSL.conf
 
 #configure APCu memory cache
-sudo nano /var/www/owncloud/config/config.php
+sudo nano /var/www/nextcloud/config/config.php
 """'memcache.local' => '\OC\Memcache\APCu',
 """ #Add the following line of text to the config.php
 
-#repair 423 locked db error (sudo mysql -u root -p; USE owncloud;) #log into mariadb.
+#repair 423 locked db error (sudo mysql -u root -p; USE nextcloud;) #log into mariadb.
 truncate oc_file_locks
 #or
 DELETE FROM oc_file_locks WHERE 1
 
+#get version
+sudo -u www-data php /var/www/nextcloud/occ -V #or via browser: https://m3trik.com/nextcloud/status.php
+
+#get trusted domains:
+sudo -u www-data php /var/www/nextcloud/occ config:system:get trusted_domains
+#add trusted domain:
+sudo -u www-data php /var/www/nextcloud/occ config:system:set trusted_domains 2 --value=your.domain
 
 
 
@@ -1188,7 +1205,17 @@ sudo systemctl enable certbot-renewal.timer #enable the timer to be started on b
 systemctl status certbot-renewal.timer #show status information for the timer
 journalctl -u certbot-renewal.service #show journal entries for the timer.
 
+# view certificates
+certbot certificates
+#delete certificate
+certbot delete name_of_certificate #delete after you get a new certificate. deleting first can cause issues with re-issuing a subsequent certificate.
 
+#add certificate to default-ssl.conf
+SSLCertificateFile link_to_fullchain.pem #found by running the 'certbot certificates' command.
+SSLCertificateKeyFile link_to_privkey.pem
+
+#verify SSL certificate status
+https://www.ssllabs.com/ssltest/analyze.html?d=example.com&latest
 
 
 
