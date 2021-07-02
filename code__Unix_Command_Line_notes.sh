@@ -1,4 +1,4 @@
-# Linux Command Line notes
+# Unix Command Line notes
 
 
 
@@ -430,6 +430,10 @@ ${"STRING":3} #Returns: "ING"
 ${"STRING":0:4} #Returns: "STRI"
 
 
+# new line
+$("line1\nline2") #expand a double quoted string
+
+
 # multiplying strings
 $ for i in {1..4}; do echo -n 'm'; done #outputs: mmmm
 #alt (concatenating characters into a string)
@@ -656,7 +660,7 @@ ls -la
 #create a directory
 mkdir <dir>
 #create a symbolic link
-ln -s <newdir> <olddir> #ex. sudo ln -s "/mnt/Storage/Linux/home [-j]/admin"  /home/admin
+ln -s <newdir> <olddir> #ex. sudo ln -s "/mnt/Storage/Linux/home/admin"  /home/admin
 #list symbolic links
 find . -type l -ls #all
 find . -type l -maxdepth 1 -ls #current directory:
@@ -673,6 +677,8 @@ mv <from> <to> #rename more than one file using additional <from> arguments.
 cp <from> <to> #[-p][--preserve] mode,ownership,timestamps. Use additional <from> arguments to copy multiple files. 
 cp * <dir> #copys all files in the directory.
 cp m*.txt <dir> #(m*.txt copies all files in the working directory starting with "m" and ending with ".txt")
+#sync directories
+sudo rsync -avz /mnt/Source /mnt/Destination #can be continued if interupted.
 
 
 #move a dir
@@ -765,6 +771,7 @@ vgchange -ay
 resize2fs -p /dev/<groupname>/<volumename> 3G #resize to 3 gig
 #resize the logical volume
 lvresize -L 3G <groupname>/<volumename> #-L=logical volume
+
 
 
 #delete the entire volume group
@@ -884,6 +891,18 @@ netstat -a #gives a list of all processes listening on network ports.
 
 
 
+
+
+
+
+# ======================================================================
+#   TERMINAL:
+# ======================================================================
+
+# run shell script from a terminal:
+bash /dir/to/script.sh
+
+# ----------------------------------------------------------------------
 
 
 
