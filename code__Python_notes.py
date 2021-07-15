@@ -1,9 +1,10 @@
-'PYTHON_notes_______________________________________________________________________________'
+# PYTHON_notes
 
 
 
-
-
+' ======================================================================'
+'	SYNTAX'
+' ======================================================================'
 
 #escape sequences
 #\        ignore or continuation
@@ -18,13 +19,19 @@ eg. expression;expression;expression; #does not work with anything requiring an 
 #print to console
 sys.stdout.write('\n')
 
+' ----------------------------------------------------------------------'
 
 
 
 
 
 
-'Mathmatical Operators______________________________________________________________________'
+
+
+
+' ======================================================================'
+'	MATHMATICAL OPERATORS'
+' ======================================================================'
 
 #division '/'
 #to get floating point result in python 2
@@ -142,13 +149,20 @@ a = 0.01
 a * 10. #shifts decimal place right
 a / 10. #shifts decimal place left
 
+' ----------------------------------------------------------------------'
 
 
 
 
 
 
-'Comparators________________________________________________________________________________'
+
+
+
+' ======================================================================'
+'	COMPARATORS'
+' ======================================================================'
+
 <=      #less than or equal
 
 >=      #greater than or equal
@@ -176,6 +190,7 @@ eg. isinstance(var, (str, unicode))
 eg. type(var)
 eg. type(x) in [str, float]
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -185,10 +200,10 @@ eg. type(x) in [str, float]
 
 
 
+' ======================================================================'
+'	BOOLEAN OPERATIONS'
+' ======================================================================'
 
-
-
-'Boolean Operations_________________________________________________________________________'
 #the Boolean data type is a data type, having two values (usually denoted true and false)
 and    x and y     if x is False, then x, else y
 or     x or y	     if x is False, then y, else x
@@ -291,6 +306,7 @@ def cycle(id_sequence): #toggle between numbers in a given sequence
 	g_seqDict[id_sequence] = g_seqDict[id_sequence][1:]+[value] #move the value to the end of the list ie. {name_123:[2,3,1]}
 	return value
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -299,7 +315,10 @@ def cycle(id_sequence): #toggle between numbers in a given sequence
 
 
 
-'Conditionals_______________________________________________________________________________'
+
+' ======================================================================'
+'	CONDITIONALS'
+' ======================================================================'
 
 if():
 elif():
@@ -397,6 +416,30 @@ def dispatch_dict(operator, x, y):
 #dispatch_dict('mul', 2, 8) Returns: 16
 #dispatch_dict('unknown', 2, 8) Returns: None
 
+#alt
+#when you pass an argument to the switch_demo function, it is looked up against the switcher dictionary mapping. 
+#If a match is found, the associated value is returned, else a default string (‘Invalid Month’) is printed.
+def switch_demo(argument):
+	switcher = {
+			1: 'January',
+			2: 'February',
+			3: 'March',
+			4: 'April'
+	return switcher.get(argument, 'Invalid month')
+
+superClassDict = {
+			GeometryClass: 'GeometryClass',
+			shape: 'shape',
+			light: 'light',
+			camera: 'camera',
+			SpacewarpObject: 'SpacewarpObject',
+			helper: 'helper',
+			system: 'system',
+			default: 'default' #aka unknown type
+		}
+		superClass = superClassDict.get(superClass,'superClass: Unknown')
+
+' ----------------------------------------------------------------------'
 
 
 
@@ -406,9 +449,9 @@ def dispatch_dict(operator, x, y):
 
 
 
-
-'Looping___________________________________________________________________________________'
-
+' ======================================================================'
+'	LOOPING'
+' ======================================================================'
 
 #Control flow: 
 return    #returns the result
@@ -499,6 +542,7 @@ while i < len(xyz):
 	z.append(xyz[i+2])
 	i+=3 #increment
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -508,8 +552,9 @@ while i < len(xyz):
 
 
 
-
-'Variables__________________________________________________________________________________'
+' ======================================================================'
+'	VARIABLES'
+' ======================================================================'
 
 # Naming Convention
 #class (capitalized)
@@ -661,6 +706,7 @@ eg. def function(arg1, arg2):
 #delete a variable
 eg. del x
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -670,8 +716,9 @@ eg. del x
 
 
 
-'Iterables__________________________________________________________________________________'
-
+' ======================================================================'
+'	ITERABLES'
+' ======================================================================'
 
 #container:         for emulating lists like classes
 __len__             len() Length of.
@@ -681,6 +728,7 @@ __delitem__         Delete item at Index
 __iter__            Iteration eg. in for Loops #create an iterator method
 __contains__        In
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -689,7 +737,10 @@ __contains__        In
 
 
 
-'Strings____________________________________________________________________________________'
+
+' ======================================================================'
+'	STRINGS'
+' ======================================================================'
 
 ''
 ""        #single line.
@@ -973,6 +1024,7 @@ f'{num:,d}'
 #float:
 '{:,.2f}'.format(num) #4567987.00  to 4,567,987.00
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -982,9 +1034,9 @@ f'{num:,d}'
 
 
 
-'Lists__(arrays)____________________________________________________________________________'
-
-
+' ======================================================================'
+'	LISTS'
+' ======================================================================'
 
 # create an empty list.
 list_=[]          
@@ -993,6 +1045,14 @@ list_=list()
 
 # create a list with contents.
 list_ = ['red', 'blue', 'green', 3.5, 3]
+
+#copy an existing list:
+eg. list_.copy()
+eg. list(list_)
+eg. [i for i list_]
+# work on a copy or subsection of a list:
+list_[:] = list_ #or ex. [-2:] for last two elements
+#modifying list_[:] won't effect the original.
 
 
 # populate a list within a given range:
@@ -1010,14 +1070,6 @@ eg. random.randomrange(0, 100)
 eg. ['init'] * 4 #results in ['init', 'init', 'init', 'init']
 
 list_ = [i*2 for i in range(10)]  #generates a list of even numbers 0 through 18
-
-
-
-
-# work on a copy or subsection of a list:
-list_[:] = list_ #or ex. [-2:] for last two elements
-#modifying list_[:] won't effect the original.
-
 
 
 
@@ -1067,7 +1119,7 @@ eg. [list_[0], list_[-1]]
 #get subsection:
 list_[1:5] #subsection 1-4
 #also
-list_[:3] #up to 2
+list_[:3] #up to 3 but not including.
 list_[3:] #from 3
 
 #get subsection with a step amount
@@ -1390,6 +1442,23 @@ eg.	l2 = set(itertools.chain.from_iterable(l1)) #ll is {'a', 'b', 'c', 'd', 'e',
 
 
 
+#convert list of tuples to a dict
+#unique values:
+dict(list_)
+#with non-unique values
+result={}
+for k,v in list_:
+	value=[]
+	for kk,vv in list_:
+		if k==kk:
+			value.append(vv)
+
+	value = value if len(value)>1 else value[0]
+	result[k] = value
+#with non-unique values using itertools (from itertools import groupby)
+result = {k : [*map(lambda v: v[1], values)]
+	for k, values in groupby(sorted(list_, key=lambda x: x[0]), lambda x: x[0])
+	}
 
 #convert bitArray to an array
 #bitArray to list of indices:
@@ -1480,27 +1549,43 @@ del list_[::2] # [2, 4]
 #delete every nth
 del list_[1::2] #[1, 2, 5]
 
+' ----------------------------------------------------------------------'
 
 
 
 
 
-'Tuples___unmodifiable lists________________________________________________________________'
-#,  created the same as lists but with () instead of []
-
-#convert to tuple
-tuple()
-
-List  = [123, 'xyz', 'zara', 'abc'];
-Tuple = tuple(aList)
-
-print 'Tuple elements : ', aTuple
-#prints:  Tuple elements :  (123, 'xyz', 'zara', 'abc')
 
 
 
+
+' ======================================================================'
+'	TUPLES'
+' ======================================================================'
+
+#similar to lists but immutable, and can be more efficient.
+
+#create a tuple
+eg. tuple_ = 1, 2, 3
+eg. tuple_ = (1, 2, 3)
+
+
+#copy a tuple:
+eg. tuple2 = tuple(tuple1)
+
+
+#convert list to tuple
+tuple_ = tuple(list_)
 #Convert a tuple into a list
-list(seq)
+list_ = list(tuple_)
+
+#get index:
+tuple_.index(<element>)
+
+#get number of occurances:
+tuple_.count(<element>)
+
+' ----------------------------------------------------------------------'
 
 
 
@@ -1510,9 +1595,10 @@ list(seq)
 
 
 
+' ======================================================================'
+'	SETS'
+' ======================================================================'
 
-
-'Sets_______________________________________________________________________________________'
 #Sets share several list operations such as len. They are unordered and therefore cannot
 # be indexed. They cannot contain duplicate elements. Because of the way they are stored
 # they are faster in retrieving results than lists, but are slower to iterate over.
@@ -1579,6 +1665,7 @@ s.clear()
 set([1,2,6,8]) - set([2,3,5,8])
 #returns set([1, 6])
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -1588,21 +1675,22 @@ set([1,2,6,8]) - set([2,3,5,8])
 
 
 
-'Dictionary__(aka_hashtable,map_/_associative_array)___used_to_bind_keys_to_values__________'
-# keys are Immutable objects (cannot be changed).
+' ======================================================================'
+'	DICTIONARY'
+' ======================================================================'
+
+# keys are Immutable.
 
 
-
-d = {} #empty dictionary
-
-d = {'key1':1, 'key2':2, 'key3':3}  # assign <key:value> on creation
-
+#create
+eg. d = {} #empty dictionary
+eg. d = {'key1':1, 'key2':2, 'key3':3} #assign <key:value> on creation
+eg. d = dict(key1=1, key2=2, key3=3) #using dict function
 
 
 #create dictionary with all keys having the same value:
 #dict.fromkeys is the fastest way to create a dictionary where all the keys map to the same value.
 eg. dict.fromkeys(range(1, 11), True) #returns {1: True, 2: True, 3: True, 4: True, 5: True, 6: True, 7: True, 8: True, 9: True, 10: True}
-
 #dict of list values with integer keys
 dict_ = dict(enumerate(list_, 0)) #starting from 0
 #using itertools:
@@ -1610,11 +1698,21 @@ from itertools import count
 dict_ = dict(zip(list_, count(0))) #starting from 0
 #using range, len and zip:
 dict_ = dict(zip(list_, range(x, len(list_)+x)))
-
-
 #using dictionary comprehension
 eg. dict_ = {key: value for key in range(5)}
 
+
+#copy dict:
+dict2 = dict(dict1)
+
+
+#convert string representation to dict:
+#using ast (import ast)
+ast.literal_eval("{'key':'value'}")
+#using json (import json)
+s = "{'key':'value'}"
+json_acceptable_string = s.replace("'", "\"") #json decoder requires double quotes around keys and values
+d = json.loads(json_acceptable_string)
 
 
 
@@ -1756,13 +1854,15 @@ dict1.update(dict2)
 eg. dict_ = dict(dict1, **dict2)
 
 
-# merge values of two dictionaries by index:
-# for key in dict1:
-#   if key in dict2:
+#invert a dictionary
+#if the values are hashable, and unique:
+{v:k for k,v in dict_.items()}
+#if the values are hashable, but are not unique:
+result={}
+for k, v in dict_.items():
+	result[v] = result.get(v, []) + [k]
 
-
-
-#sort (acsending or decending using reverse)
+#sort acsending (or decending using reverse)
 #by key
 eg. sorted = sorted(dict_)
 #by key using collections (output as a dict)
@@ -1771,32 +1871,6 @@ eg. sorted = OrderedDict(dict_)
 eg. sorted = sorted(dict_.items(), key=operator.itemgetter(0))
 #by value using operator (output as a list)
 eg. sorted = sorted(dict_.items(), key=operator.itemgetter(1))
-
-
-
-# SWITCH/CASE using a dictionary
-#when you pass an argument to the switch_demo function, it is looked up against the switcher dictionary mapping. 
-#If a match is found, the associated value is returned, else a default string (‘Invalid Month’) is printed.
-def switch_demo(argument):
-	switcher = {
-			1: 'January',
-			2: 'February',
-			3: 'March',
-			4: 'April'
-	return switcher.get(argument, 'Invalid month')
-
-superClassDict = {
-			GeometryClass: 'GeometryClass',
-			shape: 'shape',
-			light: 'light',
-			camera: 'camera',
-			SpacewarpObject: 'SpacewarpObject',
-			helper: 'helper',
-			system: 'system',
-			default: 'default' #aka unknown type
-		}
-		superClass = superClassDict.get(superClass,'superClass: Unknown')
-
 
 
 
@@ -1859,6 +1933,7 @@ dct = {k:i for i,k in enumerate(list_,x)}
 # Delete
 #key (returns the value of the key upon deletion)
 eg. dict_.pop('key', None) #if key doesn't exist; return the second argument.
+eg. dict_.popitem() #removes the last inserted key:value pair.
 
 #value              
 eg. del dict_['key']
@@ -1868,6 +1943,7 @@ eg. dict_['key'].remove('item in list')
 #all keys/values
 dict_.clear()
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -1877,13 +1953,10 @@ dict_.clear()
 
 
 
-
-
-
-
-
-
-'Functions_(subroutines)____________________________________________________________________'
+' ======================================================================'
+'	FUNCTIONS'
+' ======================================================================'
+#subroutines
 #functions are first-class objects. This means that functions can be passed around
 #, and used as arguments, just like any other value 
 
@@ -1953,6 +2026,7 @@ class X:
 	def d():
 		print 'I might be defined in a class, but I\'m global'
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -1961,9 +2035,12 @@ class X:
 
 
 
-'Lambda_Expressions_(anonymous_function)____________________________________________________'
 
-# Are single-expression functions that are not necessarily bound to a name (they can be anonymous).
+' ======================================================================'
+'	LAMBDA EXPRESSIONS'
+' ======================================================================'
+#anonymous functions
+# single-expression functions that are not necessarily bound to a name (they can be anonymous).
 # Can't use regular Python statements and always include an implicit return statement.
 
 eg. add = lambda x, y: x + y #add(5, 3) returns: 8
@@ -1999,6 +2076,7 @@ variable = list(filter(lambda x: x < 5, myList))
 #filters out items in the list that do not match a predicate 
 # (a function that returns a boolean).
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2008,8 +2086,10 @@ variable = list(filter(lambda x: x < 5, myList))
 
 
 
-
-'Generators_(coroutines)____________________________________________________________________'
+' ======================================================================'
+'	GENERATORS'
+' ======================================================================'
+#coroutines
 
 generators  #are iterators, but you can only iterate over them once. Its because they do
 			#not store all the values in memory. As they iterate through a list they 
@@ -2049,6 +2129,7 @@ next()      eg. gen = generator #assuming already have a generator defined
 									#if not called again the state when last called is 
 									# (eventually) discarded.
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2057,7 +2138,11 @@ next()      eg. gen = generator #assuming already have a generator defined
 
 
 
-'Decorators_________________________________________________________________________________'
+
+' ======================================================================'
+'	DECORATORS'
+' ======================================================================'
+
 # * Decorators allow to modify a function while leaving the origional function intact.
 # * A decorated function is wrapped by a function which calls the decorated function and returns 
 # 	what it returns.
@@ -2111,14 +2196,20 @@ class Y(X):
 
 Y().bar(3)
 
+' ----------------------------------------------------------------------'
 
 
 
 
 
 
-'Recursion__________________________________________________________________________________'
-#Recursion
+
+
+
+' ======================================================================'
+'	RECURSION'
+' ======================================================================'
+
 eg. 
 def removeDups(word):
 	if len(word) <= 1:
@@ -2132,6 +2223,7 @@ word = 'aabbccdd'                        # value & preforming any needed
 print (removeDups(word))                 # changes to it. In this case it's
 																				 # iterating over a list.
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2141,10 +2233,9 @@ print (removeDups(word))                 # changes to it. In this case it's
 
 
 
-
-'Classes____________________________________________________________________________________'
-
-
+' ======================================================================'
+'	CLASSES'
+' ======================================================================'
 
 #get Docstring
 class_.__doc__ #gives us the docstring of that class.
@@ -2307,6 +2398,7 @@ def skip_init(cls):
 # a = skip_init(Class)
 # a.myfunction()
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2316,7 +2408,9 @@ def skip_init(cls):
 
 
 
-'Class_Inheritance______________________________________________________________________________'
+' ======================================================================'
+'	CLASS INHERITANCE'
+' ======================================================================'
 
 class Base(object): 
 	def __init__(self, a, b):
@@ -2399,6 +2493,7 @@ class Child(Parent):
 		super(Child, self).do_stuff(*args, **kwargs)
 			# some logic with c
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2408,10 +2503,9 @@ class Child(Parent):
 
 
 
-
-'classmethod_&_staticmethod_________________________________________________________________'
-
-# static & class methods
+' ======================================================================'
+'	CLASSMETHOD & STATICMETHOD'
+' ======================================================================'
 
 # class method takes class as first argument instead of instance (self).
 # static method is simply a reg method nested within a class that doesn't require an instance (self) argument.
@@ -2437,6 +2531,7 @@ class Date(object):
 date2 = Date.from_string('11-09-2012')
 is_date = Date.is_date_valid('11-09-2012')
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2446,8 +2541,10 @@ is_date = Date.is_date_valid('11-09-2012')
 
 
 
+' ======================================================================'
+'	PROPERTY'
+' ======================================================================'
 
-'property___________________________________________________________________________________'
 #properties provide a way of customizing access to instance attributes. such as read-only
 def foo(self): #when the instance method with the same name as the method is accessed, the
 	return self._foo                                          #method will be called instead.
@@ -2462,6 +2559,7 @@ def setAttributeFunc(self,value):
 def foo(self):
 	return self._foo
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2471,8 +2569,11 @@ def foo(self):
 
 
 
+' ======================================================================'
+'	MAGIC METHODS'
+' ======================================================================'
+#dunder methods
 
-'Magic Methods_(dunder_methods)_____________________________________________________________'
 class X:
 	def __init__(self,x,y):#magic method.
 		self.x = x
@@ -2573,12 +2674,20 @@ __closure__		#(Read-Only) None or a tuple of cells that contain bindings for the
 __annotations__ #(Writable) A dict containing annotations of parameters. The keys of the dict are the parameter names, and 'return' for the return annotation, if provided.
 __kwdefaults__	#(Writable) A dict containing defaults for keyword-only parameters.
 
+' ----------------------------------------------------------------------'
 
 
 
 
 
-'rich operators:____________________________________________________________________________'
+
+
+
+
+' ======================================================================'
+'	RICH OPERATORS'
+' ======================================================================'
+
 #Perform “rich comparisons” between a and b
 #https://docs.python.org/2/library/operator.html
 
@@ -2652,17 +2761,19 @@ operator.concat(a, b)       #Return a + b for a and b sequences
 # String Formatting
 mod(s, obj)                 #Return s % obj
 
+' ----------------------------------------------------------------------'
 
 
 
 
-					 
-	 
 
 
 
 
-'User_Input_________________________________________________________________________________'
+
+' ======================================================================'
+'	USER INPUT'
+' ======================================================================'
 
 #raw_imput  promts user input  
 eg. var = raw_imput('y')
@@ -2678,6 +2789,7 @@ eg.	print('user input prompt')
 
 eg. var = choice(['A', 'B', 'C'])
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2687,9 +2799,9 @@ eg. var = choice(['A', 'B', 'C'])
 
 
 
-'Keyboard/Mouse_____________________________________________________________________________'
-
-
+' ======================================================================'
+'	KEYBOARD & MOUSE'
+' ======================================================================'
 
 # mouse tracking:
 class Point(Structure):
@@ -2777,6 +2889,7 @@ shortcut = 'alt+x' #define hot-key
 
 keyboard.add_hotkey(shortcut, event) #attach the function to hot-key
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -2784,8 +2897,10 @@ keyboard.add_hotkey(shortcut, event) #attach the function to hot-key
 
 
 
-'External_Files_____________________________________________________________________________'
- 
+
+' ======================================================================'
+'	EXTERNAL FILES'
+' ======================================================================'
 
 # check if the object is a file
 #using os.path
@@ -3088,12 +3203,6 @@ eg. file.seek(-3,2) #returns 3rd byte before the end of the file.
 
 
 
-
-
-
-
-
-
 # WRITING TO A FILE
 #Write string to file
 eg. with open('filename.txt') as f: #creates a variable 'f' that is only accessible within the block statement)
@@ -3148,6 +3257,7 @@ dir_path.rmdir()
 dir_path = '/tmp/img' #The argument passed to shutil.rmtree() cannot be a symbolic link to a directory.
 shutil.rmtree(dir_path) #except OSError, e: print ('Error: %s - %s.' % (e.filename, e.strerror))
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -3157,10 +3267,9 @@ shutil.rmtree(dir_path) #except OSError, e: print ('Error: %s - %s.' % (e.filena
 
 
 
-
-
-'Modules_____________________________________________________________________________________'
-
+' ======================================================================'
+'	MODULES'
+' ======================================================================'
 
 # relative import
 from .. import module
@@ -3270,6 +3379,7 @@ eg.	module = 'tk_slots_maya_edit'
 #using sys (import sys)
 eg. del sys.modules['tk_slots_maya_edit']
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -3279,8 +3389,9 @@ eg. del sys.modules['tk_slots_maya_edit']
 
 
 
-'Packages___________________________________________________________________________________'
-
+' ======================================================================'
+'	PACKAGES'
+' ======================================================================'
 
 globals()['__package__'] = 'radial.ui.widgets'
 
@@ -3316,6 +3427,7 @@ eg. pip uninstall PySide2
 # version, location, dependancies 
 eg. pip show PySide2
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -3325,10 +3437,9 @@ eg. pip show PySide2
 
 
 
-
-
-'Encoding___________________________________________________________________________________'
-
+' ======================================================================'
+'	ENCODING'
+' ======================================================================'
 
 #!/usr/bin/python3
 
@@ -3338,6 +3449,7 @@ eg. pip show PySide2
 #convert string from unicode to encoded text / bytes.
 string.encode('utf-8')
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -3347,7 +3459,9 @@ string.encode('utf-8')
 
 
 
-'Time_______________________________________________________________________________________'
+' ======================================================================'
+'	TIME'
+' ======================================================================'
 
 # pause, stop, wait, or sleep
 #sleep
@@ -3372,6 +3486,7 @@ print t1-t0
 #alt:
 % python -mtimeit  'function'
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -3379,9 +3494,11 @@ print t1-t0
 
 
 
-'Processes__________________________________________________________________________________'
 
 
+' ======================================================================'
+'	PROCESSES'
+' ======================================================================'
 
 #kill system process (import os, psutil)
 pid = os.getpid()
@@ -3390,6 +3507,7 @@ for child in parent.children(recursive=True):
 	child.kill()
 parent.kill()
 
+' ----------------------------------------------------------------------'
 
 
 
@@ -3398,8 +3516,11 @@ parent.kill()
 
 
 
-'Errors__(error handling)___________________________________________________________________'
 
+' ======================================================================'
+'	ERRORS'
+' ======================================================================'
+#error handling
 
 #raise an exception with lambda:
 eg. y = lambda: (_ for _ in ()).throw(Exception('foobar'))
@@ -3602,5 +3723,4 @@ from max.max_materials import selectByMaterialID #ex. import standalone function
 # from .. import mod1 #import mod1 from mod2.py
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+' ----------------------------------------------------------------------'

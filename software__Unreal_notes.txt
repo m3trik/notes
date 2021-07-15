@@ -14,8 +14,7 @@ Unreal Engine notes.
 
 prefix:
 M_		-material
-MT_		-
-MS_		-
+MS_		-mega-scan
 MI_		-material instance
 MF_		-material function
 MPC_	-material parameter collection
@@ -35,6 +34,8 @@ S_*_Cue	-sound cue (ex.S_HitImpact_01_Cue)
 E		-enumeration (similar to convention in code (enum EWeaponType))
 
 RT_		-render target
+
+MT_		-morph target
 
 Curve_	-vector/float/color curve
 
@@ -282,6 +283,11 @@ MakeMaterialAttributes	-combine material attributes.
 
 BreakMaterialAttributes	-split up all of the incoming attributes of the Material Layer, and then just plug in the ones you want. This also allows for complex blending of various Material Attributes.
 
+Scalar		- Single value.
+Vector		- Multiple values.
+
+DotProduct	- returns: scalar; the dot product between two vectors.
+CrossProduct - returns: vector; cross product of two vector3's.
 
 Color:
 Constant			- 0-1 greyscale (black:0, white:1)
@@ -295,7 +301,20 @@ Desaturation	-grayscale balancing
 RGBtoHSV		-convert color to Hue, Saturation, Value and use value.
 
 
+Mask:
+ComponentMask	-separate channels (R,G,B,A)
+
+Opacity:
+OpacityStrength -
+DepthFade		-drives opacity fading on intersecting areas of objects.
+LandscapeVisibilityMask	-provides a mask to drive terrian visibility.
+
+
+Combine:
+Append			-combine channels.
+
 Blend:
+Lerp			-combine values: Alpha (mask) 0:Black=A channel, 1:White=B channel, .5:Gray=Mix
 LinearInterpolate 	-mix A(base)/ B/ Alpha. (Lerp gets a num between two numbers at a specific increment.)
 Lerp_ScratchGrime	-
 
@@ -307,6 +326,15 @@ MatLayerBlend_Decal		-Blends a decal sheet over the Material using the 2nd UV ch
 
 Texture Blending:
 Blend_ColorBurn, Blend_ColorDodge, Blend_Darken, Blend_Difference, Blend_Exclusion, Blend_Hardlight, Blend_Lighten, Blend_LinearBurn, Blend_LinearDodge, Blend_LinearLight, Blend_Overlay, Blend_PinLight, Blend_Screen, Blend_SoftLight
+
+Landscape:
+LandscapeLayerBlend	-control how the textures are blended together when painted with the landscape editor.
+
+
+Surface:
+Falloff:
+Fresnel		-returns: 0-1 gradient based on direction of an objects normals. exponentIn controls width of the effect.
+
 
 Multiply, Add, Subtract, Divide
 
@@ -330,16 +358,20 @@ Clamp			-clamp values within a given range.
 Saturate node	-clamps the value between 0 and 1.
 
 
-Mask:
-ComponentMask	-set a specific subset of channels (R,G,B,A)
-
-
-Opacity:
-OpacityStrength -
-
-
 Normal:
 FlattenNormal	-set normal intensity.
+VertexNormalWS	-returns: the direction that each vertex is facing in world space. (not affected by rotation)
+
+Bump:
+BumpOffset		-parallax mapping. occlude objects based on viewing angle. Height ratio: usually less than 0.1
+
+Position:
+ObjectPosition  -returns: vector3; xyz coordinates of an object.
+ScreenPosition	-returns: vector2; xy position of a pixel in screen space.
+Distance		-returns: scalar in centimeters; the distance between two vector3's. (Divide the result by 1000)
+
+Size:
+ObjectRadius	-returns: scalar; size of an object.
 
 
 Translate:
@@ -353,9 +385,12 @@ StaticSwitch	-takes two inputs, outputs the first if the value of the parameter 
 
 StaticBool		-boolean. (parameter version is static=cannot change at runtime)
 
+LandscapeLayerSwitch	-allows for changing node operations based on layer usage.
+
 
 UV:
-TextureCoordinate	-outputs UV texture coordinates in the form of a two-channel vector value. 
+TextureCoordinate	-outputs UV texture coordinates in the form of a two-channel vector value.
+LandscapeCoords		-creates UV texture coordinates specifically designed for use with landscapes.
 
 
 

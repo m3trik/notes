@@ -486,9 +486,21 @@ sudo usermod -d /home/<newname> -m <newname> #after username change.
 #change password
 sudo passwd <username>
 
-
-#get root privileges for the session
+#get privilages
+#as user
+sudo -u <username>
+#as root
 sudo -s
+sudo -i
+#prompt for elevated privilages.
+[ "$UID" -eq 0 ] || exec sudo "$0" "$@" && echo -n "sudo bash what: "
+read WHAT
+sudo $WHAT
+#alt
+if [ "$EUID" != 0 ]; then
+  sudo "$0" "$@"
+  exit $?
+fi
 
 
 #list all groups
@@ -843,31 +855,6 @@ read -p 'Press any button to continue.' PAUSE
 
 
 # ======================================================================
-#	SCREEN SHARING:
-# ======================================================================
-
-#Install xRDP
-apt-get update
-apt-get install xrdp
-#Install XFCE4
-apt-get install xfce4
-#Configure xRDP
-echo xfce4-session > ~/.xsession
-nano /etc/xrdp/startwm.sh
-#Restart xRDP
-service xrdp restart
-
-# ----------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-# ======================================================================
 #	NETWORK:
 # ======================================================================
 
@@ -902,6 +889,10 @@ netstat -a #gives a list of all processes listening on network ports.
 # run shell script from a terminal:
 bash /dir/to/script.sh
 
+
+# get command history
+history | grep <command>
+
 # ----------------------------------------------------------------------
 
 
@@ -911,10 +902,50 @@ bash /dir/to/script.sh
 #	PACKAGES:
 # ======================================================================
 
+#list packages:
+apt list #--upgradable
+#
+dpkg --list #determine a package name
+#
+dpkg --list | grep <package_name>
+
+
+#install package
+
+
+#update local apt package cache
+sudo apt-get update #update current version
+sudo apt-get upgrade #update to new version
+
+#uninstall package
+sudo apt-get purge php8.*
+sudo apt-get autoclean
+sudo apt-get autoremove
+#alt
+sudo apt-get remove <packagename> && sudo apt-get autoremove #remove a program.
+sudo apt-get --purge remove <packagename> #completely uninstall the app if you plan not to reinstall.
+#Using aptitude (sudo apt-get install aptitude)
+sudo aptitude remove <package> #automatically removes everything and provides an interactive command line interface.
+#uninstall by keyword
+# First, a list of packages is generated using this series of commands: dpkg -l | grep php| awk '{print $2}' |tr "\n" " ".
+# Hint: You can run this part of the command in your terminal to see what packages would get removed. You should get something like: libapache2-mod-php5 php5 php5-cli php5-common php5-json
+# Finally, when you run the full command, this list of packages gets passed to sudo apt-get purge, removing all of the packages.
+sudo apt-get purge `dpkg -l | grep php| awk '{print $2}' |tr "\n" " "`
+
+
+
+#Terminal
+clear #clears the terminal window, moving the command prompt to the top of the screen
+source #activates the changes in ~/.bash_profile for the current session. Instead of closing the terminal and needing to start a new session    ex.  source ~/.bash_profile
+exit #close the terminal session.
+
+
+
 #ubuntu software
 install gnome-software
 #snap-store
 sudo snap install snap-store
+
 
 
 #windows linux subsystem
@@ -922,31 +953,23 @@ sudo snap install snap-store
 lxrun /install #from command prompt
 
 
-#update local apt package cache
-sudo apt-get update #update current version
-sudo apt-get upgrade #update to new version
 
-
-
-
-#Terminal
-clear #clears the terminal window, moving the command prompt to the top of the screen
-source #activates the changes in ~/.bash_profile for the current session. Instead of closing the terminal and needing to start a new session    ex.  source ~/.bash_profile
-exit
-
-
-
-
-#remote desktop
+#xrdp (remote desktop)
 #install
 sudo apt update #update local apt package cache
-sudo apt install ubuntu-desktop #gnome | or sudo apt install xubuntu-desktop #xfce
-sudo apt install xrdp
-sudo adduser xrdp ssl-cert
-#restart
-sudo systemctl restart xrdp
-#status
-sudo systemctl status xrdp
+#sudo apt install ubuntu-desktop #gnome | or sudo apt install xubuntu-desktop #xfce
+sudo apt install -y xrdp xorgxrdp
+sudo adduser xrdp ssl-cert #deluser. add user xrdp to ssl-cert group
+# Make the let's encrypt stuff be readable
+sudo chgrp ssl-cert -R /etc/letsencrypt/live /etc/letsencrypt/archive
+sudo chmod g+rX /etc/letsencrypt/live /etc/letsencrypt/archive
+# These currently point to the snakeoil CA in /etc/ssl
+rm -f /etc/xrdp/cert.pem
+rm -f /etc/xrdp/key.pem
+ln -s /etc/letsencrypt/live/<your-endpoint>/fullchain.pem cert.pem
+ln -s /etc/letsencrypt/live/<your-endpoint>/privkey.pem key.pem
+#state
+sudo systemctl start xrdp #stop, restart, status
 
 
 #net-tools
@@ -964,8 +987,8 @@ redis-cli
 auth your_redis_password #enter password
 #config
 sudo nano /etc/redis/redis.conf
-#restart
-sudo systemctl restart redis
+#state
+sudo systemctl start redis #stop, restart, status
 
 
 
@@ -983,7 +1006,7 @@ systemctl status smbd nmbd #check if service is running
 sudo systemctl start smbd nmbd #start services
 #samba share config
 sudo nano /etc/samba/smb.conf
-#retart
+#state
 sudo service smbd restart
 #reset widows share
 net use \\<server>\<share> /delete
@@ -1022,26 +1045,17 @@ sudo ufw allow from 203.0.113.4 to any port 22 #specific port
 sudo ufw delete allow 22/tcp
 #block port
 sudo ufw deny http
-#state
-sudo ufw disable
-sudo ufw enable
-sudo ufw reload
-#
-sudo ufw reset #disable UFW and delete any rules that were previously defined.
 sudo ufw default allow outgoing
 sudo ufw default deny incoming
+#state
+sudo ufw disable #enable, reload, reset(disable UFW and delete any rules that were previously defined.)
 
 
 
 #apache
-sudo systemctl stop apache2      #stop apache2
-sudo systemctl start apache2     #start apache2
-sudo systemctl restart apache2   #restart apache2 #sudo service apache2 restart #sudo /etc/init.d/apache2 restart
-sudo systemctl reload apache2    #reload apache2 #sudo service apache2 reload
-sudo systemctl disable apache2   #disable apache2
-sudo systemctl enable apache2    #enable apache2
 #config files
 ls /etc/apache2/*
+/etc/apache2/envvars #holds variable definitions. not the same as system environment variables.
 /etc/apache2/apache2.conf #The main Apache global configuration file, that includes all other configuration files.
 /etc/apache2/conf-available #stores available configurations.
 /etc/apache2/conf-enabled #contains enabled configurations.
@@ -1052,6 +1066,16 @@ ls /etc/apache2/*
 #enable|disable vitual host config
 sudo a2ensite default-ssl.conf #enable host config
 sudo a2dissite default-ssl.conf #disable host config
+#enable|disable (en|dis)
+a2enmod php8.0 #a2dismod php8.0
+a2enconf php8.0 #a2disconf php8.0
+a2ensite /etc/apache2/sites-available/* #enable all sites
+#state
+sudo systemctl start apache2 #apache2.service #stop, restart, status, reload, disable, enable
+#test
+sudo apache2ctl configtest #checks the configuration file for syntax errors.
+#
+UMask=0007 #append to /etc/apache2/envvars.
 
 
 
@@ -1067,26 +1091,20 @@ gsettings set org.gnome.nautilus.preferences always-use-location-entry true
 #mariadb
 sudo apt-get install mariadb-server mariadb-client #install MariaDB server
 sudo mysql_secure_installation #allows; Setting a strong password for the root user of our MariaDB,remove anonymous usersdisallow root login andremove test databases
-
 sudo mysql -u root -p #login to your MariaDB server and enter your password when prompted.
-
 #create db
 CREATE DATABASE nextcloud; #Create nextcloud database user and password by typing the commands below. Replace ‘PASSWORD’ with a strong value.
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'your_password';
 GRANT ALL ON nextcloud.* TO 'admin'@'localhost' IDENTIFIED BY 'your_password' WITH GRANT OPTION; 
 FLUSH PRIVILEGES;
 EXIT;
-
 #open db
 USE <database>;
-
 #list
 SHOW DATABASES;
 SHOW TABLES;
-
 #visualize
 DESCRIBE <table>;
-
 
 
 
@@ -1096,22 +1114,26 @@ sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update #update local apt package cache
 sudo apt install php7.4
-
 # sudo apt-get install php7.4-cli php7.4-common php7.4-mbstring php7.4-gd php7.4-intl php7.4-xml php7.4-mysql php7.4-zip php7.4-curl php7.4-xmlrpc #install related PHP modules
 sudo apt update && apt install -y php8.0-cli php8.0-common php8.0-mbstring php8.0-gd php8.0-imagick php8.0-intl php8.0-bz2 php8.0-xml php8.0-pgsql php8.0-zip php8.0-dev php8.0-curl php8.0-fpm redis-server php8.0-redis php8.0-smbclient php8.0-ldap php8.0-bcmath php8.0-gmp libmagickcore-6.q16-6-extra
-
 sudo nano /etc/php/8.0/apache2/php.ini #Open the default 'php.ini' amd adjust default PHP settings.
-'''memory_limit = 256M
-upload_max_file_size = 100M
+'''memory_limit = 1G
+upload_max_file_size = 500M
 '''
 sudo apt update #update local apt package cache
 sudo apt install php-smbclient #install smbclient
 #check version
 php -version
+#
+which php #ex. /usr/bin/php
+#state
+sudo systemctl start php-fpm #stop, restart, status, reload, disable, enable
+#php system info. (After using info.php, it’s best to remove the file, as it contains sensitive information.)
+https://m3trik.com/info.php #assuming; <?php phpinfo(); (two lines) in /var/www/your_domain/info.php
 
 
 
-#nextcloud0
+#nextcloud
 #install from zip
 cd /tmp 
 wget https://download.nextcloud.org/community/nextcloud-<version>.zip
@@ -1120,43 +1142,38 @@ sudo mv nextcloud /var/www/nextcloud/
 #Set directory and file permissions
 sudo chown -R www-data:www-data /var/www/nextcloud/
 sudo chmod -R 755 /var/www/nextcloud/
-
-
 #manual update (https://memoriaferroviaria.rosana.unesp.br/pmf2/nextcloud/core/doc/admin/maintenance/enable_maintenance.html#)
 cd /var/www/nextcloud #run it as your HTTP user to ensure that the correct permissions are maintained.
 sudo -u www-data php occ maintenance:mode --on #maintenence mode
 sudo service apache2 stop #stop the web server
 sudo -u www-data php ./occ upgrade
 sudo -u www-data php occ maintenance:mode --off #maintenence mode
-
 #Create a file named nextcloud.conf in this directory with the following contents:
 cd /etc/apache2/sites-available/
 '''Alias /nextcloud "/var/www/nextcloud/"
 
 <Directory /var/www/nextcloud/>
-  Options +FollowSymlinks
-  AllowOverride All
+    Options +FollowSymlinks
+    AllowOverride All
 
- <IfModule mod_dav.c>
-  Dav off
- </IfModule>
+    <IfModule mod_dav.c>
+        Dav off
+    </IfModule>
 
- SetEnv HOME /var/www/nextcloud
- SetEnv HTTP_HOME /var/www/nextcloud
+    SetEnv HOME /var/www/nextcloud
+    SetEnv HTTP_HOME /var/www/nextcloud
 
 </Directory>
 '''
 sudo a2ensite nextcloud #Enable the new configuration.
 sudo a2enmod rewrite #enable an apache module needed for nextcloud.
-
 #enable SSL using ubuntu self-signed cert
 sudo a2enmod ssl
 sudo a2ensite default-ssl
 sudo service apache2 restart
-
 #background jobs
-sudo crontab -u www-data -e #edit background jobs
 sudo crontab -u www-data -l #list background jobs
+sudo crontab -u www-data -e #edit background jobs
 #tasks
 sudo -u www-data php occ background:cron #set the schedular. schedulers: cron|ajax|webcron
 sudo -u www-data php ./occ system:cron #manually run cron jobs.
@@ -1165,31 +1182,40 @@ sudo -u www-data php occ versions:expire #expire versions of files which are old
 sudo -u www-data php occ dav:cleanup-chunks #clean up outdated chunks (uploaded files) more than a certain number of days old.
 #add task to crontab
 *  *  *  *  * /usr/bin/php -f /path/to/your/nextcloud/occ versions:expire
-
 #set strict Transport Security HTTP Header
+#Add the following snippet of code to the SSL.conf:
 sudo nano /etc/apache2/sites-available/default-ssl.conf
 '''Header always add Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
-''' #Add the following snippet of code to the SSL.conf
-
-#configure APCu memory cache
+'''
+#Configuration Parameters: (https://docs.nextcloud.com/server/15/admin_manual/configuration_server/config_sample_php_parameters.html?highlight=trash#deleted-items-trash-bin)
+#Most options are configurable on your Admin page, so it is usually not necessary to edit config/config.php
 sudo nano /var/www/nextcloud/config/config.php
-"""'memcache.local' => '\OC\Memcache\APCu',
-""" #Add the following line of text to the config.php
-
-#repair 423 locked db error (sudo mysql -u root -p; USE nextcloud;) #log into mariadb.
+"""'memcache.local' => '\\OC\\Memcache\\APCu', #configure APCu memory cache
+    'trashbin_retention_obligation' => 'auto, 30', #defines the policy for when files and folders in the trash bin will be permanently deleted.
+"""
+#trashbin_retention values:
+'auto' #default setting. keeps files and folders in the trash bin for 30 days and automatically deletes anytime after that if space is needed (note: files may not be deleted if space is not needed).
+'D, auto' #keeps files and folders in the trash bin for D+ days, delete anytime if space needed (note: files may not be deleted if space is not needed)
+'auto, D' #delete all files in the trash bin that are older than D days automatically, delete other files anytime if space needed
+'D1, D2' #keep files and folders in the trash bin for at least D1 days and delete when exceeds D2 days
+'disabled' #trash bin auto clean disabled, files and folders will be kept forever
+#
+repair 423 locked db error (sudo mysql -u root -p; USE nextcloud;) #log into mariadb.
 truncate oc_file_locks
 #or
 DELETE FROM oc_file_locks WHERE 1
-
 #get version
-sudo -u www-data php /var/www/nextcloud/occ -V #or via browser: https://m3trik.com/nextcloud/status.php
-
+sudo -u www-data php occ -V #or via browser: https://m3trik.com/nextcloud/status.php. #occ when run from /var/www/nextcloud dir, else: /var/www/nextcloud/occ
 #get trusted domains:
-sudo -u www-data php /var/www/nextcloud/occ config:system:get trusted_domains
+sudo -u www-data php occ config:system:get trusted_domains #when run from /var/www/nextcloud dir, else: /var/www/nextcloud/occ
 #add trusted domain:
-sudo -u www-data php /var/www/nextcloud/occ config:system:set trusted_domains 2 --value=your.domain
-
-
+sudo -u www-data php occ config:system:set trusted_domains 2 --value=your.domain #when run from /var/www/nextcloud dir, else: /var/www/nextcloud/occ
+#log file:  (path defined in config/config.php)
+sudo nano /var/www/nextcloud/data/nextcloud.log
+#run the filescan-command to make sure your files are properly indexed:
+sudo -u www-data php occ files:scan --all #when run from /var/www/nextcloud dir, else: /var/www/nextcloud/occ
+sudo -u www-data php occ trashbin:cleanup --all-users
+sudo -u www-data php occ files:cleanup
 
 
 #certbot
@@ -1218,21 +1244,17 @@ OnUnitActiveSec=1w
 [Install]
 WantedBy=multi-user.target
 '''
-
 sudo systemctl start certbot-renewal.timer #start the timer.
 sudo systemctl enable certbot-renewal.timer #enable the timer to be started on boot-up.
 systemctl status certbot-renewal.timer #show status information for the timer
 journalctl -u certbot-renewal.service #show journal entries for the timer.
-
 # view certificates
 certbot certificates
 #delete certificate
 certbot delete name_of_certificate #delete after you get a new certificate. deleting first can cause issues with re-issuing a subsequent certificate.
-
-#add certificate to default-ssl.conf
-SSLCertificateFile link_to_fullchain.pem #found by running the 'certbot certificates' command.
-SSLCertificateKeyFile link_to_privkey.pem
-
+#add certificate to /etc/apache2/sites-available/default-ssl.conf
+SSLCertificateFile path_to_fullchain.pem #found by running the 'certbot certificates' command.
+SSLCertificateKeyFile path_to_privkey.pem
 #verify SSL certificate status
 https://www.ssllabs.com/ssltest/analyze.html?d=example.com&latest
 
@@ -1278,8 +1300,8 @@ p4 admin stop
 p4d & #start helix server
 #
 p4 sync
-#start service
-sudo systemctl start perforce-p4dctl
+#state
+sudo systemctl start perforce-p4dctl #stop, restart, status, reload, disable, enable
 #
 p4 info #server info. #p4 -p ssl:192.168.1.240:1666 info
 p4 clients -u $P4USER #list of workspace names
@@ -1300,19 +1322,7 @@ sudo rm -R /opt/perforce
 
 
 
-#delete a package
-dpkg --list #determine a package name
-sudo apt-get remove <packagename> && sudo apt-get autoremove #remove a program.
-sudo apt-get --purge remove <packagename> #completely uninstall the app if you plan not to reinstall.
 
-#Using aptitude (sudo apt-get install aptitude)
-sudo aptitude remove <package> #automatically removes everything and provides an interactive command line interface.
-
-#uninstall by keyword
-# First, a list of packages is generated using this series of commands: dpkg -l | grep php| awk '{print $2}' |tr "\n" " ".
-# Hint: You can run this part of the command in your terminal to see what packages would get removed. You should get something like: libapache2-mod-php5 php5 php5-cli php5-common php5-json
-# Finally, when you run the full command, this list of packages gets passed to sudo apt-get purge, removing all of the packages.
-sudo apt-get purge `dpkg -l | grep php| awk '{print $2}' |tr "\n" " "`
 
 
 

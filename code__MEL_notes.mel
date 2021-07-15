@@ -548,48 +548,39 @@ if (`window -query -exists myWindow`)
 string $myCommand="cone";
 
 
-if ($x > 10) 
+if ($x > 10) {
 	print("It's greater than 10!\n");
 }
-
-if ($x > 10)
+if ($x > 10) {
 	print("It's greater than 10!\n");
 	print("Run!!!\n");
 } 
-else 
-{
+else {
 	print("It's not above 10.\n");
 	print("It's safe... for now.\n");
 }
-
-if (`window -query -exists myWindow`)
-{
+if (`window -query -exists myWindow`) {
 	deleteUI myWindow;
 }
-
 string $myCommand="cone";
-if (`exists $myCommand`) 
-{
+if (`exists $myCommand`) {
 	eval $myCommand;
 }
 
 
 // Select an object if and only if it exists.
 eg. // Print a warning if it does not exist.
-if (`objExists surface1`) 
-{
+if (`objExists surface1`) {
 	select surface1;
 }
-else
-{
+else{
 	warning("No surface exists");
 }
 
 
 
 //alternative 'if' syntax.  also see 'toggle' command eg. toggle -object;
-ex.
-	$currentPanel = `getPanel -withFocus`; //set variable for current viewport panel
+ex. $currentPanel = `getPanel -withFocus`; //set variable for current viewport panel
 	$state = `modelEditor -q -xray $currentPanel`; //set variable for query of xray boolean
 	modelEditor -edit -xray (!$state) $currentPanel; //reverse boolean value
 //other state change examples
