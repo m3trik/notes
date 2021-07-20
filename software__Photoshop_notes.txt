@@ -1,4 +1,4 @@
-.....:photoshop.notes:::.:.:...........................
+.....:photoshop.notes:::.:.:..........................................
 
 
 
@@ -8,14 +8,9 @@
 
 
 
-
-
-
-Procedures: ...........................................
-
-
-
-___SELECTION___________________________________________
+======================================================================
+	SELECTION:
+======================================================================
 
 selection shortcuts:
 	f8 quick toggles between object and component mode
@@ -32,22 +27,24 @@ selection shortcuts:
 
 	Draw selection from the center: hold down Alt/Option with Elliptical or Rectangular Marquee tools while creating them
 
+
 'select' drop down menu/color range:
 make selection based on color (you can use color picker to select and expand the range)
 
-ability to save selections:
+
+save selections:
 Select >Save Selection
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-
-
-
-___MASKING_____________________________________________
+======================================================================
+	MASKING:
+======================================================================
 
 quick mask:
 	click on the icon at the bottom of the toolbar to enter Quick Mask mode or press Q
@@ -60,13 +57,16 @@ transparency mask:
 	Show the bottom channel (mask) & hide the top one.
 	Paste a grayscale opacity map image into the mask.
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-___DUPLICATING__________________________________________
+======================================================================
+	DUPLICATE:
+======================================================================
 
 Duplicate via Step & Repeat:     process of duplicating an object and spacing
        hold alt (transform a duplicate instead of origional)+  ctrl t (edit>Free Transform)
@@ -80,38 +80,46 @@ shft + up/down arrow    rotate by 1 degree segments
 
 healing brush tool uses same reference source as clone stamp. 
 
+----------------------------------------------------------------------
 
 
 
 
 
-__CONVERT______________________________________________
+
+======================================================================
+	CONVERT:
+======================================================================
 
 Path to a Shape Layer:
 >	top main menu bar> Layer> New Fill Layer
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-___DEFINE CUSTOM SHAPE_________________________________
+======================================================================
+	SHAPES:
+======================================================================
 
+define custom shape:
 use the pen tool to create a path. then click on the path layer.
 edit> define custom shape (or right click inside work path> define custom shape)
 (if define custom shape is greyed out. click the work path (in paths tab by layers))
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-
-
-
-___ADJUSTMENT LAYERS___________________________________
+======================================================================
+	ADJUSTMENT LAYERS:
+======================================================================
 
 clip adjustment layer to an existing layer (effects only that layer)
 --click on the clip button at the bottom of the adjustment rollout.
@@ -120,54 +128,60 @@ presets can be a good starting point
 double click name to reset adjustment ex.hue,saturation
 you can select color and mouse drag to change values on the fly 
 
+----------------------------------------------------------------------
 
 
 
 
 
-___COLOR CORRECTION____________________________________
 
-adjust white balance ----------------------------------
+======================================================================
+	COLOR CORRECTION:
+======================================================================
+
+adjust white balance:
 >	Add curves adustment layer. (Adjustments> Curves)
 >	use the highlights eyedropper to set the white, grey, and black points.
 >	Finally, click and hold on to the small box in the bottom left corner of the curve box, and drag up. This way, we add a little more light to the scene. By moving it up vertically, we increase the exposure.
 
+----------------------------------------------------------------------
 
 
 
 
 
-___IMAGE RESIZING & RESOLUTION_________________________
+
+======================================================================
+	IMAGE RESIZING & RESOLUTION:
+======================================================================
 
 image>image size
 
 resample up then sharpen
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-
-
-
-
-___STROKE_____________________________________________
+======================================================================
+	STROKE:
+======================================================================
 
 fx icon at bottom of layers panel> stroke
 
+----------------------------------------------------------------------
 
 
 
 
 
 
-
-
-
-
-___PERSPECTIVE________________________________________
+======================================================================
+	PERSPECTIVE:
+======================================================================
 
 perspective adjustment options:       (keywords: adjust perspective, correct perspective, fix perspective)
 
@@ -180,14 +194,31 @@ perspective adjustment options:       (keywords: adjust perspective, correct per
                                    hit enter to go into adjustment mode
                                    move warp pins to manipulate perspective       
 
+----------------------------------------------------------------------
 
 
-								   
-								   
-								   
-								   
 
-___IMPORT/EXPORT_____________________________________
+
+
+
+======================================================================
+	TEXT:
+======================================================================
+	
+>	create a text box:
+>	click the Type Tool in your toolbar.
+>	click and drag to create.
+
+----------------------------------------------------------------------
+
+
+
+
+
+
+======================================================================
+	IMPORT / EXPORT:
+======================================================================
 
 as vector:
 	single element:
@@ -202,3 +233,16 @@ as GIF
 	Window> Timeline to open the Timeline panel.
 	Click Make Frames From Layers (menu icon upper right corner of the Timeline panel).
 	File > Export > Save for Web (Legacy)... Select GIF 128 Dithered from the Preset menu. Select 256 from the Colors menu.
+	
+----------------------------------------------------------------------
+
+
+
+
+
+
+======================================================================
+	PROCEDURES:
+======================================================================
+
+----------------------------------------------------------------------
